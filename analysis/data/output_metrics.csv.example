@@ -1,0 +1,3 @@
+scenario,delivery_ratio,latency_mean,overhead_ratio,drop_ratio
+U1_CBD_Commuting_HelsinkiMedium,0.0,0.0,0.0,0.0
+U2_RetailHeavy_HelsinkiMedium,0.0,0.0,0.0,0.0

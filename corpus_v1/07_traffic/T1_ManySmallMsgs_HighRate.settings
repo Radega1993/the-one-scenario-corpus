@@ -1,0 +1,40 @@
+# =========================================================
+# T1 - Many small messages
+# 1–5 KB messages, high creation rate.
+# Levers: Events1.size 1k–5k, Events1.interval low.
+# =========================================================
+
+Scenario.name = T1_ManySmallMsgs_HighRate
+Scenario.simulateConnections = true
+Scenario.updateInterval = 0.1
+Scenario.endTime = 43200
+MovementModel.rngSeed = 51
+MovementModel.worldSize = 6000, 5000
+
+Group.movementModel = RandomWaypoint
+Group.router = EpidemicRouter
+Group.nrofHosts = 45
+Group.bufferSize = 50M
+Group.nrofInterfaces = 1
+Group.interface1 = bt0
+Group.speed = 0.5, 1.2
+Group.waitTime = 60, 300
+
+bt0.type = SimpleBroadcastInterface
+bt0.transmitSpeed = 2M
+bt0.transmitRange = 10
+
+Scenario.nrofHostGroups = 1
+Group1.groupID = t
+
+Events.nrof = 1
+Events1.class = MessageEventGenerator
+Events1.interval = 5, 15
+Events1.size = 1k, 5k
+Events1.hosts = 0, 45
+Events1.prefix = S
+
+Report.nrofReports = 2
+Report.reportDir = reports/
+Report.report1 = MessageStatsReport
+Report.report2 = ContactTimesReport

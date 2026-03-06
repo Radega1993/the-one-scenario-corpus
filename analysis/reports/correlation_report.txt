@@ -1,0 +1,62 @@
+=== Correlación entre escenarios (vectores Z, 60×d) ===
+r(Si, Sk) = corr(Zi, Zk).  Escenarios: n=60, features: d=28.
+
+Matriz de Pearson:
+  max |r| = 1.0000
+  media |r| = 0.3323
+  Total pares (i<k): 1770
+  Pares con |r| >= 0.7: 209 (11.8%)
+
+Criterio: |r| < 0.7 para todos los pares O para ≥95% de los pares.
+  ¿Todos |r| < 0.7? False
+  ¿Al menos 95% con |r| < 0.7? False (88.2% cumplen)
+  Criterio cumplido: False
+
+Spearman (correlación de rangos entre vectores Z):
+  max |r| = 1.0000
+  media |r| = 0.4192
+  Pares con |r| >= 0.7: 298
+
+Métricas geométricas (sobre Z normalizado):
+  Distancia coseno (1 - cos_sim; 0=idénticos, 2=opuestos):
+    mín = -0.0000, media = 1.0042
+  Distancia euclídea:
+    mín = 0.0000, media = 6.5836
+
+Pares con |r| >= 0.7 (máximo 20 mostrados):
+  U10_WorkdayLong_HelsinkiMedium <-> U11_OfficeWaitHeavyTail_HelsinkiMedium  r = 1.0000
+  U10_WorkdayLong_HelsinkiMedium <-> U12_HighTimeVariance_HelsinkiMedium  r = 1.0000
+  U10_WorkdayLong_HelsinkiMedium <-> U1_CBD_Commuting_HelsinkiMedium  r = 1.0000
+  U10_WorkdayLong_HelsinkiMedium <-> U2_RetailHeavy_HelsinkiMedium  r = 1.0000
+  U10_WorkdayLong_HelsinkiMedium <-> U3_NightlifeClusters_HelsinkiMedium  r = 1.0000
+  U10_WorkdayLong_HelsinkiMedium <-> U8_CongestionHotspot_HelsinkiMedium  r = 1.0000
+  U10_WorkdayLong_HelsinkiMedium <-> U9_WorkdayShort_HelsinkiMedium  r = 1.0000
+  U10_WorkdayLong_HelsinkiMedium <-> V4_MixedBusPed_HelsinkiMedium  r = 1.0000
+  U10_WorkdayLong_HelsinkiMedium <-> V6_CarOwnership_0_HelsinkiMedium  r = 1.0000
+  U10_WorkdayLong_HelsinkiMedium <-> V7_CarOwnership_100_HelsinkiMedium  r = 1.0000
+  U10_WorkdayLong_HelsinkiMedium <-> V8_RoadClosure_HelsinkiMedium  r = 1.0000
+  U11_OfficeWaitHeavyTail_HelsinkiMedium <-> U12_HighTimeVariance_HelsinkiMedium  r = 1.0000
+  U11_OfficeWaitHeavyTail_HelsinkiMedium <-> U1_CBD_Commuting_HelsinkiMedium  r = 1.0000
+  U11_OfficeWaitHeavyTail_HelsinkiMedium <-> U2_RetailHeavy_HelsinkiMedium  r = 1.0000
+  U11_OfficeWaitHeavyTail_HelsinkiMedium <-> U3_NightlifeClusters_HelsinkiMedium  r = 1.0000
+  U11_OfficeWaitHeavyTail_HelsinkiMedium <-> U8_CongestionHotspot_HelsinkiMedium  r = 1.0000
+  U11_OfficeWaitHeavyTail_HelsinkiMedium <-> U9_WorkdayShort_HelsinkiMedium  r = 1.0000
+  U11_OfficeWaitHeavyTail_HelsinkiMedium <-> V4_MixedBusPed_HelsinkiMedium  r = 1.0000
+  U11_OfficeWaitHeavyTail_HelsinkiMedium <-> V6_CarOwnership_0_HelsinkiMedium  r = 1.0000
+  U11_OfficeWaitHeavyTail_HelsinkiMedium <-> V7_CarOwnership_100_HelsinkiMedium  r = 1.0000
+  ... y 189 más.
+
+--- Test estadístico y corrección por comparaciones múltiples ---
+Pares: m = 1770 = C(60,2). Para cada par, p-value de H0: rho=0 (Pearson, n=d=28).
+
+FDR (Benjamini-Hochberg, alpha=0.05):
+  Rechazos (pares significativos): 66
+  Pares con |r| >= 0.7 Y significativos (FDR): 66
+
+Bonferroni (alpha/1770 = 0.000028):
+  Rechazos: 66
+  Pares con |r| >= 0.7 Y significativos (Bonferroni): 66
+
+Objetivo: demostrar que no hay pares con |r| alto y significativo tras corrección.
+  Tras FDR: No (66 pares con |r|>=0.7 significativos).
+  Tras Bonferroni: No (66 pares con |r|>=0.7 significativos).

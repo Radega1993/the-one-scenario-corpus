@@ -1,0 +1,45 @@
+# =========================================================
+# D6 - Short TTL critical
+# Critical small messages with very short TTL (5–10 minutes).
+# Levers: msgTtl 5–10 min (minutes units), small message sizes.
+# =========================================================
+
+Scenario.name = D6_ShortTtlCritical_5to10min
+Scenario.simulateConnections = true
+Scenario.updateInterval = 0.1
+Scenario.endTime = 14400
+MovementModel.rngSeed = 42
+MovementModel.worldSize = 6500, 5500
+
+Group.movementModel = RandomWaypoint
+Group.router = EpidemicRouter
+Group.nrofHosts = 55
+Group.bufferSize = 50M
+
+# D6 lever: 5–10 minute TTL (minutes)
+Group.msgTtl = 7
+
+Group.nrofInterfaces = 1
+Group.interface1 = bt0
+Group.speed = 0.5, 1.6
+Group.waitTime = 10, 180
+
+bt0.type = SimpleBroadcastInterface
+bt0.transmitSpeed = 2M
+bt0.transmitRange = 10
+
+Scenario.nrofHostGroups = 1
+Group1.groupID = c
+
+Events.nrof = 1
+Events1.class = MessageEventGenerator
+Events1.interval = 10, 30
+Events1.size = 500, 5000
+Events1.hosts = 0, 55
+Events1.prefix = K
+
+Report.nrofReports = 2
+Report.reportDir = reports/
+Report.report1 = MessageStatsReport
+Report.report2 = ContactTimesReport
+

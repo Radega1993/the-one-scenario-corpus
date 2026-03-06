@@ -1,0 +1,14 @@
+# D8 backbone comes back at t = 21600s (6 hours)
+# Syntax for StandardEventsReader connection events:
+# <time> CONN <host1> <host2> up|down [interfaceType]
+#
+# Partitions:
+# - Group1: hosts 0..39
+# - Group2: hosts 40..79
+#
+# Bring up 4 persistent "backbone" links between representative nodes.
+21600 CONN 0 40 up
+21600 CONN 5 45 up
+21600 CONN 10 50 up
+21600 CONN 15 55 up
+

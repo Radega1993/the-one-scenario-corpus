@@ -1,0 +1,66 @@
+# =========================================================
+# D4 - Medical triage (two traffic classes)
+# The ONE doesn't support message priority classes without code changes, but
+# we can approximate "triage" by generating critical traffic from a small
+# responder group with short TTL, and routine traffic from civilians with long TTL.
+# Levers: 2 host groups with different msgTtl, 2 generators with different sizes/intervals.
+# =========================================================
+
+Scenario.name = D4_MedicalTriage_TwoClasses
+Scenario.simulateConnections = true
+Scenario.updateInterval = 0.1
+Scenario.endTime = 43200
+MovementModel.rngSeed = 40
+MovementModel.worldSize = 5500, 4500
+
+Group.router = EpidemicRouter
+Group.bufferSize = 50M
+Group.nrofInterfaces = 1
+Group.interface1 = bt0
+Group.movementModel = RandomWaypoint
+Group.speed = 0.4, 1.4
+Group.waitTime = 20, 240
+
+bt0.type = SimpleBroadcastInterface
+bt0.transmitSpeed = 2M
+bt0.transmitRange = 10
+
+Scenario.nrofHostGroups = 2
+
+# Responders / triage team: small group, short TTL (minutes)
+Group1.groupID = med
+Group1.nrofHosts = 10
+Group1.msgTtl = 10
+Group1.speed = 0.6, 1.8
+Group1.waitTime = 0, 120
+
+# Civilians: larger group, long TTL (minutes)
+Group2.groupID = civ
+Group2.nrofHosts = 40
+Group2.msgTtl = 720
+Group2.speed = 0.3, 1.2
+Group2.waitTime = 30, 300
+
+Events.nrof = 2
+
+# Critical triage messages (small, frequent) from responders to civilians
+Events1.class = MessageEventGenerator
+Events1.interval = 15, 45
+Events1.size = 1k, 8k
+Events1.hosts = 0, 10
+Events1.tohosts = 10, 50
+Events1.prefix = C
+
+# Routine messages (bigger, less frequent) from civilians to responders
+Events2.class = MessageEventGenerator
+Events2.interval = 90, 240
+Events2.size = 30k, 180k
+Events2.hosts = 10, 50
+Events2.tohosts = 0, 10
+Events2.prefix = R
+
+Report.nrofReports = 2
+Report.reportDir = reports/
+Report.report1 = MessageStatsReport
+Report.report2 = ContactTimesReport
+

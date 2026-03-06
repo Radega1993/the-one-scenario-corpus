@@ -1,0 +1,62 @@
+# =========================================================
+# D2 - Partitioned city with a mule bridge
+# Two separated partitions (clusters) with a single mule crossing the whole area.
+# Levers: 2 ClusterMovement partitions + 1 RandomWaypoint mule over full world.
+# =========================================================
+
+Scenario.name = D2_PartitionedCity_MuleBridge
+Scenario.simulateConnections = true
+Scenario.updateInterval = 0.1
+Scenario.endTime = 43200
+MovementModel.rngSeed = 38
+MovementModel.worldSize = 10000, 4000
+
+Group.router = EpidemicRouter
+Group.bufferSize = 50M
+Group.nrofInterfaces = 1
+Group.interface1 = bt0
+
+bt0.type = SimpleBroadcastInterface
+bt0.transmitSpeed = 2M
+bt0.transmitRange = 10
+
+Scenario.nrofHostGroups = 3
+
+# Partition A
+Group1.groupID = a
+Group1.nrofHosts = 35
+Group1.movementModel = ClusterMovement
+Group1.clusterCenter = 2000, 2000
+Group1.clusterRange = 450
+Group1.speed = 0.4, 1.1
+Group1.waitTime = 30, 240
+
+# Partition B
+Group2.groupID = b
+Group2.nrofHosts = 35
+Group2.movementModel = ClusterMovement
+Group2.clusterCenter = 8000, 2000
+Group2.clusterRange = 450
+Group2.speed = 0.4, 1.1
+Group2.waitTime = 30, 240
+
+# Mule (bridge between partitions)
+Group3.groupID = mule
+Group3.nrofHosts = 1
+Group3.movementModel = RandomWaypoint
+Group3.speed = 2.0, 4.0
+Group3.waitTime = 0, 30
+Group3.bufferSize = 100M
+
+Events.nrof = 1
+Events1.class = MessageEventGenerator
+Events1.interval = 60, 180
+Events1.size = 20k, 150k
+Events1.hosts = 0, 71
+Events1.prefix = M
+
+Report.nrofReports = 2
+Report.reportDir = reports/
+Report.report1 = MessageStatsReport
+Report.report2 = ContactTimesReport
+
