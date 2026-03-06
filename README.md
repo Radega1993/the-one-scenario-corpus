@@ -421,6 +421,4 @@ Requiere `streamlit`, `pandas` (y las dependencias del análisis en el venv del 
 
 **the-one-scenario-corpus** — corpus y análisis de escenarios para The ONE.
 
-- **Autor:** [Tu nombre]
-- **Contacto:** [tu.email@dominio o enlace a perfil]
-- **Proyecto / institución:** [tesis, universidad, repo, etc.]
+- **Autor:** Raül de Arriba
