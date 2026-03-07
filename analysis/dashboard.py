@@ -51,6 +51,11 @@ FEATURE_HELP = {
     "Scenario.endTime": "Duración de simulación (s)",
     "nrofHostGroups": "Número de grupos de hosts",
     "has_active_times": "Nodos con intervalos de actividad (0/1)",
+    "workDayLength": "Jornada laboral (s) — WDM",
+    "timeDiffSTD": "Desviación despertar/horarios (s) — WDM",
+    "probGoShoppingAfterWork": "Prob. actividad tras trabajo — WDM",
+    "nrOfMeetingSpots": "Número de meeting spots — WDM",
+    "nrOfOffices": "Número de oficinas — WDM",
 }
 
 OUTPUT_HELP = {

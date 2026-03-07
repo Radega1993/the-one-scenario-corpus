@@ -55,7 +55,8 @@ Group.shoppingMinWaitTime = 60
 Group.shoppingMaxWaitTime = 600
 Group.minAfterShoppingStopTime = 60
 Group.maxAfterShoppingStopTime = 600
-Group.probGoShoppingAfterWork = 0.3
+# Diversificar vector: más actividad tras trabajo (usuarios bus)
+Group.probGoShoppingAfterWork = 0.5
 # V6 lever: no car ownership (bus only)
 Group.ownCarProb = 0.0
 
@@ -106,7 +107,7 @@ Group2.shoppingMinWaitTime = 60
 Group2.shoppingMaxWaitTime = 600
 Group2.minAfterShoppingStopTime = 60
 Group2.maxAfterShoppingStopTime = 600
-Group2.probGoShoppingAfterWork = 0.3
+Group2.probGoShoppingAfterWork = 0.5
 Group2.ownCarProb = 0.0
 
 Group.router = EpidemicRouter

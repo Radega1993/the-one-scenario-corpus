@@ -4,7 +4,7 @@ Documento para trabajo posterior: interpretación del análisis de correlación 
 
 ---
 
-## Resultado actual (corpus_v1, 60 escenarios, 28 features)
+## Resultado actual (corpus_v1, 70 escenarios, 28 features)
 
 - **max |r| = 1.0**: hay escenarios con el **mismo vector de features** (correlación perfecta entre pares de escenarios). En particular, varios escenarios urbanos (U1–U12) y de vehículos (V4–V8) comparten el mismo vector.
 - **208 pares (11,8%)** con |r| ≥ 0,7 → no se cumple el criterio ni en versión estricta (100% de pares con |r| < 0,7) ni en versión flexible (≥95% de pares con |r| < 0,7). Actualmente solo ~88% de los pares cumplen |r| < 0,7.

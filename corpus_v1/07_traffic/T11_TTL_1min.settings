@@ -1,0 +1,42 @@
+# =========================================================
+# T11 - TTL 1 minute (radical)
+# TTL menor que tiempo medio de encuentro: mensajes expiran muy pronto.
+# Eje dinámico: TTL extremo bajo.
+# =========================================================
+
+Scenario.name = T11_TTL_1min
+Scenario.simulateConnections = true
+Scenario.updateInterval = 0.1
+Scenario.endTime = 43200
+MovementModel.rngSeed = 61
+# Diversificar vs T4: mundo más pequeño, velocidad más alta
+MovementModel.worldSize = 4800, 3800
+
+Group.movementModel = RandomWaypoint
+Group.router = EpidemicRouter
+Group.nrofHosts = 34
+Group.bufferSize = 10M
+Group.msgTtl = 1
+Group.nrofInterfaces = 1
+Group.interface1 = bt0
+Group.speed = 0.8, 1.6
+Group.waitTime = 40, 220
+
+bt0.type = SimpleBroadcastInterface
+bt0.transmitSpeed = 2M
+bt0.transmitRange = 10
+
+Scenario.nrofHostGroups = 1
+Group1.groupID = t11
+
+Events.nrof = 1
+Events1.class = MessageEventGenerator
+Events1.interval = 40, 100
+Events1.size = 8k, 40k
+Events1.hosts = 0, 34
+Events1.prefix = M
+
+Report.nrofReports = 2
+Report.reportDir = reports/
+Report.report1 = MessageStatsReport
+Report.report2 = ContactTimesReport

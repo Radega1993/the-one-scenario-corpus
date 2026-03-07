@@ -1,62 +1,72 @@
-=== Correlación entre escenarios (vectores Z, 60×d) ===
-r(Si, Sk) = corr(Zi, Zk).  Escenarios: n=60, features: d=28.
+=== Correlación entre escenarios (vectores Z, 70×d) ===
+r(Si, Sk) = corr(Zi, Zk).  Escenarios: n=70, features: d=33.
 
 Matriz de Pearson:
-  max |r| = 1.0000
-  media |r| = 0.3323
-  Total pares (i<k): 1770
-  Pares con |r| >= 0.7: 209 (11.8%)
+  max |r| = 0.9475
+  media |r| = 0.2842
+  Total pares (i<k): 2415
+  Pares con |r| >= 0.7: 153 (6.3%)
 
 Criterio: |r| < 0.7 para todos los pares O para ≥95% de los pares.
   ¿Todos |r| < 0.7? False
-  ¿Al menos 95% con |r| < 0.7? False (88.2% cumplen)
+  ¿Al menos 95% con |r| < 0.7? False (93.7% cumplen)
   Criterio cumplido: False
 
 Spearman (correlación de rangos entre vectores Z):
-  max |r| = 1.0000
-  media |r| = 0.4192
-  Pares con |r| >= 0.7: 298
+  max |r| = 0.9980
+  media |r| = 0.3920
+  Pares con |r| >= 0.7: 275
 
 Métricas geométricas (sobre Z normalizado):
   Distancia coseno (1 - cos_sim; 0=idénticos, 2=opuestos):
-    mín = -0.0000, media = 1.0042
+    mín = 0.0534, media = 0.3003
   Distancia euclídea:
-    mín = 0.0000, media = 6.5836
+    mín = 0.8761, media = 6.8000
+
+Criterios de diversidad geométrica (objetivo: espacio bien distribuido):
+  dist_coseno mínima = 0.0534  (objetivo: > 0.05; si < 0.05 hay pares casi idénticos)
+  Pares con cos_dist < 0.05: 0
+  Silhouette (k=7 clusters, Ward): 0.0000  (objetivo > 0.3)
+  Objetivos realistas: max |r| < 0.85, pares |r|>=0.7 < 3%, cos_dist mín > 0.05, silhouette > 0.3
 
 Pares con |r| >= 0.7 (máximo 20 mostrados):
-  U10_WorkdayLong_HelsinkiMedium <-> U11_OfficeWaitHeavyTail_HelsinkiMedium  r = 1.0000
-  U10_WorkdayLong_HelsinkiMedium <-> U12_HighTimeVariance_HelsinkiMedium  r = 1.0000
-  U10_WorkdayLong_HelsinkiMedium <-> U1_CBD_Commuting_HelsinkiMedium  r = 1.0000
-  U10_WorkdayLong_HelsinkiMedium <-> U2_RetailHeavy_HelsinkiMedium  r = 1.0000
-  U10_WorkdayLong_HelsinkiMedium <-> U3_NightlifeClusters_HelsinkiMedium  r = 1.0000
-  U10_WorkdayLong_HelsinkiMedium <-> U8_CongestionHotspot_HelsinkiMedium  r = 1.0000
-  U10_WorkdayLong_HelsinkiMedium <-> U9_WorkdayShort_HelsinkiMedium  r = 1.0000
-  U10_WorkdayLong_HelsinkiMedium <-> V4_MixedBusPed_HelsinkiMedium  r = 1.0000
-  U10_WorkdayLong_HelsinkiMedium <-> V6_CarOwnership_0_HelsinkiMedium  r = 1.0000
-  U10_WorkdayLong_HelsinkiMedium <-> V7_CarOwnership_100_HelsinkiMedium  r = 1.0000
-  U10_WorkdayLong_HelsinkiMedium <-> V8_RoadClosure_HelsinkiMedium  r = 1.0000
-  U11_OfficeWaitHeavyTail_HelsinkiMedium <-> U12_HighTimeVariance_HelsinkiMedium  r = 1.0000
-  U11_OfficeWaitHeavyTail_HelsinkiMedium <-> U1_CBD_Commuting_HelsinkiMedium  r = 1.0000
-  U11_OfficeWaitHeavyTail_HelsinkiMedium <-> U2_RetailHeavy_HelsinkiMedium  r = 1.0000
-  U11_OfficeWaitHeavyTail_HelsinkiMedium <-> U3_NightlifeClusters_HelsinkiMedium  r = 1.0000
-  U11_OfficeWaitHeavyTail_HelsinkiMedium <-> U8_CongestionHotspot_HelsinkiMedium  r = 1.0000
-  U11_OfficeWaitHeavyTail_HelsinkiMedium <-> U9_WorkdayShort_HelsinkiMedium  r = 1.0000
-  U11_OfficeWaitHeavyTail_HelsinkiMedium <-> V4_MixedBusPed_HelsinkiMedium  r = 1.0000
-  U11_OfficeWaitHeavyTail_HelsinkiMedium <-> V6_CarOwnership_0_HelsinkiMedium  r = 1.0000
-  U11_OfficeWaitHeavyTail_HelsinkiMedium <-> V7_CarOwnership_100_HelsinkiMedium  r = 1.0000
-  ... y 189 más.
+  V4_MixedBusPed_HelsinkiMedium <-> V5_RushHourBusDensity_HelsinkiMedium  r = 0.9475
+  U3_NightlifeClusters_HelsinkiMedium <-> C5_Festival_MultiHotspots_HelsinkiMedium  r = 0.9420
+  T10_HighRateLowSpeed_Congestion <-> T15_TransmitSpeed_256k  r = 0.9397
+  U2_RetailHeavy_HelsinkiMedium <-> V6_CarOwnership_0_HelsinkiMedium  r = 0.9392
+  S3_PeriodicMeetings_RegularRhythm <-> T5_VeryLongTtl_6to24h  r = 0.9354
+  T1_ManySmallMsgs_HighRate <-> T9_BufferStress_SmallBufferHighTraffic  r = 0.9336
+  U1_CBD_Commuting_HelsinkiMedium <-> U8_CongestionHotspot_HelsinkiMedium  r = 0.9315
+  U4_RainyDay_SlowMobility_HelsinkiMedium <-> V5_RushHourBusDensity_HelsinkiMedium  r = 0.9313
+  U6_DenseDowntown_HelsinkiMedium <-> U7_MicroMobility_HelsinkiMedium  r = 0.9312
+  T13_Buffer_256k <-> T9_BufferStress_SmallBufferHighTraffic  r = 0.9311
+  U6_DenseDowntown_HelsinkiMedium <-> V5_RushHourBusDensity_HelsinkiMedium  r = 0.9277
+  R10_TinyRange_5m <-> R11_SpeedExtremeLow  r = 0.9270
+  R5_MountainRescue <-> D6_ShortTtlCritical_5to10min  r = 0.9257
+  V5_RushHourBusDensity_HelsinkiMedium <-> V8_RoadClosure_HelsinkiMedium  r = 0.9213
+  U4_RainyDay_SlowMobility_HelsinkiMedium <-> V6_CarOwnership_0_HelsinkiMedium  r = 0.9200
+  S4_RandomMixing_NoHotspots <-> T9_BufferStress_SmallBufferHighTraffic  r = 0.9126
+  V4_MixedBusPed_HelsinkiMedium <-> V7_CarOwnership_100_HelsinkiMedium  r = 0.9110
+  D3_Aftershock_ErraticMobility <-> D9_Critical_1minTTL  r = 0.9107
+  U6_DenseDowntown_HelsinkiMedium <-> V4_MixedBusPed_HelsinkiMedium  r = 0.9078
+  V4_MixedBusPed_HelsinkiMedium <-> V8_RoadClosure_HelsinkiMedium  r = 0.9065
+  ... y 133 más.
 
 --- Test estadístico y corrección por comparaciones múltiples ---
-Pares: m = 1770 = C(60,2). Para cada par, p-value de H0: rho=0 (Pearson, n=d=28).
+Pares: m = 2415 = C(70,2). Para cada par, p-value de H0: rho=0 (Pearson, n=d=33).
 
 FDR (Benjamini-Hochberg, alpha=0.05):
-  Rechazos (pares significativos): 66
-  Pares con |r| >= 0.7 Y significativos (FDR): 66
+  Rechazos (pares significativos): 609
+  Pares con |r| >= 0.7 Y significativos (FDR): 153
 
-Bonferroni (alpha/1770 = 0.000028):
-  Rechazos: 66
-  Pares con |r| >= 0.7 Y significativos (Bonferroni): 66
+Bonferroni (alpha/2415 = 0.000021):
+  Rechazos: 181
+  Pares con |r| >= 0.7 Y significativos (Bonferroni): 153
 
 Objetivo: demostrar que no hay pares con |r| alto y significativo tras corrección.
-  Tras FDR: No (66 pares con |r|>=0.7 significativos).
-  Tras Bonferroni: No (66 pares con |r|>=0.7 significativos).
+  Tras FDR: No (153 pares con |r|>=0.7 significativos).
+  Tras Bonferroni: No (153 pares con |r|>=0.7 significativos).
+
+Diagnóstico: 0 rechazos no implica ausencia de correlación; con n=d=33 la potencia es baja.
+El problema real es geométrico: escenarios casi colineales (mismo subespacio).
+Estrategia: diversificar estructura (mapa, régimen dinámico, recursos extremos), no solo parámetros.

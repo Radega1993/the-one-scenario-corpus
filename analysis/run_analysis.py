@@ -14,6 +14,7 @@ Requiere: numpy, pandas (opcional: matplotlib, scipy para fases posteriores)
 from __future__ import annotations
 
 import argparse
+from collections import defaultdict
 from pathlib import Path
 from typing import Any
 
@@ -26,8 +27,10 @@ except ImportError:
 
 try:
     from scipy import stats as scipy_stats
+    from scipy.cluster.hierarchy import linkage, fcluster
 except ImportError:
     scipy_stats = None
+    linkage = fcluster = None
 
 try:
     import matplotlib
@@ -198,6 +201,36 @@ def settings_to_reportable_features(d: dict[str, Any]) -> dict[str, float | int]
     if np.isnan(transmit_speed) and "bt0.transmitSpeed" in d:
         transmit_speed = _get_size(d, "bt0.transmitSpeed")
 
+    # ---- 5. WDM / actividad (WorkingDayMovement; np.nan si no aplica) ----
+    work_day_length = _get_float(d, "Group.workDayLength")
+    for i in range(1, n_groups + 1):
+        if f"Group{i}.workDayLength" in d:
+            work_day_length = _get_float(d, f"Group{i}.workDayLength")
+            break
+    time_diff_std = _get_float(d, "Group.timeDiffSTD")
+    for i in range(1, n_groups + 1):
+        if f"Group{i}.timeDiffSTD" in d:
+            time_diff_std = _get_float(d, f"Group{i}.timeDiffSTD")
+            break
+    prob_go_shopping = _get_float(d, "Group.probGoShoppingAfterWork")
+    for i in range(1, n_groups + 1):
+        if f"Group{i}.probGoShoppingAfterWork" in d:
+            prob_go_shopping = _get_float(d, f"Group{i}.probGoShoppingAfterWork")
+            break
+    nr_meeting_spots = _get_float(d, "Group.nrOfMeetingSpots")
+    for i in range(1, n_groups + 1):
+        if f"Group{i}.nrOfMeetingSpots" in d:
+            nr_meeting_spots = _get_float(d, f"Group{i}.nrOfMeetingSpots")
+            break
+    nr_offices = _get_float(d, "Group.nrOfOffices")
+    for i in range(1, n_groups + 1):
+        if f"Group{i}.nrOfOffices" in d:
+            nr_offices = _get_float(d, f"Group{i}.nrOfOffices")
+            break
+    # Si el escenario no usa WDM, estas claves no suelen existir -> quedan np.nan
+    if mm_WDM == 0:
+        work_day_length = time_diff_std = prob_go_shopping = nr_meeting_spots = nr_offices = np.nan
+
     # ---- Extras ----
     end_time = _get_float(d, "Scenario.endTime")
     has_active_times = 1 if any(f"Group{i}.activeTimes" in d for i in range(1, n_groups + 1)) or "Group.activeTimes" in d else 0
@@ -232,6 +265,12 @@ def settings_to_reportable_features(d: dict[str, Any]) -> dict[str, float | int]
         # Recursos
         "bufferSize": buffer_size,
         "transmitSpeed": transmit_speed,
+        # WDM / actividad (np.nan si no usa WorkingDayMovement)
+        "workDayLength": work_day_length,
+        "timeDiffSTD": time_diff_std,
+        "probGoShoppingAfterWork": prob_go_shopping,
+        "nrOfMeetingSpots": nr_meeting_spots,
+        "nrOfOffices": nr_offices,
         # Extras
         "Scenario.endTime": end_time,
         "nrofHostGroups": n_groups,
@@ -379,6 +418,39 @@ def euclidean_distance_matrix(Z: np.ndarray) -> np.ndarray:
     return np.sqrt(np.nansum((a - b) ** 2, axis=2))
 
 
+def silhouette_from_distance(D: np.ndarray, labels: np.ndarray) -> float:
+    """
+    Silhouette score a partir de matriz de distancias D (n×n) y etiquetas de cluster.
+    s(i) = (b(i)-a(i)) / max(a(i),b(i)); a(i)=dist media intra-cluster, b(i)=dist media al cluster más cercano.
+    Clusters de un solo elemento: s(i)=0.
+    """
+    n = D.shape[0]
+    labels = np.asarray(labels, dtype=int)
+    unique = np.unique(labels)
+    s = np.zeros(n)
+    for i in range(n):
+        c = labels[i]
+        same = labels == c
+        other = ~same
+        if np.sum(same) <= 1:
+            s[i] = 0.0
+            continue
+        a_i = np.mean(D[i, same & (np.arange(n) != i)])
+        if not np.any(other):
+            s[i] = 0.0
+            continue
+        b_vals = []
+        for k in unique:
+            if k == c:
+                continue
+            mask = labels == k
+            b_vals.append(np.mean(D[i, mask]))
+        b_i = min(b_vals) if b_vals else 0.0
+        denom = max(a_i, b_i)
+        s[i] = (b_i - a_i) / denom if denom > 0 else 0.0
+    return float(np.nanmean(s))
+
+
 def benjamini_hochberg(pvalues_flat: np.ndarray, alpha: float = 0.05) -> np.ndarray:
     """FDR Benjamini-Hochberg. pvalues_flat: 1d. Devuelve máscara booleana: True = rechazar H0."""
     p = np.asarray(pvalues_flat, dtype=float).ravel()
@@ -442,6 +514,22 @@ def run_phase_correlation(out_dir: Path, threshold: float = 0.7, criterion_95: b
     pd.DataFrame(euc_dist, index=index_df, columns=index_df).to_csv(data_dir / "distance_euclidean.csv")
     cos_flat = cos_dist[triu[0], triu[1]]
     euc_flat = euc_dist[triu[0], triu[1]]
+    min_cos_dist = float(np.nanmin(cos_flat)) if len(cos_flat) else np.nan
+    n_pairs_cos_below_005 = int(np.sum(cos_flat < 0.05))
+
+    # Clustering sobre Z (ward) para diagnóstico de estructura. Ward no admite NaN → rellenar con 0.
+    n_clusters = 7
+    cluster_labels = None
+    silhouette_score = np.nan
+    if linkage is not None and fcluster is not None:
+        try:
+            Z_ward = np.nan_to_num(Z_arr, nan=0.0, posinf=0.0, neginf=0.0)
+            link = linkage(Z_ward, method="ward")
+            cluster_labels = fcluster(link, n_clusters, criterion="maxclust")
+            silhouette_score = silhouette_from_distance(cos_dist, cluster_labels)
+        except Exception:
+            pass
+
     abs_r = np.abs(r_flat)
     total_pairs = len(r_flat)
     n_above = int(np.sum(abs_r >= threshold))
@@ -485,7 +573,7 @@ def run_phase_correlation(out_dir: Path, threshold: float = 0.7, criterion_95: b
         p_df.to_csv(data_dir / "correlation_pearson_pvalues.csv")
 
     report_lines = [
-        "=== Correlación entre escenarios (vectores Z, 60×d) ===",
+        f"=== Correlación entre escenarios (vectores Z, {n}×d) ===",
         f"r(Si, Sk) = corr(Zi, Zk).  Escenarios: n={n}, features: d={d}.",
         "",
         "Matriz de Pearson:",
@@ -510,6 +598,12 @@ def run_phase_correlation(out_dir: Path, threshold: float = 0.7, criterion_95: b
         "  Distancia euclídea:",
         f"    mín = {float(np.nanmin(euc_flat)):.4f}, media = {float(np.nanmean(euc_flat)):.4f}",
         "",
+        "Criterios de diversidad geométrica (objetivo: espacio bien distribuido):",
+        f"  dist_coseno mínima = {min_cos_dist:.4f}  (objetivo: > 0.05; si < 0.05 hay pares casi idénticos)",
+        f"  Pares con cos_dist < 0.05: {n_pairs_cos_below_005}",
+        (f"  Silhouette (k={n_clusters} clusters, Ward): {silhouette_score:.4f}  (objetivo > 0.3)" if cluster_labels is not None else "  Silhouette: no calculado (clustering no disponible o falló)"),
+        "  Objetivos realistas: max |r| < 0.85, pares |r|>=0.7 < 3%, cos_dist mín > 0.05, silhouette > 0.3",
+        "",
     ]
     if pairs_above:
         report_lines.append(f"Pares con |r| >= {threshold} (máximo 20 mostrados):")
@@ -523,7 +617,7 @@ def run_phase_correlation(out_dir: Path, threshold: float = 0.7, criterion_95: b
     report_lines.extend([
         "",
         "--- Test estadístico y corrección por comparaciones múltiples ---",
-        f"Pares: m = {total_pairs} = C(60,2). Para cada par, p-value de H0: rho=0 (Pearson, n=d={d}).",
+        f"Pares: m = {total_pairs} = C({n},2). Para cada par, p-value de H0: rho=0 (Pearson, n=d={d}).",
         "",
         f"FDR (Benjamini-Hochberg, alpha={fdr_alpha}):",
         f"  Rechazos (pares significativos): {n_rej_fdr}",
@@ -536,9 +630,56 @@ def run_phase_correlation(out_dir: Path, threshold: float = 0.7, criterion_95: b
         "Objetivo: demostrar que no hay pares con |r| alto y significativo tras corrección.",
         f"  Tras FDR: {'Sí (0 pares alto |r| significativos)' if n_high_r_and_sig_fdr == 0 else f'No ({n_high_r_and_sig_fdr} pares con |r|>={threshold} significativos)'}.",
         f"  Tras Bonferroni: {'Sí (0 pares alto |r| significativos)' if n_high_r_and_sig_bonf == 0 else f'No ({n_high_r_and_sig_bonf} pares con |r|>={threshold} significativos)'}.",
+        "",
+        "Diagnóstico: 0 rechazos no implica ausencia de correlación; con n=d=33 la potencia es baja.",
+        "El problema real es geométrico: escenarios casi colineales (mismo subespacio).",
+        "Estrategia: diversificar estructura (mapa, régimen dinámico, recursos extremos), no solo parámetros.",
     ])
     report_text = "\n".join(report_lines)
     (reports_dir / "correlation_report.txt").write_text(report_text, encoding="utf-8")
+
+    # Escenarios que aparecen en algún par con |r| >= threshold (para diversificar)
+    scenarios_above = set()
+    for (a, b, _) in pairs_above:
+        scenarios_above.add(a)
+        scenarios_above.add(b)
+    # Número de pares "malos" por escenario (prioridad: los que más aparecen)
+    count_above = {s: 0 for s in labels}
+    for (a, b, _) in pairs_above:
+        count_above[a] += 1
+        count_above[b] += 1
+    scenarios_sorted = sorted(scenarios_above, key=lambda s: -count_above[s])
+    diversify_lines = [
+        f"# Escenarios a diversificar (aparecen en pares con |r| >= {threshold})",
+        f"# Generado por run_analysis.py --phase correlation. Total: {len(scenarios_sorted)} escenarios.",
+        f"# Criterio: trabajar en estos para que su vector de features difiera del resto y baje |r|.",
+        "",
+    ]
+    for s in scenarios_sorted:
+        diversify_lines.append(f"{s}  (# pares con |r|>={threshold}: {count_above[s]})")
+    (reports_dir / "scenarios_to_diversify.txt").write_text("\n".join(diversify_lines), encoding="utf-8")
+    print(f"Written {reports_dir / 'scenarios_to_diversify.txt'} ({len(scenarios_sorted)} escenarios a diversificar)")
+
+    # Asignación a clusters y reporte por cluster (para diversificar: 3-4 representantes por cluster, empujar el resto)
+    if cluster_labels is not None and pd is not None:
+        cl_df = pd.DataFrame({"scenario": labels, "cluster": cluster_labels})
+        cl_df.to_csv(data_dir / "cluster_assignments.csv", index=False)
+        by_cluster = defaultdict(list)
+        for scen, c in zip(labels, cluster_labels):
+            by_cluster[int(c)].append(scen)
+        cluster_report = [
+            f"# Clustering Ward sobre Z (k={n_clusters}), silhouette = {silhouette_score:.4f}",
+            "# De cada cluster: mantener 3-4 representantes; modificar el resto para empujarlos fuera.",
+            "",
+        ]
+        for c in sorted(by_cluster.keys()):
+            cluster_report.append(f"## Cluster {c} ({len(by_cluster[c])} escenarios)")
+            for s in sorted(by_cluster[c]):
+                cluster_report.append(f"  {s}")
+            cluster_report.append("")
+        (reports_dir / "clustering_report.txt").write_text("\n".join(cluster_report), encoding="utf-8")
+        print(f"Written {data_dir / 'cluster_assignments.csv'}, {reports_dir / 'clustering_report.txt'}")
+
     if pd is not None:
         (reports_dir / "multiple_comparisons_report.txt").write_text(
             "\n".join([

@@ -15,6 +15,8 @@ Group.movementModel = RandomWaypoint
 Group.router = EpidemicRouter
 Group.nrofHosts = 60
 Group.bufferSize = 50M
+# Diversificar: aftershock = mensajes críticos TTL corto
+Group.msgTtl = 30
 Group.nrofInterfaces = 1
 Group.interface1 = bt0
 
@@ -24,7 +26,7 @@ Group.waitTime = 0, 900
 
 bt0.type = SimpleBroadcastInterface
 bt0.transmitSpeed = 2M
-bt0.transmitRange = 10
+bt0.transmitRange = 8
 
 Scenario.nrofHostGroups = 1
 Group1.groupID = e

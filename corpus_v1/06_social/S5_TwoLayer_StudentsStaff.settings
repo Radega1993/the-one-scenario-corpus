@@ -19,7 +19,8 @@ Group.movementModel = RandomWaypoint
 
 bt0.type = SimpleBroadcastInterface
 bt0.transmitSpeed = 2M
-bt0.transmitRange = 10
+# Diversificar: dos capas = rango distinto
+bt0.transmitRange = 11
 
 Scenario.nrofHostGroups = 2
 
