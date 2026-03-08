@@ -62,11 +62,5 @@ Requires `streamlit` and `pandas` (and analysis dependencies in the project venv
 
 ## Author
 
-<<<<<<< HEAD
-**the-one-scenario-corpus** — corpus y análisis de escenarios para The ONE.
-
-- **Autor:** Raül de Arriba
-=======
 **the-one-scenario-corpus** — scenario corpus and analysis for The ONE.  
 **Author:** Raül de Arriba
->>>>>>> 39337bd (docs(scenarios): bilingual README/ROADMAP, drop checklist, 70 scenarios)
