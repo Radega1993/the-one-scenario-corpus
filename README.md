@@ -8,7 +8,8 @@
 |---------|-------------|
 | **corpus_v1/** | 70 `.settings` scenarios by family (urban, campus, vehicles, rural, disaster, social, traffic). |
 | **analysis/** | Feature extraction, correlation, output metrics, figures and [interactive dashboard](analysis/README.md). |
-| **ROADMAP.md** / **ROADMAP.es.md** | Next steps: bilingual docs, GitHub Wiki; diversity criteria (|r| < 0.7, cos_dist). Spanish: [ROADMAP.es.md](ROADMAP.es.md). |
+| **.wiki-clone/** | Wiki content (EN+ES): structured in `01-home`, `02-guide`, `03-reference`, `04-results`, `05-corpus`, `06-families`. [Index](.wiki-clone/README.md); Home and results in `01-home/`, `04-results/`. Sync to GitHub Wiki by copying all `.md` from subdirs to wiki root. |
+| **ROADMAP.md** / **ROADMAP.es.md** | Next steps: bilingual docs; diversity criteria (|r| < 0.7, cos_dist). Spanish: [ROADMAP.es.md](ROADMAP.es.md). |
 
 ### Why names like `corpus_v1`
 
@@ -46,9 +47,9 @@ The long reference for all `.settings` options (Scenario, MovementModel, Groups,
 
 Analysis (feature extraction, correlation between scenarios, validation on outputs) is done with the **pipeline in `scenarios/analysis/`**:
 
-- **Main script:** `scenarios/analysis/run_analysis.py`, run by phase: `features` → `normalize` → `correlation` → `figures` → `output_metrics` → `outputs`. See [analysis/README.md](analysis/README.md) for the full phase list and options.
+- **Main script:** `scenarios/analysis/run_analysis.py`, run by phase: `features` → `features_report` → `normalize` → `correlation` → `figures` → `output_metrics` → `outputs`. See [analysis/README.md](analysis/README.md) for the full phase list and options.
 - **Outputs:** `analysis/data/` (feature CSV, normalised, correlation/distance matrices, `output_metrics.csv`), `analysis/figures/` (heatmaps, histograms, scatter), `analysis/reports/` (text reports).
-- **Benchmark criterion:** |r| < 0.7 between scenario vectors (parameters or outputs); FDR/Bonferroni correction for multiple comparisons.
+- **Benchmark criterion:** 46 features per scenario; |r| < 0.7 for ≥95% of pairs (**95.9%** met); cosine distance > 0.05 (**min 0.0527**, 0 pairs below 0.05); max |r| **0.938**; **98** pairs (4.1%) with |r| ≥ 0.7. See [analysis/reports/diversity_targets.md](analysis/reports/diversity_targets.md) for full targets and status.
 
 **Interactive dashboard:** to view everything in one place (summary, results by phase, per-scenario detail, compare scenarios):
 

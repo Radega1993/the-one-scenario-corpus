@@ -166,6 +166,7 @@ def settings_to_reportable_features(d: dict[str, Any]) -> dict[str, float | int]
     mm_Bus = 1 if "BusMovement" in movement_models else 0
     mm_ShortestPath = 1 if "ShortestPathMapBasedMovement" in movement_models else 0
     mm_External = 1 if ("ExternalMovement" in movement_models or "ExternalPathMovement" in movement_models) else 0
+    mm_Linear = 1 if "LinearMovement" in movement_models else 0
 
     # ---- 2. Contacto esperado ----
     iface_id = d.get("Group.interface1", d.get("Group1.interface1", ""))
@@ -192,6 +193,11 @@ def settings_to_reportable_features(d: dict[str, Any]) -> dict[str, float | int]
     pattern_burst = 1 if has_time_window else 0
     pattern_hub_target = 1 if has_tohosts else 0
     pattern_uniform = 1 if not has_time_window and not has_tohosts else 0
+    # Segundo flujo de eventos (cuando Events.nrof >= 2 y no es filePath)
+    event2_interval_mean = event2_size_mean = np.nan
+    if nrof_events >= 2 and "Events2.filePath" not in d and "Events2.interval" in d and "Events2.size" in d:
+        event2_interval_mean = _get_range_mean(d, "Events2.interval")
+        event2_size_mean = _get_range_mean(d, "Events2.size")
 
     # ---- 4. Recursos ----
     buffer_size = _get_size(d, "Group.bufferSize")
@@ -227,9 +233,97 @@ def settings_to_reportable_features(d: dict[str, Any]) -> dict[str, float | int]
         if f"Group{i}.nrOfOffices" in d:
             nr_offices = _get_float(d, f"Group{i}.nrOfOffices")
             break
+    # WDM: office size, shops, car prob, wait/group sizes (relevantes para investigación)
+    office_size = _get_float(d, "Group.officeSize")
+    for i in range(1, n_groups + 1):
+        if f"Group{i}.officeSize" in d:
+            office_size = _get_float(d, f"Group{i}.officeSize")
+            break
+    nr_shops = _get_float(d, "Group.nrOfShops")
+    for i in range(1, n_groups + 1):
+        if f"Group{i}.nrOfShops" in d:
+            nr_shops = _get_float(d, f"Group{i}.nrOfShops")
+            break
+    own_car_prob = _get_float(d, "Group.ownCarProb")
+    for i in range(1, n_groups + 1):
+        if f"Group{i}.ownCarProb" in d:
+            own_car_prob = _get_float(d, f"Group{i}.ownCarProb")
+            break
+    shop_size = _get_float(d, "Group.shopSize")
+    for i in range(1, n_groups + 1):
+        if f"Group{i}.shopSize" in d:
+            shop_size = _get_float(d, f"Group{i}.shopSize")
+            break
+    office_min_wait = _get_float(d, "Group.officeMinWaitTime")
+    office_max_wait = _get_float(d, "Group.officeMaxWaitTime")
+    for i in range(1, n_groups + 1):
+        if f"Group{i}.officeMinWaitTime" in d:
+            office_min_wait = _get_float(d, f"Group{i}.officeMinWaitTime")
+            break
+    for i in range(1, n_groups + 1):
+        if f"Group{i}.officeMaxWaitTime" in d:
+            office_max_wait = _get_float(d, f"Group{i}.officeMaxWaitTime")
+            break
+    office_wait_mean = (office_min_wait + office_max_wait) / 2.0 if not (np.isnan(office_min_wait) or np.isnan(office_max_wait)) else np.nan
+    shop_min_wait = _get_float(d, "Group.shoppingMinWaitTime")
+    shop_max_wait = _get_float(d, "Group.shoppingMaxWaitTime")
+    for i in range(1, n_groups + 1):
+        if f"Group{i}.shoppingMinWaitTime" in d:
+            shop_min_wait = _get_float(d, f"Group{i}.shoppingMinWaitTime")
+            break
+    for i in range(1, n_groups + 1):
+        if f"Group{i}.shoppingMaxWaitTime" in d:
+            shop_max_wait = _get_float(d, f"Group{i}.shoppingMaxWaitTime")
+            break
+    shopping_wait_mean = (shop_min_wait + shop_max_wait) / 2.0 if not (np.isnan(shop_min_wait) or np.isnan(shop_max_wait)) else np.nan
+    min_group_size = _get_float(d, "Group.minGroupSize")
+    max_group_size = _get_float(d, "Group.maxGroupSize")
+    for i in range(1, n_groups + 1):
+        if f"Group{i}.minGroupSize" in d:
+            min_group_size = _get_float(d, f"Group{i}.minGroupSize")
+            break
+    for i in range(1, n_groups + 1):
+        if f"Group{i}.maxGroupSize" in d:
+            max_group_size = _get_float(d, f"Group{i}.maxGroupSize")
+            break
+    evening_group_size_mean = (min_group_size + max_group_size) / 2.0 if not (np.isnan(min_group_size) or np.isnan(max_group_size)) else np.nan
+    evening_min_wait = _get_float(d, "Group.minWaitTime")
+    evening_max_wait = _get_float(d, "Group.maxWaitTime")
+    for i in range(1, n_groups + 1):
+        if f"Group{i}.minWaitTime" in d:
+            evening_min_wait = _get_float(d, f"Group{i}.minWaitTime")
+            break
+    for i in range(1, n_groups + 1):
+        if f"Group{i}.maxWaitTime" in d:
+            evening_max_wait = _get_float(d, f"Group{i}.maxWaitTime")
+            break
+    evening_wait_mean = (evening_min_wait + evening_max_wait) / 2.0 if not (np.isnan(evening_min_wait) or np.isnan(evening_max_wait)) else np.nan
+    # WDM: tiempo parada tras compras
+    after_shopping_min = _get_float(d, "Group.minAfterShoppingStopTime")
+    after_shopping_max = _get_float(d, "Group.maxAfterShoppingStopTime")
+    for i in range(1, n_groups + 1):
+        if f"Group{i}.minAfterShoppingStopTime" in d:
+            after_shopping_min = _get_float(d, f"Group{i}.minAfterShoppingStopTime")
+            break
+    for i in range(1, n_groups + 1):
+        if f"Group{i}.maxAfterShoppingStopTime" in d:
+            after_shopping_max = _get_float(d, f"Group{i}.maxAfterShoppingStopTime")
+            break
+    after_shopping_stop_mean = (after_shopping_min + after_shopping_max) / 2.0 if not (np.isnan(after_shopping_min) or np.isnan(after_shopping_max)) else np.nan
+    # ClusterMovement: radio medio de clusters (m)
+    cluster_ranges = []
+    for i in range(1, n_groups + 1):
+        if d.get(f"Group{i}.movementModel") == "ClusterMovement" and f"Group{i}.clusterRange" in d:
+            r = _get_float(d, f"Group{i}.clusterRange")
+            if not np.isnan(r):
+                cluster_ranges.append(r)
+    cluster_range_mean = float(np.mean(cluster_ranges)) if cluster_ranges else np.nan
     # Si el escenario no usa WDM, estas claves no suelen existir -> quedan np.nan
     if mm_WDM == 0:
         work_day_length = time_diff_std = prob_go_shopping = nr_meeting_spots = nr_offices = np.nan
+        office_size = nr_shops = own_car_prob = shop_size = np.nan
+        office_wait_mean = shopping_wait_mean = evening_group_size_mean = evening_wait_mean = np.nan
+        after_shopping_stop_mean = np.nan
 
     # ---- Extras ----
     end_time = _get_float(d, "Scenario.endTime")
@@ -251,6 +345,7 @@ def settings_to_reportable_features(d: dict[str, Any]) -> dict[str, float | int]
         "mm_Bus": mm_Bus,
         "mm_ShortestPath": mm_ShortestPath,
         "mm_External": mm_External,
+        "mm_Linear": mm_Linear,
         # Contacto esperado
         "transmitRange": transmit_range,
         "contact_rate_proxy": contact_rate_proxy,
@@ -271,11 +366,247 @@ def settings_to_reportable_features(d: dict[str, Any]) -> dict[str, float | int]
         "probGoShoppingAfterWork": prob_go_shopping,
         "nrOfMeetingSpots": nr_meeting_spots,
         "nrOfOffices": nr_offices,
+        "officeSize": office_size,
+        "nrOfShops": nr_shops,
+        "ownCarProb": own_car_prob,
+        "shopSize": shop_size,
+        "officeWaitTime_mean": office_wait_mean,
+        "shoppingWaitTime_mean": shopping_wait_mean,
+        "eveningGroupSize_mean": evening_group_size_mean,
+        "eveningWaitTime_mean": evening_wait_mean,
+        "afterShoppingStopTime_mean": after_shopping_stop_mean,
+        "clusterRange_mean": cluster_range_mean,
+        "event2_interval_mean": event2_interval_mean,
+        "event2_size_mean": event2_size_mean,
         # Extras
         "Scenario.endTime": end_time,
         "nrofHostGroups": n_groups,
         "has_active_times": has_active_times,
     }
+
+
+# Metadatos para el informe de features: nombre -> (descripción, setting(s) origen)
+FEATURE_METADATA = {
+    "Wx": ("Ancho del mundo (m)", "MovementModel.worldSize"),
+    "Wy": ("Alto del mundo (m)", "MovementModel.worldSize"),
+    "N": ("Número de hosts", "Scenario.nrofHostGroups, Group*.nrofHosts"),
+    "density": ("Densidad proxy (hosts/km²)", "N, Wx, Wy (derivado)"),
+    "speed_mean": ("Velocidad media (m/s)", "Group*.speed"),
+    "pause_ratio": ("Ratio pausa/(movimiento+pausa)", "Group*.waitTime (derivado)"),
+    "wait_mean": ("Tiempo de espera medio (s)", "Group*.waitTime"),
+    "mm_WDM": ("Usa WorkingDayMovement (0/1)", "Group*.movementModel"),
+    "mm_RWP": ("Usa RandomWaypoint (0/1)", "Group*.movementModel"),
+    "mm_MapRoute": ("Usa MapRouteMovement (0/1)", "Group*.movementModel"),
+    "mm_Cluster": ("Usa ClusterMovement (0/1)", "Group*.movementModel"),
+    "mm_Bus": ("Usa BusMovement (0/1)", "Group*.movementModel"),
+    "mm_ShortestPath": ("Usa ShortestPathMapBasedMovement (0/1)", "Group*.movementModel"),
+    "mm_External": ("Usa External/ExternalPathMovement (0/1)", "Group*.movementModel"),
+    "transmitRange": ("Rango de transmisión (m)", "bt0.transmitRange / interface.transmitRange"),
+    "contact_rate_proxy": ("Proxy tasa de contacto", "density, transmitRange, speed (derivado)"),
+    "event_interval_mean": ("Intervalo medio entre mensajes (s)", "Events1.interval"),
+    "event_size_mean": ("Tamaño medio de mensaje (bytes)", "Events1.size"),
+    "msgTtl": ("TTL de mensajes (s)", "Group*.msgTtl"),
+    "pattern_uniform": ("Patrón tráfico uniforme (0/1)", "Events* (sin time/tohosts)"),
+    "pattern_burst": ("Patrón tráfico con ventana temporal (0/1)", "Events*.time"),
+    "pattern_hub_target": ("Patrón tráfico dirigido a hubs (0/1)", "Events*.tohosts"),
+    "nrof_event_generators": ("Número de generadores de eventos", "Events.nrof"),
+    "bufferSize": ("Tamaño de buffer (bytes)", "Group*.bufferSize"),
+    "transmitSpeed": ("Velocidad de transmisión (bytes/s)", "bt0.transmitSpeed"),
+    "workDayLength": ("Duración jornada laboral (s); NaN si no WDM", "Group*.workDayLength"),
+    "timeDiffSTD": ("Desv. estándar diferencia horaria (s); NaN si no WDM", "Group*.timeDiffSTD"),
+    "probGoShoppingAfterWork": ("Prob. ir de compras; NaN si no WDM", "Group*.probGoShoppingAfterWork"),
+    "nrOfMeetingSpots": ("Número de puntos de encuentro; NaN si no WDM", "Group*.nrOfMeetingSpots"),
+    "nrOfOffices": ("Número de oficinas; NaN si no WDM", "Group*.nrOfOffices"),
+    "officeSize": ("Tamaño de oficina (personas); NaN si no WDM", "Group*.officeSize"),
+    "nrOfShops": ("Número de tiendas; NaN si no WDM", "Group*.nrOfShops"),
+    "ownCarProb": ("Prob. poseer coche (0–1); relevante vehicular/WDM", "Group*.ownCarProb"),
+    "shopSize": ("Tamaño de tienda (personas); NaN si no WDM", "Group*.shopSize"),
+    "officeWaitTime_mean": ("Tiempo espera en oficina medio (s); NaN si no WDM", "Group*.officeMinWaitTime, officeMaxWaitTime"),
+    "shoppingWaitTime_mean": ("Tiempo espera compras medio (s); NaN si no WDM", "Group*.shoppingMinWaitTime, shoppingMaxWaitTime"),
+    "eveningGroupSize_mean": ("Tamaño grupo actividad evening medio; NaN si no WDM", "Group*.minGroupSize, maxGroupSize"),
+    "eveningWaitTime_mean": ("Tiempo espera actividad evening medio (s); NaN si no WDM", "Group*.minWaitTime, maxWaitTime"),
+    "afterShoppingStopTime_mean": ("Tiempo parada tras compras medio (s); NaN si no WDM", "Group*.minAfterShoppingStopTime, maxAfterShoppingStopTime"),
+    "clusterRange_mean": ("Radio medio de clusters (m); NaN si no ClusterMovement", "Group*.clusterRange"),
+    "event2_interval_mean": ("Intervalo medio 2.º flujo (s); NaN si Events.nrof<2 o Events2.filePath", "Events2.interval"),
+    "event2_size_mean": ("Tamaño medio 2.º flujo (bytes); NaN si Events.nrof<2 o Events2.filePath", "Events2.size"),
+    "Scenario.endTime": ("Duración de la simulación (s)", "Scenario.endTime"),
+    "nrofHostGroups": ("Número de grupos de hosts", "Scenario.nrofHostGroups"),
+    "has_active_times": ("Grupos con activeTimes definido (0/1)", "Group*.activeTimes"),
+}
+
+# Claves de settings que SÍ se usan para extraer features (alguna variante Group/Group1/bt0/etc.)
+SETTINGS_KEYS_USED = {
+    "Scenario.endTime", "Scenario.nrofHostGroups",
+    "MovementModel.worldSize",
+    "Group.nrofHosts", "Group.speed", "Group.waitTime", "Group.movementModel",
+    "Group.interface1", "Group.bufferSize", "Group.msgTtl",
+    "Group.workDayLength", "Group.timeDiffSTD", "Group.probGoShoppingAfterWork",
+    "Group.nrOfMeetingSpots", "Group.nrOfOffices", "Group.officeSize", "Group.nrOfShops",
+    "Group.ownCarProb", "Group.shopSize",
+    "Group.officeMinWaitTime", "Group.officeMaxWaitTime",
+    "Group.shoppingMinWaitTime", "Group.shoppingMaxWaitTime",
+    "Group.minGroupSize", "Group.maxGroupSize", "Group.minWaitTime", "Group.maxWaitTime",
+    "Group.minAfterShoppingStopTime", "Group.maxAfterShoppingStopTime",
+    "Group.activeTimes",
+    "Events.nrof", "Events1.interval", "Events1.size", "Events1.time", "Events1.tohosts",
+    "bt0.transmitRange", "bt0.transmitSpeed",
+}
+# Añadir Group2..GroupN y Events2.. si existen en corpus
+def _all_used_key_variants(keys_in_corpus: set[str]) -> set[str]:
+    out = set(SETTINGS_KEYS_USED)
+    used_suffixes = (
+        ".nrofHosts", ".speed", ".waitTime", ".movementModel", ".workDayLength", ".timeDiffSTD",
+        ".probGoShoppingAfterWork", ".nrOfMeetingSpots", ".nrOfOffices", ".bufferSize", ".msgTtl",
+        ".interface1", ".activeTimes",
+        ".officeSize", ".nrOfShops", ".ownCarProb", ".shopSize",
+        ".officeMinWaitTime", ".officeMaxWaitTime", ".shoppingMinWaitTime", ".shoppingMaxWaitTime",
+        ".minGroupSize", ".maxGroupSize", ".minWaitTime", ".maxWaitTime",
+        ".minAfterShoppingStopTime", ".maxAfterShoppingStopTime",
+        ".clusterRange",
+    )
+    for k in keys_in_corpus:
+        if k.startswith("Group") and any(s in k for s in used_suffixes):
+            out.add(k)
+        if (k.startswith("Events") and (".interval" in k or ".size" in k or ".time" in k or ".tohosts" in k or k == "Events.nrof")):
+            out.add(k)
+        if k.startswith("Group") and ".clusterRange" in k:
+            out.add(k)
+        if "transmitRange" in k or "transmitSpeed" in k:
+            out.add(k)
+    return out
+
+# Razones por las que un setting no se usa (decisión definitiva para la investigación; ver features_decision.md)
+NOT_USED_REASONS: dict[str, str] = {
+    "MovementModel.rngSeed": "DESCARTADO: Aleatoriedad; no caracteriza el escenario de forma estable.",
+    "Scenario.name": "DESCARTADO: Identificador; no feature numérica.",
+    "Scenario.simulateConnections": "DESCARTADO: Parámetro de simulación fijo en todo el corpus.",
+    "Scenario.updateInterval": "DESCARTADO: Parámetro de simulación fijo.",
+    "MapBasedMovement.nrofMapFiles": "DESCARTADO: Ruta/cantidad de ficheros; no comparable numéricamente entre mapas.",
+    "MapBasedMovement.mapFile1": "DESCARTADO: Ruta de fichero; no comparable.",
+    "Group.busControlSystemNr": "DESCARTADO: Referencia interna al sistema de buses.",
+    "Group1.routeFile": "DESCARTADO: Ruta de fichero (depende del mapa).",
+    "Group1.routeType": "DESCARTADO: Mismo valor (1) en escenarios con bus; sin variabilidad.",
+    "Group1.groupID": "DESCARTADO: Identificador de grupo.",
+    "Group1.busControlSystemNr": "DESCARTADO: Referencia interna.",
+    "Group1.nrofHosts": "DESCARTADO: Usado indirectamente vía N (total).",
+    "Group1.speed": "DESCARTADO: Usado si es el único grupo; si hay varios, se prioriza grupo principal.",
+    "Group1.waitTime": "DESCARTADO: Idem.",
+    "Group.nrofInterfaces": "DESCARTADO: Casi siempre 1; sin variabilidad útil.",
+    "bt0.type": "DESCARTADO: Tipo de interfaz; mismo en todo el corpus.",
+    "Report.nrofReports": "DESCARTADO: Configuración de salida, no de escenario.",
+    "Report.reportDir": "DESCARTADO: Salida.",
+    "Report.report1": "DESCARTADO: Salida.",
+    "Report.report2": "DESCARTADO: Salida.",
+    "Events1.class": "DESCARTADO: Tipo de generador; mismo en todo el corpus.",
+    "Events1.hosts": "DESCARTADO: Redundante con N.",
+    "Events1.prefix": "DESCARTADO: Identificador de mensajes.",
+    "Group.router": "DESCARTADO: Mismo en todo el corpus (EpidemicRouter).",
+    "Group.officeWaitTimeParetoCoeff": "DESCARTADO: Detalle de distribución; ya usamos officeWaitTime_mean.",
+    "Group.eveningActivityControlSystemNr": "DESCARTADO: Referencia interna.",
+    "Group.shoppingControlSystemNr": "DESCARTADO: Referencia interna.",
+    "Group.shoppingWaitTimeParetoCoeff": "DESCARTADO: Ya usamos shoppingWaitTime_mean.",
+    "Group.minAfterShoppingStopTime": "DESCARTADO: Incluido en feature afterShoppingStopTime_mean.",
+    "Group.maxAfterShoppingStopTime": "DESCARTADO: Incluido en feature afterShoppingStopTime_mean.",
+    "Group.homeLocationsFile": "DESCARTADO: Ruta de fichero; no comparable entre mapas.",
+    "Group.officeLocationsFile": "DESCARTADO: Ruta de fichero; no comparable.",
+    "Group.meetingSpotsFile": "DESCARTADO: Ruta de fichero; no comparable.",
+    "Group.routeFile": "DESCARTADO: Ruta de fichero.",
+    "Group.LinearMovement.startLocation": "DESCARTADO: Coordenadas; dependen del mapa.",
+    "Group.LinearMovement.endLocation": "DESCARTADO: Coordenadas; dependen del mapa.",
+    "Group.LinearMovement.initLocType": "DESCARTADO: Solo 1 escenario; sin variabilidad.",
+    "Group.LinearMovement.targetType": "DESCARTADO: Solo 1 escenario; sin variabilidad.",
+    "Events2.class": "DESCARTADO: Tipo/identificador; no comparable.",
+    "Events2.filePath": "DESCARTADO: Tráfico desde fichero; no extraemos número comparable.",
+    "Events2.hosts": "DESCARTADO: Redundante con N.",
+    "Events2.nrofPreload": "DESCARTADO: No priorizado para diversidad.",
+    "Events2.prefix": "DESCARTADO: Identificador.",
+    "Group.okMaps": "DESCARTADO: No usado de forma relevante en el corpus.",
+    "Group.routeType": "DESCARTADO: Sin variabilidad útil en el corpus.",
+}
+# Razón por defecto para claves no listadas (p. ej. Group2.*, Group3.*, ...)
+NOT_USED_REASON_DEFAULT = "DESCARTADO: Ver features_decision.md (variante de grupo o misma categoría que Group/Group1)."
+
+
+def collect_all_settings_keys(corpus_dir: Path, scenario_paths: list[Path]) -> set[str]:
+    """Recorre todos los .settings del corpus y devuelve el conjunto de claves (key=value)."""
+    keys = set()
+    for p in scenario_paths:
+        d = load_settings(p)
+        keys.update(d.keys())
+    return keys
+
+
+def run_phase_features_report(corpus_dir: Path, out_dir: Path, scenario_paths: list[Path]) -> bool:
+    """
+    Escribe reports/features_report.txt y reports/features_report.md:
+    - Lista de los 33 features usados en correlación: nombre, descripción, setting(s) de origen.
+    - Lista de settings presentes en el corpus que NO se usan y motivo.
+    """
+    out_dir = Path(out_dir)
+    reports_dir = out_dir / "reports"
+    reports_dir.mkdir(parents=True, exist_ok=True)
+
+    all_keys = collect_all_settings_keys(corpus_dir, scenario_paths)
+    used_keys = _all_used_key_variants(all_keys)
+
+    # Features usados (orden del vector)
+    feature_order = list(settings_to_reportable_features(load_settings(scenario_paths[0])).keys())
+    lines_txt = [
+        "=== Informe de features (correlación y diversidad) ===",
+        f"Generado por run_analysis.py --phase features_report. Corpus: {len(scenario_paths)} escenarios.",
+        "",
+        f"--- FEATURES UTILIZADOS ({len(feature_order)}) ---",
+        "Estos features forman el vector por escenario y se usan para correlación Pearson/Spearman,",
+        "distancia coseno, clustering y figuras.",
+        "",
+    ]
+    for f in feature_order:
+        desc, src = FEATURE_METADATA.get(f, ("—", "—"))
+        lines_txt.append(f"  {f}")
+        lines_txt.append(f"    Descripción: {desc}")
+        lines_txt.append(f"    Origen:      {src}")
+        lines_txt.append("")
+
+    not_used = sorted(all_keys - used_keys)
+    lines_txt.append("--- SETTINGS NO UTILIZADOS EN EL VECTOR DE FEATURES ---")
+    lines_txt.append("Presentes en uno o más .settings del corpus pero DESCARTADOS de forma definitiva para el análisis.")
+    lines_txt.append("Justificación metodológica completa: reports/features_decision.md")
+    lines_txt.append("")
+    for k in not_used:
+        reason = NOT_USED_REASONS.get(k, NOT_USED_REASON_DEFAULT)
+        lines_txt.append(f"  {k}")
+        lines_txt.append(f"    Motivo: {reason}")
+        lines_txt.append("")
+
+    report_txt = "\n".join(lines_txt)
+    (reports_dir / "features_report.txt").write_text(report_txt, encoding="utf-8")
+
+    # Markdown
+    md_lines = [
+        "# Informe de features",
+        "",
+        "Features utilizados para correlación y diversidad, y settings no utilizados con motivo.",
+        "",
+        f"## Features utilizados ({len(feature_order)})",
+        "",
+        "| Feature | Descripción | Origen (setting) |",
+        "|---------|-------------|------------------|",
+    ]
+    for f in feature_order:
+        desc, src = FEATURE_METADATA.get(f, ("—", "—"))
+        md_lines.append(f"| {f} | {desc} | {src} |")
+    md_lines.append("")
+    md_lines.append("## Settings no utilizados")
+    md_lines.append("")
+    md_lines.append("| Setting | Motivo |")
+    md_lines.append("|---------|--------|")
+    for k in not_used:
+        reason = NOT_USED_REASONS.get(k, NOT_USED_REASON_DEFAULT)
+        md_lines.append(f"| `{k}` | {reason} |")
+    (reports_dir / "features_report.md").write_text("\n".join(md_lines), encoding="utf-8")
+
+    print(f"Written {reports_dir / 'features_report.txt'} and features_report.md")
+    return True
 
 
 def collect_scenario_files(corpus_dir: Path, pattern: str = "**/*.settings") -> list[Path]:
@@ -493,6 +824,8 @@ def run_phase_correlation(out_dir: Path, threshold: float = 0.7, criterion_95: b
     Z_arr = Z.values
     labels = Z.index.tolist()
     index_df = pd.Index(labels)
+    # Para distancias y clustering: NaN = ausencia de feature (p. ej. no-WDM) → 0 en espacio normalizado
+    Z_arr_filled = np.nan_to_num(Z_arr, nan=0.0, posinf=0.0, neginf=0.0)
 
     # Pearson entre filas (escenarios): R[i,k] = corr(Zi, Zk)
     R = Z.T.corr()
@@ -507,9 +840,9 @@ def run_phase_correlation(out_dir: Path, threshold: float = 0.7, criterion_95: b
     R_sp_df.to_csv(data_dir / "correlation_spearman.csv")
     r_sp_flat = R_spearman[triu[0], triu[1]]
 
-    # Distancia coseno (1 - cos_sim) y euclídea
-    cos_dist = cosine_distance_matrix(Z_arr)
-    euc_dist = euclidean_distance_matrix(Z_arr)
+    # Distancia coseno (1 - cos_sim) y euclídea (sobre Z rellenado para evitar NaN)
+    cos_dist = cosine_distance_matrix(Z_arr_filled)
+    euc_dist = euclidean_distance_matrix(Z_arr_filled)
     pd.DataFrame(cos_dist, index=index_df, columns=index_df).to_csv(data_dir / "distance_cosine.csv")
     pd.DataFrame(euc_dist, index=index_df, columns=index_df).to_csv(data_dir / "distance_euclidean.csv")
     cos_flat = cos_dist[triu[0], triu[1]]
@@ -517,14 +850,13 @@ def run_phase_correlation(out_dir: Path, threshold: float = 0.7, criterion_95: b
     min_cos_dist = float(np.nanmin(cos_flat)) if len(cos_flat) else np.nan
     n_pairs_cos_below_005 = int(np.sum(cos_flat < 0.05))
 
-    # Clustering sobre Z (ward) para diagnóstico de estructura. Ward no admite NaN → rellenar con 0.
+    # Clustering sobre Z (ward) para diagnóstico de estructura.
     n_clusters = 7
     cluster_labels = None
     silhouette_score = np.nan
     if linkage is not None and fcluster is not None:
         try:
-            Z_ward = np.nan_to_num(Z_arr, nan=0.0, posinf=0.0, neginf=0.0)
-            link = linkage(Z_ward, method="ward")
+            link = linkage(Z_arr_filled, method="ward")
             cluster_labels = fcluster(link, n_clusters, criterion="maxclust")
             silhouette_score = silhouette_from_distance(cos_dist, cluster_labels)
         except Exception:
@@ -631,7 +963,7 @@ def run_phase_correlation(out_dir: Path, threshold: float = 0.7, criterion_95: b
         f"  Tras FDR: {'Sí (0 pares alto |r| significativos)' if n_high_r_and_sig_fdr == 0 else f'No ({n_high_r_and_sig_fdr} pares con |r|>={threshold} significativos)'}.",
         f"  Tras Bonferroni: {'Sí (0 pares alto |r| significativos)' if n_high_r_and_sig_bonf == 0 else f'No ({n_high_r_and_sig_bonf} pares con |r|>={threshold} significativos)'}.",
         "",
-        "Diagnóstico: 0 rechazos no implica ausencia de correlación; con n=d=33 la potencia es baja.",
+        "Diagnóstico: 0 rechazos no implica ausencia de correlación; con n=d la potencia depende de d (features).",
         "El problema real es geométrico: escenarios casi colineales (mismo subespacio).",
         "Estrategia: diversificar estructura (mapa, régimen dinámico, recursos extremos), no solo parámetros.",
     ])
@@ -1089,7 +1421,7 @@ def run_phase_outputs(out_dir: Path, threshold: float = 0.7) -> bool:
 def main():
     ap = argparse.ArgumentParser(description="Análisis del corpus de escenarios (por partes).")
     ap.add_argument("--corpus", type=str, default="corpus_v1", help="Directorio del corpus (p. ej. corpus_v1)")
-    ap.add_argument("--phase", type=str, default="features", choices=("features", "normalize", "correlation", "figures", "output_metrics", "outputs", "all"),
+    ap.add_argument("--phase", type=str, default="features", choices=("features", "features_report", "normalize", "correlation", "figures", "output_metrics", "outputs", "all"),
                     help="Fase: features, normalize, correlation, figures, output_metrics (rellenar CSV desde reports), outputs (validación Y), all")
     ap.add_argument("--threshold", type=float, default=0.7,
                     help="Umbral |r| para criterio de correlación (default 0.7)")
@@ -1118,6 +1450,11 @@ def main():
 
     if args.phase == "features" or args.phase == "all":
         run_phase_features(scenario_paths, out_dir)
+    if args.phase == "features_report" or args.phase == "all":
+        if not scenario_paths:
+            scenario_paths = collect_scenario_files(corpus_dir)
+        if scenario_paths:
+            run_phase_features_report(corpus_dir, out_dir, scenario_paths)
     if args.phase == "normalize" or args.phase == "all":
         if not run_phase_normalize(out_dir):
             return 1

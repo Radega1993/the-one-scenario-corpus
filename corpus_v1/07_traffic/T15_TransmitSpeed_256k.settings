@@ -9,12 +9,12 @@ Scenario.simulateConnections = true
 Scenario.updateInterval = 0.1
 Scenario.endTime = 43200
 MovementModel.rngSeed = 65
-# Diversificar vs T10: mundo más pequeño, tasa moderada
-MovementModel.worldSize = 4800, 3600
+# Diversificación estructural vs T10 (mismo grupo Traffic): mundo y N distintos
+MovementModel.worldSize = 3800, 3000
 
 Group.movementModel = RandomWaypoint
 Group.router = EpidemicRouter
-Group.nrofHosts = 35
+Group.nrofHosts = 28
 Group.bufferSize = 50M
 Group.nrofInterfaces = 1
 Group.interface1 = bt0
@@ -32,7 +32,7 @@ Events.nrof = 1
 Events1.class = MessageEventGenerator
 Events1.interval = 100, 280
 Events1.size = 20k, 70k
-Events1.hosts = 0, 35
+Events1.hosts = 0, 28
 Events1.prefix = M
 
 Report.nrofReports = 2

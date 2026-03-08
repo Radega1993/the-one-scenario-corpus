@@ -10,6 +10,8 @@ Este directorio contiene el pipeline de análisis de los escenarios del corpus: 
 
 ## Un script con fases (recomendado)
 
+**Resultados actuales (estado del benchmark):** 70 escenarios, 46 features; **95,9 %** de pares con |r| < 0,7 (98 pares, 4,1 %, con |r| ≥ 0,7); max |r| **0,938**; distancia coseno mín **0,0527** (0 pares por debajo de 0,05); Silhouette 0,294. Tabla completa: [reports/diversity_targets.md](reports/diversity_targets.md).
+
 Se usa **un solo script** (`run_analysis.py`) con varias fases ejecutables de forma independiente. Así se evita duplicar el parser y la definición de features, y se pueden ejecutar solo los pasos que interesen o repetir fases posteriores sin volver a extraer datos.
 
 - **Ventajas**: una única entrada, resultados intermedios en `data/` (p. ej. `features.csv` → `features_normalized.csv`), posibilidad de `--phase all` para correr todo.

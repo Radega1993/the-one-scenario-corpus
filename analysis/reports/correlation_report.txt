@@ -1,72 +1,72 @@
 === Correlación entre escenarios (vectores Z, 70×d) ===
-r(Si, Sk) = corr(Zi, Zk).  Escenarios: n=70, features: d=33.
+r(Si, Sk) = corr(Zi, Zk).  Escenarios: n=70, features: d=46.
 
 Matriz de Pearson:
-  max |r| = 0.9475
-  media |r| = 0.2842
+  max |r| = 0.9380
+  media |r| = 0.2665
   Total pares (i<k): 2415
-  Pares con |r| >= 0.7: 153 (6.3%)
+  Pares con |r| >= 0.7: 98 (4.1%)
 
 Criterio: |r| < 0.7 para todos los pares O para ≥95% de los pares.
   ¿Todos |r| < 0.7? False
-  ¿Al menos 95% con |r| < 0.7? False (93.7% cumplen)
-  Criterio cumplido: False
+  ¿Al menos 95% con |r| < 0.7? True (95.9% cumplen)
+  Criterio cumplido: True
 
 Spearman (correlación de rangos entre vectores Z):
-  max |r| = 0.9980
-  media |r| = 0.3920
-  Pares con |r| >= 0.7: 275
+  max |r| = 0.9917
+  media |r| = 0.3607
+  Pares con |r| >= 0.7: 245
 
 Métricas geométricas (sobre Z normalizado):
   Distancia coseno (1 - cos_sim; 0=idénticos, 2=opuestos):
-    mín = 0.0534, media = 0.3003
+    mín = 0.0527, media = 1.0063
   Distancia euclídea:
-    mín = 0.8761, media = 6.8000
+    mín = 0.8654, media = 7.3213
 
 Criterios de diversidad geométrica (objetivo: espacio bien distribuido):
-  dist_coseno mínima = 0.0534  (objetivo: > 0.05; si < 0.05 hay pares casi idénticos)
+  dist_coseno mínima = 0.0527  (objetivo: > 0.05; si < 0.05 hay pares casi idénticos)
   Pares con cos_dist < 0.05: 0
-  Silhouette (k=7 clusters, Ward): 0.0000  (objetivo > 0.3)
+  Silhouette (k=7 clusters, Ward): 0.2935  (objetivo > 0.3)
   Objetivos realistas: max |r| < 0.85, pares |r|>=0.7 < 3%, cos_dist mín > 0.05, silhouette > 0.3
 
 Pares con |r| >= 0.7 (máximo 20 mostrados):
-  V4_MixedBusPed_HelsinkiMedium <-> V5_RushHourBusDensity_HelsinkiMedium  r = 0.9475
-  U3_NightlifeClusters_HelsinkiMedium <-> C5_Festival_MultiHotspots_HelsinkiMedium  r = 0.9420
-  T10_HighRateLowSpeed_Congestion <-> T15_TransmitSpeed_256k  r = 0.9397
-  U2_RetailHeavy_HelsinkiMedium <-> V6_CarOwnership_0_HelsinkiMedium  r = 0.9392
-  S3_PeriodicMeetings_RegularRhythm <-> T5_VeryLongTtl_6to24h  r = 0.9354
-  T1_ManySmallMsgs_HighRate <-> T9_BufferStress_SmallBufferHighTraffic  r = 0.9336
-  U1_CBD_Commuting_HelsinkiMedium <-> U8_CongestionHotspot_HelsinkiMedium  r = 0.9315
-  U4_RainyDay_SlowMobility_HelsinkiMedium <-> V5_RushHourBusDensity_HelsinkiMedium  r = 0.9313
-  U6_DenseDowntown_HelsinkiMedium <-> U7_MicroMobility_HelsinkiMedium  r = 0.9312
-  T13_Buffer_256k <-> T9_BufferStress_SmallBufferHighTraffic  r = 0.9311
-  U6_DenseDowntown_HelsinkiMedium <-> V5_RushHourBusDensity_HelsinkiMedium  r = 0.9277
-  R10_TinyRange_5m <-> R11_SpeedExtremeLow  r = 0.9270
-  R5_MountainRescue <-> D6_ShortTtlCritical_5to10min  r = 0.9257
-  V5_RushHourBusDensity_HelsinkiMedium <-> V8_RoadClosure_HelsinkiMedium  r = 0.9213
-  U4_RainyDay_SlowMobility_HelsinkiMedium <-> V6_CarOwnership_0_HelsinkiMedium  r = 0.9200
-  S4_RandomMixing_NoHotspots <-> T9_BufferStress_SmallBufferHighTraffic  r = 0.9126
-  V4_MixedBusPed_HelsinkiMedium <-> V7_CarOwnership_100_HelsinkiMedium  r = 0.9110
-  D3_Aftershock_ErraticMobility <-> D9_Critical_1minTTL  r = 0.9107
-  U6_DenseDowntown_HelsinkiMedium <-> V4_MixedBusPed_HelsinkiMedium  r = 0.9078
-  V4_MixedBusPed_HelsinkiMedium <-> V8_RoadClosure_HelsinkiMedium  r = 0.9065
-  ... y 133 más.
+  R5_MountainRescue <-> D6_ShortTtlCritical_5to10min  r = 0.9380
+  S3_PeriodicMeetings_RegularRhythm <-> T5_VeryLongTtl_6to24h  r = 0.9374
+  T1_ManySmallMsgs_HighRate <-> T9_BufferStress_SmallBufferHighTraffic  r = 0.9345
+  U6_DenseDowntown_HelsinkiMedium <-> U7_MicroMobility_HelsinkiMedium  r = 0.9318
+  T13_Buffer_256k <-> T9_BufferStress_SmallBufferHighTraffic  r = 0.9310
+  T10_HighRateLowSpeed_Congestion <-> T15_TransmitSpeed_256k  r = 0.9263
+  S4_RandomMixing_NoHotspots <-> T9_BufferStress_SmallBufferHighTraffic  r = 0.9214
+  U4_RainyDay_SlowMobility_HelsinkiMedium <-> V6_CarOwnership_0_HelsinkiMedium  r = 0.9114
+  R7_SparseTinyBuffer <-> T13_Buffer_256k  r = 0.9109
+  D3_Aftershock_ErraticMobility <-> D9_Critical_1minTTL  r = 0.9088
+  S3_PeriodicMeetings_RegularRhythm <-> T11_TTL_1min  r = 0.9073
+  V5_RushHourBusDensity_HelsinkiMedium <-> V8_RoadClosure_HelsinkiMedium  r = 0.9022
+  R11_SpeedExtremeLow <-> R1_Rural_RandomWaypoint  r = 0.9021
+  D3_Aftershock_ErraticMobility <-> T5_VeryLongTtl_6to24h  r = 0.8966
+  U4_RainyDay_SlowMobility_HelsinkiMedium <-> V5_RushHourBusDensity_HelsinkiMedium  r = 0.8954
+  T12_TTL_Infinite_Buffer200M <-> T14_Buffer_200M  r = 0.8837
+  D3_Aftershock_ErraticMobility <-> S3_PeriodicMeetings_RegularRhythm  r = 0.8810
+  U6_DenseDowntown_HelsinkiMedium <-> V8_RoadClosure_HelsinkiMedium  r = 0.8786
+  T13_Buffer_256k <-> T1_ManySmallMsgs_HighRate  r = 0.8776
+  R10_TinyRange_5m <-> R11_SpeedExtremeLow  r = 0.8737
+  ... y 78 más.
 
 --- Test estadístico y corrección por comparaciones múltiples ---
-Pares: m = 2415 = C(70,2). Para cada par, p-value de H0: rho=0 (Pearson, n=d=33).
+Pares: m = 2415 = C(70,2). Para cada par, p-value de H0: rho=0 (Pearson, n=d=46).
 
 FDR (Benjamini-Hochberg, alpha=0.05):
-  Rechazos (pares significativos): 609
-  Pares con |r| >= 0.7 Y significativos (FDR): 153
+  Rechazos (pares significativos): 691
+  Pares con |r| >= 0.7 Y significativos (FDR): 98
 
 Bonferroni (alpha/2415 = 0.000021):
-  Rechazos: 181
-  Pares con |r| >= 0.7 Y significativos (Bonferroni): 153
+  Rechazos: 222
+  Pares con |r| >= 0.7 Y significativos (Bonferroni): 98
 
 Objetivo: demostrar que no hay pares con |r| alto y significativo tras corrección.
-  Tras FDR: No (153 pares con |r|>=0.7 significativos).
-  Tras Bonferroni: No (153 pares con |r|>=0.7 significativos).
+  Tras FDR: No (98 pares con |r|>=0.7 significativos).
+  Tras Bonferroni: No (98 pares con |r|>=0.7 significativos).
 
-Diagnóstico: 0 rechazos no implica ausencia de correlación; con n=d=33 la potencia es baja.
+Diagnóstico: 0 rechazos no implica ausencia de correlación; con n=d la potencia depende de d (features).
 El problema real es geométrico: escenarios casi colineales (mismo subespacio).
 Estrategia: diversificar estructura (mapa, régimen dinámico, recursos extremos), no solo parámetros.

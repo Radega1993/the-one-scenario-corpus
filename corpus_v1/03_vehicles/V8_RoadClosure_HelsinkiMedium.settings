@@ -3,6 +3,7 @@
 # okMaps restricted (e.g. main roads only / detour).
 # Levers: Group.okMaps (fewer map types = simulated closure).
 # Dataset: HelsinkiMedium
+# Diversificación estructural: área afectada por cierre (worldSize menor) → Wx,Wy,density distintos
 # =========================================================
 
 Scenario.name = V8_RoadClosure_HelsinkiMedium
@@ -10,7 +11,7 @@ Scenario.simulateConnections = true
 Scenario.updateInterval = 0.1
 Scenario.endTime = 43200
 MovementModel.rngSeed = 28
-MovementModel.worldSize = 8495, 7504
+MovementModel.worldSize = 5800, 4800
 
 MapBasedMovement.nrofMapFiles = 1
 MapBasedMovement.mapFile1 = data/HelsinkiMedium/roads.wkt

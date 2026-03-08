@@ -9,12 +9,12 @@ Scenario.simulateConnections = true
 Scenario.updateInterval = 0.1
 Scenario.endTime = 14400
 MovementModel.rngSeed = 42
-# Diversificar vs R5: mundo y rango distintos
-MovementModel.worldSize = 7200, 5200
+# Diversificación estructural vs R5 (mantener grupo Disaster)
+MovementModel.worldSize = 6800, 5000
 
 Group.movementModel = RandomWaypoint
 Group.router = EpidemicRouter
-Group.nrofHosts = 58
+Group.nrofHosts = 54
 Group.bufferSize = 45M
 
 # D6 lever: 5–10 minute TTL (minutes)
@@ -36,7 +36,7 @@ Events.nrof = 1
 Events1.class = MessageEventGenerator
 Events1.interval = 12, 35
 Events1.size = 500, 5000
-Events1.hosts = 0, 58
+Events1.hosts = 0, 54
 Events1.prefix = K
 
 Report.nrofReports = 2

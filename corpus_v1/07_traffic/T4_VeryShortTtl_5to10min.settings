@@ -10,12 +10,12 @@ Scenario.updateInterval = 0.1
 # Diversificar vs T11: simulación más corta (TTL corto en ventana 8h)
 Scenario.endTime = 28800
 MovementModel.rngSeed = 54
-# Diversificar vs T11: mundo y velocidad distintos
-MovementModel.worldSize = 6500, 4800
+# Diversificación estructural vs D9/T11 (mantener grupo Traffic)
+MovementModel.worldSize = 6000, 4400
 
 Group.movementModel = RandomWaypoint
 Group.router = EpidemicRouter
-Group.nrofHosts = 45
+Group.nrofHosts = 42
 # Diversificar: TTL corto + buffer y rango menores
 Group.bufferSize = 10M
 Group.msgTtl = 5
@@ -36,7 +36,7 @@ Events1.class = MessageEventGenerator
 # Diversificar vs T11/D9: perfil de tráfico distinto
 Events1.interval = 80, 220
 Events1.size = 25k, 90k
-Events1.hosts = 0, 45
+Events1.hosts = 0, 42
 Events1.prefix = M
 
 Report.nrofReports = 2

@@ -1,0 +1,446 @@
+=== Informe de features (correlación y diversidad) ===
+Generado por run_analysis.py --phase features_report. Corpus: 70 escenarios.
+
+--- FEATURES UTILIZADOS (46) ---
+Estos features forman el vector por escenario y se usan para correlación Pearson/Spearman,
+distancia coseno, clustering y figuras.
+
+  Wx
+    Descripción: Ancho del mundo (m)
+    Origen:      MovementModel.worldSize
+
+  Wy
+    Descripción: Alto del mundo (m)
+    Origen:      MovementModel.worldSize
+
+  N
+    Descripción: Número de hosts
+    Origen:      Scenario.nrofHostGroups, Group*.nrofHosts
+
+  density
+    Descripción: Densidad proxy (hosts/km²)
+    Origen:      N, Wx, Wy (derivado)
+
+  speed_mean
+    Descripción: Velocidad media (m/s)
+    Origen:      Group*.speed
+
+  pause_ratio
+    Descripción: Ratio pausa/(movimiento+pausa)
+    Origen:      Group*.waitTime (derivado)
+
+  wait_mean
+    Descripción: Tiempo de espera medio (s)
+    Origen:      Group*.waitTime
+
+  mm_WDM
+    Descripción: Usa WorkingDayMovement (0/1)
+    Origen:      Group*.movementModel
+
+  mm_RWP
+    Descripción: Usa RandomWaypoint (0/1)
+    Origen:      Group*.movementModel
+
+  mm_MapRoute
+    Descripción: Usa MapRouteMovement (0/1)
+    Origen:      Group*.movementModel
+
+  mm_Cluster
+    Descripción: Usa ClusterMovement (0/1)
+    Origen:      Group*.movementModel
+
+  mm_Bus
+    Descripción: Usa BusMovement (0/1)
+    Origen:      Group*.movementModel
+
+  mm_ShortestPath
+    Descripción: Usa ShortestPathMapBasedMovement (0/1)
+    Origen:      Group*.movementModel
+
+  mm_External
+    Descripción: Usa External/ExternalPathMovement (0/1)
+    Origen:      Group*.movementModel
+
+  mm_Linear
+    Descripción: —
+    Origen:      —
+
+  transmitRange
+    Descripción: Rango de transmisión (m)
+    Origen:      bt0.transmitRange / interface.transmitRange
+
+  contact_rate_proxy
+    Descripción: Proxy tasa de contacto
+    Origen:      density, transmitRange, speed (derivado)
+
+  event_interval_mean
+    Descripción: Intervalo medio entre mensajes (s)
+    Origen:      Events1.interval
+
+  event_size_mean
+    Descripción: Tamaño medio de mensaje (bytes)
+    Origen:      Events1.size
+
+  msgTtl
+    Descripción: TTL de mensajes (s)
+    Origen:      Group*.msgTtl
+
+  pattern_uniform
+    Descripción: Patrón tráfico uniforme (0/1)
+    Origen:      Events* (sin time/tohosts)
+
+  pattern_burst
+    Descripción: Patrón tráfico con ventana temporal (0/1)
+    Origen:      Events*.time
+
+  pattern_hub_target
+    Descripción: Patrón tráfico dirigido a hubs (0/1)
+    Origen:      Events*.tohosts
+
+  nrof_event_generators
+    Descripción: Número de generadores de eventos
+    Origen:      Events.nrof
+
+  bufferSize
+    Descripción: Tamaño de buffer (bytes)
+    Origen:      Group*.bufferSize
+
+  transmitSpeed
+    Descripción: Velocidad de transmisión (bytes/s)
+    Origen:      bt0.transmitSpeed
+
+  workDayLength
+    Descripción: Duración jornada laboral (s); NaN si no WDM
+    Origen:      Group*.workDayLength
+
+  timeDiffSTD
+    Descripción: Desv. estándar diferencia horaria (s); NaN si no WDM
+    Origen:      Group*.timeDiffSTD
+
+  probGoShoppingAfterWork
+    Descripción: Prob. ir de compras; NaN si no WDM
+    Origen:      Group*.probGoShoppingAfterWork
+
+  nrOfMeetingSpots
+    Descripción: Número de puntos de encuentro; NaN si no WDM
+    Origen:      Group*.nrOfMeetingSpots
+
+  nrOfOffices
+    Descripción: Número de oficinas; NaN si no WDM
+    Origen:      Group*.nrOfOffices
+
+  officeSize
+    Descripción: Tamaño de oficina (personas); NaN si no WDM
+    Origen:      Group*.officeSize
+
+  nrOfShops
+    Descripción: Número de tiendas; NaN si no WDM
+    Origen:      Group*.nrOfShops
+
+  ownCarProb
+    Descripción: Prob. poseer coche (0–1); relevante vehicular/WDM
+    Origen:      Group*.ownCarProb
+
+  shopSize
+    Descripción: Tamaño de tienda (personas); NaN si no WDM
+    Origen:      Group*.shopSize
+
+  officeWaitTime_mean
+    Descripción: Tiempo espera en oficina medio (s); NaN si no WDM
+    Origen:      Group*.officeMinWaitTime, officeMaxWaitTime
+
+  shoppingWaitTime_mean
+    Descripción: Tiempo espera compras medio (s); NaN si no WDM
+    Origen:      Group*.shoppingMinWaitTime, shoppingMaxWaitTime
+
+  eveningGroupSize_mean
+    Descripción: Tamaño grupo actividad evening medio; NaN si no WDM
+    Origen:      Group*.minGroupSize, maxGroupSize
+
+  eveningWaitTime_mean
+    Descripción: Tiempo espera actividad evening medio (s); NaN si no WDM
+    Origen:      Group*.minWaitTime, maxWaitTime
+
+  afterShoppingStopTime_mean
+    Descripción: Tiempo parada tras compras medio (s); NaN si no WDM
+    Origen:      Group*.minAfterShoppingStopTime, maxAfterShoppingStopTime
+
+  clusterRange_mean
+    Descripción: Radio medio de clusters (m); NaN si no ClusterMovement
+    Origen:      Group*.clusterRange
+
+  event2_interval_mean
+    Descripción: Intervalo medio 2.º flujo (s); NaN si Events.nrof<2 o Events2.filePath
+    Origen:      Events2.interval
+
+  event2_size_mean
+    Descripción: Tamaño medio 2.º flujo (bytes); NaN si Events.nrof<2 o Events2.filePath
+    Origen:      Events2.size
+
+  Scenario.endTime
+    Descripción: Duración de la simulación (s)
+    Origen:      Scenario.endTime
+
+  nrofHostGroups
+    Descripción: Número de grupos de hosts
+    Origen:      Scenario.nrofHostGroups
+
+  has_active_times
+    Descripción: Grupos con activeTimes definido (0/1)
+    Origen:      Group*.activeTimes
+
+--- SETTINGS NO UTILIZADOS EN EL VECTOR DE FEATURES ---
+Presentes en uno o más .settings del corpus pero DESCARTADOS de forma definitiva para el análisis.
+Justificación metodológica completa: reports/features_decision.md
+
+  Events1.class
+    Motivo: DESCARTADO: Tipo de generador; mismo en todo el corpus.
+
+  Events1.hosts
+    Motivo: DESCARTADO: Redundante con N.
+
+  Events1.prefix
+    Motivo: DESCARTADO: Identificador de mensajes.
+
+  Events2.class
+    Motivo: DESCARTADO: Tipo/identificador; no comparable.
+
+  Events2.filePath
+    Motivo: DESCARTADO: Tráfico desde fichero; no extraemos número comparable.
+
+  Events2.hosts
+    Motivo: DESCARTADO: Redundante con N.
+
+  Events2.nrofPreload
+    Motivo: DESCARTADO: No priorizado para diversidad.
+
+  Events2.prefix
+    Motivo: DESCARTADO: Identificador.
+
+  Group.LinearMovement.endLocation
+    Motivo: DESCARTADO: Coordenadas; dependen del mapa.
+
+  Group.LinearMovement.initLocType
+    Motivo: DESCARTADO: Solo 1 escenario; sin variabilidad.
+
+  Group.LinearMovement.startLocation
+    Motivo: DESCARTADO: Coordenadas; dependen del mapa.
+
+  Group.LinearMovement.targetType
+    Motivo: DESCARTADO: Solo 1 escenario; sin variabilidad.
+
+  Group.busControlSystemNr
+    Motivo: DESCARTADO: Referencia interna al sistema de buses.
+
+  Group.eveningActivityControlSystemNr
+    Motivo: DESCARTADO: Referencia interna.
+
+  Group.homeLocationsFile
+    Motivo: DESCARTADO: Ruta de fichero; no comparable entre mapas.
+
+  Group.meetingSpotsFile
+    Motivo: DESCARTADO: Ruta de fichero; no comparable.
+
+  Group.nrofInterfaces
+    Motivo: DESCARTADO: Casi siempre 1; sin variabilidad útil.
+
+  Group.officeLocationsFile
+    Motivo: DESCARTADO: Ruta de fichero; no comparable.
+
+  Group.officeWaitTimeParetoCoeff
+    Motivo: DESCARTADO: Detalle de distribución; ya usamos officeWaitTime_mean.
+
+  Group.okMaps
+    Motivo: DESCARTADO: No usado de forma relevante en el corpus.
+
+  Group.routeFile
+    Motivo: DESCARTADO: Ruta de fichero.
+
+  Group.routeType
+    Motivo: DESCARTADO: Sin variabilidad útil en el corpus.
+
+  Group.router
+    Motivo: DESCARTADO: Mismo en todo el corpus (EpidemicRouter).
+
+  Group.shoppingControlSystemNr
+    Motivo: DESCARTADO: Referencia interna.
+
+  Group.shoppingWaitTimeParetoCoeff
+    Motivo: DESCARTADO: Ya usamos shoppingWaitTime_mean.
+
+  Group1.LinearMovement.endLocation
+    Motivo: DESCARTADO: Ver features_decision.md (variante de grupo o misma categoría que Group/Group1).
+
+  Group1.LinearMovement.initLocType
+    Motivo: DESCARTADO: Ver features_decision.md (variante de grupo o misma categoría que Group/Group1).
+
+  Group1.LinearMovement.startLocation
+    Motivo: DESCARTADO: Ver features_decision.md (variante de grupo o misma categoría que Group/Group1).
+
+  Group1.LinearMovement.targetType
+    Motivo: DESCARTADO: Ver features_decision.md (variante de grupo o misma categoría que Group/Group1).
+
+  Group1.busControlSystemNr
+    Motivo: DESCARTADO: Referencia interna.
+
+  Group1.clusterCenter
+    Motivo: DESCARTADO: Ver features_decision.md (variante de grupo o misma categoría que Group/Group1).
+
+  Group1.groupID
+    Motivo: DESCARTADO: Identificador de grupo.
+
+  Group1.nrofInterfaces
+    Motivo: DESCARTADO: Ver features_decision.md (variante de grupo o misma categoría que Group/Group1).
+
+  Group1.routeFile
+    Motivo: DESCARTADO: Ruta de fichero (depende del mapa).
+
+  Group1.routeType
+    Motivo: DESCARTADO: Mismo valor (1) en escenarios con bus; sin variabilidad.
+
+  Group1.router
+    Motivo: DESCARTADO: Ver features_decision.md (variante de grupo o misma categoría que Group/Group1).
+
+  Group10.clusterCenter
+    Motivo: DESCARTADO: Ver features_decision.md (variante de grupo o misma categoría que Group/Group1).
+
+  Group10.groupID
+    Motivo: DESCARTADO: Ver features_decision.md (variante de grupo o misma categoría que Group/Group1).
+
+  Group11.clusterCenter
+    Motivo: DESCARTADO: Ver features_decision.md (variante de grupo o misma categoría que Group/Group1).
+
+  Group11.groupID
+    Motivo: DESCARTADO: Ver features_decision.md (variante de grupo o misma categoría que Group/Group1).
+
+  Group12.clusterCenter
+    Motivo: DESCARTADO: Ver features_decision.md (variante de grupo o misma categoría que Group/Group1).
+
+  Group12.groupID
+    Motivo: DESCARTADO: Ver features_decision.md (variante de grupo o misma categoría que Group/Group1).
+
+  Group2.busControlSystemNr
+    Motivo: DESCARTADO: Ver features_decision.md (variante de grupo o misma categoría que Group/Group1).
+
+  Group2.clusterCenter
+    Motivo: DESCARTADO: Ver features_decision.md (variante de grupo o misma categoría que Group/Group1).
+
+  Group2.eveningActivityControlSystemNr
+    Motivo: DESCARTADO: Ver features_decision.md (variante de grupo o misma categoría que Group/Group1).
+
+  Group2.groupID
+    Motivo: DESCARTADO: Ver features_decision.md (variante de grupo o misma categoría que Group/Group1).
+
+  Group2.homeLocationsFile
+    Motivo: DESCARTADO: Ver features_decision.md (variante de grupo o misma categoría que Group/Group1).
+
+  Group2.meetingSpotsFile
+    Motivo: DESCARTADO: Ver features_decision.md (variante de grupo o misma categoría que Group/Group1).
+
+  Group2.nrofInterfaces
+    Motivo: DESCARTADO: Ver features_decision.md (variante de grupo o misma categoría que Group/Group1).
+
+  Group2.officeLocationsFile
+    Motivo: DESCARTADO: Ver features_decision.md (variante de grupo o misma categoría que Group/Group1).
+
+  Group2.officeWaitTimeParetoCoeff
+    Motivo: DESCARTADO: Ver features_decision.md (variante de grupo o misma categoría que Group/Group1).
+
+  Group2.okMaps
+    Motivo: DESCARTADO: Ver features_decision.md (variante de grupo o misma categoría que Group/Group1).
+
+  Group2.routeFile
+    Motivo: DESCARTADO: Ver features_decision.md (variante de grupo o misma categoría que Group/Group1).
+
+  Group2.routeType
+    Motivo: DESCARTADO: Ver features_decision.md (variante de grupo o misma categoría que Group/Group1).
+
+  Group2.router
+    Motivo: DESCARTADO: Ver features_decision.md (variante de grupo o misma categoría que Group/Group1).
+
+  Group2.shoppingControlSystemNr
+    Motivo: DESCARTADO: Ver features_decision.md (variante de grupo o misma categoría que Group/Group1).
+
+  Group2.shoppingWaitTimeParetoCoeff
+    Motivo: DESCARTADO: Ver features_decision.md (variante de grupo o misma categoría que Group/Group1).
+
+  Group3.clusterCenter
+    Motivo: DESCARTADO: Ver features_decision.md (variante de grupo o misma categoría que Group/Group1).
+
+  Group3.groupID
+    Motivo: DESCARTADO: Ver features_decision.md (variante de grupo o misma categoría que Group/Group1).
+
+  Group3.nrofInterfaces
+    Motivo: DESCARTADO: Ver features_decision.md (variante de grupo o misma categoría que Group/Group1).
+
+  Group3.router
+    Motivo: DESCARTADO: Ver features_decision.md (variante de grupo o misma categoría que Group/Group1).
+
+  Group4.clusterCenter
+    Motivo: DESCARTADO: Ver features_decision.md (variante de grupo o misma categoría que Group/Group1).
+
+  Group4.groupID
+    Motivo: DESCARTADO: Ver features_decision.md (variante de grupo o misma categoría que Group/Group1).
+
+  Group5.clusterCenter
+    Motivo: DESCARTADO: Ver features_decision.md (variante de grupo o misma categoría que Group/Group1).
+
+  Group5.groupID
+    Motivo: DESCARTADO: Ver features_decision.md (variante de grupo o misma categoría que Group/Group1).
+
+  Group6.clusterCenter
+    Motivo: DESCARTADO: Ver features_decision.md (variante de grupo o misma categoría que Group/Group1).
+
+  Group6.groupID
+    Motivo: DESCARTADO: Ver features_decision.md (variante de grupo o misma categoría que Group/Group1).
+
+  Group7.clusterCenter
+    Motivo: DESCARTADO: Ver features_decision.md (variante de grupo o misma categoría que Group/Group1).
+
+  Group7.groupID
+    Motivo: DESCARTADO: Ver features_decision.md (variante de grupo o misma categoría que Group/Group1).
+
+  Group8.clusterCenter
+    Motivo: DESCARTADO: Ver features_decision.md (variante de grupo o misma categoría que Group/Group1).
+
+  Group8.groupID
+    Motivo: DESCARTADO: Ver features_decision.md (variante de grupo o misma categoría que Group/Group1).
+
+  Group9.clusterCenter
+    Motivo: DESCARTADO: Ver features_decision.md (variante de grupo o misma categoría que Group/Group1).
+
+  Group9.groupID
+    Motivo: DESCARTADO: Ver features_decision.md (variante de grupo o misma categoría que Group/Group1).
+
+  MapBasedMovement.mapFile1
+    Motivo: DESCARTADO: Ruta de fichero; no comparable.
+
+  MapBasedMovement.nrofMapFiles
+    Motivo: DESCARTADO: Ruta/cantidad de ficheros; no comparable numéricamente entre mapas.
+
+  MovementModel.rngSeed
+    Motivo: DESCARTADO: Aleatoriedad; no caracteriza el escenario de forma estable.
+
+  Report.nrofReports
+    Motivo: DESCARTADO: Configuración de salida, no de escenario.
+
+  Report.report1
+    Motivo: DESCARTADO: Salida.
+
+  Report.report2
+    Motivo: DESCARTADO: Salida.
+
+  Report.reportDir
+    Motivo: DESCARTADO: Salida.
+
+  Scenario.name
+    Motivo: DESCARTADO: Identificador; no feature numérica.
+
+  Scenario.simulateConnections
+    Motivo: DESCARTADO: Parámetro de simulación fijo en todo el corpus.
+
+  Scenario.updateInterval
+    Motivo: DESCARTADO: Parámetro de simulación fijo.
+
+  bt0.type
+    Motivo: DESCARTADO: Tipo de interfaz; mismo en todo el corpus.

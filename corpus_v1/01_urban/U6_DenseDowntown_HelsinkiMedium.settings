@@ -10,9 +10,9 @@ Scenario.simulateConnections = true
 Scenario.updateInterval = 0.1
 Scenario.endTime = 43200
 MovementModel.rngSeed = 6
-# U6 lever: mismo mundo que HelsinkiMedium (el mapa no permite menos: nodos hasta ~5200,~5700)
-# La "densidad" se logra con nrofHosts=120 y transmitRange=5
-MovementModel.worldSize = 8495, 7504
+# U6 lever: área efectiva más pequeña (downtown denso) + nrofHosts=120, transmitRange=5
+# Diversificación estructural: worldSize distinto → Wx,Wy,density distintos de otros HelsinkiMedium
+MovementModel.worldSize = 7000, 6000
 
 MapBasedMovement.nrofMapFiles = 1
 MapBasedMovement.mapFile1 = data/HelsinkiMedium/roads.wkt

@@ -12,7 +12,7 @@ This directory contains the analysis pipeline for the scenario corpus: extractio
 
 One script (`run_analysis.py`) with several phases that can be run independently. This avoids duplicating the parser and feature definitions, and lets you run only the steps you need or re-run later phases without re-extracting.
 
-- **Phases:** `features` → `normalize` → `correlation` → `figures` → `output_metrics` → `outputs`. Each phase writes to `data/`, `figures/` or `reports/`. Use `--phase all` to run features through output_metrics.
+- **Phases:** `features` → `features_report` → `normalize` → `correlation` → `figures` → `output_metrics` → `outputs`. Each phase writes to `data/`, `figures/` or `reports/`. Use `--phase all` to run features through output_metrics.
 - **Outputs:** intermediate results in `data/` (e.g. `features.csv` → `features_normalized.csv`).
 
 ---
@@ -34,18 +34,21 @@ analysis/
 
 ## Features (summary)
 
-Features are extracted from `.settings` and grouped into: **mobility/space** (Wx, Wy, N, density, speed_mean, pause_ratio, wait_mean, movement-model one-hot), **contact** (transmitRange, contact_rate_proxy), **traffic** (event_interval_mean, event_size_mean, msgTtl, traffic_pattern, nrof_event_generators), **resources** (bufferSize, transmitSpeed), and **WDM** (workDayLength, timeDiffSTD, probGoShoppingAfterWork, nrOfMeetingSpots, nrOfOffices) when applicable. Full tables: [README.es.md](README.es.md).
+**Current results (benchmark status):** 70 scenarios, 46 features; **95.9%** of pairs with |r| < 0.7 (98 pairs, 4.1%, with |r| ≥ 0.7); max |r| **0.938**; cosine distance min **0.0527** (0 pairs below 0.05); Silhouette 0.294. Full table: [reports/diversity_targets.md](reports/diversity_targets.md).
+
+**46 features** per scenario: **mobility/space** (Wx, Wy, N, density, speed_mean, pause_ratio, wait_mean, movement-model one-hot including mm_Linear), **contact** (transmitRange, contact_rate_proxy), **traffic** (event_interval_mean, event_size_mean, msgTtl, pattern_*, nrof_event_generators, event2_interval_mean, event2_size_mean when applicable), **resources** (bufferSize, transmitSpeed), **WDM** (workDayLength, timeDiffSTD, probGoShoppingAfterWork, nrOfMeetingSpots, nrOfOffices, officeSize, nrOfShops, ownCarProb, shopSize, officeWaitTime_mean, shoppingWaitTime_mean, eveningGroupSize_mean, eveningWaitTime_mean, afterShoppingStopTime_mean), and **cluster** (clusterRange_mean when ClusterMovement). Full list and settings not used: `reports/features_report.md` and `reports/features_decision.md`.
 
 ---
 
 ## What the script does (`run_analysis.py`)
 
-1. **`--phase features`**: Read all `.settings` under the given corpus dir, build the feature vector, write `data/features.csv` and `scenario_list.txt`.
-2. **`--phase normalize`**: Z-score normalise features → `data/features_normalized.csv`, `normalization_params.csv`.
-3. **`--phase correlation`**: From normalised matrix Z (n×d, n = number of scenarios): Pearson and Spearman correlation, cosine and Euclidean distance between scenario vectors. Outputs in `data/` and `reports/`. Criterion: |r| < 0.7 for all or ≥95% of pairs (`--strict` for 100%). FDR and Bonferroni for multiple comparisons.
-4. **`--phase figures`**: Heatmaps, histograms, PCA scatter → `figures/`.
-5. **`--phase output_metrics`**: Build `data/output_metrics.csv` from `*_MessageStatsReport.txt` in the reports dir (`--reports-dir` if needed).
-6. **`--phase outputs`**: Correlation/distance on output vectors (delivery_ratio, latency_mean, etc.); requires `output_metrics.csv`.
+1. **`--phase features`**: Read all `.settings`, build the 46‑dim feature vector, write `data/features.csv` and `scenario_list.txt`.
+2. **`--phase features_report`**: Write `reports/features_report.txt` and `features_report.md` (features used + settings not used with reasons).
+3. **`--phase normalize`**: Z-score normalise features → `data/features_normalized.csv`, `normalization_params.csv`.
+4. **`--phase correlation`**: From normalised matrix Z: Pearson/Spearman correlation, cosine and Euclidean distance. Outputs in `data/` and `reports/`. Criterion: |r| < 0.7 for ≥95% of pairs (`--strict` for 100%). FDR and Bonferroni.
+5. **`--phase figures`**: Heatmaps, histograms, PCA scatter → `figures/`.
+6. **`--phase output_metrics`**: Build `data/output_metrics.csv` from `*_MessageStatsReport.txt` (`--reports-dir` if needed).
+7. **`--phase outputs`**: Correlation/distance on output vectors; requires `output_metrics.csv`.
 
 With `--phase all`: features → normalize → correlation → figures → output_metrics (outputs phase is run separately when `output_metrics.csv` exists).
 
@@ -72,6 +75,9 @@ From repo root (or with paths adjusted):
 ```bash
 # Features
 python3 scenarios/analysis/run_analysis.py --corpus corpus_v1 --phase features
+
+# Features report (list features + settings not used)
+python3 scenarios/analysis/run_analysis.py --corpus corpus_v1 --phase features_report
 
 # Normalise
 python3 scenarios/analysis/run_analysis.py --corpus corpus_v1 --phase normalize

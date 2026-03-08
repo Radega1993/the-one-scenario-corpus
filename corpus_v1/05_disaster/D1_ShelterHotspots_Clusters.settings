@@ -10,7 +10,8 @@ Scenario.simulateConnections = true
 Scenario.updateInterval = 0.1
 Scenario.endTime = 43200
 MovementModel.rngSeed = 37
-MovementModel.worldSize = 6000, 5000
+# Diversificación estructural vs S1 (mantener grupo Disaster)
+MovementModel.worldSize = 5600, 4600
 
 Group.router = EpidemicRouter
 Group.bufferSize = 50M

@@ -3,6 +3,7 @@
 # Low speeds, high wait times (e.g. rain, cautious movement).
 # Levers: speed, waitTime.
 # Dataset: HelsinkiMedium
+# Diversificación estructural: mundo más pequeño (día lluvioso = área reducida) → Wx,Wy,density distintos
 # =========================================================
 
 Scenario.name = U4_RainyDay_SlowMobility_HelsinkiMedium
@@ -10,7 +11,7 @@ Scenario.simulateConnections = true
 Scenario.updateInterval = 0.1
 Scenario.endTime = 43200
 MovementModel.rngSeed = 4
-MovementModel.worldSize = 8495, 7504
+MovementModel.worldSize = 5500, 4500
 
 MapBasedMovement.nrofMapFiles = 1
 MapBasedMovement.mapFile1 = data/HelsinkiMedium/roads.wkt

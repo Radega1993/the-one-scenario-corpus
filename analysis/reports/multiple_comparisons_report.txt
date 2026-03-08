@@ -2,14 +2,14 @@
 m = 2415 pares. alpha = 0.05.
 
 FDR (Benjamini-Hochberg):
-  Número de rechazos H0 (correlación significativa): 609
-  Pares con |r| >= 0.7 y significativos (FDR): 153
+  Número de rechazos H0 (correlación significativa): 691
+  Pares con |r| >= 0.7 y significativos (FDR): 98
 
 Bonferroni:
-  Número de rechazos: 181
-  Pares con |r| >= 0.7 y significativos (Bonferroni): 153
+  Número de rechazos: 222
+  Pares con |r| >= 0.7 y significativos (Bonferroni): 98
 
 Conclusión:
   Objetivo = no pares con |r| alto y significativo tras corrección.
-  FDR: No cumplido: 153 pares.
-  Bonferroni: No cumplido: 153 pares.
+  FDR: No cumplido: 98 pares.
+  Bonferroni: No cumplido: 98 pares.

@@ -9,7 +9,7 @@ Scenario.simulateConnections = true
 Scenario.updateInterval = 0.1
 Scenario.endTime = 43200
 MovementModel.rngSeed = 63
-# Diversificar vs T1/T9: mundo más grande, menos nodos, rango mínimo
+# Diversificación estructural vs T9/T1 (mantener grupo Traffic): mundo grande para no solaparse con T1/T9
 MovementModel.worldSize = 7200, 5600
 
 Group.movementModel = RandomWaypoint

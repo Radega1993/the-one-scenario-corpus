@@ -8,7 +8,8 @@
 |-----------|-------------|
 | **corpus_v1/** | 70 escenarios `.settings` por familia (urban, campus, vehicles, rural, disaster, social, traffic). |
 | **analysis/** | Extracción de features, correlación, métricas de salida, figuras y [dashboard interactivo](analysis/README.es.md). |
-| **ROADMAP.md** / **ROADMAP.es.md** | Próximos pasos: documentación bilingüe, Wiki GitHub; criterios de diversidad (|r| < 0,7, cos_dist). Versión en castellano: [ROADMAP.es.md](ROADMAP.es.md). |
+| **.wiki-clone/** | Contenido de la wiki (EN+ES): organizado en `01-home`, `02-guide`, `03-reference`, `04-results`, `05-corpus`, `06-families`. [Índice](.wiki-clone/README.md); Home y resultados en `01-home/`, `04-results/`. Para publicar en GitHub Wiki, copiar todos los `.md` de las subcarpetas a la raíz del wiki. |
+| **ROADMAP.md** / **ROADMAP.es.md** | Próximos pasos: documentación bilingüe; criterios de diversidad (|r| < 0,7, cos_dist). Versión en castellano: [ROADMAP.es.md](ROADMAP.es.md). |
 
 ### Por qué nombres como `corpus_v1`
 
@@ -403,7 +404,7 @@ El análisis del corpus (extracción de features, correlación entre escenarios,
 
 - **Script principal:** `scenarios/analysis/run_analysis.py`, ejecutable por fases: `features` → `normalize` → `correlation` → `figures` → `output_metrics` → `outputs`. Ver `scenarios/analysis/README.es.md` para la lista completa de fases y opciones.
 - **Salidas:** `analysis/data/` (CSV de features, normalizados, matrices de correlación y distancias, `output_metrics.csv`), `analysis/figures/` (heatmaps, histogramas, scatter), `analysis/reports/` (informes de texto).
-- **Criterio de benchmark:** |r| < 0,7 entre vectores de escenarios (parámetros o outputs); corrección FDR/Bonferroni para comparaciones múltiples.
+- **Criterio de benchmark:** 46 features por escenario; |r| < 0,7 en ≥95% de pares (**95,9 %** cumplido); distancia coseno mín > 0,05 (**0,0527**, 0 pares por debajo); max |r| **0,938**; **98** pares (4,1 %) con |r| ≥ 0,7. Ver [analysis/reports/diversity_targets.md](analysis/reports/diversity_targets.md) para objetivos completos y estado.
 
 **Dashboard interactivo:** para visualizar todo en un solo sitio (resumen, resultados por fase, detalle por escenario, comparación entre escenarios):
 

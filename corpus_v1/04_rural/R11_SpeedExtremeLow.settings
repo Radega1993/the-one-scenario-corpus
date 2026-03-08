@@ -9,11 +9,12 @@ Scenario.simulateConnections = true
 Scenario.updateInterval = 0.1
 Scenario.endTime = 43200
 MovementModel.rngSeed = 93
-MovementModel.worldSize = 10000, 8000
+# Diversificación estructural vs R10/R1/R3 (mantener grupo Rural)
+MovementModel.worldSize = 10500, 8500
 
 Group.movementModel = RandomWaypoint
 Group.router = EpidemicRouter
-Group.nrofHosts = 30
+Group.nrofHosts = 28
 Group.bufferSize = 50M
 Group.nrofInterfaces = 1
 Group.interface1 = bt0

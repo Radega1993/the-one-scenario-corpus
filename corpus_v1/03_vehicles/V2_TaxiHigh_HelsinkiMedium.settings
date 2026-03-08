@@ -3,6 +3,7 @@
 # Many taxis; short, frequent contacts.
 # Levers: nrofHosts high in taxi group, low waitTime.
 # Dataset: HelsinkiMedium (map + route)
+# Diversificación estructural vs V1 (mantener grupo Vehicle): worldSize y N distintos
 # =========================================================
 
 Scenario.name = V2_TaxiHigh_HelsinkiMedium
@@ -10,7 +11,7 @@ Scenario.simulateConnections = true
 Scenario.updateInterval = 0.1
 Scenario.endTime = 43200
 MovementModel.rngSeed = 22
-MovementModel.worldSize = 8495, 7504
+MovementModel.worldSize = 6200, 5200
 
 MapBasedMovement.nrofMapFiles = 1
 MapBasedMovement.mapFile1 = data/HelsinkiMedium/roads.wkt
@@ -32,7 +33,7 @@ Group.waitTime = 3, 10
 
 Scenario.nrofHostGroups = 1
 Group1.groupID = t
-Group1.nrofHosts = 30
+Group1.nrofHosts = 26
 Group1.movementModel = MapRouteMovement
 Group1.routeFile = data/HelsinkiMedium/A_bus.wkt
 Group1.routeType = 1
@@ -47,7 +48,7 @@ Events.nrof = 1
 Events1.class = MessageEventGenerator
 Events1.interval = 12, 22
 Events1.size = 60k, 180k
-Events1.hosts = 0, 30
+Events1.hosts = 0, 26
 Events1.prefix = M
 
 Report.nrofReports = 2

@@ -3,6 +3,7 @@
 # More buses on the same system (peak hour).
 # Levers: more BusMovement hosts, same route/system.
 # Dataset: HelsinkiMedium
+# Diversificación estructural: mundo más pequeño (rush hour = zona concentrada) y menos peatones → Wx,Wy,N,density distintos de V4/U4/U6/U7/V6/V8
 # =========================================================
 
 Scenario.name = V5_RushHourBusDensity_HelsinkiMedium
@@ -10,7 +11,7 @@ Scenario.simulateConnections = true
 Scenario.updateInterval = 0.1
 Scenario.endTime = 43200
 MovementModel.rngSeed = 25
-MovementModel.worldSize = 8495, 7504
+MovementModel.worldSize = 6000, 5000
 
 MapBasedMovement.nrofMapFiles = 1
 MapBasedMovement.mapFile1 = data/HelsinkiMedium/roads.wkt
@@ -77,7 +78,7 @@ Group1.speed = 7, 10
 Group1.waitTime = 10, 30
 
 Group2.groupID = p
-Group2.nrofHosts = 80
+Group2.nrofHosts = 55
 Group2.bufferSize = 50M
 Group2.movementModel = WorkingDayMovement
 Group2.routeFile = data/HelsinkiMedium/A_bus.wkt
@@ -112,11 +113,12 @@ Group2.probGoShoppingAfterWork = 0.3
 Group2.ownCarProb = 0.0
 
 Group.router = EpidemicRouter
+# Diversificar vs V4: rush hour = tráfico más frecuente y mensajes más pequeños
 Events.nrof = 1
 Events1.class = MessageEventGenerator
-Events1.interval = 25, 35
-Events1.size = 50k, 150k
-Events1.hosts = 0, 84
+Events1.interval = 12, 22
+Events1.size = 25k, 85k
+Events1.hosts = 0, 59
 Events1.prefix = M
 
 Report.nrofReports = 2

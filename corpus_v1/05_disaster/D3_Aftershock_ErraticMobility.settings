@@ -9,11 +9,12 @@ Scenario.simulateConnections = true
 Scenario.updateInterval = 0.1
 Scenario.endTime = 43200
 MovementModel.rngSeed = 39
-MovementModel.worldSize = 7000, 6000
+# Diversificación estructural vs D9/T5/S3/T11 (mantener grupo Disaster)
+MovementModel.worldSize = 6600, 5600
 
 Group.movementModel = RandomWaypoint
 Group.router = EpidemicRouter
-Group.nrofHosts = 60
+Group.nrofHosts = 54
 Group.bufferSize = 50M
 # Diversificar: aftershock = mensajes críticos TTL corto
 Group.msgTtl = 30
@@ -35,7 +36,7 @@ Events.nrof = 1
 Events1.class = MessageEventGenerator
 Events1.interval = 20, 120
 Events1.size = 5k, 120k
-Events1.hosts = 0, 60
+Events1.hosts = 0, 54
 Events1.prefix = M
 
 Report.nrofReports = 2

@@ -9,11 +9,12 @@ Scenario.simulateConnections = true
 Scenario.updateInterval = 0.1
 Scenario.endTime = 43200
 MovementModel.rngSeed = 48
-MovementModel.worldSize = 7000, 5500
+# Diversificación estructural vs T9 (mantener grupo Social)
+MovementModel.worldSize = 6800, 5300
 
 Group.movementModel = RandomWaypoint
 Group.router = EpidemicRouter
-Group.nrofHosts = 65
+Group.nrofHosts = 60
 # Diversificar: mezcla aleatoria sin hotspots
 Group.bufferSize = 25M
 Group.nrofInterfaces = 1
@@ -32,7 +33,7 @@ Events.nrof = 1
 Events1.class = MessageEventGenerator
 Events1.interval = 50, 200
 Events1.size = 20k, 110k
-Events1.hosts = 0, 65
+Events1.hosts = 0, 60
 Events1.prefix = M
 
 Report.nrofReports = 2
