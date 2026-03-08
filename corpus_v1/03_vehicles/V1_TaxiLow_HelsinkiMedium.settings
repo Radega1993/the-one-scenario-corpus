@@ -15,19 +15,23 @@ MovementModel.worldSize = 8495, 7504
 MapBasedMovement.nrofMapFiles = 1
 MapBasedMovement.mapFile1 = data/HelsinkiMedium/roads.wkt
 
-Group.bufferSize = 50M
+# Diversificar vs V2: buffer menor (pocos taxis)
+Group.bufferSize = 30M
 Group.nrofInterfaces = 1
 Group.interface1 = bt0
 bt0.type = SimpleBroadcastInterface
-bt0.transmitSpeed = 2M
-bt0.transmitRange = 10
+# Diversificar vs V2: menor ancho de banda (pocos taxis)
+bt0.transmitSpeed = 1M
+# Diversificar: pocos taxis → rango menor
+bt0.transmitRange = 8
 
 # V1 lever: few "taxis" (MapRouteMovement), high speed
+# Diversificar vs V2: velocidad y espera distintas (pocos taxis = más espera)
 Group.movementModel = MapRouteMovement
 Group.routeFile = data/HelsinkiMedium/A_bus.wkt
 Group.routeType = 1
-Group.speed = 10, 18
-Group.waitTime = 5, 20
+Group.speed = 8, 14
+Group.waitTime = 8, 25
 
 Scenario.nrofHostGroups = 1
 Group1.groupID = t
@@ -35,17 +39,17 @@ Group1.nrofHosts = 5
 Group1.movementModel = MapRouteMovement
 Group1.routeFile = data/HelsinkiMedium/A_bus.wkt
 Group1.routeType = 1
-Group1.speed = 10, 18
-Group1.waitTime = 5, 20
-Group1.bufferSize = 50M
+Group1.speed = 8, 14
+Group1.waitTime = 8, 25
+Group1.bufferSize = 30M
 Group1.router = EpidemicRouter
 Group1.nrofInterfaces = 1
 Group1.interface1 = bt0
 
 Events.nrof = 1
 Events1.class = MessageEventGenerator
-Events1.interval = 25, 35
-Events1.size = 50k, 150k
+Events1.interval = 35, 55
+Events1.size = 40k, 120k
 Events1.hosts = 0, 5
 Events1.prefix = M
 

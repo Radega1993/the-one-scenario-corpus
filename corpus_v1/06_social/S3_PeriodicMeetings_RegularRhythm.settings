@@ -9,12 +9,15 @@ Scenario.simulateConnections = true
 Scenario.updateInterval = 0.1
 Scenario.endTime = 43200
 MovementModel.rngSeed = 47
-MovementModel.worldSize = 5000, 4000
+# Diversificar vs T5: mundo más pequeño
+MovementModel.worldSize = 4500, 3600
 
 Group.movementModel = RandomWaypoint
 Group.router = EpidemicRouter
 Group.nrofHosts = 55
-Group.bufferSize = 50M
+# Diversificar: ritmo periódico + TTL y rango distintivos
+Group.bufferSize = 40M
+Group.msgTtl = 120
 Group.nrofInterfaces = 1
 Group.interface1 = bt0
 # S3 lever: narrow wait and speed -> similar movement rhythm, periodic encounters
@@ -23,15 +26,16 @@ Group.speed = 0.7, 0.9
 
 bt0.type = SimpleBroadcastInterface
 bt0.transmitSpeed = 2M
-bt0.transmitRange = 10
+bt0.transmitRange = 12
 
 Scenario.nrofHostGroups = 1
 Group1.groupID = p
 
 Events.nrof = 1
 Events1.class = MessageEventGenerator
-Events1.interval = 90, 240
-Events1.size = 25k, 130k
+# Diversificar vs T5: perfil de tráfico distinto
+Events1.interval = 70, 180
+Events1.size = 20k, 100k
 Events1.hosts = 0, 55
 Events1.prefix = M
 

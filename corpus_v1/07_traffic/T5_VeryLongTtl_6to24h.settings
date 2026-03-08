@@ -23,7 +23,8 @@ Group.waitTime = 60, 300
 
 bt0.type = SimpleBroadcastInterface
 bt0.transmitSpeed = 2M
-bt0.transmitRange = 10
+# Diversificar: TTL largo + rango mayor
+bt0.transmitRange = 15
 
 Scenario.nrofHostGroups = 1
 Group1.groupID = t

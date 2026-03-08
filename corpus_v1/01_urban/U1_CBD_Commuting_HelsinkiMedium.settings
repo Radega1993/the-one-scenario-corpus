@@ -64,8 +64,9 @@ Group.meetingSpotsFile = data/HelsinkiMedium/A_meetingspots.wkt
 Group.timeDiffSTD = 1200
 
 # --- OfficeActivityMovement: fewer, larger offices (CBD concentration) ---
+# Diversificar: CBD = más oficinas concentradas
 Group.workDayLength = 28800
-Group.nrOfOffices = 5
+Group.nrOfOffices = 12
 Group.officeSize = 60
 Group.officeWaitTimeParetoCoeff = 1.4
 Group.officeMinWaitTime = 300
@@ -126,7 +127,7 @@ Group2.speed = 0.5, 1.5
 Group2.waitTime = 0, 120
 Group2.timeDiffSTD = 1200
 Group2.workDayLength = 28800
-Group2.nrOfOffices = 5
+Group2.nrOfOffices = 12
 Group2.officeSize = 60
 Group2.officeWaitTimeParetoCoeff = 1.4
 Group2.officeMinWaitTime = 300

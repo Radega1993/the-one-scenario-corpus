@@ -1,0 +1,40 @@
+# =========================================================
+# R10 - Tiny range (radical)
+# Grafo muy esparso: transmitRange 5 m, velocidad baja.
+# Eje recursos: rango mínimo.
+# =========================================================
+
+Scenario.name = R10_TinyRange_5m
+Scenario.simulateConnections = true
+Scenario.updateInterval = 0.1
+Scenario.endTime = 43200
+MovementModel.rngSeed = 92
+MovementModel.worldSize = 8000, 6000
+
+Group.movementModel = RandomWaypoint
+Group.router = EpidemicRouter
+Group.nrofHosts = 35
+Group.bufferSize = 50M
+Group.nrofInterfaces = 1
+Group.interface1 = bt0
+Group.speed = 0.2, 0.5
+Group.waitTime = 180, 600
+
+bt0.type = SimpleBroadcastInterface
+bt0.transmitSpeed = 2M
+bt0.transmitRange = 5
+
+Scenario.nrofHostGroups = 1
+Group1.groupID = r10
+
+Events.nrof = 1
+Events1.class = MessageEventGenerator
+Events1.interval = 90, 240
+Events1.size = 30k, 100k
+Events1.hosts = 0, 35
+Events1.prefix = M
+
+Report.nrofReports = 2
+Report.reportDir = reports/
+Report.report1 = MessageStatsReport
+Report.report2 = ContactTimesReport

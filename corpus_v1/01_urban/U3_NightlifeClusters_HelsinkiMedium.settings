@@ -37,7 +37,8 @@ Group.nrofInterfaces = 1
 Group.interface1 = bt0
 bt0.type = SimpleBroadcastInterface
 bt0.transmitSpeed = 2M
-bt0.transmitRange = 10
+# Diversificar vs C5: nightlife = clusters más concentrados, menos rango
+bt0.transmitRange = 9
 
 # =========================================================
 # Movement model: WorkingDayMovement
@@ -55,7 +56,8 @@ Group.meetingSpotsFile = data/HelsinkiMedium/A_meetingspots.wkt
 Group.timeDiffSTD = 1800
 
 # --- OfficeActivityMovement ---
-Group.workDayLength = 28800
+# Diversificar vs C5: nightlife = jornada laboral más corta
+Group.workDayLength = 25200
 Group.nrOfOffices = 10
 Group.officeSize = 40
 Group.officeWaitTimeParetoCoeff = 1.4
@@ -115,7 +117,7 @@ Group2.meetingSpotsFile = data/HelsinkiMedium/A_meetingspots.wkt
 Group2.speed = 0.5, 1.5
 Group2.waitTime = 0, 120
 Group2.timeDiffSTD = 1800
-Group2.workDayLength = 28800
+Group2.workDayLength = 25200
 Group2.nrOfOffices = 10
 Group2.officeSize = 40
 Group2.officeWaitTimeParetoCoeff = 1.4

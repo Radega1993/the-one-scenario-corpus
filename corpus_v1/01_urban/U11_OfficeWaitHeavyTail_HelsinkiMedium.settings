@@ -24,7 +24,7 @@ Group.nrofInterfaces = 1
 Group.interface1 = bt0
 bt0.type = SimpleBroadcastInterface
 bt0.transmitSpeed = 2M
-bt0.transmitRange = 10
+bt0.transmitRange = 8
 
 Group.movementModel = WorkingDayMovement
 Group.routeFile = data/HelsinkiMedium/A_bus.wkt
@@ -35,16 +35,20 @@ Group.homeLocationsFile = data/HelsinkiMedium/A_homes.wkt
 Group.officeLocationsFile = data/HelsinkiMedium/A_offices.wkt
 Group.meetingSpotsFile = data/HelsinkiMedium/A_meetingspots.wkt
 
-Group.timeDiffSTD = 1800
-Group.workDayLength = 28800
-Group.nrOfOffices = 10
+# Diversificar vs U4: mayor varianza horaria (heavy-tail)
+Group.timeDiffSTD = 2400
+# Diversificar vs V7: jornada 7h (heavy-tail = más tiempo en oficina)
+Group.workDayLength = 25200
+# Diversificar vector: menos oficinas (heavy-tail office wait)
+Group.nrOfOffices = 6
 Group.officeSize = 40
 # U11 lever: heavy-tail Pareto (lower coeff -> more long waits); wider range
 Group.officeWaitTimeParetoCoeff = 1.1
 Group.officeMinWaitTime = 600
 Group.officeMaxWaitTime = 2400
 
-Group.nrOfMeetingSpots = 10
+# Diversificar vs V7: menos meeting spots
+Group.nrOfMeetingSpots = 8
 Group.minGroupSize = 1
 Group.maxGroupSize = 5
 Group.minWaitTime = 300
@@ -58,7 +62,7 @@ Group.shoppingMinWaitTime = 60
 Group.shoppingMaxWaitTime = 600
 Group.minAfterShoppingStopTime = 60
 Group.maxAfterShoppingStopTime = 600
-Group.probGoShoppingAfterWork = 0.3
+Group.probGoShoppingAfterWork = 0.2
 Group.ownCarProb = 0.0
 
 Scenario.nrofHostGroups = 2
@@ -87,14 +91,14 @@ Group2.officeLocationsFile = data/HelsinkiMedium/A_offices.wkt
 Group2.meetingSpotsFile = data/HelsinkiMedium/A_meetingspots.wkt
 Group2.speed = 0.5, 1.5
 Group2.waitTime = 0, 120
-Group2.timeDiffSTD = 1800
-Group2.workDayLength = 28800
-Group2.nrOfOffices = 10
+Group2.timeDiffSTD = 2400
+Group2.workDayLength = 25200
+Group2.nrOfOffices = 6
 Group2.officeSize = 40
 Group2.officeWaitTimeParetoCoeff = 1.1
 Group2.officeMinWaitTime = 600
 Group2.officeMaxWaitTime = 2400
-Group2.nrOfMeetingSpots = 10
+Group2.nrOfMeetingSpots = 8
 Group2.minGroupSize = 1
 Group2.maxGroupSize = 5
 Group2.minWaitTime = 300
@@ -108,7 +112,7 @@ Group2.shoppingMinWaitTime = 60
 Group2.shoppingMaxWaitTime = 600
 Group2.minAfterShoppingStopTime = 60
 Group2.maxAfterShoppingStopTime = 600
-Group2.probGoShoppingAfterWork = 0.3
+Group2.probGoShoppingAfterWork = 0.2
 Group2.ownCarProb = 0.0
 
 Group.router = EpidemicRouter

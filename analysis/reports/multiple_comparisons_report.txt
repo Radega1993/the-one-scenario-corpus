@@ -1,15 +1,15 @@
 === Corrección por comparaciones múltiples (correlación entre escenarios) ===
-m = 1770 pares. alpha = 0.05.
+m = 2415 pares. alpha = 0.05.
 
 FDR (Benjamini-Hochberg):
-  Número de rechazos H0 (correlación significativa): 66
-  Pares con |r| >= 0.7 y significativos (FDR): 66
+  Número de rechazos H0 (correlación significativa): 609
+  Pares con |r| >= 0.7 y significativos (FDR): 153
 
 Bonferroni:
-  Número de rechazos: 66
-  Pares con |r| >= 0.7 y significativos (Bonferroni): 66
+  Número de rechazos: 181
+  Pares con |r| >= 0.7 y significativos (Bonferroni): 153
 
 Conclusión:
   Objetivo = no pares con |r| alto y significativo tras corrección.
-  FDR: No cumplido: 66 pares.
-  Bonferroni: No cumplido: 66 pares.
+  FDR: No cumplido: 153 pares.
+  Bonferroni: No cumplido: 153 pares.

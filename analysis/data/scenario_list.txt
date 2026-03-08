@@ -26,6 +26,9 @@
 /home/raul/Documents/the-one/scenarios/corpus_v1/03_vehicles/V6_CarOwnership_0_HelsinkiMedium.settings
 /home/raul/Documents/the-one/scenarios/corpus_v1/03_vehicles/V7_CarOwnership_100_HelsinkiMedium.settings
 /home/raul/Documents/the-one/scenarios/corpus_v1/03_vehicles/V8_RoadClosure_HelsinkiMedium.settings
+/home/raul/Documents/the-one/scenarios/corpus_v1/04_rural/R10_TinyRange_5m.settings
+/home/raul/Documents/the-one/scenarios/corpus_v1/04_rural/R11_SpeedExtremeLow.settings
+/home/raul/Documents/the-one/scenarios/corpus_v1/04_rural/R12_SpeedExtremeHigh.settings
 /home/raul/Documents/the-one/scenarios/corpus_v1/04_rural/R1_Rural_RandomWaypoint.settings
 /home/raul/Documents/the-one/scenarios/corpus_v1/04_rural/R2_VillagesTrails_ThreeClusters.settings
 /home/raul/Documents/the-one/scenarios/corpus_v1/04_rural/R3_WildlifeTracking.settings
@@ -34,6 +37,7 @@
 /home/raul/Documents/the-one/scenarios/corpus_v1/04_rural/R6_SparseLongRange.settings
 /home/raul/Documents/the-one/scenarios/corpus_v1/04_rural/R7_SparseTinyBuffer.settings
 /home/raul/Documents/the-one/scenarios/corpus_v1/04_rural/R8_IntermittentPower.settings
+/home/raul/Documents/the-one/scenarios/corpus_v1/04_rural/R9_ExtremeRange_200m.settings
 /home/raul/Documents/the-one/scenarios/corpus_v1/05_disaster/D1_ShelterHotspots_Clusters.settings
 /home/raul/Documents/the-one/scenarios/corpus_v1/05_disaster/D2_PartitionedCity_MuleBridge.settings
 /home/raul/Documents/the-one/scenarios/corpus_v1/05_disaster/D3_Aftershock_ErraticMobility.settings
@@ -42,6 +46,7 @@
 /home/raul/Documents/the-one/scenarios/corpus_v1/05_disaster/D6_ShortTtlCritical_5to10min.settings
 /home/raul/Documents/the-one/scenarios/corpus_v1/05_disaster/D7_HighLoad_TrafficStorm.settings
 /home/raul/Documents/the-one/scenarios/corpus_v1/05_disaster/D8_InfrastructureReturns_BackboneLinks.settings
+/home/raul/Documents/the-one/scenarios/corpus_v1/05_disaster/D9_Critical_1minTTL.settings
 /home/raul/Documents/the-one/scenarios/corpus_v1/06_social/S1_StrongCommunities_SeparateClusters.settings
 /home/raul/Documents/the-one/scenarios/corpus_v1/06_social/S2_WeakCommunities_HighMixing.settings
 /home/raul/Documents/the-one/scenarios/corpus_v1/06_social/S3_PeriodicMeetings_RegularRhythm.settings
@@ -49,6 +54,11 @@
 /home/raul/Documents/the-one/scenarios/corpus_v1/06_social/S5_TwoLayer_StudentsStaff.settings
 /home/raul/Documents/the-one/scenarios/corpus_v1/06_social/S6_FamilyGroups_SmallPersistent.settings
 /home/raul/Documents/the-one/scenarios/corpus_v1/07_traffic/T10_HighRateLowSpeed_Congestion.settings
+/home/raul/Documents/the-one/scenarios/corpus_v1/07_traffic/T11_TTL_1min.settings
+/home/raul/Documents/the-one/scenarios/corpus_v1/07_traffic/T12_TTL_Infinite_Buffer200M.settings
+/home/raul/Documents/the-one/scenarios/corpus_v1/07_traffic/T13_Buffer_256k.settings
+/home/raul/Documents/the-one/scenarios/corpus_v1/07_traffic/T14_Buffer_200M.settings
+/home/raul/Documents/the-one/scenarios/corpus_v1/07_traffic/T15_TransmitSpeed_256k.settings
 /home/raul/Documents/the-one/scenarios/corpus_v1/07_traffic/T1_ManySmallMsgs_HighRate.settings
 /home/raul/Documents/the-one/scenarios/corpus_v1/07_traffic/T2_FewHugeMsgs_LowRate.settings
 /home/raul/Documents/the-one/scenarios/corpus_v1/07_traffic/T3_MixedBimodal_SmallAndLarge.settings
