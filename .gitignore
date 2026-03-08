@@ -21,3 +21,6 @@ env/
 
 # Logs
 *.log
+
+# Clone of GitHub Wiki (solo para publicar; el contenido editable está en wiki/)
+.wiki-clone/
