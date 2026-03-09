@@ -139,7 +139,13 @@ def settings_to_reportable_features(d: dict[str, Any]) -> dict[str, float | int]
         Wx, Wy = parts[0], parts[1]
     else:
         Wx = Wy = np.nan
+    # Core: world_area y aspect_ratio (definición única; ver features_core_vs_extended.md)
     area = Wx * Wy if not (np.isnan(Wx) or np.isnan(Wy)) else np.nan
+    world_area = area  # Wx×Wy (m²)
+    if not (np.isnan(Wx) or np.isnan(Wy)) and Wx > 0 and Wy > 0:
+        aspect_ratio = min(Wx, Wy) / max(Wx, Wy)  # ∈ (0, 1]
+    else:
+        aspect_ratio = np.nan
     density = (n_hosts / area * 1e6) if area and area > 0 else np.nan  # proxy nodos/km²
 
     speed_mean = _get_range_mean(d, "Group.speed")
@@ -330,9 +336,9 @@ def settings_to_reportable_features(d: dict[str, Any]) -> dict[str, float | int]
     has_active_times = 1 if any(f"Group{i}.activeTimes" in d for i in range(1, n_groups + 1)) or "Group.activeTimes" in d else 0
 
     return {
-        # Movilidad/espacio
-        "Wx": Wx,
-        "Wy": Wy,
+        # Movilidad/espacio (core usa world_area, aspect_ratio; Wx,Wy no en core)
+        "world_area": world_area,
+        "aspect_ratio": aspect_ratio,
         "N": n_hosts,
         "density": density,
         "speed_mean": speed_mean,
@@ -385,12 +391,29 @@ def settings_to_reportable_features(d: dict[str, Any]) -> dict[str, float | int]
     }
 
 
+# Conjuntos core (24) y reducido (17) para ablación y correlación feature–feature (features_core_vs_extended.md)
+FEATURES_CORE_24 = [
+    "world_area", "aspect_ratio", "N", "nrofHostGroups", "speed_mean", "wait_mean",
+    "mm_WDM", "mm_RWP", "mm_MapRoute", "mm_Cluster", "mm_Bus", "mm_Linear",
+    "transmitRange", "bufferSize", "transmitSpeed", "msgTtl",
+    "event_interval_mean", "event_size_mean", "nrof_event_generators",
+    "pattern_burst", "pattern_hub_target",
+    "workDayLength", "ownCarProb", "clusterRange_mean",
+]
+# Subconjunto mínimo razonable (tesis / ablación 17)
+FEATURES_REDUCED_17 = [
+    "world_area", "aspect_ratio", "N", "nrofHostGroups", "speed_mean", "wait_mean",
+    "mm_WDM", "mm_RWP", "mm_MapRoute",
+    "transmitRange", "bufferSize", "transmitSpeed", "msgTtl",
+    "event_interval_mean", "event_size_mean", "pattern_burst", "pattern_hub_target",
+]
+
 # Metadatos para el informe de features: nombre -> (descripción, setting(s) origen)
 FEATURE_METADATA = {
-    "Wx": ("Ancho del mundo (m)", "MovementModel.worldSize"),
-    "Wy": ("Alto del mundo (m)", "MovementModel.worldSize"),
+    "world_area": ("Área del mundo Wx×Wy (m²)", "MovementModel.worldSize"),
+    "aspect_ratio": ("Relación de aspecto min(Wx,Wy)/max(Wx,Wy) ∈ (0,1]", "MovementModel.worldSize"),
     "N": ("Número de hosts", "Scenario.nrofHostGroups, Group*.nrofHosts"),
-    "density": ("Densidad proxy (hosts/km²)", "N, Wx, Wy (derivado)"),
+    "density": ("Densidad proxy (hosts/km²)", "N, world_area (derivado); excluida del core por redundancia"),
     "speed_mean": ("Velocidad media (m/s)", "Group*.speed"),
     "pause_ratio": ("Ratio pausa/(movimiento+pausa)", "Group*.waitTime (derivado)"),
     "wait_mean": ("Tiempo de espera medio (s)", "Group*.waitTime"),
@@ -652,12 +675,12 @@ def run_phase_features(scenario_paths: list[Path], out_dir: Path) -> None:
     print(f"Written {data_dir / 'scenario_list.txt'}")
 
 
-def zscore_normalize_per_feature(df: "pd.DataFrame") -> tuple["pd.DataFrame", "pd.DataFrame"]:
+def zscore_normalize_per_feature(df: "pd.DataFrame", impute_nan_zero: bool = True) -> tuple["pd.DataFrame", "pd.DataFrame"]:
     """
-    Normalización z-score por característica (por columna):
-      X_s,j_norm = (X_s,j - μ_j) / σ_j
-    μ_j, σ_j = media y desv. típica de la característica j sobre todos los escenarios s.
-    Si σ_j = 0 (columna constante), se asigna 0.
+    Normalización z-score por característica (por columna), política NaN según features_core_vs_extended.md §4:
+    - μ_j, σ_j = media y desv. típica de la característica j solo sobre valores no-NaN.
+    - Z_s,j = (X_s,j - μ_j) / σ_j; si σ_j = 0 (columna constante), Z_s,j = 0.
+    - Tras normalizar, NaNs se imputan a 0 en el espacio estandarizado (features condicionales actúan como neutros).
     Devuelve (DataFrame normalizado, DataFrame de parámetros: feature, mean, std).
     """
     if pd is None:
@@ -673,15 +696,17 @@ def zscore_normalize_per_feature(df: "pd.DataFrame") -> tuple["pd.DataFrame", "p
         else:
             Z[col] = (Z[col] - mu) / sigma
         params.append({"feature": col, "mean": mu, "std": sigma})
+    if impute_nan_zero:
+        Z = Z.fillna(0.0)
     params_df = pd.DataFrame(params)
     return Z, params_df
 
 
 def run_phase_normalize(out_dir: Path) -> bool:
     """
-    Fase 2: lee data/features.csv, aplica z-score por característica,
-    escribe data/features_normalized.csv y data/normalization_params.csv.
-    Devuelve True si se ejecutó correctamente (existía features.csv).
+    Fase 2: lee data/features.csv, aplica z-score por característica (ignorando NaN),
+    imputa NaN → 0 en espacio estandarizado (§4 features_core_vs_extended.md),
+    escribe features_normalized.csv, normalization_params.csv, features_core.csv (24), features_reduced.csv (17).
     """
     if pd is None:
         print("pandas is required for --phase normalize")
@@ -695,10 +720,22 @@ def run_phase_normalize(out_dir: Path) -> bool:
     data_dir.mkdir(parents=True, exist_ok=True)
 
     df = pd.read_csv(features_path, index_col=0)
-    Z, params_df = zscore_normalize_per_feature(df)
+    Z, params_df = zscore_normalize_per_feature(df, impute_nan_zero=True)
     Z.to_csv(data_dir / "features_normalized.csv")
     params_df.to_csv(data_dir / "normalization_params.csv", index=False)
-    print(f"Written {data_dir / 'features_normalized.csv'} (shape {Z.shape})")
+    print(f"Written {data_dir / 'features_normalized.csv'} (shape {Z.shape}, NaN→0)")
+
+    # Core 24 y reducido 17 para ablación y correlación feature–feature
+    core_cols = [c for c in FEATURES_CORE_24 if c in Z.columns]
+    red_cols = [c for c in FEATURES_REDUCED_17 if c in Z.columns]
+    if len(core_cols) == 24:
+        Z[core_cols].to_csv(data_dir / "features_core.csv")
+        print(f"Written {data_dir / 'features_core.csv'} (24 core features)")
+    else:
+        print(f"Warning: only {len(core_cols)}/24 core columns in data (missing: {set(FEATURES_CORE_24) - set(Z.columns)})")
+    if len(red_cols) == 17:
+        Z[red_cols].to_csv(data_dir / "features_reduced.csv")
+        print(f"Written {data_dir / 'features_reduced.csv'} (17 reduced features)")
     print(f"Written {data_dir / 'normalization_params.csv'} ({len(params_df)} features)")
     return True
 
@@ -1038,6 +1075,164 @@ def run_phase_correlation(out_dir: Path, threshold: float = 0.7, criterion_95: b
     print(f"Written {reports_dir / 'correlation_report.txt'}")
     if pd is not None:
         print(f"Written {reports_dir / 'multiple_comparisons_report.txt'}")
+    return True
+
+
+def run_phase_feature_feature_correlation(out_dir: Path) -> bool:
+    """
+    Correlación entre las 24 features del core (feature–feature), §5 features_core_vs_extended.md.
+    Matriz 24×24 sobre escenarios (columnas = features). Salida: data/ y figures/heatmap_feature_feature_core.png.
+    """
+    if pd is None:
+        print("pandas is required for --phase feature_correlation")
+        return False
+    out_dir = Path(out_dir)
+    data_dir = out_dir / "data"
+    figures_dir = out_dir / "figures"
+    reports_dir = out_dir / "reports"
+    path_core = data_dir / "features_core.csv"
+    if not path_core.exists():
+        print(f"Not found: {path_core}. Run --phase normalize first.")
+        return False
+    data_dir.mkdir(parents=True, exist_ok=True)
+    figures_dir.mkdir(parents=True, exist_ok=True)
+    reports_dir.mkdir(parents=True, exist_ok=True)
+
+    Z = pd.read_csv(path_core, index_col=0)
+    # Correlación entre columnas (features) sobre las filas (escenarios)
+    R_ff = Z.corr()
+    R_ff.to_csv(data_dir / "feature_feature_correlation_core.csv")
+    abs_r = R_ff.abs()
+    np.fill_diagonal(abs_r.values, 0)
+    max_off_diag = float(abs_r.max().max())
+    pairs_high = []
+    for i in range(len(R_ff.columns)):
+        for k in range(i + 1, len(R_ff.columns)):
+            r = R_ff.iloc[i, k]
+            if not pd.isna(r) and abs(r) >= 0.9:
+                pairs_high.append((R_ff.columns[i], R_ff.columns[k], float(r)))
+    report_lines = [
+        "=== Correlación feature–feature (core 24) ===",
+        "Matriz 24×24: correlación entre features sobre los escenarios (columnas de Z).",
+        f"max |r| off-diagonal = {max_off_diag:.4f}",
+        "",
+        "Objetivo (§5): no pares con |r| > 0.9 (baja redundancia del core).",
+        f"Pares con |r| >= 0.9: {len(pairs_high)}",
+    ]
+    if pairs_high:
+        report_lines.append("")
+        for a, b, r in sorted(pairs_high, key=lambda x: -abs(x[2])):
+            report_lines.append(f"  {a} <-> {b}  r = {r:.4f}")
+    report_text = "\n".join(report_lines)
+    (reports_dir / "feature_feature_correlation_report.txt").write_text(report_text, encoding="utf-8")
+
+    if plt is not None:
+        fig, ax = plt.subplots(1, 1, figsize=(10, 8))
+        im = ax.imshow(R_ff.values, cmap="RdBu_r", vmin=-1, vmax=1)
+        ax.set_xticks(range(len(R_ff.columns)))
+        ax.set_yticks(range(len(R_ff.columns)))
+        ax.set_xticklabels(R_ff.columns, rotation=45, ha="right", fontsize=7)
+        ax.set_yticklabels(R_ff.columns, fontsize=7)
+        plt.colorbar(im, ax=ax, label="Pearson r (feature–feature)")
+        ax.set_title("Correlación entre features del core (24×24)")
+        plt.tight_layout()
+        plt.savefig(figures_dir / "heatmap_feature_feature_core.png", dpi=150, bbox_inches="tight")
+        plt.savefig(figures_dir / "heatmap_feature_feature_core.pdf", dpi=150, bbox_inches="tight")
+        plt.close()
+        print(f"Written {figures_dir / 'heatmap_feature_feature_core.png'}")
+    print(report_text)
+    print(f"Written {data_dir / 'feature_feature_correlation_core.csv'}, {reports_dir / 'feature_feature_correlation_report.txt'}")
+    return True
+
+
+def run_phase_ablation(out_dir: Path, threshold: float = 0.7, n_clusters: int = 7) -> bool:
+    """
+    Ablación 17 vs 24 vs 46 (§6 features_core_vs_extended.md).
+    Métricas por conjunto: max |r|, media |r|, pares |r|>=threshold, Silhouette (Ward).
+    Escribe reports/ablation_report.txt y data/ablation_metrics.csv.
+    """
+    if pd is None or linkage is None or fcluster is None:
+        print("pandas and scipy.cluster required for --phase ablation")
+        return False
+    out_dir = Path(out_dir)
+    data_dir = out_dir / "data"
+    reports_dir = out_dir / "reports"
+    path_norm = data_dir / "features_normalized.csv"
+    path_core = data_dir / "features_core.csv"
+    path_red = data_dir / "features_reduced.csv"
+    if not path_norm.exists():
+        print(f"Not found: {path_norm}. Run --phase normalize first.")
+        return False
+    data_dir.mkdir(parents=True, exist_ok=True)
+    reports_dir.mkdir(parents=True, exist_ok=True)
+
+    Z_full = pd.read_csv(path_norm, index_col=0)
+    n_scenarios = len(Z_full)
+    labels = Z_full.index.tolist()
+    results = []
+
+    def metrics_for_Z(Z_mat: np.ndarray, name: str, d: int) -> dict:
+        R = np.corrcoef(Z_mat)
+        triu = np.triu_indices(n_scenarios, k=1)
+        r_flat = R[triu[0], triu[1]]
+        abs_r = np.abs(r_flat)
+        max_abs_r = float(np.nanmax(abs_r)) if len(abs_r) else np.nan
+        mean_abs_r = float(np.nanmean(abs_r)) if len(abs_r) else np.nan
+        n_above = int(np.sum(abs_r >= threshold))
+        total = len(abs_r)
+        cos_dist = cosine_distance_matrix(Z_mat)
+        try:
+            link = linkage(Z_mat, method="ward")
+            cl = fcluster(link, n_clusters, criterion="maxclust")
+            sil = silhouette_from_distance(cos_dist, cl)
+        except Exception:
+            sil = np.nan
+        return {
+            "set": name,
+            "n_features": d,
+            "max_abs_r": max_abs_r,
+            "mean_abs_r": mean_abs_r,
+            "pairs_r_above_threshold": n_above,
+            "total_pairs": total,
+            "pct_above": 100.0 * n_above / total if total else 0,
+            "silhouette": sil,
+        }
+
+    # Reduced 17
+    if path_red.exists():
+        Z_red = pd.read_csv(path_red, index_col=0)
+        if Z_red.shape[1] >= 17:
+            res = metrics_for_Z(Z_red.values, "reduced_17", Z_red.shape[1])
+            results.append(res)
+    # Core 24
+    if path_core.exists():
+        Z_core = pd.read_csv(path_core, index_col=0)
+        res = metrics_for_Z(Z_core.values, "core_24", Z_core.shape[1])
+        results.append(res)
+    # Full (46)
+    res_full = metrics_for_Z(Z_full.values, "full_46", Z_full.shape[1])
+    results.append(res_full)
+
+    df_ablation = pd.DataFrame(results)
+    df_ablation.to_csv(data_dir / "ablation_metrics.csv", index=False)
+
+    report_lines = [
+        "=== Ablación 17 vs 24 vs 46 (features_core_vs_extended.md §6) ===",
+        f"Escenarios: n = {n_scenarios}. Umbral |r| = {threshold}. Clusters Ward k = {n_clusters}.",
+        "",
+        "Métricas por conjunto:",
+    ]
+    for r in results:
+        report_lines.append(f"  {r['set']} (d={r['n_features']}): max|r|={r['max_abs_r']:.4f}, mean|r|={r['mean_abs_r']:.4f}, "
+                            f"pares |r|>={threshold}={r['pairs_r_above_threshold']} ({r['pct_above']:.1f}%), silhouette={r['silhouette']:.4f}")
+    report_lines.extend([
+        "",
+        "Objetivo: el core 24 ofrece mejor compromiso expresividad / redundancia / interpretabilidad.",
+    ])
+    report_text = "\n".join(report_lines)
+    (reports_dir / "ablation_report.txt").write_text(report_text, encoding="utf-8")
+    print(report_text)
+    print(f"Written {data_dir / 'ablation_metrics.csv'}, {reports_dir / 'ablation_report.txt'}")
     return True
 
 
@@ -1421,8 +1616,9 @@ def run_phase_outputs(out_dir: Path, threshold: float = 0.7) -> bool:
 def main():
     ap = argparse.ArgumentParser(description="Análisis del corpus de escenarios (por partes).")
     ap.add_argument("--corpus", type=str, default="corpus_v1", help="Directorio del corpus (p. ej. corpus_v1)")
-    ap.add_argument("--phase", type=str, default="features", choices=("features", "features_report", "normalize", "correlation", "figures", "output_metrics", "outputs", "all"),
-                    help="Fase: features, normalize, correlation, figures, output_metrics (rellenar CSV desde reports), outputs (validación Y), all")
+    ap.add_argument("--phase", type=str, default="features",
+                    choices=("features", "features_report", "normalize", "correlation", "feature_correlation", "ablation", "figures", "output_metrics", "outputs", "all"),
+                    help="Fase: features, normalize, correlation, feature_correlation (24×24), ablation (17 vs 24 vs 46), figures, output_metrics, outputs, all")
     ap.add_argument("--threshold", type=float, default=0.7,
                     help="Umbral |r| para criterio de correlación (default 0.7)")
     ap.add_argument("--strict", action="store_true",
@@ -1461,6 +1657,12 @@ def main():
     if args.phase == "correlation" or args.phase == "all":
         if not run_phase_correlation(out_dir, threshold=args.threshold, criterion_95=not args.strict, fdr_alpha=args.fdr_alpha):
             return 1
+    if args.phase == "feature_correlation" or args.phase == "all":
+        if not run_phase_feature_feature_correlation(out_dir):
+            pass  # no fallar si falta features_core.csv
+    if args.phase == "ablation" or args.phase == "all":
+        if not run_phase_ablation(out_dir, threshold=args.threshold):
+            pass
     if args.phase == "figures" or args.phase == "all":
         if not run_phase_figures(out_dir, threshold=args.threshold):
             return 1

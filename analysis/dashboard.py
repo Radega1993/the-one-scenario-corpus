@@ -23,8 +23,8 @@ REPORTS_DIR = BASE / "reports"
 
 # Tooltips para columnas (hover en cabeceras)
 FEATURE_HELP = {
-    "Wx": "Ancho del mundo (m)",
-    "Wy": "Alto del mundo (m)",
+    "world_area": "Área del mundo Wx×Wy (m²)",
+    "aspect_ratio": "Relación de aspecto min(Wx,Wy)/max(Wx,Wy) ∈ (0,1]",
     "N": "Número total de nodos",
     "density": "Densidad de nodos (proxy nodos/km²)",
     "speed_mean": "Velocidad media de movimiento (m/s)",

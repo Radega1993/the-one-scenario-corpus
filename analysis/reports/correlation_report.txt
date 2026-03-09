@@ -2,70 +2,70 @@
 r(Si, Sk) = corr(Zi, Zk).  Escenarios: n=70, features: d=46.
 
 Matriz de Pearson:
-  max |r| = 0.9380
-  media |r| = 0.2665
+  max |r| = 0.9568
+  media |r| = 0.2363
   Total pares (i<k): 2415
-  Pares con |r| >= 0.7: 98 (4.1%)
+  Pares con |r| >= 0.7: 92 (3.8%)
 
 Criterio: |r| < 0.7 para todos los pares O para ≥95% de los pares.
   ¿Todos |r| < 0.7? False
-  ¿Al menos 95% con |r| < 0.7? True (95.9% cumplen)
+  ¿Al menos 95% con |r| < 0.7? True (96.2% cumplen)
   Criterio cumplido: True
 
 Spearman (correlación de rangos entre vectores Z):
-  max |r| = 0.9917
-  media |r| = 0.3607
-  Pares con |r| >= 0.7: 245
+  max |r| = 0.9916
+  media |r| = 0.3620
+  Pares con |r| >= 0.7: 271
 
 Métricas geométricas (sobre Z normalizado):
   Distancia coseno (1 - cos_sim; 0=idénticos, 2=opuestos):
-    mín = 0.0527, media = 1.0063
+    mín = 0.0402, media = 1.0060
   Distancia euclídea:
-    mín = 0.8654, media = 7.3213
+    mín = 0.7159, media = 7.3352
 
 Criterios de diversidad geométrica (objetivo: espacio bien distribuido):
-  dist_coseno mínima = 0.0527  (objetivo: > 0.05; si < 0.05 hay pares casi idénticos)
-  Pares con cos_dist < 0.05: 0
-  Silhouette (k=7 clusters, Ward): 0.2935  (objetivo > 0.3)
+  dist_coseno mínima = 0.0402  (objetivo: > 0.05; si < 0.05 hay pares casi idénticos)
+  Pares con cos_dist < 0.05: 3
+  Silhouette (k=7 clusters, Ward): 0.3329  (objetivo > 0.3)
   Objetivos realistas: max |r| < 0.85, pares |r|>=0.7 < 3%, cos_dist mín > 0.05, silhouette > 0.3
 
 Pares con |r| >= 0.7 (máximo 20 mostrados):
-  R5_MountainRescue <-> D6_ShortTtlCritical_5to10min  r = 0.9380
-  S3_PeriodicMeetings_RegularRhythm <-> T5_VeryLongTtl_6to24h  r = 0.9374
-  T1_ManySmallMsgs_HighRate <-> T9_BufferStress_SmallBufferHighTraffic  r = 0.9345
-  U6_DenseDowntown_HelsinkiMedium <-> U7_MicroMobility_HelsinkiMedium  r = 0.9318
-  T13_Buffer_256k <-> T9_BufferStress_SmallBufferHighTraffic  r = 0.9310
-  T10_HighRateLowSpeed_Congestion <-> T15_TransmitSpeed_256k  r = 0.9263
-  S4_RandomMixing_NoHotspots <-> T9_BufferStress_SmallBufferHighTraffic  r = 0.9214
-  U4_RainyDay_SlowMobility_HelsinkiMedium <-> V6_CarOwnership_0_HelsinkiMedium  r = 0.9114
-  R7_SparseTinyBuffer <-> T13_Buffer_256k  r = 0.9109
-  D3_Aftershock_ErraticMobility <-> D9_Critical_1minTTL  r = 0.9088
-  S3_PeriodicMeetings_RegularRhythm <-> T11_TTL_1min  r = 0.9073
-  V5_RushHourBusDensity_HelsinkiMedium <-> V8_RoadClosure_HelsinkiMedium  r = 0.9022
-  R11_SpeedExtremeLow <-> R1_Rural_RandomWaypoint  r = 0.9021
-  D3_Aftershock_ErraticMobility <-> T5_VeryLongTtl_6to24h  r = 0.8966
-  U4_RainyDay_SlowMobility_HelsinkiMedium <-> V5_RushHourBusDensity_HelsinkiMedium  r = 0.8954
-  T12_TTL_Infinite_Buffer200M <-> T14_Buffer_200M  r = 0.8837
-  D3_Aftershock_ErraticMobility <-> S3_PeriodicMeetings_RegularRhythm  r = 0.8810
-  U6_DenseDowntown_HelsinkiMedium <-> V8_RoadClosure_HelsinkiMedium  r = 0.8786
-  T13_Buffer_256k <-> T1_ManySmallMsgs_HighRate  r = 0.8776
-  R10_TinyRange_5m <-> R11_SpeedExtremeLow  r = 0.8737
-  ... y 78 más.
+  S3_PeriodicMeetings_RegularRhythm <-> T5_VeryLongTtl_6to24h  r = 0.9568
+  T1_ManySmallMsgs_HighRate <-> T9_BufferStress_SmallBufferHighTraffic  r = 0.9566
+  R5_MountainRescue <-> D6_ShortTtlCritical_5to10min  r = 0.9471
+  T13_Buffer_256k <-> T9_BufferStress_SmallBufferHighTraffic  r = 0.9429
+  T13_Buffer_256k <-> T1_ManySmallMsgs_HighRate  r = 0.9368
+  U6_DenseDowntown_HelsinkiMedium <-> U7_MicroMobility_HelsinkiMedium  r = 0.9321
+  D3_Aftershock_ErraticMobility <-> S3_PeriodicMeetings_RegularRhythm  r = 0.9307
+  S4_RandomMixing_NoHotspots <-> T9_BufferStress_SmallBufferHighTraffic  r = 0.9262
+  U4_RainyDay_SlowMobility_HelsinkiMedium <-> V6_CarOwnership_0_HelsinkiMedium  r = 0.9152
+  R7_SparseTinyBuffer <-> T13_Buffer_256k  r = 0.9150
+  S3_PeriodicMeetings_RegularRhythm <-> T11_TTL_1min  r = 0.9057
+  D3_Aftershock_ErraticMobility <-> T5_VeryLongTtl_6to24h  r = 0.9053
+  V5_RushHourBusDensity_HelsinkiMedium <-> V8_RoadClosure_HelsinkiMedium  r = 0.9028
+  T10_HighRateLowSpeed_Congestion <-> T15_TransmitSpeed_256k  r = 0.8998
+  U4_RainyDay_SlowMobility_HelsinkiMedium <-> V5_RushHourBusDensity_HelsinkiMedium  r = 0.8973
+  D9_Critical_1minTTL <-> S3_PeriodicMeetings_RegularRhythm  r = 0.8902
+  D9_Critical_1minTTL <-> T11_TTL_1min  r = 0.8886
+  C4_Stadium_IngressEgress <-> T8_BurstTraffic_TimeWindows  r = 0.8878
+  U6_DenseDowntown_HelsinkiMedium <-> V8_RoadClosure_HelsinkiMedium  r = 0.8841
+  T12_TTL_Infinite_Buffer200M <-> T14_Buffer_200M  r = 0.8816
+  ... y 72 más.
 
 --- Test estadístico y corrección por comparaciones múltiples ---
 Pares: m = 2415 = C(70,2). Para cada par, p-value de H0: rho=0 (Pearson, n=d=46).
 
 FDR (Benjamini-Hochberg, alpha=0.05):
-  Rechazos (pares significativos): 691
-  Pares con |r| >= 0.7 Y significativos (FDR): 98
+  Rechazos (pares significativos): 522
+  Pares con |r| >= 0.7 Y significativos (FDR): 92
 
 Bonferroni (alpha/2415 = 0.000021):
-  Rechazos: 222
-  Pares con |r| >= 0.7 Y significativos (Bonferroni): 98
+  Rechazos: 152
+  Pares con |r| >= 0.7 Y significativos (Bonferroni): 92
 
 Objetivo: demostrar que no hay pares con |r| alto y significativo tras corrección.
-  Tras FDR: No (98 pares con |r|>=0.7 significativos).
-  Tras Bonferroni: No (98 pares con |r|>=0.7 significativos).
+  Tras FDR: No (92 pares con |r|>=0.7 significativos).
+  Tras Bonferroni: No (92 pares con |r|>=0.7 significativos).
 
 Diagnóstico: 0 rechazos no implica ausencia de correlación; con n=d la potencia depende de d (features).
 El problema real es geométrico: escenarios casi colineales (mismo subespacio).
