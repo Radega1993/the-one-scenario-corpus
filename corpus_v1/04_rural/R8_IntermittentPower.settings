@@ -14,7 +14,8 @@ MovementModel.worldSize = 6000, 5000
 Group.movementModel = RandomWaypoint
 Group.router = EpidemicRouter
 Group.nrofHosts = 35
-Group.bufferSize = 50M
+# Diversificar core 24 vs T6: buffer y transmitSpeed distintos
+Group.bufferSize = 42M
 Group.nrofInterfaces = 1
 Group.interface1 = bt0
 Group.speed = 0.4, 1.0
@@ -23,7 +24,7 @@ Group.waitTime = 60, 300
 Group.activeTimes = 0, 3600, 7200, 10800, 14400, 18000, 21600, 25200, 28800, 32400, 36000, 39600
 
 bt0.type = SimpleBroadcastInterface
-bt0.transmitSpeed = 2M
+bt0.transmitSpeed = 1.75M
 bt0.transmitRange = 10
 
 Scenario.nrofHostGroups = 1

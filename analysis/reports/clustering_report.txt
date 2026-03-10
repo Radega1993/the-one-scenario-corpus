@@ -1,4 +1,4 @@
-# Clustering Ward sobre Z (k=7), silhouette = 0.3329
+# Clustering Ward sobre Z (k=7), silhouette = 0.2885
 # De cada cluster: mantener 3-4 representantes; modificar el resto para empujarlos fuera.
 
 ## Cluster 1 (4 escenarios)
@@ -59,28 +59,18 @@
   V1_TaxiLow_HelsinkiMedium
   V2_TaxiHigh_HelsinkiMedium
 
-## Cluster 6 (21 escenarios)
-  C5_Festival_MultiHotspots_HelsinkiMedium
-  C6_Conference_Networking_HelsinkiMedium
+## Cluster 6 (11 escenarios)
   R12_SpeedExtremeHigh
-  U10_WorkdayLong_HelsinkiMedium
   U11_OfficeWaitHeavyTail_HelsinkiMedium
   U12_HighTimeVariance_HelsinkiMedium
   U1_CBD_Commuting_HelsinkiMedium
-  U2_RetailHeavy_HelsinkiMedium
-  U3_NightlifeClusters_HelsinkiMedium
-  U4_RainyDay_SlowMobility_HelsinkiMedium
   U5_SparseSuburb_HelsinkiMedium
-  U6_DenseDowntown_HelsinkiMedium
   U7_MicroMobility_HelsinkiMedium
   U8_CongestionHotspot_HelsinkiMedium
   U9_WorkdayShort_HelsinkiMedium
   V3_BusOnlyCarriers_HelsinkiMedium
-  V4_MixedBusPed_HelsinkiMedium
-  V5_RushHourBusDensity_HelsinkiMedium
   V6_CarOwnership_0_HelsinkiMedium
   V7_CarOwnership_100_HelsinkiMedium
-  V8_RoadClosure_HelsinkiMedium
 
 ## Cluster 7 (1 escenarios)
   C8_EmergencyDrill_Evacuation

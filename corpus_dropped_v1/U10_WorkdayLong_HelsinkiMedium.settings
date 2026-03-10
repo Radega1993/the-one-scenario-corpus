@@ -1,17 +1,17 @@
 # =========================================================
-# C6 - Conference networking
-# Groups that form and dissolve (variable size and wait).
-# Levers: minGroupSize, maxGroupSize, minWaitTime, maxWaitTime.
-# Map-based WDM (HelsinkiMedium).
+# U10 - Workday long (WDM)
+# 12-hour workday.
+# Levers: workDayLength = 43200 (12 h).
+# Dataset: HelsinkiMedium
 # =========================================================
 
-Scenario.name = C6_Conference_Networking_HelsinkiMedium
+Scenario.name = U10_WorkdayLong_HelsinkiMedium
 Scenario.simulateConnections = true
 Scenario.updateInterval = 0.1
 Scenario.endTime = 43200
-MovementModel.rngSeed = 18
-# Diversificación estructural vs C5 (mantener grupo Campus, mismo mapa Helsinki)
-MovementModel.worldSize = 8200, 7200
+MovementModel.rngSeed = 10
+# Diversificar core 24: world_area, aspect_ratio distintos
+MovementModel.worldSize = 7600, 6600
 
 MapBasedMovement.nrofMapFiles = 1
 MapBasedMovement.mapFile1 = data/HelsinkiMedium/roads.wkt
@@ -25,32 +25,30 @@ Group.nrofInterfaces = 1
 Group.interface1 = bt0
 bt0.type = SimpleBroadcastInterface
 bt0.transmitSpeed = 2M
-# Diversificar: conferencia = salas grandes, más rango
-bt0.transmitRange = 14
+bt0.transmitRange = 10
 
 Group.movementModel = WorkingDayMovement
 Group.routeFile = data/HelsinkiMedium/A_bus.wkt
-Group.speed = 0.5, 1.2
-Group.waitTime = 120, 600
+Group.speed = 0.5, 1.5
+Group.waitTime = 0, 120
 
 Group.homeLocationsFile = data/HelsinkiMedium/A_homes.wkt
 Group.officeLocationsFile = data/HelsinkiMedium/A_offices.wkt
 Group.meetingSpotsFile = data/HelsinkiMedium/A_meetingspots.wkt
 
 Group.timeDiffSTD = 1800
-Group.workDayLength = 28800
-# Diversificar: conferencia = menos "oficinas" (salas de sesión)
-Group.nrOfOffices = 6
+# U10 lever: long workday (12 h = 43200 s)
+Group.workDayLength = 43200
+Group.nrOfOffices = 10
 Group.officeSize = 40
 Group.officeWaitTimeParetoCoeff = 1.4
 Group.officeMinWaitTime = 300
 Group.officeMaxWaitTime = 900
-# C6 lever: groups that form and dissolve (conference networking)
-Group.nrOfMeetingSpots = 12
-Group.minGroupSize = 2
-Group.maxGroupSize = 10
-Group.minWaitTime = 180
-Group.maxWaitTime = 900
+Group.nrOfMeetingSpots = 10
+Group.minGroupSize = 1
+Group.maxGroupSize = 5
+Group.minWaitTime = 300
+Group.maxWaitTime = 1800
 Group.eveningActivityControlSystemNr = -1
 Group.shoppingControlSystemNr = -1
 Group.nrOfShops = 15
@@ -58,9 +56,9 @@ Group.shopSize = 25
 Group.shoppingWaitTimeParetoCoeff = 1.4
 Group.shoppingMinWaitTime = 60
 Group.shoppingMaxWaitTime = 600
-Group.minAfterShoppingStopTime = 120
+Group.minAfterShoppingStopTime = 60
 Group.maxAfterShoppingStopTime = 600
-Group.probGoShoppingAfterWork = 0.5
+Group.probGoShoppingAfterWork = 0.3
 Group.ownCarProb = 0.0
 
 Scenario.nrofHostGroups = 2
@@ -78,8 +76,8 @@ Group1.interface1 = bt0
 Group1.speed = 7, 10
 Group1.waitTime = 10, 30
 
-Group2.groupID = n
-Group2.nrofHosts = 60
+Group2.groupID = p
+Group2.nrofHosts = 80
 Group2.bufferSize = 50M
 Group2.movementModel = WorkingDayMovement
 Group2.routeFile = data/HelsinkiMedium/A_bus.wkt
@@ -87,20 +85,20 @@ Group2.busControlSystemNr = -1
 Group2.homeLocationsFile = data/HelsinkiMedium/A_homes.wkt
 Group2.officeLocationsFile = data/HelsinkiMedium/A_offices.wkt
 Group2.meetingSpotsFile = data/HelsinkiMedium/A_meetingspots.wkt
-Group2.speed = 0.5, 1.2
-Group2.waitTime = 120, 600
+Group2.speed = 0.5, 1.5
+Group2.waitTime = 0, 120
 Group2.timeDiffSTD = 1800
-Group2.workDayLength = 28800
-Group2.nrOfOffices = 6
+Group2.workDayLength = 43200
+Group2.nrOfOffices = 10
 Group2.officeSize = 40
 Group2.officeWaitTimeParetoCoeff = 1.4
 Group2.officeMinWaitTime = 300
 Group2.officeMaxWaitTime = 900
-Group2.nrOfMeetingSpots = 12
-Group2.minGroupSize = 2
-Group2.maxGroupSize = 10
-Group2.minWaitTime = 180
-Group2.maxWaitTime = 900
+Group2.nrOfMeetingSpots = 10
+Group2.minGroupSize = 1
+Group2.maxGroupSize = 5
+Group2.minWaitTime = 300
+Group2.maxWaitTime = 1800
 Group2.eveningActivityControlSystemNr = -1
 Group2.shoppingControlSystemNr = -1
 Group2.nrOfShops = 15
@@ -108,9 +106,9 @@ Group2.shopSize = 25
 Group2.shoppingWaitTimeParetoCoeff = 1.4
 Group2.shoppingMinWaitTime = 60
 Group2.shoppingMaxWaitTime = 600
-Group2.minAfterShoppingStopTime = 120
+Group2.minAfterShoppingStopTime = 60
 Group2.maxAfterShoppingStopTime = 600
-Group2.probGoShoppingAfterWork = 0.5
+Group2.probGoShoppingAfterWork = 0.3
 Group2.ownCarProb = 0.0
 
 Group.router = EpidemicRouter
@@ -118,7 +116,7 @@ Events.nrof = 1
 Events1.class = MessageEventGenerator
 Events1.interval = 25, 35
 Events1.size = 50k, 150k
-Events1.hosts = 0, 61
+Events1.hosts = 0, 81
 Events1.prefix = M
 
 Report.nrofReports = 2

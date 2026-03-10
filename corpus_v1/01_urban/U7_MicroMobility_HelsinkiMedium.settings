@@ -16,8 +16,9 @@ MovementModel.worldSize = 7200, 6200
 MapBasedMovement.nrofMapFiles = 1
 MapBasedMovement.mapFile1 = data/HelsinkiMedium/roads.wkt
 
-# U7 lever: small buffer
+# R11: bajar r vs U6
 Group.bufferSize = 2M
+Group.msgTtl = 400
 Group.busControlSystemNr = -1
 Group1.routeFile = data/HelsinkiMedium/A_bus.wkt
 Group1.busControlSystemNr = -1
@@ -25,8 +26,8 @@ Group1.busControlSystemNr = -1
 Group.nrofInterfaces = 1
 Group.interface1 = bt0
 bt0.type = SimpleBroadcastInterface
-bt0.transmitSpeed = 2M
-bt0.transmitRange = 10
+bt0.transmitSpeed = 1.85M
+bt0.transmitRange = 9
 
 Group.movementModel = WorkingDayMovement
 Group.routeFile = data/HelsinkiMedium/A_bus.wkt

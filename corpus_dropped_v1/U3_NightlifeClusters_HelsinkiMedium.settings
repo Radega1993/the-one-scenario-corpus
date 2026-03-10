@@ -14,7 +14,8 @@ Scenario.endTime = 43200
 MovementModel.rngSeed = 3
 
 # --- World ---
-MovementModel.worldSize = 8495, 7504
+# Diversificar core 24: world_area, aspect_ratio distintos
+MovementModel.worldSize = 8200, 7200
 
 # =========================================================
 # MapBasedMovement base (required by WDM stack)
@@ -25,7 +26,9 @@ MapBasedMovement.mapFile1 = data/HelsinkiMedium/roads.wkt
 # =========================================================
 # Default group params
 # =========================================================
-Group.bufferSize = 50M
+# R11: bajar r vs C5/C6/U12
+Group.bufferSize = 36M
+Group.msgTtl = 7800
 
 # BusControlSystem: at least one bus required so stops are registered.
 Group.busControlSystemNr = -1
@@ -36,9 +39,8 @@ Group1.busControlSystemNr = -1
 Group.nrofInterfaces = 1
 Group.interface1 = bt0
 bt0.type = SimpleBroadcastInterface
-bt0.transmitSpeed = 2M
-# Diversificar vs C5: nightlife = clusters más concentrados, menos rango
-bt0.transmitRange = 9
+bt0.transmitSpeed = 1.72M
+bt0.transmitRange = 6
 
 # =========================================================
 # Movement model: WorkingDayMovement
@@ -56,8 +58,8 @@ Group.meetingSpotsFile = data/HelsinkiMedium/A_meetingspots.wkt
 Group.timeDiffSTD = 1800
 
 # --- OfficeActivityMovement ---
-# Diversificar vs C5: nightlife = jornada laboral más corta
-Group.workDayLength = 25200
+# Diversificar core 24: nightlife = 8.5h (distinto de U1=8h, U2=7h, U11=7.5h)
+Group.workDayLength = 30600
 Group.nrOfOffices = 10
 Group.officeSize = 40
 Group.officeWaitTimeParetoCoeff = 1.4
@@ -98,7 +100,7 @@ Group1.movementModel = BusMovement
 Group1.routeFile = data/HelsinkiMedium/A_bus.wkt
 Group1.routeType = 1
 Group1.busControlSystemNr = -1
-Group1.bufferSize = 50M
+Group1.bufferSize = 38M
 Group1.router = EpidemicRouter
 Group1.nrofInterfaces = 1
 Group1.interface1 = bt0
@@ -107,7 +109,7 @@ Group1.waitTime = 10, 30
 
 Group2.groupID = p
 Group2.nrofHosts = 80
-Group2.bufferSize = 50M
+Group2.bufferSize = 38M
 Group2.movementModel = WorkingDayMovement
 Group2.routeFile = data/HelsinkiMedium/A_bus.wkt
 Group2.busControlSystemNr = -1
@@ -117,7 +119,7 @@ Group2.meetingSpotsFile = data/HelsinkiMedium/A_meetingspots.wkt
 Group2.speed = 0.5, 1.5
 Group2.waitTime = 0, 120
 Group2.timeDiffSTD = 1800
-Group2.workDayLength = 25200
+Group2.workDayLength = 30600
 Group2.nrOfOffices = 10
 Group2.officeSize = 40
 Group2.officeWaitTimeParetoCoeff = 1.4
@@ -151,8 +153,10 @@ Group.router = EpidemicRouter
 # =========================================================
 Events.nrof = 1
 Events1.class = MessageEventGenerator
-Events1.interval = 25, 35
-Events1.size = 50k, 150k
+# Diversificar core 24: mensajes más frecuentes (nightlife = más encuentros)
+# Diversificar core 24 vs C5: event_interval_mean, event_size_mean distintos
+Events1.interval = 16, 26
+Events1.size = 35k, 95k
 Events1.hosts = 0, 81
 Events1.prefix = M
 

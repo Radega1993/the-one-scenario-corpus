@@ -15,15 +15,16 @@ MovementModel.worldSize = 6200, 4800
 Group.movementModel = RandomWaypoint
 Group.router = EpidemicRouter
 Group.nrofHosts = 48
-Group.bufferSize = 5M
+# Diversificar core 24 vs T1
+Group.bufferSize = 4M
 Group.nrofInterfaces = 1
 Group.interface1 = bt0
 Group.speed = 0.5, 1.2
 Group.waitTime = 60, 300
 
 bt0.type = SimpleBroadcastInterface
-bt0.transmitSpeed = 2M
-bt0.transmitRange = 8
+bt0.transmitSpeed = 1.75M
+bt0.transmitRange = 7
 
 Scenario.nrofHostGroups = 1
 Group1.groupID = t

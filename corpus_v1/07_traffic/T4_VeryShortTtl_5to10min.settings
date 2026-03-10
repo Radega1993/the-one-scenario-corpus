@@ -17,7 +17,8 @@ Group.movementModel = RandomWaypoint
 Group.router = EpidemicRouter
 Group.nrofHosts = 42
 # Diversificar: TTL corto + buffer y rango menores
-Group.bufferSize = 10M
+# Diversificar core 24 vs D9
+Group.bufferSize = 8M
 Group.msgTtl = 5
 Group.nrofInterfaces = 1
 Group.interface1 = bt0
@@ -25,7 +26,7 @@ Group.speed = 0.35, 0.9
 Group.waitTime = 80, 320
 
 bt0.type = SimpleBroadcastInterface
-bt0.transmitSpeed = 2M
+bt0.transmitSpeed = 1.75M
 bt0.transmitRange = 6
 
 Scenario.nrofHostGroups = 1

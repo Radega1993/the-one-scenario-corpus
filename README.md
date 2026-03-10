@@ -6,7 +6,7 @@
 
 | Content | Description |
 |---------|-------------|
-| **corpus_v1/** | 70 `.settings` scenarios by family (urban, campus, vehicles, rural, disaster, social, traffic). |
+| **corpus_v1/** | 60 `.settings` scenarios by family (urban, campus, vehicles, rural, disaster, social, traffic). 10 moved to `corpus_dropped_v1/` (high correlation / narrative redundancy). |
 | **analysis/** | Feature extraction, correlation, output metrics, figures and [interactive dashboard](analysis/README.md). |
 | **.wiki-clone/** | Wiki content (EN+ES): structured in `01-home`, `02-guide`, `03-reference`, `04-results`, `05-corpus`, `06-families`. [Index](.wiki-clone/README.md); Home and results in `01-home/`, `04-results/`. Sync to GitHub Wiki by copying all `.md` from subdirs to wiki root. |
 | **ROADMAP.md** / **ROADMAP.es.md** | Next steps: bilingual docs; diversity criteria (|r| < 0.7, cos_dist). Spanish: [ROADMAP.es.md](ROADMAP.es.md). |
@@ -49,7 +49,7 @@ Analysis (feature extraction, correlation between scenarios, validation on outpu
 
 - **Main script:** `scenarios/analysis/run_analysis.py`, run by phase: `features` → `features_report` → `normalize` → `correlation` → `figures` → `output_metrics` → `outputs`. See [analysis/README.md](analysis/README.md) for the full phase list and options.
 - **Outputs:** `analysis/data/` (feature CSV, normalised, correlation/distance matrices, `output_metrics.csv`), `analysis/figures/` (heatmaps, histograms, scatter), `analysis/reports/` (text reports).
-- **Benchmark criterion:** 46 features per scenario; |r| < 0.7 for ≥95% of pairs (**95.9%** met); cosine distance > 0.05 (**min 0.0527**, 0 pairs below 0.05); max |r| **0.938**; **98** pairs (4.1%) with |r| ≥ 0.7. See [analysis/reports/diversity_targets.md](analysis/reports/diversity_targets.md) for full targets and status.
+- **Benchmark criterion (core 24):** 60 scenarios; **24 core features** define diversity. **88 pairs** (5.0%) with |r| ≥ 0.7; max |r| **0.9708** (U11↔U12); min cosine distance 0.0295. Justification of **why 24 are core** and **why others are discarded**: [analysis/docs/features_core_vs_extended.md](analysis/docs/features_core_vs_extended.md); settings not used: [analysis/docs/features_decision.md](analysis/docs/features_decision.md). Single reference: [analysis/reports/RESULTADOS_ACTUALES.md](analysis/reports/RESULTADOS_ACTUALES.md).
 
 **Interactive dashboard:** to view everything in one place (summary, results by phase, per-scenario detail, compare scenarios):
 

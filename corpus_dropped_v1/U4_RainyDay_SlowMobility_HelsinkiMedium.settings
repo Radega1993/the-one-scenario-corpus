@@ -16,7 +16,9 @@ MovementModel.worldSize = 5500, 4500
 MapBasedMovement.nrofMapFiles = 1
 MapBasedMovement.mapFile1 = data/HelsinkiMedium/roads.wkt
 
-Group.bufferSize = 50M
+# R11: bajar r vs V6/V4
+Group.bufferSize = 40M
+Group.msgTtl = 2800
 Group.busControlSystemNr = -1
 Group1.routeFile = data/HelsinkiMedium/A_bus.wkt
 Group1.busControlSystemNr = -1
@@ -24,8 +26,7 @@ Group1.busControlSystemNr = -1
 Group.nrofInterfaces = 1
 Group.interface1 = bt0
 bt0.type = SimpleBroadcastInterface
-bt0.transmitSpeed = 2M
-# Diversificar vs U8: lluvia = menos interferencia, más rango
+bt0.transmitSpeed = 2.1M
 bt0.transmitRange = 12
 
 Group.movementModel = WorkingDayMovement
@@ -71,7 +72,7 @@ Group1.movementModel = BusMovement
 Group1.routeFile = data/HelsinkiMedium/A_bus.wkt
 Group1.routeType = 1
 Group1.busControlSystemNr = -1
-Group1.bufferSize = 50M
+Group1.bufferSize = 42M
 Group1.router = EpidemicRouter
 Group1.nrofInterfaces = 1
 Group1.interface1 = bt0
@@ -80,7 +81,7 @@ Group1.waitTime = 15, 45
 
 Group2.groupID = p
 Group2.nrofHosts = 80
-Group2.bufferSize = 50M
+Group2.bufferSize = 42M
 Group2.movementModel = WorkingDayMovement
 Group2.routeFile = data/HelsinkiMedium/A_bus.wkt
 Group2.busControlSystemNr = -1
@@ -116,8 +117,9 @@ Group2.ownCarProb = 0.0
 Group.router = EpidemicRouter
 Events.nrof = 1
 Events1.class = MessageEventGenerator
-Events1.interval = 25, 35
-Events1.size = 50k, 150k
+# Diversificar core 24: menos frecuentes y más grandes (lluvia = tráfico más espaciado)
+Events1.interval = 50, 70
+Events1.size = 100k, 200k
 Events1.hosts = 0, 81
 Events1.prefix = M
 

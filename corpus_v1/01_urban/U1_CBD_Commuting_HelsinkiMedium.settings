@@ -25,7 +25,9 @@ MapBasedMovement.mapFile1 = data/HelsinkiMedium/roads.wkt
 # =========================================================
 # Default group params
 # =========================================================
-Group.bufferSize = 50M
+# R11: bajar r vs V6/U8
+Group.bufferSize = 43M
+Group.msgTtl = 9500
 
 # BusControlSystem -1: pedestrians use bus; at least one bus host is required
 # so the system registers stops (otherwise getBusStops() is null -> NPE).
@@ -37,7 +39,7 @@ Group1.busControlSystemNr = -1
 Group.nrofInterfaces = 1
 Group.interface1 = bt0
 bt0.type = SimpleBroadcastInterface
-bt0.transmitSpeed = 2M
+bt0.transmitSpeed = 2.4M
 bt0.transmitRange = 10
 
 # =========================================================
@@ -106,7 +108,7 @@ Group1.movementModel = BusMovement
 Group1.routeFile = data/HelsinkiMedium/A_bus.wkt
 Group1.routeType = 1
 Group1.busControlSystemNr = -1
-Group1.bufferSize = 50M
+Group1.bufferSize = 45M
 Group1.router = EpidemicRouter
 Group1.nrofInterfaces = 1
 Group1.interface1 = bt0
@@ -116,7 +118,7 @@ Group1.waitTime = 10, 30
 # Group2 = pedestrians (WDM); density = 80 for CBD-style flow
 Group2.groupID = p
 Group2.nrofHosts = 80
-Group2.bufferSize = 50M
+Group2.bufferSize = 45M
 Group2.movementModel = WorkingDayMovement
 Group2.routeFile = data/HelsinkiMedium/A_bus.wkt
 Group2.busControlSystemNr = -1
@@ -159,8 +161,9 @@ Group.router = EpidemicRouter
 # =========================================================
 Events.nrof = 1
 Events1.class = MessageEventGenerator
-Events1.interval = 25, 35
-Events1.size = 50k, 150k
+# Diversificar core 24: intervalos y tamaños distintos (event_interval_mean, event_size_mean)
+Events1.interval = 35, 45
+Events1.size = 80k, 120k
 Events1.hosts = 0, 81
 Events1.prefix = M
 

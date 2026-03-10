@@ -16,7 +16,9 @@ MovementModel.worldSize = 7400, 6400
 MapBasedMovement.nrofMapFiles = 1
 MapBasedMovement.mapFile1 = data/HelsinkiMedium/roads.wkt
 
-Group.bufferSize = 50M
+# R11: bajar r vs V4
+Group.bufferSize = 48M
+Group.msgTtl = 1800
 Group.busControlSystemNr = -1
 Group1.routeFile = data/HelsinkiMedium/A_bus.wkt
 Group1.busControlSystemNr = -1
@@ -24,9 +26,8 @@ Group1.busControlSystemNr = -1
 Group.nrofInterfaces = 1
 Group.interface1 = bt0
 bt0.type = SimpleBroadcastInterface
-bt0.transmitSpeed = 2M
-# Diversificar: jornada corta = menor alcance
-bt0.transmitRange = 8
+bt0.transmitSpeed = 1.9M
+bt0.transmitRange = 7
 
 Group.movementModel = WorkingDayMovement
 Group.routeFile = data/HelsinkiMedium/A_bus.wkt
@@ -70,7 +71,7 @@ Group1.movementModel = BusMovement
 Group1.routeFile = data/HelsinkiMedium/A_bus.wkt
 Group1.routeType = 1
 Group1.busControlSystemNr = -1
-Group1.bufferSize = 50M
+Group1.bufferSize = 48M
 Group1.router = EpidemicRouter
 Group1.nrofInterfaces = 1
 Group1.interface1 = bt0
@@ -79,7 +80,7 @@ Group1.waitTime = 10, 30
 
 Group2.groupID = p
 Group2.nrofHosts = 80
-Group2.bufferSize = 50M
+Group2.bufferSize = 48M
 Group2.movementModel = WorkingDayMovement
 Group2.routeFile = data/HelsinkiMedium/A_bus.wkt
 Group2.busControlSystemNr = -1

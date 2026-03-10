@@ -12,8 +12,8 @@ Documento de referencia para revisar la documentación, entender el estado actua
 | **Datos crudos y derivados** | `scenarios/analysis/data/` |
 | **Informes de texto** | `scenarios/analysis/reports/` |
 | **Figuras (PNG/PDF)** | `scenarios/analysis/figures/` |
-| **Metodología core vs extended (24 vs 46 features)** | `scenarios/analysis/reports/features_core_vs_extended.md` |
-| **Decisión de features y settings no usados** | `scenarios/analysis/reports/features_decision.md`, `reports/features_report.md` |
+| **Metodología core vs extended (24 vs 46 features)** | `scenarios/analysis/docs/features_core_vs_extended.md` |
+| **Decisión de features y settings no usados** | `scenarios/analysis/docs/features_decision.md`, `reports/features_report.md` |
 | **README del análisis** | `scenarios/analysis/README.md` (EN), `README.es.md` (ES) |
 | **Wiki (referencia pipeline, features, diversidad)** | `scenarios/.wiki-clone/` (03-reference, 04-results) |
 
@@ -37,6 +37,11 @@ Documento de referencia para revisar la documentación, entender el estado actua
 | `features_core.csv` | `--phase normalize` | Submatriz **n×24** (solo las 24 features del core). Misma normalización (NaN→0). |
 | `features_reduced.csv` | `--phase normalize` | Submatriz **n×17** (subconjunto mínimo para ablación). |
 | `correlation_pearson.csv` | `--phase correlation` | Matriz **n×n**: correlación de Pearson **entre filas** (entre escenarios), r(S_i, S_k). |
+| `correlation_pearson_core24.csv` | `--phase correlation` | Igual pero en espacio **core 24** (referencia investigación). |
+| `correlation_core24_report.txt` | `--phase correlation` | Métricas y pares |r|≥0.7 **en core 24**. |
+| `scenarios_to_diversify_core24.txt` | `--phase correlation` | Escenarios a diversificar **priorizados por core 24**. |
+| `distance_cosine_core24.csv` | `--phase correlation` | Distancia coseno entre escenarios en espacio core 24. |
+| `cluster_assignments_core24.csv` | `--phase correlation` | Cluster Ward k=7 en espacio core 24. |
 | `correlation_spearman.csv` | `--phase correlation` | Idem con Spearman entre vectores de escenarios. |
 | `correlation_pearson_pvalues.csv` | `--phase correlation` | Matriz n×n de p-values (H₀: ρ=0) para cada par. |
 | `distance_cosine.csv` | `--phase correlation` | Matriz n×n: 1 − cos_sim entre filas de Z. |
@@ -159,9 +164,8 @@ Todas en `scenarios/analysis/figures/`, en PNG y PDF salvo donde se indique.
 | `clustering_report.txt` | Asignación Ward k=7, lista de escenarios por cluster (para diversificar). |
 | `scenarios_to_diversify.txt` | Escenarios que aparecen en pares con \|r\|≥0.7, ordenados por número de “pares malos”. |
 | `features_report.txt` / `features_report.md` | Lista de los 46 features (descripción, origen) y settings no usados con motivo. |
-| `features_core_vs_extended.md` | Metodología: core 24, extended 46, world_area/aspect_ratio, política NaN, ablación, decisión sobre clusterRange_mean. |
-| `features_decision.md` | Justificación de qué settings se descartan y por qué. |
-| `diversity_targets.md` | Objetivos de diversidad y estado (si existe). |
+| `docs/features_core_vs_extended.md` | Metodología: core 24, extended 46, world_area/aspect_ratio, política NaN, ablación, decisión sobre clusterRange_mean. |
+| `docs/features_decision.md` | Justificación de qué settings se descartan y por qué. |
 
 ---
 
@@ -169,16 +173,16 @@ Todas en `scenarios/analysis/figures/`, en PNG y PDF salvo donde se indique.
 
 - **Hecho:** Extracción con world_area y aspect_ratio; política NaN (normalizar ignorando NaN, imputar 0); core 24 y reduced 17; correlación escenario–escenario y feature–feature; ablación 17/24/46; figuras listadas; documentación en README, reports y wiki.
 - **Criterios de diversidad (full 46):** 96.2% pares con \|r\|<0.7 ✓; Silhouette 0.33 > 0.3 ✓; 3 pares con cos_dist < 0.05 (objetivo era 0).
-- **Pendiente (según features_core_vs_extended.md):** Decisión empírica sobre **clusterRange_mean** (mantener en core o pasar a extended) según ablación/PCA; declarar “versión final” del método cuando se cierre eso.
+- **Pendiente (según docs/features_core_vs_extended.md):** Decisión empírica sobre **clusterRange_mean** (mantener en core o pasar a extended) según ablación/PCA; declarar “versión final” del método cuando se cierre eso.
 
 ---
 
 ## 8. Por dónde continuar (sugerencias)
 
-1. **Revisar documentación:** Esta guía + `features_core_vs_extended.md` + `README.md` + `correlation_report.txt` y `ablation_report.txt`.
+1. **Revisar documentación:** Esta guía + `docs/features_core_vs_extended.md` + `README.md` + `reports/correlation_report.txt` y `reports/ablation_report.txt`.
 2. **Revisar figuras:** En `figures/` (heatmaps, histogramas, PCA, par máximo r, feature–feature).
-3. **Diversificación:** Usar `scenarios_to_diversify.txt` y `clustering_report.txt` para priorizar escenarios a modificar y bajar \|r\| o subir cos_dist.
-4. **clusterRange_mean:** Valorar con PCA/loadings o sensibilidad en clustering si conviene dejarla en core o pasarla a extended; actualizar `features_core_vs_extended.md` y, si toca, la lista en `run_analysis.py`.
+3. **Diversificación (referencia = core 24):** Usar **`reports/scenarios_to_diversify_core24.txt`** y **`reports/correlation_core24_report.txt`** para priorizar; plan detallado en **`docs/PLAN_CONTINUIDAD_CORE24.md`**. Opcional: `reports/scenarios_to_diversify.txt` (46) y `reports/clustering_report.txt`.
+4. **clusterRange_mean:** Valorar con PCA/loadings o sensibilidad en clustering si conviene dejarla en core o pasarla a extended; actualizar `docs/features_core_vs_extended.md` y, si toca, la lista en `run_analysis.py`.
 5. **Outputs:** Si tienes `output_metrics.csv`, ejecutar `--phase outputs` y revisar `outputs_correlation_report.txt` y `heatmap_pearson_outputs.png` para ver redundancia en resultados de simulación.
 6. **Wiki:** Los cambios ya están en `scenarios/.wiki-clone`; si usas un wiki remoto, hacer commit y push desde ese directorio.
 

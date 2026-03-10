@@ -4,7 +4,7 @@
 
 **Pipeline:** El script `run_analysis.py` implementa esta metodología: extracción con `world_area` y `aspect_ratio` (§2.1), política NaN en `--phase normalize` (§4), salidas `features_core.csv` (24) y `features_reduced.csv` (17), `--phase feature_correlation` (matriz 24×24, §5), `--phase ablation` (17 vs 24 vs 46, §6). Ver [../README.md](../README.md).
 
-**Objetivo:** Definir un **conjunto core** de **24 features** para la validación principal de diversidad y el paper, y mantener las **46 como conjunto extendido** para análisis exploratorio, dashboard y material suplementario. Así se responde a la crítica de “demasiadas features” y se mejora interpretabilidad y control metodológico.
+**Objetivo:** Definir un **conjunto core** de **24 features** para la validación principal de diversidad y el paper, y mantener las **46 como conjunto extendido** para análisis exploratorio, dashboard y material suplementario. **La investigación (tesis/paper) usa las 24 core como referencia única** para métricas de diversidad y para decidir qué escenarios diversificar; ver `docs/PLAN_CONTINUIDAD_CORE24.md`. Así se responde a la crítica de “demasiadas features” y se mejora interpretabilidad y control metodológico.
 
 **Criterios para core:**
 - Define de verdad el escenario (decisión científica si cambia).

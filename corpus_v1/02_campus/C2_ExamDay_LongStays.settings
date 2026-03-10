@@ -16,8 +16,8 @@ MovementModel.worldSize = 750, 550
 Group.movementModel = RandomWaypoint
 Group.router = EpidemicRouter
 Group.nrofHosts = 48
-# Diversificar: exam = mensajes con TTL limitado
-Group.bufferSize = 50M
+# R11: bajar r vs C3
+Group.bufferSize = 48M
 Group.msgTtl = 60
 Group.nrofInterfaces = 1
 Group.interface1 = bt0
@@ -26,8 +26,8 @@ Group.speed = 0.2, 0.5
 Group.waitTime = 600, 1800
 
 bt0.type = SimpleBroadcastInterface
-bt0.transmitSpeed = 2M
-bt0.transmitRange = 14
+bt0.transmitSpeed = 1.9M
+bt0.transmitRange = 13
 
 Scenario.nrofHostGroups = 1
 Group1.groupID = e

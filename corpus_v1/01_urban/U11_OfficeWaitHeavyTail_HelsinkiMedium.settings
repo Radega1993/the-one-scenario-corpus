@@ -10,12 +10,15 @@ Scenario.simulateConnections = true
 Scenario.updateInterval = 0.1
 Scenario.endTime = 43200
 MovementModel.rngSeed = 11
-MovementModel.worldSize = 8495, 7504
+# Diversificar core 24: world_area, aspect_ratio distintos
+MovementModel.worldSize = 7800, 6800
 
 MapBasedMovement.nrofMapFiles = 1
 MapBasedMovement.mapFile1 = data/HelsinkiMedium/roads.wkt
 
-Group.bufferSize = 50M
+# R11: máxima separación de U12 (r 0.98): buffer alto, TTL alto, range bajo
+Group.bufferSize = 62M
+Group.msgTtl = 5500
 Group.busControlSystemNr = -1
 Group1.routeFile = data/HelsinkiMedium/A_bus.wkt
 Group1.busControlSystemNr = -1
@@ -23,8 +26,10 @@ Group1.busControlSystemNr = -1
 Group.nrofInterfaces = 1
 Group.interface1 = bt0
 bt0.type = SimpleBroadcastInterface
-bt0.transmitSpeed = 2M
-bt0.transmitRange = 8
+# Diversificar core 24: mayor velocidad de transmisión
+# Diversificar core 24 vs U8/V6: transmitSpeed distinto (heavy-tail = menos pico)
+bt0.transmitSpeed = 1.7M
+bt0.transmitRange = 6
 
 Group.movementModel = WorkingDayMovement
 Group.routeFile = data/HelsinkiMedium/A_bus.wkt
@@ -37,8 +42,8 @@ Group.meetingSpotsFile = data/HelsinkiMedium/A_meetingspots.wkt
 
 # Diversificar vs U4: mayor varianza horaria (heavy-tail)
 Group.timeDiffSTD = 2400
-# Diversificar vs V7: jornada 7h (heavy-tail = más tiempo en oficina)
-Group.workDayLength = 25200
+# Diversificar core 24: 7.5h (distinto de U2=7h, U3=8.5h)
+Group.workDayLength = 27000
 # Diversificar vector: menos oficinas (heavy-tail office wait)
 Group.nrOfOffices = 6
 Group.officeSize = 40
@@ -73,7 +78,7 @@ Group1.movementModel = BusMovement
 Group1.routeFile = data/HelsinkiMedium/A_bus.wkt
 Group1.routeType = 1
 Group1.busControlSystemNr = -1
-Group1.bufferSize = 50M
+Group1.bufferSize = 62M
 Group1.router = EpidemicRouter
 Group1.nrofInterfaces = 1
 Group1.interface1 = bt0
@@ -82,7 +87,7 @@ Group1.waitTime = 10, 30
 
 Group2.groupID = p
 Group2.nrofHosts = 80
-Group2.bufferSize = 50M
+Group2.bufferSize = 62M
 Group2.movementModel = WorkingDayMovement
 Group2.routeFile = data/HelsinkiMedium/A_bus.wkt
 Group2.busControlSystemNr = -1
@@ -92,7 +97,7 @@ Group2.meetingSpotsFile = data/HelsinkiMedium/A_meetingspots.wkt
 Group2.speed = 0.5, 1.5
 Group2.waitTime = 0, 120
 Group2.timeDiffSTD = 2400
-Group2.workDayLength = 25200
+Group2.workDayLength = 27000
 Group2.nrOfOffices = 6
 Group2.officeSize = 40
 Group2.officeWaitTimeParetoCoeff = 1.1
@@ -118,8 +123,9 @@ Group2.ownCarProb = 0.0
 Group.router = EpidemicRouter
 Events.nrof = 1
 Events1.class = MessageEventGenerator
-Events1.interval = 25, 35
-Events1.size = 50k, 150k
+# Diversificar core 24: mensajes más frecuentes y más pequeños
+Events1.interval = 20, 30
+Events1.size = 30k, 80k
 Events1.hosts = 0, 81
 Events1.prefix = M
 

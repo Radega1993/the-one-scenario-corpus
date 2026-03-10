@@ -1,71 +1,53 @@
 # =========================================================
-# U2 - Retail-heavy (WDM)
-# High probability of shopping/activities after work; long stop times.
-# Levers: probGoShoppingAfterWork, maxAfterShoppingStopTime.
-# Dataset: HelsinkiMedium (map + bus route + locations)
+# V8 - Road closure
+# okMaps restricted (e.g. main roads only / detour).
+# Levers: Group.okMaps (fewer map types = simulated closure).
+# Dataset: HelsinkiMedium
+# Diversificación estructural: área afectada por cierre (worldSize menor) → Wx,Wy,density distintos
 # =========================================================
 
-Scenario.name = U2_RetailHeavy_HelsinkiMedium
+Scenario.name = V8_RoadClosure_HelsinkiMedium
 Scenario.simulateConnections = true
 Scenario.updateInterval = 0.1
-
-# 12 hours (seconds)
 Scenario.endTime = 43200
-MovementModel.rngSeed = 2
+MovementModel.rngSeed = 28
+MovementModel.worldSize = 5800, 4800
 
-# --- World ---
-MovementModel.worldSize = 8495, 7504
-
-# =========================================================
-# MapBasedMovement base (required by WDM stack)
-# =========================================================
 MapBasedMovement.nrofMapFiles = 1
 MapBasedMovement.mapFile1 = data/HelsinkiMedium/roads.wkt
 
-# =========================================================
-# Default group params
-# =========================================================
-Group.bufferSize = 50M
-
-# BusControlSystem: at least one bus required so stops are registered.
+# R11: bajar r vs U12
+Group.bufferSize = 53M
+Group.msgTtl = 7500
 Group.busControlSystemNr = -1
 Group1.routeFile = data/HelsinkiMedium/A_bus.wkt
 Group1.busControlSystemNr = -1
 
-# --- Interfaces ---
 Group.nrofInterfaces = 1
 Group.interface1 = bt0
 bt0.type = SimpleBroadcastInterface
-bt0.transmitSpeed = 2M
-bt0.transmitRange = 10
+bt0.transmitSpeed = 1.45M
+bt0.transmitRange = 9
 
-# =========================================================
-# Movement model: WorkingDayMovement
-# =========================================================
 Group.movementModel = WorkingDayMovement
 Group.routeFile = data/HelsinkiMedium/A_bus.wkt
 Group.speed = 0.5, 1.5
 Group.waitTime = 0, 120
+# V8 lever: restrict to map type 1 only (road closure / detour)
+Group.okMaps = 1
 
 Group.homeLocationsFile = data/HelsinkiMedium/A_homes.wkt
 Group.officeLocationsFile = data/HelsinkiMedium/A_offices.wkt
 Group.meetingSpotsFile = data/HelsinkiMedium/A_meetingspots.wkt
-
-# --- HomeActivityMovement ---
-Group.timeDiffSTD = 1800
-
-# --- OfficeActivityMovement ---
-Group.workDayLength = 28800
+# Diversificar vector: mayor desfase horario (cierre/desvíos)
+Group.timeDiffSTD = 2400
+# Diversificar core 24: 8.5h (cierre/desvíos = jornada más larga)
+Group.workDayLength = 30600
 Group.nrOfOffices = 10
 Group.officeSize = 40
 Group.officeWaitTimeParetoCoeff = 1.4
 Group.officeMinWaitTime = 300
 Group.officeMaxWaitTime = 900
-
-# =========================================================
-# U2 levers: retail-heavy - high evening activity, long shopping stops
-# =========================================================
-# --- EveningActivityMovement: many meeting spots, long stay at retail ---
 Group.nrOfMeetingSpots = 10
 Group.minGroupSize = 1
 Group.maxGroupSize = 5
@@ -78,17 +60,11 @@ Group.shopSize = 25
 Group.shoppingWaitTimeParetoCoeff = 1.4
 Group.shoppingMinWaitTime = 60
 Group.shoppingMaxWaitTime = 600
-# Long stop after shopping (retail-heavy behaviour)
-Group.minAfterShoppingStopTime = 300
-Group.maxAfterShoppingStopTime = 1800
-
-# High probability to go shopping/evening activity after work
-Group.probGoShoppingAfterWork = 0.7
+Group.minAfterShoppingStopTime = 60
+Group.maxAfterShoppingStopTime = 600
+Group.probGoShoppingAfterWork = 0.3
 Group.ownCarProb = 0.0
 
-# =========================================================
-# Hosts: Group1 = bus, Group2 = pedestrians
-# =========================================================
 Scenario.nrofHostGroups = 2
 
 Group1.groupID = b
@@ -97,7 +73,7 @@ Group1.movementModel = BusMovement
 Group1.routeFile = data/HelsinkiMedium/A_bus.wkt
 Group1.routeType = 1
 Group1.busControlSystemNr = -1
-Group1.bufferSize = 50M
+Group1.bufferSize = 55M
 Group1.router = EpidemicRouter
 Group1.nrofInterfaces = 1
 Group1.interface1 = bt0
@@ -106,17 +82,18 @@ Group1.waitTime = 10, 30
 
 Group2.groupID = p
 Group2.nrofHosts = 80
-Group2.bufferSize = 50M
+Group2.bufferSize = 55M
 Group2.movementModel = WorkingDayMovement
 Group2.routeFile = data/HelsinkiMedium/A_bus.wkt
 Group2.busControlSystemNr = -1
+Group2.okMaps = 1
 Group2.homeLocationsFile = data/HelsinkiMedium/A_homes.wkt
 Group2.officeLocationsFile = data/HelsinkiMedium/A_offices.wkt
 Group2.meetingSpotsFile = data/HelsinkiMedium/A_meetingspots.wkt
 Group2.speed = 0.5, 1.5
 Group2.waitTime = 0, 120
-Group2.timeDiffSTD = 1800
-Group2.workDayLength = 28800
+Group2.timeDiffSTD = 2400
+Group2.workDayLength = 30600
 Group2.nrOfOffices = 10
 Group2.officeSize = 40
 Group2.officeWaitTimeParetoCoeff = 1.4
@@ -134,29 +111,20 @@ Group2.shopSize = 25
 Group2.shoppingWaitTimeParetoCoeff = 1.4
 Group2.shoppingMinWaitTime = 60
 Group2.shoppingMaxWaitTime = 600
-Group2.minAfterShoppingStopTime = 300
-Group2.maxAfterShoppingStopTime = 1800
-Group2.probGoShoppingAfterWork = 0.7
+Group2.minAfterShoppingStopTime = 60
+Group2.maxAfterShoppingStopTime = 600
+Group2.probGoShoppingAfterWork = 0.3
 Group2.ownCarProb = 0.0
 
-# =========================================================
-# Routing
-# =========================================================
 Group.router = EpidemicRouter
-
-# =========================================================
-# Traffic
-# =========================================================
 Events.nrof = 1
 Events1.class = MessageEventGenerator
-Events1.interval = 25, 35
-Events1.size = 50k, 150k
+# Diversificar core 24: cierre/desvíos = mensajes más espaciados
+Events1.interval = 30, 40
+Events1.size = 80k, 140k
 Events1.hosts = 0, 81
 Events1.prefix = M
 
-# =========================================================
-# Reports
-# =========================================================
 Report.nrofReports = 2
 Report.reportDir = reports/
 Report.report1 = MessageStatsReport

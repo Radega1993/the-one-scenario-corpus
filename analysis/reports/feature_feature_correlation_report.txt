@@ -1,8 +1,8 @@
 === Correlación feature–feature (core 24) ===
 Matriz 24×24: correlación entre features sobre los escenarios (columnas de Z).
-max |r| off-diagonal = 0.9651
+max |r| off-diagonal = 0.9393
 
 Objetivo (§5): no pares con |r| > 0.9 (baja redundancia del core).
 Pares con |r| >= 0.9: 1
 
-  mm_WDM <-> mm_Bus  r = 0.9651
+  mm_WDM <-> mm_Bus  r = 0.9393

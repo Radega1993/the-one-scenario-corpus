@@ -14,7 +14,7 @@ One script (`run_analysis.py`) with several phases that can be run independently
 
 - **Phases:** `features` → `features_report` → `normalize` → `correlation` → `feature_correlation` → `ablation` → `figures` → `output_metrics` → `outputs`. Each phase writes to `data/`, `figures/` or `reports/`. Use `--phase all` to run the full pipeline.
 - **Outputs:** intermediate results in `data/` (e.g. `features.csv` → `features_normalized.csv`, `features_core.csv` 24 cols, `features_reduced.csv` 17 cols).
-- **Core vs extended:** methodology in [reports/features_core_vs_extended.md](reports/features_core_vs_extended.md) (24 core features for diversity/paper, 46 extended for exploration). Space uses **world_area** (Wx×Wy) and **aspect_ratio** = min(Wx,Wy)/max(Wx,Wy). **NaN policy:** z-score per column ignoring NaN; then impute NaN → 0 in standardized space (§4).
+- **Core vs extended:** methodology in [docs/features_core_vs_extended.md](docs/features_core_vs_extended.md) (24 core features for diversity/paper, 46 extended for exploration). Space uses **world_area** (Wx×Wy) and **aspect_ratio** = min(Wx,Wy)/max(Wx,Wy). **NaN policy:** z-score per column ignoring NaN; then impute NaN → 0 in standardized space (§4).
 
 ---
 
@@ -35,9 +35,9 @@ analysis/
 
 ## Features (summary)
 
-**Current results (benchmark status):** 70 scenarios, **46 features** (extended); **core 24** for diversity/paper. Correlation (full 46): **96.2%** of pairs with |r| < 0.7 (92 pairs ≥ 0.7); max |r| **0.957**; Silhouette (Ward k=7) **0.333**. Ablation: core 24 gives best Silhouette (0.41); full 46 gives fewest high-r pairs (3.8%). Feature–feature (core 24): one pair |r| ≥ 0.9 (mm_WDM–mm_Bus). Full table: [reports/diversity_targets.md](reports/diversity_targets.md).
+**Current results (benchmark status):** **60 scenarios**, **46 features** (extended); **24 core** for diversity/paper. **Core 24:** 88 pairs (5.0%) with |r| ≥ 0.7; max |r| **0.9708** (U11↔U12); min cosine 0.0295; Silhouette (Ward k=7) **0.3227**. Space 46: 54 pairs (3.1%) with |r| ≥ 0.7; max |r| 0.9357. **Why 24 core / why discarded:** [docs/features_core_vs_extended.md](docs/features_core_vs_extended.md), [docs/features_decision.md](docs/features_decision.md). Single reference: [reports/RESULTADOS_ACTUALES.md](reports/RESULTADOS_ACTUALES.md).
 
-**46 features** per scenario: **space** (**world_area** = Wx×Wy, **aspect_ratio** = min(Wx,Wy)/max(Wx,Wy), N, density, speed_mean, pause_ratio, wait_mean, movement-model one-hot), **contact** (transmitRange, contact_rate_proxy), **traffic** (event_interval_mean, event_size_mean, msgTtl, pattern_*, nrof_event_generators, event2_*), **resources** (bufferSize, transmitSpeed), **WDM** (workDayLength, ownCarProb, …), **cluster** (clusterRange_mean). Core 24 list and methodology: [reports/features_core_vs_extended.md](reports/features_core_vs_extended.md). Full list and settings not used: `reports/features_report.md`, `reports/features_decision.md`.
+**46 features** per scenario: **space** (**world_area** = Wx×Wy, **aspect_ratio** = min(Wx,Wy)/max(Wx,Wy), N, density, speed_mean, pause_ratio, wait_mean, movement-model one-hot), **contact** (transmitRange, contact_rate_proxy), **traffic** (event_interval_mean, event_size_mean, msgTtl, pattern_*, nrof_event_generators, event2_*), **resources** (bufferSize, transmitSpeed), **WDM** (workDayLength, ownCarProb, …), **cluster** (clusterRange_mean). Core 24 list and methodology: [docs/features_core_vs_extended.md](docs/features_core_vs_extended.md). Full list and settings not used: `reports/features_report.md`, [docs/features_decision.md](docs/features_decision.md).
 
 ---
 

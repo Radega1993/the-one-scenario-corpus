@@ -547,7 +547,7 @@ NOT_USED_REASONS: dict[str, str] = {
     "Group.routeType": "DESCARTADO: Sin variabilidad útil en el corpus.",
 }
 # Razón por defecto para claves no listadas (p. ej. Group2.*, Group3.*, ...)
-NOT_USED_REASON_DEFAULT = "DESCARTADO: Ver features_decision.md (variante de grupo o misma categoría que Group/Group1)."
+NOT_USED_REASON_DEFAULT = "DESCARTADO: Ver ../docs/features_decision.md (variante de grupo o misma categoría que Group/Group1)."
 
 
 def collect_all_settings_keys(corpus_dir: Path, scenario_paths: list[Path]) -> set[str]:
@@ -593,7 +593,7 @@ def run_phase_features_report(corpus_dir: Path, out_dir: Path, scenario_paths: l
     not_used = sorted(all_keys - used_keys)
     lines_txt.append("--- SETTINGS NO UTILIZADOS EN EL VECTOR DE FEATURES ---")
     lines_txt.append("Presentes en uno o más .settings del corpus pero DESCARTADOS de forma definitiva para el análisis.")
-    lines_txt.append("Justificación metodológica completa: reports/features_decision.md")
+    lines_txt.append("Justificación metodológica completa: docs/features_decision.md")
     lines_txt.append("")
     for k in not_used:
         reason = NOT_USED_REASONS.get(k, NOT_USED_REASON_DEFAULT)
@@ -1028,6 +1028,73 @@ def run_phase_correlation(out_dir: Path, threshold: float = 0.7, criterion_95: b
         diversify_lines.append(f"{s}  (# pares con |r|>={threshold}: {count_above[s]})")
     (reports_dir / "scenarios_to_diversify.txt").write_text("\n".join(diversify_lines), encoding="utf-8")
     print(f"Written {reports_dir / 'scenarios_to_diversify.txt'} ({len(scenarios_sorted)} escenarios a diversificar)")
+
+    # ----- Correlación y diversificación en espacio CORE 24 (referencia para investigación) -----
+    path_core = data_dir / "features_core.csv"
+    if path_core.exists() and pd is not None:
+        Z_core = pd.read_csv(path_core, index_col=0)
+        Z_core_arr = Z_core.values
+        R_core24 = Z_core.T.corr()
+        R_core24.to_csv(data_dir / "correlation_pearson_core24.csv")
+        triu_c = np.triu_indices(n, k=1)
+        r_core_flat = R_core24.values[triu_c[0], triu_c[1]]
+        abs_r_core = np.abs(r_core_flat)
+        n_above_core = int(np.sum(abs_r_core >= threshold))
+        total_core = len(r_core_flat)
+        max_abs_r_core = float(np.nanmax(abs_r_core)) if total_core else np.nan
+        mean_abs_r_core = float(np.nanmean(abs_r_core)) if total_core else np.nan
+        cos_dist_core = cosine_distance_matrix(Z_core_arr)
+        pd.DataFrame(cos_dist_core, index=index_df, columns=index_df).to_csv(data_dir / "distance_cosine_core24.csv")
+        min_cos_core = float(np.nanmin(cos_dist_core[triu_c[0], triu_c[1]])) if total_core else np.nan
+        pairs_above_core = []
+        for idx in np.where(abs_r_core >= threshold)[0]:
+            i, k = triu_c[0][idx], triu_c[1][idx]
+            pairs_above_core.append((labels[i], labels[k], float(R_core24.iloc[i, k])))
+        silhouette_core24 = np.nan
+        if linkage is not None and fcluster is not None:
+            try:
+                link_core = linkage(Z_core_arr, method="ward")
+                cluster_core = fcluster(link_core, n_clusters, criterion="maxclust")
+                silhouette_core24 = silhouette_from_distance(cos_dist_core, cluster_core)
+                pd.DataFrame({"scenario": labels, "cluster": cluster_core}).to_csv(data_dir / "cluster_assignments_core24.csv", index=False)
+            except Exception:
+                pass
+        report_core_lines = [
+            "=== Correlación entre escenarios en espacio CORE 24 (referencia para investigación) ===",
+            f"Vectores Z_core: n={n} escenarios, d=24 features. r(Si, Sk) = Pearson entre filas de Z_core.",
+            "",
+            f"  max |r| = {max_abs_r_core:.4f}",
+            f"  media |r| = {mean_abs_r_core:.4f}",
+            f"  Total pares: {total_core}",
+            f"  Pares con |r| >= {threshold}: {n_above_core} ({100.0 * n_above_core / total_core:.1f}%)",
+            "",
+            f"  Distancia coseno mínima = {min_cos_core:.4f}",
+            f"  Silhouette (Ward k={n_clusters} sobre Z_core) = {silhouette_core24:.4f}",
+            "",
+            "Objetivo investigación: diversidad y resultados se evalúan con las 24 core. Priorizar reducción de pares |r|>=0.7 en este espacio.",
+        ]
+        if pairs_above_core:
+            report_core_lines.append("")
+            report_core_lines.append(f"Pares con |r| >= {threshold} (máximo 30):")
+            for (a, b, r) in sorted(pairs_above_core, key=lambda x: -abs(x[2]))[:30]:
+                report_core_lines.append(f"  {a} <-> {b}  r = {r:.4f}")
+            if len(pairs_above_core) > 30:
+                report_core_lines.append(f"  ... y {len(pairs_above_core) - 30} más.")
+        count_above_core = {s: 0 for s in labels}
+        for (a, b, _) in pairs_above_core:
+            count_above_core[a] += 1
+            count_above_core[b] += 1
+        scenarios_core_sorted = sorted(set(a for (a, b, _) in pairs_above_core) | set(b for (a, b, _) in pairs_above_core), key=lambda s: -count_above_core[s])
+        diversify_core_lines = [
+            "# Escenarios a diversificar (core 24) — aparecen en pares con |r| >= 0.7 en espacio de 24 features",
+            f"# Referencia para investigación. Total: {len(scenarios_core_sorted)} escenarios.",
+            "",
+        ]
+        for s in scenarios_core_sorted:
+            diversify_core_lines.append(f"{s}  (# pares |r|>={threshold} en core24: {count_above_core[s]})")
+        (reports_dir / "correlation_core24_report.txt").write_text("\n".join(report_core_lines), encoding="utf-8")
+        (reports_dir / "scenarios_to_diversify_core24.txt").write_text("\n".join(diversify_core_lines), encoding="utf-8")
+        print(f"Written correlation_core24_report.txt, scenarios_to_diversify_core24.txt ({len(scenarios_core_sorted)} escenarios), correlation_pearson_core24.csv, distance_cosine_core24.csv")
 
     # Asignación a clusters y reporte por cluster (para diversificar: 3-4 representantes por cluster, empujar el resto)
     if cluster_labels is not None and pd is not None:
