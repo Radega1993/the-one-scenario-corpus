@@ -6,10 +6,10 @@ Features utilizados para correlación y diversidad, y settings no utilizados con
 
 | Feature | Descripción | Origen (setting) |
 |---------|-------------|------------------|
-| Wx | Ancho del mundo (m) | MovementModel.worldSize |
-| Wy | Alto del mundo (m) | MovementModel.worldSize |
+| world_area | Área del mundo Wx×Wy (m²) | MovementModel.worldSize |
+| aspect_ratio | Relación de aspecto min(Wx,Wy)/max(Wx,Wy) ∈ (0,1] | MovementModel.worldSize |
 | N | Número de hosts | Scenario.nrofHostGroups, Group*.nrofHosts |
-| density | Densidad proxy (hosts/km²) | N, Wx, Wy (derivado) |
+| density | Densidad proxy (hosts/km²) | N, world_area (derivado); excluida del core por redundancia |
 | speed_mean | Velocidad media (m/s) | Group*.speed |
 | pause_ratio | Ratio pausa/(movimiento+pausa) | Group*.waitTime (derivado) |
 | wait_mean | Tiempo de espera medio (s) | Group*.waitTime |
@@ -82,54 +82,54 @@ Features utilizados para correlación y diversidad, y settings no utilizados con
 | `Group.router` | DESCARTADO: Mismo en todo el corpus (EpidemicRouter). |
 | `Group.shoppingControlSystemNr` | DESCARTADO: Referencia interna. |
 | `Group.shoppingWaitTimeParetoCoeff` | DESCARTADO: Ya usamos shoppingWaitTime_mean. |
-| `Group1.LinearMovement.endLocation` | DESCARTADO: Ver features_decision.md (variante de grupo o misma categoría que Group/Group1). |
-| `Group1.LinearMovement.initLocType` | DESCARTADO: Ver features_decision.md (variante de grupo o misma categoría que Group/Group1). |
-| `Group1.LinearMovement.startLocation` | DESCARTADO: Ver features_decision.md (variante de grupo o misma categoría que Group/Group1). |
-| `Group1.LinearMovement.targetType` | DESCARTADO: Ver features_decision.md (variante de grupo o misma categoría que Group/Group1). |
+| `Group1.LinearMovement.endLocation` | DESCARTADO: Ver ../docs/features_decision.md (variante de grupo o misma categoría que Group/Group1). |
+| `Group1.LinearMovement.initLocType` | DESCARTADO: Ver ../docs/features_decision.md (variante de grupo o misma categoría que Group/Group1). |
+| `Group1.LinearMovement.startLocation` | DESCARTADO: Ver ../docs/features_decision.md (variante de grupo o misma categoría que Group/Group1). |
+| `Group1.LinearMovement.targetType` | DESCARTADO: Ver ../docs/features_decision.md (variante de grupo o misma categoría que Group/Group1). |
 | `Group1.busControlSystemNr` | DESCARTADO: Referencia interna. |
-| `Group1.clusterCenter` | DESCARTADO: Ver features_decision.md (variante de grupo o misma categoría que Group/Group1). |
+| `Group1.clusterCenter` | DESCARTADO: Ver ../docs/features_decision.md (variante de grupo o misma categoría que Group/Group1). |
 | `Group1.groupID` | DESCARTADO: Identificador de grupo. |
-| `Group1.nrofInterfaces` | DESCARTADO: Ver features_decision.md (variante de grupo o misma categoría que Group/Group1). |
+| `Group1.nrofInterfaces` | DESCARTADO: Ver ../docs/features_decision.md (variante de grupo o misma categoría que Group/Group1). |
 | `Group1.routeFile` | DESCARTADO: Ruta de fichero (depende del mapa). |
 | `Group1.routeType` | DESCARTADO: Mismo valor (1) en escenarios con bus; sin variabilidad. |
-| `Group1.router` | DESCARTADO: Ver features_decision.md (variante de grupo o misma categoría que Group/Group1). |
-| `Group10.clusterCenter` | DESCARTADO: Ver features_decision.md (variante de grupo o misma categoría que Group/Group1). |
-| `Group10.groupID` | DESCARTADO: Ver features_decision.md (variante de grupo o misma categoría que Group/Group1). |
-| `Group11.clusterCenter` | DESCARTADO: Ver features_decision.md (variante de grupo o misma categoría que Group/Group1). |
-| `Group11.groupID` | DESCARTADO: Ver features_decision.md (variante de grupo o misma categoría que Group/Group1). |
-| `Group12.clusterCenter` | DESCARTADO: Ver features_decision.md (variante de grupo o misma categoría que Group/Group1). |
-| `Group12.groupID` | DESCARTADO: Ver features_decision.md (variante de grupo o misma categoría que Group/Group1). |
-| `Group2.busControlSystemNr` | DESCARTADO: Ver features_decision.md (variante de grupo o misma categoría que Group/Group1). |
-| `Group2.clusterCenter` | DESCARTADO: Ver features_decision.md (variante de grupo o misma categoría que Group/Group1). |
-| `Group2.eveningActivityControlSystemNr` | DESCARTADO: Ver features_decision.md (variante de grupo o misma categoría que Group/Group1). |
-| `Group2.groupID` | DESCARTADO: Ver features_decision.md (variante de grupo o misma categoría que Group/Group1). |
-| `Group2.homeLocationsFile` | DESCARTADO: Ver features_decision.md (variante de grupo o misma categoría que Group/Group1). |
-| `Group2.meetingSpotsFile` | DESCARTADO: Ver features_decision.md (variante de grupo o misma categoría que Group/Group1). |
-| `Group2.nrofInterfaces` | DESCARTADO: Ver features_decision.md (variante de grupo o misma categoría que Group/Group1). |
-| `Group2.officeLocationsFile` | DESCARTADO: Ver features_decision.md (variante de grupo o misma categoría que Group/Group1). |
-| `Group2.officeWaitTimeParetoCoeff` | DESCARTADO: Ver features_decision.md (variante de grupo o misma categoría que Group/Group1). |
-| `Group2.okMaps` | DESCARTADO: Ver features_decision.md (variante de grupo o misma categoría que Group/Group1). |
-| `Group2.routeFile` | DESCARTADO: Ver features_decision.md (variante de grupo o misma categoría que Group/Group1). |
-| `Group2.routeType` | DESCARTADO: Ver features_decision.md (variante de grupo o misma categoría que Group/Group1). |
-| `Group2.router` | DESCARTADO: Ver features_decision.md (variante de grupo o misma categoría que Group/Group1). |
-| `Group2.shoppingControlSystemNr` | DESCARTADO: Ver features_decision.md (variante de grupo o misma categoría que Group/Group1). |
-| `Group2.shoppingWaitTimeParetoCoeff` | DESCARTADO: Ver features_decision.md (variante de grupo o misma categoría que Group/Group1). |
-| `Group3.clusterCenter` | DESCARTADO: Ver features_decision.md (variante de grupo o misma categoría que Group/Group1). |
-| `Group3.groupID` | DESCARTADO: Ver features_decision.md (variante de grupo o misma categoría que Group/Group1). |
-| `Group3.nrofInterfaces` | DESCARTADO: Ver features_decision.md (variante de grupo o misma categoría que Group/Group1). |
-| `Group3.router` | DESCARTADO: Ver features_decision.md (variante de grupo o misma categoría que Group/Group1). |
-| `Group4.clusterCenter` | DESCARTADO: Ver features_decision.md (variante de grupo o misma categoría que Group/Group1). |
-| `Group4.groupID` | DESCARTADO: Ver features_decision.md (variante de grupo o misma categoría que Group/Group1). |
-| `Group5.clusterCenter` | DESCARTADO: Ver features_decision.md (variante de grupo o misma categoría que Group/Group1). |
-| `Group5.groupID` | DESCARTADO: Ver features_decision.md (variante de grupo o misma categoría que Group/Group1). |
-| `Group6.clusterCenter` | DESCARTADO: Ver features_decision.md (variante de grupo o misma categoría que Group/Group1). |
-| `Group6.groupID` | DESCARTADO: Ver features_decision.md (variante de grupo o misma categoría que Group/Group1). |
-| `Group7.clusterCenter` | DESCARTADO: Ver features_decision.md (variante de grupo o misma categoría que Group/Group1). |
-| `Group7.groupID` | DESCARTADO: Ver features_decision.md (variante de grupo o misma categoría que Group/Group1). |
-| `Group8.clusterCenter` | DESCARTADO: Ver features_decision.md (variante de grupo o misma categoría que Group/Group1). |
-| `Group8.groupID` | DESCARTADO: Ver features_decision.md (variante de grupo o misma categoría que Group/Group1). |
-| `Group9.clusterCenter` | DESCARTADO: Ver features_decision.md (variante de grupo o misma categoría que Group/Group1). |
-| `Group9.groupID` | DESCARTADO: Ver features_decision.md (variante de grupo o misma categoría que Group/Group1). |
+| `Group1.router` | DESCARTADO: Ver ../docs/features_decision.md (variante de grupo o misma categoría que Group/Group1). |
+| `Group10.clusterCenter` | DESCARTADO: Ver ../docs/features_decision.md (variante de grupo o misma categoría que Group/Group1). |
+| `Group10.groupID` | DESCARTADO: Ver ../docs/features_decision.md (variante de grupo o misma categoría que Group/Group1). |
+| `Group11.clusterCenter` | DESCARTADO: Ver ../docs/features_decision.md (variante de grupo o misma categoría que Group/Group1). |
+| `Group11.groupID` | DESCARTADO: Ver ../docs/features_decision.md (variante de grupo o misma categoría que Group/Group1). |
+| `Group12.clusterCenter` | DESCARTADO: Ver ../docs/features_decision.md (variante de grupo o misma categoría que Group/Group1). |
+| `Group12.groupID` | DESCARTADO: Ver ../docs/features_decision.md (variante de grupo o misma categoría que Group/Group1). |
+| `Group2.busControlSystemNr` | DESCARTADO: Ver ../docs/features_decision.md (variante de grupo o misma categoría que Group/Group1). |
+| `Group2.clusterCenter` | DESCARTADO: Ver ../docs/features_decision.md (variante de grupo o misma categoría que Group/Group1). |
+| `Group2.eveningActivityControlSystemNr` | DESCARTADO: Ver ../docs/features_decision.md (variante de grupo o misma categoría que Group/Group1). |
+| `Group2.groupID` | DESCARTADO: Ver ../docs/features_decision.md (variante de grupo o misma categoría que Group/Group1). |
+| `Group2.homeLocationsFile` | DESCARTADO: Ver ../docs/features_decision.md (variante de grupo o misma categoría que Group/Group1). |
+| `Group2.meetingSpotsFile` | DESCARTADO: Ver ../docs/features_decision.md (variante de grupo o misma categoría que Group/Group1). |
+| `Group2.nrofInterfaces` | DESCARTADO: Ver ../docs/features_decision.md (variante de grupo o misma categoría que Group/Group1). |
+| `Group2.officeLocationsFile` | DESCARTADO: Ver ../docs/features_decision.md (variante de grupo o misma categoría que Group/Group1). |
+| `Group2.officeWaitTimeParetoCoeff` | DESCARTADO: Ver ../docs/features_decision.md (variante de grupo o misma categoría que Group/Group1). |
+| `Group2.okMaps` | DESCARTADO: Ver ../docs/features_decision.md (variante de grupo o misma categoría que Group/Group1). |
+| `Group2.routeFile` | DESCARTADO: Ver ../docs/features_decision.md (variante de grupo o misma categoría que Group/Group1). |
+| `Group2.routeType` | DESCARTADO: Ver ../docs/features_decision.md (variante de grupo o misma categoría que Group/Group1). |
+| `Group2.router` | DESCARTADO: Ver ../docs/features_decision.md (variante de grupo o misma categoría que Group/Group1). |
+| `Group2.shoppingControlSystemNr` | DESCARTADO: Ver ../docs/features_decision.md (variante de grupo o misma categoría que Group/Group1). |
+| `Group2.shoppingWaitTimeParetoCoeff` | DESCARTADO: Ver ../docs/features_decision.md (variante de grupo o misma categoría que Group/Group1). |
+| `Group3.clusterCenter` | DESCARTADO: Ver ../docs/features_decision.md (variante de grupo o misma categoría que Group/Group1). |
+| `Group3.groupID` | DESCARTADO: Ver ../docs/features_decision.md (variante de grupo o misma categoría que Group/Group1). |
+| `Group3.nrofInterfaces` | DESCARTADO: Ver ../docs/features_decision.md (variante de grupo o misma categoría que Group/Group1). |
+| `Group3.router` | DESCARTADO: Ver ../docs/features_decision.md (variante de grupo o misma categoría que Group/Group1). |
+| `Group4.clusterCenter` | DESCARTADO: Ver ../docs/features_decision.md (variante de grupo o misma categoría que Group/Group1). |
+| `Group4.groupID` | DESCARTADO: Ver ../docs/features_decision.md (variante de grupo o misma categoría que Group/Group1). |
+| `Group5.clusterCenter` | DESCARTADO: Ver ../docs/features_decision.md (variante de grupo o misma categoría que Group/Group1). |
+| `Group5.groupID` | DESCARTADO: Ver ../docs/features_decision.md (variante de grupo o misma categoría que Group/Group1). |
+| `Group6.clusterCenter` | DESCARTADO: Ver ../docs/features_decision.md (variante de grupo o misma categoría que Group/Group1). |
+| `Group6.groupID` | DESCARTADO: Ver ../docs/features_decision.md (variante de grupo o misma categoría que Group/Group1). |
+| `Group7.clusterCenter` | DESCARTADO: Ver ../docs/features_decision.md (variante de grupo o misma categoría que Group/Group1). |
+| `Group7.groupID` | DESCARTADO: Ver ../docs/features_decision.md (variante de grupo o misma categoría que Group/Group1). |
+| `Group8.clusterCenter` | DESCARTADO: Ver ../docs/features_decision.md (variante de grupo o misma categoría que Group/Group1). |
+| `Group8.groupID` | DESCARTADO: Ver ../docs/features_decision.md (variante de grupo o misma categoría que Group/Group1). |
+| `Group9.clusterCenter` | DESCARTADO: Ver ../docs/features_decision.md (variante de grupo o misma categoría que Group/Group1). |
+| `Group9.groupID` | DESCARTADO: Ver ../docs/features_decision.md (variante de grupo o misma categoría que Group/Group1). |
 | `MapBasedMovement.mapFile1` | DESCARTADO: Ruta de fichero; no comparable. |
 | `MapBasedMovement.nrofMapFiles` | DESCARTADO: Ruta/cantidad de ficheros; no comparable numéricamente entre mapas. |
 | `MovementModel.rngSeed` | DESCARTADO: Aleatoriedad; no caracteriza el escenario de forma estable. |

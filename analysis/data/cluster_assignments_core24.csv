@@ -1,11 +1,11 @@
 scenario,cluster
-U11_OfficeWaitHeavyTail_HelsinkiMedium,1
-U12_HighTimeVariance_HelsinkiMedium,1
 U1_CBD_Commuting_HelsinkiMedium,1
 U5_SparseSuburb_HelsinkiMedium,1
 U7_MicroMobility_HelsinkiMedium,1
 U8_CongestionHotspot_HelsinkiMedium,1
 U9_WorkdayShort_HelsinkiMedium,1
+U11_OfficeWaitHeavyTail_HelsinkiMedium,1
+U12_HighTimeVariance_HelsinkiMedium,1
 C1_Campus_ClassChange,5
 C2_ExamDay_LongStays,7
 C3_Hackathon_24h,7

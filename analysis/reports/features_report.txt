@@ -1,16 +1,16 @@
 === Informe de features (correlación y diversidad) ===
-Generado por run_analysis.py --phase features_report. Corpus: 70 escenarios.
+Generado por run_analysis.py --phase features_report. Corpus: 60 escenarios.
 
 --- FEATURES UTILIZADOS (46) ---
 Estos features forman el vector por escenario y se usan para correlación Pearson/Spearman,
 distancia coseno, clustering y figuras.
 
-  Wx
-    Descripción: Ancho del mundo (m)
+  world_area
+    Descripción: Área del mundo Wx×Wy (m²)
     Origen:      MovementModel.worldSize
 
-  Wy
-    Descripción: Alto del mundo (m)
+  aspect_ratio
+    Descripción: Relación de aspecto min(Wx,Wy)/max(Wx,Wy) ∈ (0,1]
     Origen:      MovementModel.worldSize
 
   N
@@ -19,7 +19,7 @@ distancia coseno, clustering y figuras.
 
   density
     Descripción: Densidad proxy (hosts/km²)
-    Origen:      N, Wx, Wy (derivado)
+    Origen:      N, world_area (derivado); excluida del core por redundancia
 
   speed_mean
     Descripción: Velocidad media (m/s)
@@ -191,7 +191,7 @@ distancia coseno, clustering y figuras.
 
 --- SETTINGS NO UTILIZADOS EN EL VECTOR DE FEATURES ---
 Presentes en uno o más .settings del corpus pero DESCARTADOS de forma definitiva para el análisis.
-Justificación metodológica completa: reports/features_decision.md
+Justificación metodológica completa: docs/features_decision.md
 
   Events1.class
     Motivo: DESCARTADO: Tipo de generador; mismo en todo el corpus.
@@ -269,28 +269,28 @@ Justificación metodológica completa: reports/features_decision.md
     Motivo: DESCARTADO: Ya usamos shoppingWaitTime_mean.
 
   Group1.LinearMovement.endLocation
-    Motivo: DESCARTADO: Ver features_decision.md (variante de grupo o misma categoría que Group/Group1).
+    Motivo: DESCARTADO: Ver ../docs/features_decision.md (variante de grupo o misma categoría que Group/Group1).
 
   Group1.LinearMovement.initLocType
-    Motivo: DESCARTADO: Ver features_decision.md (variante de grupo o misma categoría que Group/Group1).
+    Motivo: DESCARTADO: Ver ../docs/features_decision.md (variante de grupo o misma categoría que Group/Group1).
 
   Group1.LinearMovement.startLocation
-    Motivo: DESCARTADO: Ver features_decision.md (variante de grupo o misma categoría que Group/Group1).
+    Motivo: DESCARTADO: Ver ../docs/features_decision.md (variante de grupo o misma categoría que Group/Group1).
 
   Group1.LinearMovement.targetType
-    Motivo: DESCARTADO: Ver features_decision.md (variante de grupo o misma categoría que Group/Group1).
+    Motivo: DESCARTADO: Ver ../docs/features_decision.md (variante de grupo o misma categoría que Group/Group1).
 
   Group1.busControlSystemNr
     Motivo: DESCARTADO: Referencia interna.
 
   Group1.clusterCenter
-    Motivo: DESCARTADO: Ver features_decision.md (variante de grupo o misma categoría que Group/Group1).
+    Motivo: DESCARTADO: Ver ../docs/features_decision.md (variante de grupo o misma categoría que Group/Group1).
 
   Group1.groupID
     Motivo: DESCARTADO: Identificador de grupo.
 
   Group1.nrofInterfaces
-    Motivo: DESCARTADO: Ver features_decision.md (variante de grupo o misma categoría que Group/Group1).
+    Motivo: DESCARTADO: Ver ../docs/features_decision.md (variante de grupo o misma categoría que Group/Group1).
 
   Group1.routeFile
     Motivo: DESCARTADO: Ruta de fichero (depende del mapa).
@@ -299,118 +299,118 @@ Justificación metodológica completa: reports/features_decision.md
     Motivo: DESCARTADO: Mismo valor (1) en escenarios con bus; sin variabilidad.
 
   Group1.router
-    Motivo: DESCARTADO: Ver features_decision.md (variante de grupo o misma categoría que Group/Group1).
+    Motivo: DESCARTADO: Ver ../docs/features_decision.md (variante de grupo o misma categoría que Group/Group1).
 
   Group10.clusterCenter
-    Motivo: DESCARTADO: Ver features_decision.md (variante de grupo o misma categoría que Group/Group1).
+    Motivo: DESCARTADO: Ver ../docs/features_decision.md (variante de grupo o misma categoría que Group/Group1).
 
   Group10.groupID
-    Motivo: DESCARTADO: Ver features_decision.md (variante de grupo o misma categoría que Group/Group1).
+    Motivo: DESCARTADO: Ver ../docs/features_decision.md (variante de grupo o misma categoría que Group/Group1).
 
   Group11.clusterCenter
-    Motivo: DESCARTADO: Ver features_decision.md (variante de grupo o misma categoría que Group/Group1).
+    Motivo: DESCARTADO: Ver ../docs/features_decision.md (variante de grupo o misma categoría que Group/Group1).
 
   Group11.groupID
-    Motivo: DESCARTADO: Ver features_decision.md (variante de grupo o misma categoría que Group/Group1).
+    Motivo: DESCARTADO: Ver ../docs/features_decision.md (variante de grupo o misma categoría que Group/Group1).
 
   Group12.clusterCenter
-    Motivo: DESCARTADO: Ver features_decision.md (variante de grupo o misma categoría que Group/Group1).
+    Motivo: DESCARTADO: Ver ../docs/features_decision.md (variante de grupo o misma categoría que Group/Group1).
 
   Group12.groupID
-    Motivo: DESCARTADO: Ver features_decision.md (variante de grupo o misma categoría que Group/Group1).
+    Motivo: DESCARTADO: Ver ../docs/features_decision.md (variante de grupo o misma categoría que Group/Group1).
 
   Group2.busControlSystemNr
-    Motivo: DESCARTADO: Ver features_decision.md (variante de grupo o misma categoría que Group/Group1).
+    Motivo: DESCARTADO: Ver ../docs/features_decision.md (variante de grupo o misma categoría que Group/Group1).
 
   Group2.clusterCenter
-    Motivo: DESCARTADO: Ver features_decision.md (variante de grupo o misma categoría que Group/Group1).
+    Motivo: DESCARTADO: Ver ../docs/features_decision.md (variante de grupo o misma categoría que Group/Group1).
 
   Group2.eveningActivityControlSystemNr
-    Motivo: DESCARTADO: Ver features_decision.md (variante de grupo o misma categoría que Group/Group1).
+    Motivo: DESCARTADO: Ver ../docs/features_decision.md (variante de grupo o misma categoría que Group/Group1).
 
   Group2.groupID
-    Motivo: DESCARTADO: Ver features_decision.md (variante de grupo o misma categoría que Group/Group1).
+    Motivo: DESCARTADO: Ver ../docs/features_decision.md (variante de grupo o misma categoría que Group/Group1).
 
   Group2.homeLocationsFile
-    Motivo: DESCARTADO: Ver features_decision.md (variante de grupo o misma categoría que Group/Group1).
+    Motivo: DESCARTADO: Ver ../docs/features_decision.md (variante de grupo o misma categoría que Group/Group1).
 
   Group2.meetingSpotsFile
-    Motivo: DESCARTADO: Ver features_decision.md (variante de grupo o misma categoría que Group/Group1).
+    Motivo: DESCARTADO: Ver ../docs/features_decision.md (variante de grupo o misma categoría que Group/Group1).
 
   Group2.nrofInterfaces
-    Motivo: DESCARTADO: Ver features_decision.md (variante de grupo o misma categoría que Group/Group1).
+    Motivo: DESCARTADO: Ver ../docs/features_decision.md (variante de grupo o misma categoría que Group/Group1).
 
   Group2.officeLocationsFile
-    Motivo: DESCARTADO: Ver features_decision.md (variante de grupo o misma categoría que Group/Group1).
+    Motivo: DESCARTADO: Ver ../docs/features_decision.md (variante de grupo o misma categoría que Group/Group1).
 
   Group2.officeWaitTimeParetoCoeff
-    Motivo: DESCARTADO: Ver features_decision.md (variante de grupo o misma categoría que Group/Group1).
+    Motivo: DESCARTADO: Ver ../docs/features_decision.md (variante de grupo o misma categoría que Group/Group1).
 
   Group2.okMaps
-    Motivo: DESCARTADO: Ver features_decision.md (variante de grupo o misma categoría que Group/Group1).
+    Motivo: DESCARTADO: Ver ../docs/features_decision.md (variante de grupo o misma categoría que Group/Group1).
 
   Group2.routeFile
-    Motivo: DESCARTADO: Ver features_decision.md (variante de grupo o misma categoría que Group/Group1).
+    Motivo: DESCARTADO: Ver ../docs/features_decision.md (variante de grupo o misma categoría que Group/Group1).
 
   Group2.routeType
-    Motivo: DESCARTADO: Ver features_decision.md (variante de grupo o misma categoría que Group/Group1).
+    Motivo: DESCARTADO: Ver ../docs/features_decision.md (variante de grupo o misma categoría que Group/Group1).
 
   Group2.router
-    Motivo: DESCARTADO: Ver features_decision.md (variante de grupo o misma categoría que Group/Group1).
+    Motivo: DESCARTADO: Ver ../docs/features_decision.md (variante de grupo o misma categoría que Group/Group1).
 
   Group2.shoppingControlSystemNr
-    Motivo: DESCARTADO: Ver features_decision.md (variante de grupo o misma categoría que Group/Group1).
+    Motivo: DESCARTADO: Ver ../docs/features_decision.md (variante de grupo o misma categoría que Group/Group1).
 
   Group2.shoppingWaitTimeParetoCoeff
-    Motivo: DESCARTADO: Ver features_decision.md (variante de grupo o misma categoría que Group/Group1).
+    Motivo: DESCARTADO: Ver ../docs/features_decision.md (variante de grupo o misma categoría que Group/Group1).
 
   Group3.clusterCenter
-    Motivo: DESCARTADO: Ver features_decision.md (variante de grupo o misma categoría que Group/Group1).
+    Motivo: DESCARTADO: Ver ../docs/features_decision.md (variante de grupo o misma categoría que Group/Group1).
 
   Group3.groupID
-    Motivo: DESCARTADO: Ver features_decision.md (variante de grupo o misma categoría que Group/Group1).
+    Motivo: DESCARTADO: Ver ../docs/features_decision.md (variante de grupo o misma categoría que Group/Group1).
 
   Group3.nrofInterfaces
-    Motivo: DESCARTADO: Ver features_decision.md (variante de grupo o misma categoría que Group/Group1).
+    Motivo: DESCARTADO: Ver ../docs/features_decision.md (variante de grupo o misma categoría que Group/Group1).
 
   Group3.router
-    Motivo: DESCARTADO: Ver features_decision.md (variante de grupo o misma categoría que Group/Group1).
+    Motivo: DESCARTADO: Ver ../docs/features_decision.md (variante de grupo o misma categoría que Group/Group1).
 
   Group4.clusterCenter
-    Motivo: DESCARTADO: Ver features_decision.md (variante de grupo o misma categoría que Group/Group1).
+    Motivo: DESCARTADO: Ver ../docs/features_decision.md (variante de grupo o misma categoría que Group/Group1).
 
   Group4.groupID
-    Motivo: DESCARTADO: Ver features_decision.md (variante de grupo o misma categoría que Group/Group1).
+    Motivo: DESCARTADO: Ver ../docs/features_decision.md (variante de grupo o misma categoría que Group/Group1).
 
   Group5.clusterCenter
-    Motivo: DESCARTADO: Ver features_decision.md (variante de grupo o misma categoría que Group/Group1).
+    Motivo: DESCARTADO: Ver ../docs/features_decision.md (variante de grupo o misma categoría que Group/Group1).
 
   Group5.groupID
-    Motivo: DESCARTADO: Ver features_decision.md (variante de grupo o misma categoría que Group/Group1).
+    Motivo: DESCARTADO: Ver ../docs/features_decision.md (variante de grupo o misma categoría que Group/Group1).
 
   Group6.clusterCenter
-    Motivo: DESCARTADO: Ver features_decision.md (variante de grupo o misma categoría que Group/Group1).
+    Motivo: DESCARTADO: Ver ../docs/features_decision.md (variante de grupo o misma categoría que Group/Group1).
 
   Group6.groupID
-    Motivo: DESCARTADO: Ver features_decision.md (variante de grupo o misma categoría que Group/Group1).
+    Motivo: DESCARTADO: Ver ../docs/features_decision.md (variante de grupo o misma categoría que Group/Group1).
 
   Group7.clusterCenter
-    Motivo: DESCARTADO: Ver features_decision.md (variante de grupo o misma categoría que Group/Group1).
+    Motivo: DESCARTADO: Ver ../docs/features_decision.md (variante de grupo o misma categoría que Group/Group1).
 
   Group7.groupID
-    Motivo: DESCARTADO: Ver features_decision.md (variante de grupo o misma categoría que Group/Group1).
+    Motivo: DESCARTADO: Ver ../docs/features_decision.md (variante de grupo o misma categoría que Group/Group1).
 
   Group8.clusterCenter
-    Motivo: DESCARTADO: Ver features_decision.md (variante de grupo o misma categoría que Group/Group1).
+    Motivo: DESCARTADO: Ver ../docs/features_decision.md (variante de grupo o misma categoría que Group/Group1).
 
   Group8.groupID
-    Motivo: DESCARTADO: Ver features_decision.md (variante de grupo o misma categoría que Group/Group1).
+    Motivo: DESCARTADO: Ver ../docs/features_decision.md (variante de grupo o misma categoría que Group/Group1).
 
   Group9.clusterCenter
-    Motivo: DESCARTADO: Ver features_decision.md (variante de grupo o misma categoría que Group/Group1).
+    Motivo: DESCARTADO: Ver ../docs/features_decision.md (variante de grupo o misma categoría que Group/Group1).
 
   Group9.groupID
-    Motivo: DESCARTADO: Ver features_decision.md (variante de grupo o misma categoría que Group/Group1).
+    Motivo: DESCARTADO: Ver ../docs/features_decision.md (variante de grupo o misma categoría que Group/Group1).
 
   MapBasedMovement.mapFile1
     Motivo: DESCARTADO: Ruta de fichero; no comparable.
