@@ -1,11 +1,11 @@
 # =========================================================
-# U11 - Office wait Pareto heavy-tail (WDM)
+# U6 - Office wait Pareto heavy-tail (WDM)
 # Long office wait times (heavy-tailed distribution).
 # Levers: officeWaitTimeParetoCoeff, officeMinWaitTime, officeMaxWaitTime.
 # Dataset: HelsinkiMedium
 # =========================================================
 
-Scenario.name = U11_OfficeWaitHeavyTail_HelsinkiMedium
+Scenario.name = U6_OfficeWaitHeavyTail_HelsinkiMedium
 Scenario.simulateConnections = true
 Scenario.updateInterval = 0.1
 Scenario.endTime = 43200

@@ -1,12 +1,12 @@
 # =========================================================
-# V6 - Car ownership 0%
+# V4 - Car ownership 0%
 # All pedestrians use bus (ownCarProb = 0).
 # Levers: ownCarProb = 0 (bus only).
 # Dataset: HelsinkiMedium
 # Diversificación estructural: worldSize distinto → Wx,Wy,density distintos de V4/V5/V8
 # =========================================================
 
-Scenario.name = V6_CarOwnership_0_HelsinkiMedium
+Scenario.name = V4_CarOwnership_0_HelsinkiMedium
 Scenario.simulateConnections = true
 Scenario.updateInterval = 0.1
 Scenario.endTime = 43200

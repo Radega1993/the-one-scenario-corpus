@@ -1,11 +1,11 @@
 # =========================================================
-# U5 - Sparse suburb (WDM)
+# U2 - Sparse suburb (WDM)
 # Large world, few points of interest, low density.
 # Levers: MovementModel.worldSize, nrOfOffices, nrofHosts.
 # Dataset: HelsinkiMedium (map scaled conceptually via world size)
 # =========================================================
 
-Scenario.name = U5_SparseSuburb_HelsinkiMedium
+Scenario.name = U2_SparseSuburb_HelsinkiMedium
 Scenario.simulateConnections = true
 Scenario.updateInterval = 0.1
 Scenario.endTime = 43200

@@ -1,11 +1,11 @@
 # =========================================================
-# C7 - Library quiet
+# C5 - Library quiet
 # Low mobility, long contacts when they occur (high delivery potential).
 # Levers: speed low, waitTime high, normal transmitRange/speed.
 # Free-space (RandomWaypoint).
 # =========================================================
 
-Scenario.name = C7_Library_Quiet
+Scenario.name = C5_Library_Quiet
 Scenario.simulateConnections = true
 Scenario.updateInterval = 0.1
 Scenario.endTime = 43200

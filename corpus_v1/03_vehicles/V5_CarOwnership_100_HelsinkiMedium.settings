@@ -1,11 +1,11 @@
 # =========================================================
-# V7 - Car ownership 100%
+# V5 - Car ownership 100%
 # All pedestrians use car for transfers (ownCarProb = 1).
 # Levers: ownCarProb = 1 (car only; bus still needed for WDM internals).
 # Dataset: HelsinkiMedium
 # =========================================================
 
-Scenario.name = V7_CarOwnership_100_HelsinkiMedium
+Scenario.name = V5_CarOwnership_100_HelsinkiMedium
 Scenario.simulateConnections = true
 Scenario.updateInterval = 0.1
 Scenario.endTime = 43200

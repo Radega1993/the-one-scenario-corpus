@@ -1,12 +1,12 @@
 # =========================================================
-# U8 - Congestion hotspot (WDM)
+# U4 - Congestion hotspot (WDM)
 # Map okMaps limited to main roads only (congestion / construction).
 # Levers: Group.okMaps (restrict to map index 1 = main roads if multiple maps).
 # With single map file, okMaps = 1 restricts group to that map type.
 # Dataset: HelsinkiMedium (single map; okMaps = 1)
 # =========================================================
 
-Scenario.name = U8_CongestionHotspot_HelsinkiMedium
+Scenario.name = U4_CongestionHotspot_HelsinkiMedium
 Scenario.simulateConnections = true
 Scenario.updateInterval = 0.1
 Scenario.endTime = 43200

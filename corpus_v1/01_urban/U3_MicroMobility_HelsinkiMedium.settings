@@ -1,11 +1,11 @@
 # =========================================================
-# U7 - Micro-mobility (WDM)
+# U3 - Micro-mobility (WDM)
 # Many nodes, small buffer, small message sizes.
 # Levers: nrofHosts, bufferSize, Events1.size.
 # Dataset: HelsinkiMedium
 # =========================================================
 
-Scenario.name = U7_MicroMobility_HelsinkiMedium
+Scenario.name = U3_MicroMobility_HelsinkiMedium
 Scenario.simulateConnections = true
 Scenario.updateInterval = 0.1
 Scenario.endTime = 43200

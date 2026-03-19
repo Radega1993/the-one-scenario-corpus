@@ -1,11 +1,11 @@
 # =========================================================
-# U9 - Workday short (WDM)
+# U5 - Workday short (WDM)
 # 4-hour workday.
 # Levers: workDayLength = 14400 (4 h).
 # Dataset: HelsinkiMedium
 # =========================================================
 
-Scenario.name = U9_WorkdayShort_HelsinkiMedium
+Scenario.name = U5_WorkdayShort_HelsinkiMedium
 Scenario.simulateConnections = true
 Scenario.updateInterval = 0.1
 Scenario.endTime = 43200

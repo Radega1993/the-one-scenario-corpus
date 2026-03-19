@@ -1,11 +1,11 @@
 # =========================================================
-# C8 - Emergency drill / evacuation
+# C6 - Emergency drill / evacuation
 # Directional, fast movement (linear toward exit).
 # Levers: LinearMovement, high speed, targetType = far end.
 # Free-space (LinearMovement).
 # =========================================================
 
-Scenario.name = C8_EmergencyDrill_Evacuation
+Scenario.name = C6_EmergencyDrill_Evacuation
 Scenario.simulateConnections = true
 Scenario.updateInterval = 0.1
 Scenario.endTime = 7200

@@ -1,11 +1,11 @@
 # =========================================================
-# U12 - High time variance (WDM)
+# U7 - High time variance (WDM)
 # High timeDiffSTD to desynchronise wake-up / schedules.
 # Levers: timeDiffSTD (high).
 # Dataset: HelsinkiMedium
 # =========================================================
 
-Scenario.name = U12_HighTimeVariance_HelsinkiMedium
+Scenario.name = U7_HighTimeVariance_HelsinkiMedium
 Scenario.simulateConnections = true
 Scenario.updateInterval = 0.1
 Scenario.endTime = 43200
