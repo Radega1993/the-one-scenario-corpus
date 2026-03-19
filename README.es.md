@@ -8,7 +8,7 @@
 |-----------|-------------|
 | **corpus_v1/** | 70 escenarios `.settings` por familia (urban, campus, vehicles, rural, disaster, social, traffic). |
 | **analysis/** | Extracción de features, correlación, métricas de salida, figuras y [dashboard interactivo](analysis/README.es.md). |
-| **.wiki-clone/** | Contenido de la wiki (EN+ES): organizado en `01-home`, `02-guide`, `03-reference`, `04-results`, `05-corpus`, `06-families`. [Índice](.wiki-clone/README.md); Home y resultados en `01-home/`, `04-results/`. Para publicar en GitHub Wiki, copiar todos los `.md` de las subcarpetas a la raíz del wiki. |
+| **.wiki-clone/** | Contenido de la wiki (EN+ES): `01-home`, `02-guide`, `03-reference`, `04-results`, `05-corpus`. [Índice](.wiki-clone/README.md). Ver README allí para publicar en GitHub Wiki. |
 | **ROADMAP.md** / **ROADMAP.es.md** | Próximos pasos: documentación bilingüe; criterios de diversidad (|r| < 0,7, cos_dist). Versión en castellano: [ROADMAP.es.md](ROADMAP.es.md). |
 
 ### Por qué nombres como `corpus_v1`

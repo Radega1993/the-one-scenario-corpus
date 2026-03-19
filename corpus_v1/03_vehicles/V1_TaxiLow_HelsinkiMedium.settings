@@ -11,7 +11,8 @@ Scenario.updateInterval = 0.1
 Scenario.endTime = 43200
 MovementModel.rngSeed = 21
 # Diversificar core 24: world_area, aspect_ratio distintos
-MovementModel.worldSize = 7900, 6900
+# Ajuste para evitar "Map node is out of world bounds" (x:7911.27 > 7900).
+MovementModel.worldSize = 8400, 7504
 
 MapBasedMovement.nrofMapFiles = 1
 MapBasedMovement.mapFile1 = data/HelsinkiMedium/roads.wkt

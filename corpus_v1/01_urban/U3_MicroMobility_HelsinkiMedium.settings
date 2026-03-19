@@ -11,7 +11,7 @@ Scenario.updateInterval = 0.1
 Scenario.endTime = 43200
 MovementModel.rngSeed = 7
 # Diversificación estructural: zona acotada (micro-mobility)
-MovementModel.worldSize = 7200, 6200
+MovementModel.worldSize = 8495, 7504
 
 MapBasedMovement.nrofMapFiles = 1
 MapBasedMovement.mapFile1 = data/HelsinkiMedium/roads.wkt

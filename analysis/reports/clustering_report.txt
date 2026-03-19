@@ -1,4 +1,4 @@
-# Clustering Ward sobre Z (k=7), silhouette = 0.2885
+# Clustering Ward sobre Z (k=7), silhouette = 0.2924
 # De cada cluster: mantener 3-4 representantes; modificar el resto para empujarlos fuera.
 
 ## Cluster 1 (4 escenarios)
@@ -23,7 +23,7 @@
   C1_Campus_ClassChange
   C2_ExamDay_LongStays
   C3_Hackathon_24h
-  C7_Library_Quiet
+  C5_Library_Quiet
   D3_Aftershock_ErraticMobility
   D6_ShortTtlCritical_5to10min
   D7_HighLoad_TrafficStorm
@@ -61,16 +61,16 @@
 
 ## Cluster 6 (11 escenarios)
   R12_SpeedExtremeHigh
-  U11_OfficeWaitHeavyTail_HelsinkiMedium
-  U12_HighTimeVariance_HelsinkiMedium
   U1_CBD_Commuting_HelsinkiMedium
-  U5_SparseSuburb_HelsinkiMedium
-  U7_MicroMobility_HelsinkiMedium
-  U8_CongestionHotspot_HelsinkiMedium
-  U9_WorkdayShort_HelsinkiMedium
+  U2_SparseSuburb_HelsinkiMedium
+  U3_MicroMobility_HelsinkiMedium
+  U4_CongestionHotspot_HelsinkiMedium
+  U5_WorkdayShort_HelsinkiMedium
+  U6_OfficeWaitHeavyTail_HelsinkiMedium
+  U7_HighTimeVariance_HelsinkiMedium
   V3_BusOnlyCarriers_HelsinkiMedium
-  V6_CarOwnership_0_HelsinkiMedium
-  V7_CarOwnership_100_HelsinkiMedium
+  V4_CarOwnership_0_HelsinkiMedium
+  V5_CarOwnership_100_HelsinkiMedium
 
 ## Cluster 7 (1 escenarios)
-  C8_EmergencyDrill_Evacuation
+  C6_EmergencyDrill_Evacuation

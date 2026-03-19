@@ -11,7 +11,7 @@ Scenario.updateInterval = 0.1
 Scenario.endTime = 43200
 MovementModel.rngSeed = 12
 # Diversificación estructural vs V4/V8 (mantener grupo Urban, mismo mapa Helsinki)
-MovementModel.worldSize = 7700, 6700
+MovementModel.worldSize = 8450, 7450
 
 MapBasedMovement.nrofMapFiles = 1
 MapBasedMovement.mapFile1 = data/HelsinkiMedium/roads.wkt

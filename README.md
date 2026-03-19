@@ -8,7 +8,7 @@
 |---------|-------------|
 | **corpus_v1/** | 60 `.settings` scenarios by family (urban, campus, vehicles, rural, disaster, social, traffic). 10 moved to `corpus_dropped_v1/` (high correlation / narrative redundancy). |
 | **analysis/** | Feature extraction, correlation, output metrics, figures and [interactive dashboard](analysis/README.md). |
-| **.wiki-clone/** | Wiki content (EN+ES): structured in `01-home`, `02-guide`, `03-reference`, `04-results`, `05-corpus`, `06-families`. [Index](.wiki-clone/README.md); Home and results in `01-home/`, `04-results/`. Sync to GitHub Wiki by copying all `.md` from subdirs to wiki root. |
+| **.wiki-clone/** | Wiki content (EN+ES): `01-home`, `02-guide`, `03-reference`, `04-results`, `05-corpus`. [Index](.wiki-clone/README.md). See README there for how to publish to GitHub Wiki. |
 | **ROADMAP.md** / **ROADMAP.es.md** | Next steps: bilingual docs; diversity criteria (|r| < 0.7, cos_dist). Spanish: [ROADMAP.es.md](ROADMAP.es.md). |
 
 ### Why names like `corpus_v1`

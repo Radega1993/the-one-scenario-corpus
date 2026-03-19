@@ -11,7 +11,7 @@ Scenario.updateInterval = 0.1
 Scenario.endTime = 43200
 MovementModel.rngSeed = 9
 # Diversificación estructural: jornada corta = área reducida
-MovementModel.worldSize = 7400, 6400
+MovementModel.worldSize = 8350, 7350
 
 MapBasedMovement.nrofMapFiles = 1
 MapBasedMovement.mapFile1 = data/HelsinkiMedium/roads.wkt

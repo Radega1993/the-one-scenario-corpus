@@ -1520,7 +1520,7 @@ def _parse_message_stats_report(path: Path) -> dict[str, Any]:
     }
 
 
-def run_phase_output_metrics(out_dir: Path, reports_dir: Path) -> bool:
+def run_phase_output_metrics(out_dir: Path, reports_dir: Path, allowed_scenarios: set[str] | None = None) -> bool:
     """
     Rellena data/output_metrics.csv a partir de los MessageStatsReport en reports_dir.
     Busca *_MessageStatsReport.txt, extrae escenario del nombre del fichero y parsea
@@ -1540,6 +1540,8 @@ def run_phase_output_metrics(out_dir: Path, reports_dir: Path) -> bool:
     rows = []
     for path in report_files:
         scenario = path.stem.replace("_MessageStatsReport", "")
+        if allowed_scenarios is not None and scenario not in allowed_scenarios:
+            continue
         metrics = _parse_message_stats_report(path)
         rows.append({"scenario": scenario, **metrics})
     if pd is None:
@@ -1556,6 +1558,184 @@ def run_phase_output_metrics(out_dir: Path, reports_dir: Path) -> bool:
     out_csv = data_dir / "output_metrics.csv"
     df.to_csv(out_csv, index=False)
     print(f"Written {out_csv} ({len(rows)} scenarios from {reports_dir})")
+    return True
+
+
+def run_phase_results_actuales(
+    out_dir: Path,
+    corpus_name: str,
+    threshold: float = 0.7,
+    scenario_count: int | None = None,
+) -> bool:
+    """
+    Genera/actualiza analysis/reports/RESULTADOS_ACTUALES.md a partir de los reportes
+    generados en la misma ejecución (correlation_core24_report, correlation_report, etc.).
+
+    Importante: no debe contener valores hardcodeados ni referencias a "corpus_dropped_v1"
+    que dependan del estado histórico.
+    """
+    out_dir = Path(out_dir)
+    reports_dir = out_dir / "reports"
+    correlation_core_path = reports_dir / "correlation_core24_report.txt"
+    correlation_full_path = reports_dir / "correlation_report.txt"
+    ablation_path = reports_dir / "ablation_report.txt"
+
+    if not correlation_core_path.exists() or not correlation_full_path.exists():
+        print("Skip RESULTADOS_ACTUALES.md: missing correlation reports.")
+        return False
+
+    import re
+
+    core_txt = correlation_core_path.read_text(encoding="utf-8", errors="replace")
+    full_txt = correlation_full_path.read_text(encoding="utf-8", errors="replace")
+    ablation_txt = ablation_path.read_text(encoding="utf-8", errors="replace") if ablation_path.exists() else ""
+
+    # n de escenarios
+    if scenario_count is None:
+        m_core_n = re.search(r"Vectores Z_core:\s*n=(\d+)", core_txt)
+        if m_core_n:
+            scenario_count = int(m_core_n.group(1))
+        else:
+            m_full_n = re.search(r"Escenarios:\s*n=(\d+)", full_txt)
+            scenario_count = int(m_full_n.group(1)) if m_full_n else None
+
+    def _extract_float(pattern: str, text: str) -> float | None:
+        m = re.search(pattern, text, flags=re.MULTILINE)
+        if not m:
+            return None
+        return float(m.group(1))
+
+    def _extract_int(pattern: str, text: str) -> int | None:
+        m = re.search(pattern, text, flags=re.MULTILINE)
+        if not m:
+            return None
+        return int(m.group(1))
+
+    def _extract_pairs_ge(text: str) -> tuple[float | None, int | None, float | None]:
+        # Devuelve (max_r, pares_ge, pct)
+        max_r = _extract_float(r"max \|r\| = ([0-9.]+)", text)
+        pairs = _extract_int(rf"Pares con \|r\| >= {re.escape(str(threshold))}:\s*([0-9]+)", text)
+        pct = _extract_float(rf"Pares con \|r\| >= {re.escape(str(threshold))}:\s*[0-9]+\s*\(([0-9.]+)%\)", text)
+        return max_r, pairs, pct
+
+    max_core, pairs_core, pct_core = _extract_pairs_ge(core_txt)
+    max_full, pairs_full, pct_full = _extract_pairs_ge(full_txt)
+
+    # Métricas geométricas (desde correlation_report)
+    cos_min = _extract_float(r"dist_coseno mínima\s*=\s*([0-9.]+)", full_txt)
+    silhouette_full = _extract_float(r"Silhouette \(k=7 clusters, Ward\):\s*([0-9.]+)", full_txt)
+
+    # Ablación (si existe)
+    ablation_summary = ""
+    if ablation_txt:
+        # lines tipo:
+        # core_24 (d=24): max|r|=0.9714, mean|r|=0.2144, pares |r|>=0.7=90 (5.1%), silhouette=0.3199
+        def _parse_set_line(set_name: str) -> dict[str, float | int] | None:
+            m = re.search(
+                rf"{re.escape(set_name)} \(d=\d+\): max\|r\|=([0-9.]+), mean\|r\|=([0-9.]+), pares \|r\|>={re.escape(str(threshold))}=([0-9]+)\s*\([0-9.]+%\), silhouette=([0-9.]+)",
+                ablation_txt,
+                flags=re.MULTILINE,
+            )
+            if not m:
+                return None
+            return {
+                "max_r": float(m.group(1)),
+                "mean_abs_r": float(m.group(2)),
+                "pairs_ge": int(m.group(3)),
+                "silhouette": float(m.group(4)),
+            }
+
+        reduced = _parse_set_line("reduced_17")
+        core = _parse_set_line("core_24")
+        full = _parse_set_line("full_46")
+        if reduced or core or full:
+            ablation_summary_lines = ["## Ablación (17 vs 24 vs 46, umbral |r|≥%.1f)" % threshold]
+            if reduced:
+                ablation_summary_lines.append(
+                    f"- reduced_17: max|r|={reduced['max_r']:.4f}, pares≥={threshold}={reduced['pairs_ge']}, silhouette={reduced['silhouette']:.4f}"
+                )
+            if core:
+                ablation_summary_lines.append(
+                    f"- core_24: max|r|={core['max_r']:.4f}, pares≥={threshold}={core['pairs_ge']}, silhouette={core['silhouette']:.4f}"
+                )
+            if full:
+                ablation_summary_lines.append(
+                    f"- full_46: max|r|={full['max_r']:.4f}, pares≥={threshold}={full['pairs_ge']}, silhouette={full['silhouette']:.4f}"
+                )
+            ablation_summary = "\n".join(ablation_summary_lines)
+
+    scenario_count_str = str(scenario_count) if scenario_count is not None else "?"
+    total_pairs = int(scenario_count * (scenario_count - 1) / 2) if scenario_count is not None else None
+
+    pairs_core_display = f"{pairs_core}" if pairs_core is not None else "—"
+    pct_core_display = f" ({pct_core:.1f}%)" if pct_core is not None else ""
+
+    pairs_full_display = f"{pairs_full}" if pairs_full is not None else "—"
+    pct_full_display = f" ({pct_full:.1f}%)" if pct_full is not None else ""
+
+    lines = [
+        "# Resultados actuales del corpus (referencia única)",
+        "",
+        f"**Corpus:** {scenario_count_str} escenarios en `{corpus_name}/`.",
+        f"**Umbral |r|:** {threshold}",
+        "---",
+        "## Métricas en espacio CORE (24 features)",
+        f"| Métrica | Valor |",
+        "|---|---|",
+        f"| max |r| | {max_core if max_core is not None else '—'} |",
+        f"| Pares con |r| ≥ {threshold} | {pairs_core_display}{pct_core_display} |",
+        "",
+    ]
+
+    if total_pairs is not None:
+        lines.append(f"Total pares (i<k): {total_pairs}")
+
+    lines.extend(
+        [
+            "---",
+            "## Métricas en espacio completo (46 features)",
+            f"| Métrica | Valor |",
+            "|---|---|",
+            f"| max |r| | {max_full if max_full is not None else '—'} |",
+            f"| Pares con |r| ≥ {threshold} | {pairs_full_display}{pct_full_display} |",
+            "",
+        ]
+    )
+
+    if cos_min is not None:
+        lines.append(f"Distancia coseno mínima (geom): {cos_min:.4f}")
+    if silhouette_full is not None:
+        lines.append(f"Silhouette (Ward k=7): {silhouette_full:.4f}")
+
+    lines.extend(
+        [
+            "---",
+            "## Ablación y validación de correlación",
+        ]
+    )
+    if ablation_summary:
+        lines.append(ablation_summary)
+
+    # Lista de informes (fija: no depende de datos)
+    lines.extend(
+        [
+            "",
+            "## Informes en este directorio (`reports/`)",
+            "",
+            "| Informe | Contenido |",
+            "|---|---|",
+            "| [correlation_core24_report.txt](correlation_core24_report.txt) | Pares con |r|≥umbral en core 24 |",
+            "| [correlation_report.txt](correlation_report.txt) | Correlación en espacio completo (46 features) |",
+            "| [ablation_report.txt](ablation_report.txt) | Ablación 17 vs 24 vs 46 |",
+            "| [multiple_comparisons_report.txt](multiple_comparisons_report.txt) | FDR y Bonferroni |",
+            "| [features_report.md](features_report.md) / [features_report.txt](features_report.txt) | Features usados / descartados |",
+            "| [feature_feature_correlation_report.txt](feature_feature_correlation_report.txt) | Correlación feature–feature (core 24) |",
+        ]
+    )
+
+    report_path = reports_dir / "RESULTADOS_ACTUALES.md"
+    report_path.write_text("\n".join(lines), encoding="utf-8")
+    print(f"Written {report_path}")
     return True
 
 
@@ -1704,8 +1884,8 @@ def main():
         corpus_dir = Path(args.corpus)
     out_dir = Path(args.out_dir) if args.out_dir else base
 
-    scenario_paths = collect_scenario_files(corpus_dir) if args.phase in ("features", "all") else []
-    if args.phase in ("features", "all") and not scenario_paths:
+    scenario_paths = collect_scenario_files(corpus_dir)
+    if not scenario_paths and args.phase in ("features", "features_report", "output_metrics", "outputs", "all"):
         print(f"No .settings found under {corpus_dir}")
         return 1
     if scenario_paths:
@@ -1735,11 +1915,45 @@ def main():
             return 1
     reports_dir = Path(args.reports_dir) if args.reports_dir else (base.parent.parent / "reports")
     if args.phase == "output_metrics" or args.phase == "all":
-        if not run_phase_output_metrics(out_dir, reports_dir):
+        allowed_scenarios = None
+        if scenario_paths:
+            allowed_scenarios = set()
+            for p in scenario_paths:
+                try:
+                    s = load_settings(p)
+                    allowed_scenarios.add(s.get("Scenario.name", p.stem))
+                except Exception:
+                    # Fallback: si un settings no parsea, al menos no bloqueamos el pipeline.
+                    allowed_scenarios.add(p.stem)
+
+        if not run_phase_output_metrics(out_dir, reports_dir, allowed_scenarios=allowed_scenarios):
             return 1
     if args.phase == "outputs":
         if not run_phase_outputs(out_dir, threshold=args.threshold):
             return 1
+
+    # Documentación "siempre actual": genera/actualiza informes de referencia
+    # a partir de los resultados calculados arriba.
+    if scenario_paths:
+        # features_report no depende de normalización/correlación; se refresca siempre que se ejecuta el script.
+        run_phase_features_report(corpus_dir, out_dir, scenario_paths)
+
+    # feature-feature correlation requiere features_core.csv (creada en normalize).
+    # Si falta (por ejemplo al ejecutar una fase parcial), generamos lo necesario
+    # para que el informe se actualice igualmente.
+    core_path = out_dir / "data" / "features_core.csv"
+    if core_path.exists():
+        run_phase_feature_feature_correlation(out_dir)
+    else:
+        data_features_path = out_dir / "data" / "features.csv"
+        if scenario_paths and not data_features_path.exists():
+            # Necesario para poder hacer normalize
+            run_phase_features(scenario_paths, out_dir)
+        if scenario_paths:
+            if run_phase_normalize(out_dir):
+                run_phase_feature_feature_correlation(out_dir)
+
+    run_phase_results_actuales(out_dir, corpus_name=str(args.corpus), threshold=args.threshold, scenario_count=len(scenario_paths) if scenario_paths else None)
     return 0
 
 

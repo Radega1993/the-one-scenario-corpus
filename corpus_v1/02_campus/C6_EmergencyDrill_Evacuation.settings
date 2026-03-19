@@ -7,7 +7,7 @@
 
 Scenario.name = C6_EmergencyDrill_Evacuation
 Scenario.simulateConnections = true
-Scenario.updateInterval = 0.1
+Scenario.updateInterval = 0.5
 Scenario.endTime = 7200
 MovementModel.rngSeed = 20
 MovementModel.worldSize = 500, 400
