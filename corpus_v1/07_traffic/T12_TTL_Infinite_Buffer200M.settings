@@ -29,12 +29,20 @@ bt0.transmitRange = 10
 Scenario.nrofHostGroups = 1
 Group1.groupID = t12
 
-Events.nrof = 1
+Events.nrof = 2
 Events1.class = MessageEventGenerator
-Events1.interval = 80, 220
-Events1.size = 30k, 150k
+Events1.interval = 120, 320
+Events1.size = 20k, 90k
 Events1.hosts = 0, 42
+Events1.tohosts = 0, 8
+Events1.time = 0, 18000
 Events1.prefix = M
+Events2.class = MessageEventGenerator
+Events2.interval = 8, 25
+Events2.size = 70k, 220k
+Events2.hosts = 0, 42
+Events2.time = 18000, 43200
+Events2.prefix = B
 
 Report.nrofReports = 2
 Report.reportDir = reports/

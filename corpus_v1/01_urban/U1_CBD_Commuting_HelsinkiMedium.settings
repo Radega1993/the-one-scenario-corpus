@@ -26,8 +26,8 @@ MapBasedMovement.mapFile1 = data/HelsinkiMedium/roads.wkt
 # Default group params
 # =========================================================
 # R11: bajar r vs V6/U8
-Group.bufferSize = 43M
-Group.msgTtl = 9500
+Group.bufferSize = 52M
+Group.msgTtl = 7200
 
 # BusControlSystem -1: pedestrians use bus; at least one bus host is required
 # so the system registers stops (otherwise getBusStops() is null -> NPE).
@@ -162,8 +162,8 @@ Group.router = EpidemicRouter
 Events.nrof = 1
 Events1.class = MessageEventGenerator
 # Diversificar core 24: intervalos y tamaños distintos (event_interval_mean, event_size_mean)
-Events1.interval = 35, 45
-Events1.size = 80k, 120k
+Events1.interval = 70, 110
+Events1.size = 60k, 100k
 Events1.hosts = 0, 81
 Events1.prefix = M
 

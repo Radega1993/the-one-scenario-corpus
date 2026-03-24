@@ -27,20 +27,21 @@ Scenario.nrofHostGroups = 2
 # Students: more hosts, higher speed, shorter wait
 Group1.groupID = stu
 Group1.nrofHosts = 55
-Group1.speed = 1.0, 2.2
-Group1.waitTime = 30, 180
+Group1.speed = 1.6, 3.0
+Group1.waitTime = 10, 90
 
 # Staff: fewer hosts, lower speed, longer wait
 Group2.groupID = stf
 Group2.nrofHosts = 20
-Group2.speed = 0.3, 0.9
-Group2.waitTime = 120, 420
+Group2.speed = 0.15, 0.5
+Group2.waitTime = 220, 720
 
 Events.nrof = 1
 Events1.class = MessageEventGenerator
-Events1.interval = 45, 160
-Events1.size = 15k, 100k
+Events1.interval = 25, 110
+Events1.size = 10k, 90k
 Events1.hosts = 0, 75
+Events1.tohosts = 0, 20
 Events1.prefix = M
 
 Report.nrofReports = 2

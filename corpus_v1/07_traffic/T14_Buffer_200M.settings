@@ -23,18 +23,26 @@ Group.speed = 0.8, 1.5
 Group.waitTime = 40, 200
 
 bt0.type = SimpleBroadcastInterface
-bt0.transmitSpeed = 2M
-bt0.transmitRange = 15
+bt0.transmitSpeed = 900k
+bt0.transmitRange = 12
 
 Scenario.nrofHostGroups = 1
 Group1.groupID = t14
 
-Events.nrof = 1
+Events.nrof = 2
 Events1.class = MessageEventGenerator
-Events1.interval = 40, 180
-Events1.size = 50k, 200k
+Events1.interval = 60, 240
+Events1.size = 30k, 150k
 Events1.hosts = 0, 46
+Events1.time = 0, 21600
 Events1.prefix = M
+Events2.class = MessageEventGenerator
+Events2.interval = 20, 70
+Events2.size = 15k, 70k
+Events2.hosts = 0, 46
+Events2.tohosts = 0, 6
+Events2.time = 21600, 43200
+Events2.prefix = H
 
 Report.nrofReports = 2
 Report.reportDir = reports/

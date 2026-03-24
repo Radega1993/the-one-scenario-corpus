@@ -17,7 +17,7 @@ MapBasedMovement.nrofMapFiles = 1
 MapBasedMovement.mapFile1 = data/HelsinkiMedium/roads.wkt
 
 # R11: bajar r vs U8/U1/U4/U11/V5/V4
-Group.bufferSize = 40M
+Group.bufferSize = 24M
 Group.msgTtl = 7200
 Group.busControlSystemNr = -1
 Group1.routeFile = data/HelsinkiMedium/A_bus.wkt
@@ -27,7 +27,7 @@ Group.nrofInterfaces = 1
 Group.interface1 = bt0
 bt0.type = SimpleBroadcastInterface
 bt0.transmitSpeed = 2.0M
-bt0.transmitRange = 12
+bt0.transmitRange = 17
 
 Group.movementModel = WorkingDayMovement
 Group.routeFile = data/HelsinkiMedium/A_bus.wkt
@@ -60,7 +60,7 @@ Group.shoppingMaxWaitTime = 600
 Group.minAfterShoppingStopTime = 60
 Group.maxAfterShoppingStopTime = 600
 # Diversificar vector: más actividad tras trabajo (usuarios bus)
-Group.probGoShoppingAfterWork = 0.5
+Group.probGoShoppingAfterWork = 0.6
 # V6 lever: no car ownership (bus only)
 Group.ownCarProb = 0.0
 
@@ -115,13 +115,21 @@ Group2.probGoShoppingAfterWork = 0.5
 Group2.ownCarProb = 0.0
 
 Group.router = EpidemicRouter
-Events.nrof = 1
+Events.nrof = 2
 Events1.class = MessageEventGenerator
 # Diversificar core 24: car 0% = tráfico más frecuente y mensajes más pequeños
-Events1.interval = 20, 30
-Events1.size = 40k, 100k
+Events1.interval = 70, 130
+Events1.size = 15k, 60k
 Events1.hosts = 0, 81
+Events1.tohosts = 0, 6
+Events1.time = 0, 18000
 Events1.prefix = M
+Events2.class = MessageEventGenerator
+Events2.interval = 15, 40
+Events2.size = 80k, 220k
+Events2.hosts = 0, 81
+Events2.time = 18000, 43200
+Events2.prefix = V
 
 Report.nrofReports = 2
 Report.reportDir = reports/

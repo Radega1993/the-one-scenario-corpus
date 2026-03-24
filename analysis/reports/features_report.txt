@@ -62,8 +62,8 @@ distancia coseno, clustering y figuras.
     Origen:      Group*.movementModel
 
   mm_Linear
-    Descripción: —
-    Origen:      —
+    Descripción: Usa LinearMovement (0/1)
+    Origen:      Group*.movementModel
 
   transmitRange
     Descripción: Rango de transmisión (m)

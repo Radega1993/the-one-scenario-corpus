@@ -16,11 +16,11 @@ Group.movementModel = RandomWaypoint
 Group.router = EpidemicRouter
 Group.nrofHosts = 60
 # Diversificar: mezcla aleatoria sin hotspots
-Group.bufferSize = 25M
+Group.bufferSize = 18M
 Group.nrofInterfaces = 1
 Group.interface1 = bt0
-Group.speed = 0.5, 1.5
-Group.waitTime = 60, 400
+Group.speed = 0.4, 1.0
+Group.waitTime = 120, 500
 
 bt0.type = SimpleBroadcastInterface
 bt0.transmitSpeed = 2M
@@ -31,8 +31,8 @@ Group1.groupID = r
 
 Events.nrof = 1
 Events1.class = MessageEventGenerator
-Events1.interval = 50, 200
-Events1.size = 20k, 110k
+Events1.interval = 90, 280
+Events1.size = 10k, 60k
 Events1.hosts = 0, 60
 Events1.prefix = M
 

@@ -17,7 +17,7 @@ Group.router = EpidemicRouter
 Group.nrofHosts = 38
 # R11: bajar r vs T13
 Group.bufferSize = 500k
-Group.msgTtl = 120
+Group.msgTtl = 7200
 Group.nrofInterfaces = 1
 Group.interface1 = bt0
 Group.speed = 0.4, 1.0
@@ -33,8 +33,8 @@ Group1.groupID = s
 # Moderate traffic (to stress buffer)
 Events.nrof = 1
 Events1.class = MessageEventGenerator
-Events1.interval = 15, 40
-Events1.size = 80k, 200k
+Events1.interval = 120, 300
+Events1.size = 20k, 90k
 Events1.hosts = 0, 38
 Events1.prefix = M
 

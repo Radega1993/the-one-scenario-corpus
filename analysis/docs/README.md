@@ -2,13 +2,13 @@
 
 Este directorio contiene **guías, metodología y planes de trabajo** para quien desarrolla o mantiene el proyecto. No son resultados de investigación: son documentos de apoyo.
 
-| Documento | Contenido |
-|-----------|------------|
-| [features_core_vs_extended.md](features_core_vs_extended.md) | Justificación metodológica: por qué 24 features son core y 46 extended. |
-| [features_decision.md](features_decision.md) | Decisión definitiva: qué settings se usan o se descartan y por qué. |
-| [PLAN_CONTINUIDAD_CORE24.md](PLAN_CONTINUIDAD_CORE24.md) | Plan de trabajo, rondas de diversificación, estado. |
-| [GUIA_ESTADO_Y_RESULTADOS.md](GUIA_ESTADO_Y_RESULTADOS.md) | Mapa de datos, fórmulas, figuras y por dónde continuar. |
-| [MAPAS_Y_VARIEDAD.md](MAPAS_Y_VARIEDAD.md) | Variedad por mapas y worldSize. |
-| [ANALISIS_DIVERSIDAD_VS_COMPORTAMIENTO.md](ANALISIS_DIVERSIDAD_VS_COMPORTAMIENTO.md) | Análisis diversidad vs comportamiento. |
+| Documento | Estado | Contenido |
+|-----------|--------|------------|
+| [features_core_vs_extended.md](features_core_vs_extended.md) | Vigente | Justificación metodológica core 23 vs extended 46. |
+| [features_decision.md](features_decision.md) | Vigente | Decisión de features y settings usados/no usados. |
+| [ANALISIS_DIVERSIDAD_VS_COMPORTAMIENTO.md](ANALISIS_DIVERSIDAD_VS_COMPORTAMIENTO.md) | Vigente | Análisis diversidad geométrica vs comportamiento en outputs. |
+| [MAPAS_Y_VARIEDAD.md](MAPAS_Y_VARIEDAD.md) | Vigente | Variedad por mapas y worldSize. |
+| [PLAN_CONTINUIDAD_CORE24.md](PLAN_CONTINUIDAD_CORE24.md) | Histórico (pre-freeze) | Plan de transición usado antes de la congelación final core 23. |
+| [GUIA_ESTADO_Y_RESULTADOS.md](GUIA_ESTADO_Y_RESULTADOS.md) | Histórico (pre-freeze) | Guía con métricas intermedias (core 24 / 70 escenarios). |
 
-**Informes (resultados reales del pipeline)** están en [../reports/](../reports/): correlación, clustering, ablación, listas de escenarios a diversificar, etc. Resumen único: [../reports/RESULTADOS_ACTUALES.md](../reports/RESULTADOS_ACTUALES.md).
+**Fuente canónica de resultados (freeze final):** [../reports/RESULTADOS_ACTUALES.md](../reports/RESULTADOS_ACTUALES.md), [../reports/correlation_report.txt](../reports/correlation_report.txt), [../reports/correlation_core23_report.txt](../reports/correlation_core23_report.txt), [../reports/ablation_report.txt](../reports/ablation_report.txt).

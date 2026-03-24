@@ -1,5 +1,9 @@
 # Guía: estado del proyecto, resultados, fórmulas y figuras
 
+> Estado del documento: **histórico (pre-freeze final)**.  
+> Puede contener referencias antiguas (`core24`, 70 escenarios, métricas intermedias).  
+> Para resultados vigentes usar: `analysis/reports/RESULTADOS_ACTUALES.md`, `correlation_report.txt`, `correlation_core23_report.txt`, `ablation_report.txt`.
+
 Documento de referencia para revisar la documentación, entender el estado actual del análisis del corpus de escenarios y decidir por dónde continuar.
 
 ---

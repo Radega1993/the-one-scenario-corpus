@@ -60,14 +60,14 @@ Group.shoppingMinWaitTime = 60
 Group.shoppingMaxWaitTime = 600
 Group.minAfterShoppingStopTime = 60
 Group.maxAfterShoppingStopTime = 600
-Group.probGoShoppingAfterWork = 0.3
+Group.probGoShoppingAfterWork = 0.1
 # V7 lever: all use car (ownCarProb = 1)
 Group.ownCarProb = 1.0
 
 Scenario.nrofHostGroups = 2
 
 Group1.groupID = b
-Group1.nrofHosts = 1
+Group1.nrofHosts = 2
 Group1.movementModel = BusMovement
 Group1.routeFile = data/HelsinkiMedium/A_bus.wkt
 Group1.routeType = 1
@@ -117,8 +117,8 @@ Group2.ownCarProb = 1.0
 Group.router = EpidemicRouter
 Events.nrof = 1
 Events1.class = MessageEventGenerator
-Events1.interval = 25, 35
-Events1.size = 50k, 150k
+Events1.interval = 45, 80
+Events1.size = 40k, 120k
 Events1.hosts = 0, 81
 Events1.prefix = M
 

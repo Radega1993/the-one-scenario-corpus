@@ -49,7 +49,12 @@ Analysis (feature extraction, correlation between scenarios, validation on outpu
 
 - **Main script:** `scenarios/analysis/run_analysis.py`, run by phase: `features` → `features_report` → `normalize` → `correlation` → `figures` → `output_metrics` → `outputs`. See [analysis/README.md](analysis/README.md) for the full phase list and options.
 - **Outputs:** `analysis/data/` (feature CSV, normalised, correlation/distance matrices, `output_metrics.csv`), `analysis/figures/` (heatmaps, histograms, scatter), `analysis/reports/` (text reports).
-- **Benchmark criterion (core 24):** 60 scenarios; **24 core features** define diversity. **88 pairs** (5.0%) with |r| ≥ 0.7; max |r| **0.9708** (U11↔U12); min cosine distance 0.0295. Justification of **why 24 are core** and **why others are discarded**: [analysis/docs/features_core_vs_extended.md](analysis/docs/features_core_vs_extended.md); settings not used: [analysis/docs/features_decision.md](analysis/docs/features_decision.md). Single reference: [analysis/reports/RESULTADOS_ACTUALES.md](analysis/reports/RESULTADOS_ACTUALES.md).
+- **Benchmark criterion (final optimized freeze):** 60 scenarios; **23 core features** and full 46 for diagnostics.  
+  - **Full-46:** 46 pairs (2.6%) with `|r| >= 0.7`; `max |r| = 0.9377`; min cosine distance `0.0620`; silhouette `0.2929`.  
+  - **Core-23:** 58 pairs (3.3%) with `|r| >= 0.7`; `max |r| = 0.9829`; min cosine distance `0.0152`; silhouette `0.2681`.  
+  - One high feature-feature dependency remains in core: `mm_WDM <-> mm_Bus = 0.9393`.  
+  Freeze status: **stable and publishable baseline** (not optimal final corpus).  
+  Justification of **why 23 are core** and **why others are discarded**: [analysis/docs/features_core_vs_extended.md](analysis/docs/features_core_vs_extended.md); settings not used: [analysis/docs/features_decision.md](analysis/docs/features_decision.md). Single reference: [analysis/reports/RESULTADOS_ACTUALES.md](analysis/reports/RESULTADOS_ACTUALES.md).
 
 **Interactive dashboard:** to view everything in one place (summary, results by phase, per-scenario detail, compare scenarios):
 

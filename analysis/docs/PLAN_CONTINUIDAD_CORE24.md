@@ -1,5 +1,9 @@
 # Plan de continuidad — Core 24 como referencia de la investigación
 
+> Estado del documento: **histórico (pre-freeze final)**.  
+> Este plan refleja una etapa anterior basada en core 24.  
+> La referencia vigente del proyecto es core 23 y freeze final optimizado (ver `analysis/reports/RESULTADOS_ACTUALES.md`).
+
 Las **24 features core** son la referencia única para evaluar diversidad del corpus y para basar la investigación (tesis/paper). Los resultados y las decisiones de diversificación se miden en el **espacio de las 24 core**, no en el de las 46 extendidas.
 
 **Objetivos del proyecto:** (1) Que cada escenario aporte **información única** para que investigadores puedan simular sus protocolos y obtener resultados en cada tipo de escenario. (2) **Correlación lineal baja** entre escenarios (umbral <5% pares con |r|≥0.7); si no, podemos considerar que es el mismo escenario y se duplicarían tests sin aportar nada.

@@ -10,11 +10,16 @@ Este directorio contiene el pipeline de análisis de los escenarios del corpus: 
 
 ## Un script con fases (recomendado)
 
-**Resultados actuales (estado del benchmark):** 70 escenarios, **46 features** (extendido); **core 24** para diversidad/paper. Correlación (46): **96,2 %** de pares con |r| < 0,7; max |r| **0,957**; Silhouette (Ward k=7) **0,333**. Ablación: core 24 da mejor Silhouette (0,41); full 46 menos pares altos (3,8 %). Feature–feature (core 24): 1 par |r| ≥ 0,9 (mm_WDM–mm_Bus). Tabla completa: [reports/diversity_targets.md](reports/diversity_targets.md). Metodología core/extended: [reports/features_core_vs_extended.md](reports/features_core_vs_extended.md).
+**Resultados actuales (freeze final optimizado):** 60 escenarios, **46 features** (extendido) y **core 23** para metodología/paper.  
+**Espacio full-46:** `46` pares (2,6 %) con `|r| >= 0,7`; `max |r| = 0,9377`; `distancia coseno mínima = 0,0620`; `silhouette = 0,2929`.  
+**Espacio core-23:** `58` pares (3,3 %) con `|r| >= 0,7`; `max |r| = 0,9829`; `distancia coseno mínima = 0,0152`; `silhouette = 0,2681`.  
+Feature-feature (core 23): persiste 1 par alto `mm_WDM <-> mm_Bus = 0,9393`.  
+Esta versión se congela como **baseline mejorado, estable y publicable** (no óptimo final).  
+Metodología core/extended: [docs/features_core_vs_extended.md](docs/features_core_vs_extended.md).
 
 Se usa **un solo script** (`run_analysis.py`) con varias fases ejecutables de forma independiente. Espacio: **world_area** (Wx×Wy) y **aspect_ratio** = min(Wx,Wy)/max(Wx,Wy). **Política NaN (§4):** z-score por columna ignorando NaN; luego imputar NaN → 0 en espacio estandarizado.
 
-- **Ventajas**: una única entrada, resultados intermedios en `data/` (p. ej. `features.csv` → `features_normalized.csv`, `features_core.csv` 24 cols, `features_reduced.csv` 17 cols), posibilidad de `--phase all` para correr todo.
+- **Ventajas**: una única entrada, resultados intermedios en `data/` (p. ej. `features.csv` -> `features_normalized.csv`, `features_core.csv` 23 cols, `features_reduced.csv` 17 cols), posibilidad de `--phase all` para correr todo.
 - **Fases**: `features` → `normalize` → `correlation` → `feature_correlation` → `ablation` → `figures` → `output_metrics` → `outputs`. Cada fase escribe en `data/`, `figures/` o `reports/`.
 
 Alternativa con **varios scripts** (uno por paso) sería útil si quisieras orquestar pasos en otro lenguaje o herramienta; por ahora el diseño con un script y fases es más simple de mantener.
@@ -115,10 +120,10 @@ Con esto el vector de features permite distinguir mejor escenarios que comparten
 El script se organiza **por partes**:
 
 1. **Extracción de features** (`--phase features`): Lee todos los `.settings` bajo el directorio indicado (p. ej. `corpus_v1`), aplica el parser de settings y construye el vector de features definido arriba. Escribe en `data/` un CSV con una fila por escenario y una columna por feature (`features.csv`, `scenario_list.txt`).
-2. **Normalización** (`--phase normalize`): Lee `data/features.csv` y aplica **z-score por característica** usando solo valores no-NaN; luego **imputa NaN → 0** en el espacio estandarizado (§4 features_core_vs_extended.md). Salida: `features_normalized.csv`, `normalization_params.csv`, `features_core.csv` (24), `features_reduced.csv` (17).
+2. **Normalización** (`--phase normalize`): Lee `data/features.csv` y aplica **z-score por característica** usando solo valores no-NaN; luego **imputa NaN -> 0** en el espacio estandarizado (§4 features_core_vs_extended.md). Salida: `features_normalized.csv`, `normalization_params.csv`, `features_core.csv` (23), `features_reduced.csv` (17).
 3. **Correlación entre escenarios** (`--phase correlation`): Lee `data/features_normalized.csv` (matriz Z, n×d con n = número de escenarios). **Pearson** r(Si, Sk) = corr(Zi, Zk); **Spearman** (correlación de rangos); **métricas geométricas**: distancia coseno (1 − cos_sim) y distancia euclídea entre filas de Z. Salidas en `data/`: `correlation_pearson.csv`, `correlation_spearman.csv`, `distance_cosine.csv`, `distance_euclidean.csv`, `correlation_pearson_pvalues.csv`. Criterio: **|r| < 0.7** para todos o ≥95% de los pares (`--strict` exige 100%). **Test y corrección múltiple**: p-value por par (H0: ρ=0), **FDR (Benjamini-Hochberg)** y **Bonferroni** (`--fdr-alpha`). Objetivo: no pares con |r| alto y significativos tras corrección. Informes: `reports/correlation_report.txt` (incluye resumen Spearman y distancias), `reports/multiple_comparisons_report.txt`. Matrices de Pearson/Spearman entre vectores de escenarios, distancias coseno y euclídea; se guardan en `data/`.
-4. **Correlación feature–feature** (`--phase feature_correlation`): Matriz 24×24 entre las features del core. Salida: `data/feature_feature_correlation_core.csv`, `figures/heatmap_feature_feature_core.png`, `reports/feature_feature_correlation_report.txt`.
-5. **Ablación** (`--phase ablation`): Compara métricas (max |r|, media |r|, pares ≥0.7, Silhouette) para 17, 24 y 46 features. Salida: `reports/ablation_report.txt`, `data/ablation_metrics.csv`.
+4. **Correlación feature-feature** (`--phase feature_correlation`): Matriz 23x23 entre las features del core. Salida: `data/feature_feature_correlation_core.csv`, `figures/heatmap_feature_feature_core.png`, `reports/feature_feature_correlation_report.txt`.
+5. **Ablación** (`--phase ablation`): Compara métricas (max |r|, media |r|, pares >=0.7, Silhouette) para 17, 23 y 46 features. Salida: `reports/ablation_report.txt`, `data/ablation_metrics.csv`.
 6. **Figuras** (`--phase figures`): Heatmaps Pearson/Spearman, histogramas de correlaciones, scatter PCA 2D y scatter par con mayor |r|; se guardan en `figures/` (.png y .pdf).
 7. **Rellenado de métricas de salida** (`--phase output_metrics`): **Automatiza** la creación de `data/output_metrics.csv` a partir de los ficheros `*_MessageStatsReport.txt` en el directorio de reportes (por defecto `reports/` en la raíz del repo; `--reports-dir` para otro). Parsea: `delivery_prob` → `delivery_ratio`, `latency_avg` → `latency_mean`, `overhead_ratio`, `drop_ratio` = dropped/created. Una fila por escenario (nombre del fichero). No hace falta rellenar el CSV a mano si ya tienes los reportes del ONE.
 8. **Validación sobre outputs** (`--phase outputs`): Vectores Y_s por escenario (delivery_ratio, latency_mean, overhead_ratio, drop_ratio) a partir de `data/output_metrics.csv`; mismo procedimiento (z-score, Pearson, Spearman, distancias). Salidas en `data/` y `reports/outputs_correlation_report.txt`; heatmap en `figures/heatmap_pearson_outputs.png`. Requiere `output_metrics.csv` (generable con `--phase output_metrics`).
@@ -159,10 +164,10 @@ python3 run_analysis.py --corpus corpus_v1 --phase normalize
 python3 run_analysis.py --phase correlation
 python3 run_analysis.py --phase correlation --threshold 0.7 --strict   # exige 100% pares con |r|<0.7
 
-# Correlación feature–feature (core 24×24) → data/, figures/, reports/
+# Correlación feature-feature (core 23x23) -> data/, figures/, reports/
 python3 run_analysis.py --phase feature_correlation
 
-# Ablación 17 vs 24 vs 46 → reports/ablation_report.txt, data/ablation_metrics.csv
+# Ablación 17 vs 23 vs 46 -> reports/ablation_report.txt, data/ablation_metrics.csv
 python3 run_analysis.py --phase ablation
 
 # Gráficos → figures/*.png, figures/*.pdf (requiere correlation previa)

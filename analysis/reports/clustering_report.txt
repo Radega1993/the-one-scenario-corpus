@@ -1,66 +1,7 @@
-# Clustering Ward sobre Z (k=7), silhouette = 0.2924
+# Clustering Ward sobre Z (k=7), silhouette = 0.2929
 # De cada cluster: mantener 3-4 representantes; modificar el resto para empujarlos fuera.
 
-## Cluster 1 (4 escenarios)
-  C4_Stadium_IngressEgress
-  D4_MedicalTriage_TwoClasses
-  T7_TargetedToHubs_FewDestinations
-  T8_BurstTraffic_TimeWindows
-
-## Cluster 2 (6 escenarios)
-  D1_ShelterHotspots_Clusters
-  D2_PartitionedCity_MuleBridge
-  D8_InfrastructureReturns_BackboneLinks
-  R2_VillagesTrails_ThreeClusters
-  S1_StrongCommunities_SeparateClusters
-  S6_FamilyGroups_SmallPersistent
-
-## Cluster 3 (2 escenarios)
-  R6_SparseLongRange
-  R9_ExtremeRange_200m
-
-## Cluster 4 (32 escenarios)
-  C1_Campus_ClassChange
-  C2_ExamDay_LongStays
-  C3_Hackathon_24h
-  C5_Library_Quiet
-  D3_Aftershock_ErraticMobility
-  D6_ShortTtlCritical_5to10min
-  D7_HighLoad_TrafficStorm
-  D9_Critical_1minTTL
-  R10_TinyRange_5m
-  R11_SpeedExtremeLow
-  R1_Rural_RandomWaypoint
-  R3_WildlifeTracking
-  R5_MountainRescue
-  R7_SparseTinyBuffer
-  R8_IntermittentPower
-  S2_WeakCommunities_HighMixing
-  S3_PeriodicMeetings_RegularRhythm
-  S4_RandomMixing_NoHotspots
-  S5_TwoLayer_StudentsStaff
-  T10_HighRateLowSpeed_Congestion
-  T11_TTL_1min
-  T12_TTL_Infinite_Buffer200M
-  T13_Buffer_256k
-  T14_Buffer_200M
-  T15_TransmitSpeed_256k
-  T1_ManySmallMsgs_HighRate
-  T2_FewHugeMsgs_LowRate
-  T3_MixedBimodal_SmallAndLarge
-  T4_VeryShortTtl_5to10min
-  T5_VeryLongTtl_6to24h
-  T6_UniformSources_RandomFromTo
-  T9_BufferStress_SmallBufferHighTraffic
-
-## Cluster 5 (4 escenarios)
-  D5_UAVMule_FastRoute_HelsinkiMedium
-  R4_ParkRangers_HelsinkiMedium
-  V1_TaxiLow_HelsinkiMedium
-  V2_TaxiHigh_HelsinkiMedium
-
-## Cluster 6 (11 escenarios)
-  R12_SpeedExtremeHigh
+## Cluster 1 (10 escenarios)
   U1_CBD_Commuting_HelsinkiMedium
   U2_SparseSuburb_HelsinkiMedium
   U3_MicroMobility_HelsinkiMedium
@@ -71,6 +12,65 @@
   V3_BusOnlyCarriers_HelsinkiMedium
   V4_CarOwnership_0_HelsinkiMedium
   V5_CarOwnership_100_HelsinkiMedium
+
+## Cluster 2 (6 escenarios)
+  D1_ShelterHotspots_Clusters
+  D2_PartitionedCity_MuleBridge
+  D8_InfrastructureReturns_BackboneLinks
+  R2_VillagesTrails_ThreeClusters
+  S1_StrongCommunities_SeparateClusters
+  S6_FamilyGroups_SmallPersistent
+
+## Cluster 3 (4 escenarios)
+  D5_UAVMule_FastRoute_HelsinkiMedium
+  R4_ParkRangers_HelsinkiMedium
+  V1_TaxiLow_HelsinkiMedium
+  V2_TaxiHigh_HelsinkiMedium
+
+## Cluster 4 (8 escenarios)
+  C4_Stadium_IngressEgress
+  D4_MedicalTriage_TwoClasses
+  S5_TwoLayer_StudentsStaff
+  T12_TTL_Infinite_Buffer200M
+  T13_Buffer_256k
+  T14_Buffer_200M
+  T7_TargetedToHubs_FewDestinations
+  T8_BurstTraffic_TimeWindows
+
+## Cluster 5 (2 escenarios)
+  R6_SparseLongRange
+  R9_ExtremeRange_200m
+
+## Cluster 6 (29 escenarios)
+  C1_Campus_ClassChange
+  C2_ExamDay_LongStays
+  C3_Hackathon_24h
+  C5_Library_Quiet
+  D3_Aftershock_ErraticMobility
+  D6_ShortTtlCritical_5to10min
+  D7_HighLoad_TrafficStorm
+  D9_Critical_1minTTL
+  R10_TinyRange_5m
+  R11_SpeedExtremeLow
+  R12_SpeedExtremeHigh
+  R1_Rural_RandomWaypoint
+  R3_WildlifeTracking
+  R5_MountainRescue
+  R7_SparseTinyBuffer
+  R8_IntermittentPower
+  S2_WeakCommunities_HighMixing
+  S3_PeriodicMeetings_RegularRhythm
+  S4_RandomMixing_NoHotspots
+  T10_HighRateLowSpeed_Congestion
+  T11_TTL_1min
+  T15_TransmitSpeed_256k
+  T1_ManySmallMsgs_HighRate
+  T2_FewHugeMsgs_LowRate
+  T3_MixedBimodal_SmallAndLarge
+  T4_VeryShortTtl_5to10min
+  T5_VeryLongTtl_6to24h
+  T6_UniformSources_RandomFromTo
+  T9_BufferStress_SmallBufferHighTraffic
 
 ## Cluster 7 (1 escenarios)
   C6_EmergencyDrill_Evacuation

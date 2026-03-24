@@ -39,7 +39,7 @@ Group.officeLocationsFile = data/HelsinkiMedium/A_offices.wkt
 Group.meetingSpotsFile = data/HelsinkiMedium/A_meetingspots.wkt
 
 # U12 lever: high time variance (desynchronised schedules)
-Group.timeDiffSTD = 3600
+Group.timeDiffSTD = 5400
 
 # Diversificar core 24: 8.25h (alta varianza horaria = jornada algo más larga)
 Group.workDayLength = 29700
@@ -116,13 +116,21 @@ Group2.probGoShoppingAfterWork = 0.3
 Group2.ownCarProb = 0.0
 
 Group.router = EpidemicRouter
-Events.nrof = 1
+Events.nrof = 2
 Events1.class = MessageEventGenerator
 # Diversificar core 24: banda distinta (event_interval_mean, event_size_mean)
-Events1.interval = 32, 42
-Events1.size = 70k, 130k
+Events1.interval = 60, 120
+Events1.size = 20k, 60k
 Events1.hosts = 0, 81
+Events1.time = 0, 14400
 Events1.prefix = M
+Events2.class = MessageEventGenerator
+Events2.interval = 8, 20
+Events2.size = 90k, 220k
+Events2.hosts = 0, 81
+Events2.time = 14400, 25200
+Events2.tohosts = 0, 10
+Events2.prefix = B
 
 Report.nrofReports = 2
 Report.reportDir = reports/

@@ -20,7 +20,7 @@ Features utilizados para correlación y diversidad, y settings no utilizados con
 | mm_Bus | Usa BusMovement (0/1) | Group*.movementModel |
 | mm_ShortestPath | Usa ShortestPathMapBasedMovement (0/1) | Group*.movementModel |
 | mm_External | Usa External/ExternalPathMovement (0/1) | Group*.movementModel |
-| mm_Linear | — | — |
+| mm_Linear | Usa LinearMovement (0/1) | Group*.movementModel |
 | transmitRange | Rango de transmisión (m) | bt0.transmitRange / interface.transmitRange |
 | contact_rate_proxy | Proxy tasa de contacto | density, transmitRange, speed (derivado) |
 | event_interval_mean | Intervalo medio entre mensajes (s) | Events1.interval |

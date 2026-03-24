@@ -391,14 +391,14 @@ def settings_to_reportable_features(d: dict[str, Any]) -> dict[str, float | int]
     }
 
 
-# Conjuntos core (24) y reducido (17) para ablación y correlación feature–feature (features_core_vs_extended.md)
-FEATURES_CORE_24 = [
+# Conjuntos core (23) y reducido (17) para ablación y correlación feature–feature (features_core_vs_extended.md)
+FEATURES_CORE_23 = [
     "world_area", "aspect_ratio", "N", "nrofHostGroups", "speed_mean", "wait_mean",
     "mm_WDM", "mm_RWP", "mm_MapRoute", "mm_Cluster", "mm_Bus", "mm_Linear",
     "transmitRange", "bufferSize", "transmitSpeed", "msgTtl",
     "event_interval_mean", "event_size_mean", "nrof_event_generators",
     "pattern_burst", "pattern_hub_target",
-    "workDayLength", "ownCarProb", "clusterRange_mean",
+    "workDayLength", "ownCarProb",
 ]
 # Subconjunto mínimo razonable (tesis / ablación 17)
 FEATURES_REDUCED_17 = [
@@ -424,6 +424,7 @@ FEATURE_METADATA = {
     "mm_Bus": ("Usa BusMovement (0/1)", "Group*.movementModel"),
     "mm_ShortestPath": ("Usa ShortestPathMapBasedMovement (0/1)", "Group*.movementModel"),
     "mm_External": ("Usa External/ExternalPathMovement (0/1)", "Group*.movementModel"),
+    "mm_Linear": ("Usa LinearMovement (0/1)", "Group*.movementModel"),
     "transmitRange": ("Rango de transmisión (m)", "bt0.transmitRange / interface.transmitRange"),
     "contact_rate_proxy": ("Proxy tasa de contacto", "density, transmitRange, speed (derivado)"),
     "event_interval_mean": ("Intervalo medio entre mensajes (s)", "Events1.interval"),
@@ -706,7 +707,7 @@ def run_phase_normalize(out_dir: Path) -> bool:
     """
     Fase 2: lee data/features.csv, aplica z-score por característica (ignorando NaN),
     imputa NaN → 0 en espacio estandarizado (§4 features_core_vs_extended.md),
-    escribe features_normalized.csv, normalization_params.csv, features_core.csv (24), features_reduced.csv (17).
+    escribe features_normalized.csv, normalization_params.csv, features_core.csv (23), features_reduced.csv (17).
     """
     if pd is None:
         print("pandas is required for --phase normalize")
@@ -726,13 +727,13 @@ def run_phase_normalize(out_dir: Path) -> bool:
     print(f"Written {data_dir / 'features_normalized.csv'} (shape {Z.shape}, NaN→0)")
 
     # Core 24 y reducido 17 para ablación y correlación feature–feature
-    core_cols = [c for c in FEATURES_CORE_24 if c in Z.columns]
+    core_cols = [c for c in FEATURES_CORE_23 if c in Z.columns]
     red_cols = [c for c in FEATURES_REDUCED_17 if c in Z.columns]
-    if len(core_cols) == 24:
+    if len(core_cols) == 23:
         Z[core_cols].to_csv(data_dir / "features_core.csv")
-        print(f"Written {data_dir / 'features_core.csv'} (24 core features)")
+        print(f"Written {data_dir / 'features_core.csv'} (23 core features)")
     else:
-        print(f"Warning: only {len(core_cols)}/24 core columns in data (missing: {set(FEATURES_CORE_24) - set(Z.columns)})")
+        print(f"Warning: only {len(core_cols)}/23 core columns in data (missing: {set(FEATURES_CORE_23) - set(Z.columns)})")
     if len(red_cols) == 17:
         Z[red_cols].to_csv(data_dir / "features_reduced.csv")
         print(f"Written {data_dir / 'features_reduced.csv'} (17 reduced features)")
@@ -1029,39 +1030,39 @@ def run_phase_correlation(out_dir: Path, threshold: float = 0.7, criterion_95: b
     (reports_dir / "scenarios_to_diversify.txt").write_text("\n".join(diversify_lines), encoding="utf-8")
     print(f"Written {reports_dir / 'scenarios_to_diversify.txt'} ({len(scenarios_sorted)} escenarios a diversificar)")
 
-    # ----- Correlación y diversificación en espacio CORE 24 (referencia para investigación) -----
+    # ----- Correlación y diversificación en espacio CORE 23 (referencia para investigación) -----
     path_core = data_dir / "features_core.csv"
     if path_core.exists() and pd is not None:
         Z_core = pd.read_csv(path_core, index_col=0)
         Z_core_arr = Z_core.values
-        R_core24 = Z_core.T.corr()
-        R_core24.to_csv(data_dir / "correlation_pearson_core24.csv")
+        R_core23 = Z_core.T.corr()
+        R_core23.to_csv(data_dir / "correlation_pearson_core23.csv")
         triu_c = np.triu_indices(n, k=1)
-        r_core_flat = R_core24.values[triu_c[0], triu_c[1]]
+        r_core_flat = R_core23.values[triu_c[0], triu_c[1]]
         abs_r_core = np.abs(r_core_flat)
         n_above_core = int(np.sum(abs_r_core >= threshold))
         total_core = len(r_core_flat)
         max_abs_r_core = float(np.nanmax(abs_r_core)) if total_core else np.nan
         mean_abs_r_core = float(np.nanmean(abs_r_core)) if total_core else np.nan
         cos_dist_core = cosine_distance_matrix(Z_core_arr)
-        pd.DataFrame(cos_dist_core, index=index_df, columns=index_df).to_csv(data_dir / "distance_cosine_core24.csv")
+        pd.DataFrame(cos_dist_core, index=index_df, columns=index_df).to_csv(data_dir / "distance_cosine_core23.csv")
         min_cos_core = float(np.nanmin(cos_dist_core[triu_c[0], triu_c[1]])) if total_core else np.nan
         pairs_above_core = []
         for idx in np.where(abs_r_core >= threshold)[0]:
             i, k = triu_c[0][idx], triu_c[1][idx]
-            pairs_above_core.append((labels[i], labels[k], float(R_core24.iloc[i, k])))
-        silhouette_core24 = np.nan
+            pairs_above_core.append((labels[i], labels[k], float(R_core23.iloc[i, k])))
+        silhouette_core23 = np.nan
         if linkage is not None and fcluster is not None:
             try:
                 link_core = linkage(Z_core_arr, method="ward")
                 cluster_core = fcluster(link_core, n_clusters, criterion="maxclust")
-                silhouette_core24 = silhouette_from_distance(cos_dist_core, cluster_core)
-                pd.DataFrame({"scenario": labels, "cluster": cluster_core}).to_csv(data_dir / "cluster_assignments_core24.csv", index=False)
+                silhouette_core23 = silhouette_from_distance(cos_dist_core, cluster_core)
+                pd.DataFrame({"scenario": labels, "cluster": cluster_core}).to_csv(data_dir / "cluster_assignments_core23.csv", index=False)
             except Exception:
                 pass
         report_core_lines = [
-            "=== Correlación entre escenarios en espacio CORE 24 (referencia para investigación) ===",
-            f"Vectores Z_core: n={n} escenarios, d=24 features. r(Si, Sk) = Pearson entre filas de Z_core.",
+            "=== Correlación entre escenarios en espacio CORE 23 (referencia para investigación) ===",
+            f"Vectores Z_core: n={n} escenarios, d=23 features. r(Si, Sk) = Pearson entre filas de Z_core.",
             "",
             f"  max |r| = {max_abs_r_core:.4f}",
             f"  media |r| = {mean_abs_r_core:.4f}",
@@ -1069,9 +1070,9 @@ def run_phase_correlation(out_dir: Path, threshold: float = 0.7, criterion_95: b
             f"  Pares con |r| >= {threshold}: {n_above_core} ({100.0 * n_above_core / total_core:.1f}%)",
             "",
             f"  Distancia coseno mínima = {min_cos_core:.4f}",
-            f"  Silhouette (Ward k={n_clusters} sobre Z_core) = {silhouette_core24:.4f}",
+            f"  Silhouette (Ward k={n_clusters} sobre Z_core) = {silhouette_core23:.4f}",
             "",
-            "Objetivo investigación: diversidad y resultados se evalúan con las 24 core. Priorizar reducción de pares |r|>=0.7 en este espacio.",
+            "Objetivo investigación: diversidad y resultados se evalúan con las 23 core. Priorizar reducción de pares |r|>=0.7 en este espacio.",
         ]
         if pairs_above_core:
             report_core_lines.append("")
@@ -1086,15 +1087,15 @@ def run_phase_correlation(out_dir: Path, threshold: float = 0.7, criterion_95: b
             count_above_core[b] += 1
         scenarios_core_sorted = sorted(set(a for (a, b, _) in pairs_above_core) | set(b for (a, b, _) in pairs_above_core), key=lambda s: -count_above_core[s])
         diversify_core_lines = [
-            "# Escenarios a diversificar (core 24) — aparecen en pares con |r| >= 0.7 en espacio de 24 features",
+            "# Escenarios a diversificar (core 23) — aparecen en pares con |r| >= 0.7 en espacio de 23 features",
             f"# Referencia para investigación. Total: {len(scenarios_core_sorted)} escenarios.",
             "",
         ]
         for s in scenarios_core_sorted:
-            diversify_core_lines.append(f"{s}  (# pares |r|>={threshold} en core24: {count_above_core[s]})")
-        (reports_dir / "correlation_core24_report.txt").write_text("\n".join(report_core_lines), encoding="utf-8")
-        (reports_dir / "scenarios_to_diversify_core24.txt").write_text("\n".join(diversify_core_lines), encoding="utf-8")
-        print(f"Written correlation_core24_report.txt, scenarios_to_diversify_core24.txt ({len(scenarios_core_sorted)} escenarios), correlation_pearson_core24.csv, distance_cosine_core24.csv")
+            diversify_core_lines.append(f"{s}  (# pares |r|>={threshold} en core23: {count_above_core[s]})")
+        (reports_dir / "correlation_core23_report.txt").write_text("\n".join(report_core_lines), encoding="utf-8")
+        (reports_dir / "scenarios_to_diversify_core23.txt").write_text("\n".join(diversify_core_lines), encoding="utf-8")
+        print(f"Written correlation_core23_report.txt, scenarios_to_diversify_core23.txt ({len(scenarios_core_sorted)} escenarios), correlation_pearson_core23.csv, distance_cosine_core23.csv")
 
     # Asignación a clusters y reporte por cluster (para diversificar: 3-4 representantes por cluster, empujar el resto)
     if cluster_labels is not None and pd is not None:
@@ -1147,8 +1148,8 @@ def run_phase_correlation(out_dir: Path, threshold: float = 0.7, criterion_95: b
 
 def run_phase_feature_feature_correlation(out_dir: Path) -> bool:
     """
-    Correlación entre las 24 features del core (feature–feature), §5 features_core_vs_extended.md.
-    Matriz 24×24 sobre escenarios (columnas = features). Salida: data/ y figures/heatmap_feature_feature_core.png.
+    Correlación entre las 23 features del core (feature–feature), §5 features_core_vs_extended.md.
+    Matriz 23×23 sobre escenarios (columnas = features). Salida: data/ y figures/heatmap_feature_feature_core.png.
     """
     if pd is None:
         print("pandas is required for --phase feature_correlation")
@@ -1179,8 +1180,8 @@ def run_phase_feature_feature_correlation(out_dir: Path) -> bool:
             if not pd.isna(r) and abs(r) >= 0.9:
                 pairs_high.append((R_ff.columns[i], R_ff.columns[k], float(r)))
     report_lines = [
-        "=== Correlación feature–feature (core 24) ===",
-        "Matriz 24×24: correlación entre features sobre los escenarios (columnas de Z).",
+        "=== Correlación feature–feature (core 23) ===",
+        "Matriz 23×23: correlación entre features sobre los escenarios (columnas de Z).",
         f"max |r| off-diagonal = {max_off_diag:.4f}",
         "",
         "Objetivo (§5): no pares con |r| > 0.9 (baja redundancia del core).",
@@ -1201,7 +1202,7 @@ def run_phase_feature_feature_correlation(out_dir: Path) -> bool:
         ax.set_xticklabels(R_ff.columns, rotation=45, ha="right", fontsize=7)
         ax.set_yticklabels(R_ff.columns, fontsize=7)
         plt.colorbar(im, ax=ax, label="Pearson r (feature–feature)")
-        ax.set_title("Correlación entre features del core (24×24)")
+        ax.set_title("Correlación entre features del core (23×23)")
         plt.tight_layout()
         plt.savefig(figures_dir / "heatmap_feature_feature_core.png", dpi=150, bbox_inches="tight")
         plt.savefig(figures_dir / "heatmap_feature_feature_core.pdf", dpi=150, bbox_inches="tight")
@@ -1214,7 +1215,7 @@ def run_phase_feature_feature_correlation(out_dir: Path) -> bool:
 
 def run_phase_ablation(out_dir: Path, threshold: float = 0.7, n_clusters: int = 7) -> bool:
     """
-    Ablación 17 vs 24 vs 46 (§6 features_core_vs_extended.md).
+    Ablación 17 vs 23 vs 46 (§6 features_core_vs_extended.md).
     Métricas por conjunto: max |r|, media |r|, pares |r|>=threshold, Silhouette (Ward).
     Escribe reports/ablation_report.txt y data/ablation_metrics.csv.
     """
@@ -1271,10 +1272,10 @@ def run_phase_ablation(out_dir: Path, threshold: float = 0.7, n_clusters: int = 
         if Z_red.shape[1] >= 17:
             res = metrics_for_Z(Z_red.values, "reduced_17", Z_red.shape[1])
             results.append(res)
-    # Core 24
+    # Core 23
     if path_core.exists():
         Z_core = pd.read_csv(path_core, index_col=0)
-        res = metrics_for_Z(Z_core.values, "core_24", Z_core.shape[1])
+        res = metrics_for_Z(Z_core.values, "core_23", Z_core.shape[1])
         results.append(res)
     # Full (46)
     res_full = metrics_for_Z(Z_full.values, "full_46", Z_full.shape[1])
@@ -1284,7 +1285,7 @@ def run_phase_ablation(out_dir: Path, threshold: float = 0.7, n_clusters: int = 
     df_ablation.to_csv(data_dir / "ablation_metrics.csv", index=False)
 
     report_lines = [
-        "=== Ablación 17 vs 24 vs 46 (features_core_vs_extended.md §6) ===",
+        "=== Ablación 17 vs 23 vs 46 (features_core_vs_extended.md §6) ===",
         f"Escenarios: n = {n_scenarios}. Umbral |r| = {threshold}. Clusters Ward k = {n_clusters}.",
         "",
         "Métricas por conjunto:",
@@ -1294,7 +1295,7 @@ def run_phase_ablation(out_dir: Path, threshold: float = 0.7, n_clusters: int = 
                             f"pares |r|>={threshold}={r['pairs_r_above_threshold']} ({r['pct_above']:.1f}%), silhouette={r['silhouette']:.4f}")
     report_lines.extend([
         "",
-        "Objetivo: el core 24 ofrece mejor compromiso expresividad / redundancia / interpretabilidad.",
+        "Objetivo: el core 23 ofrece mejor compromiso expresividad / redundancia / interpretabilidad.",
     ])
     report_text = "\n".join(report_lines)
     (reports_dir / "ablation_report.txt").write_text(report_text, encoding="utf-8")
@@ -1569,14 +1570,14 @@ def run_phase_results_actuales(
 ) -> bool:
     """
     Genera/actualiza analysis/reports/RESULTADOS_ACTUALES.md a partir de los reportes
-    generados en la misma ejecución (correlation_core24_report, correlation_report, etc.).
+    generados en la misma ejecución (correlation_core23_report, correlation_report, etc.).
 
     Importante: no debe contener valores hardcodeados ni referencias a "corpus_dropped_v1"
     que dependan del estado histórico.
     """
     out_dir = Path(out_dir)
     reports_dir = out_dir / "reports"
-    correlation_core_path = reports_dir / "correlation_core24_report.txt"
+    correlation_core_path = reports_dir / "correlation_core23_report.txt"
     correlation_full_path = reports_dir / "correlation_report.txt"
     ablation_path = reports_dir / "ablation_report.txt"
 
@@ -1629,7 +1630,7 @@ def run_phase_results_actuales(
     ablation_summary = ""
     if ablation_txt:
         # lines tipo:
-        # core_24 (d=24): max|r|=0.9714, mean|r|=0.2144, pares |r|>=0.7=90 (5.1%), silhouette=0.3199
+        # core_23 (d=23): max|r|=..., mean|r|=..., pares |r|>=...=..., silhouette=...
         def _parse_set_line(set_name: str) -> dict[str, float | int] | None:
             m = re.search(
                 rf"{re.escape(set_name)} \(d=\d+\): max\|r\|=([0-9.]+), mean\|r\|=([0-9.]+), pares \|r\|>={re.escape(str(threshold))}=([0-9]+)\s*\([0-9.]+%\), silhouette=([0-9.]+)",
@@ -1646,17 +1647,17 @@ def run_phase_results_actuales(
             }
 
         reduced = _parse_set_line("reduced_17")
-        core = _parse_set_line("core_24")
+        core = _parse_set_line("core_23")
         full = _parse_set_line("full_46")
         if reduced or core or full:
-            ablation_summary_lines = ["## Ablación (17 vs 24 vs 46, umbral |r|≥%.1f)" % threshold]
+            ablation_summary_lines = ["## Ablación (17 vs 23 vs 46, umbral |r|≥%.1f)" % threshold]
             if reduced:
                 ablation_summary_lines.append(
                     f"- reduced_17: max|r|={reduced['max_r']:.4f}, pares≥={threshold}={reduced['pairs_ge']}, silhouette={reduced['silhouette']:.4f}"
                 )
             if core:
                 ablation_summary_lines.append(
-                    f"- core_24: max|r|={core['max_r']:.4f}, pares≥={threshold}={core['pairs_ge']}, silhouette={core['silhouette']:.4f}"
+                    f"- core_23: max|r|={core['max_r']:.4f}, pares≥={threshold}={core['pairs_ge']}, silhouette={core['silhouette']:.4f}"
                 )
             if full:
                 ablation_summary_lines.append(
@@ -1679,7 +1680,7 @@ def run_phase_results_actuales(
         f"**Corpus:** {scenario_count_str} escenarios en `{corpus_name}/`.",
         f"**Umbral |r|:** {threshold}",
         "---",
-        "## Métricas en espacio CORE (24 features)",
+            "## Métricas en espacio CORE (23 features)",
         f"| Métrica | Valor |",
         "|---|---|",
         f"| max |r| | {max_core if max_core is not None else '—'} |",
@@ -1724,12 +1725,12 @@ def run_phase_results_actuales(
             "",
             "| Informe | Contenido |",
             "|---|---|",
-            "| [correlation_core24_report.txt](correlation_core24_report.txt) | Pares con |r|≥umbral en core 24 |",
+            "| [correlation_core23_report.txt](correlation_core23_report.txt) | Pares con |r|≥umbral en core 23 |",
             "| [correlation_report.txt](correlation_report.txt) | Correlación en espacio completo (46 features) |",
-            "| [ablation_report.txt](ablation_report.txt) | Ablación 17 vs 24 vs 46 |",
+            "| [ablation_report.txt](ablation_report.txt) | Ablación 17 vs 23 vs 46 |",
             "| [multiple_comparisons_report.txt](multiple_comparisons_report.txt) | FDR y Bonferroni |",
             "| [features_report.md](features_report.md) / [features_report.txt](features_report.txt) | Features usados / descartados |",
-            "| [feature_feature_correlation_report.txt](feature_feature_correlation_report.txt) | Correlación feature–feature (core 24) |",
+            "| [feature_feature_correlation_report.txt](feature_feature_correlation_report.txt) | Correlación feature–feature (core 23) |",
         ]
     )
 
@@ -1865,7 +1866,7 @@ def main():
     ap.add_argument("--corpus", type=str, default="corpus_v1", help="Directorio del corpus (p. ej. corpus_v1)")
     ap.add_argument("--phase", type=str, default="features",
                     choices=("features", "features_report", "normalize", "correlation", "feature_correlation", "ablation", "figures", "output_metrics", "outputs", "all"),
-                    help="Fase: features, normalize, correlation, feature_correlation (24×24), ablation (17 vs 24 vs 46), figures, output_metrics, outputs, all")
+                    help="Fase: features, normalize, correlation, feature_correlation (23×23), ablation (17 vs 23 vs 46), figures, output_metrics, outputs, all")
     ap.add_argument("--threshold", type=float, default=0.7,
                     help="Umbral |r| para criterio de correlación (default 0.7)")
     ap.add_argument("--strict", action="store_true",

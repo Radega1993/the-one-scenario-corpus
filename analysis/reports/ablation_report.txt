@@ -1,9 +1,9 @@
-=== Ablación 17 vs 24 vs 46 (features_core_vs_extended.md §6) ===
+=== Ablación 17 vs 23 vs 46 (features_core_vs_extended.md §6) ===
 Escenarios: n = 60. Umbral |r| = 0.7. Clusters Ward k = 7.
 
 Métricas por conjunto:
-  reduced_17 (d=17): max|r|=0.9800, mean|r|=0.2384, pares |r|>=0.7=97 (5.5%), silhouette=0.2727
-  core_24 (d=24): max|r|=0.9712, mean|r|=0.2166, pares |r|>=0.7=93 (5.3%), silhouette=0.3174
-  full_46 (d=46): max|r|=0.9364, mean|r|=0.1993, pares |r|>=0.7=57 (3.2%), silhouette=0.2924
+  reduced_17 (d=17): max|r|=0.9861, mean|r|=0.2339, pares |r|>=0.7=63 (3.6%), silhouette=0.2215
+  core_23 (d=23): max|r|=0.9829, mean|r|=0.2159, pares |r|>=0.7=58 (3.3%), silhouette=0.2681
+  full_46 (d=46): max|r|=0.9377, mean|r|=0.2076, pares |r|>=0.7=46 (2.6%), silhouette=0.2929
 
-Objetivo: el core 24 ofrece mejor compromiso expresividad / redundancia / interpretabilidad.
+Objetivo: el core 23 ofrece mejor compromiso expresividad / redundancia / interpretabilidad.

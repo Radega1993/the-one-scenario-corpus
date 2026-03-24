@@ -6,7 +6,7 @@
 
 | Contenido | Descripción |
 |-----------|-------------|
-| **corpus_v1/** | 70 escenarios `.settings` por familia (urban, campus, vehicles, rural, disaster, social, traffic). |
+| **corpus_v1/** | 60 escenarios `.settings` por familia (urban, campus, vehicles, rural, disaster, social, traffic). |
 | **analysis/** | Extracción de features, correlación, métricas de salida, figuras y [dashboard interactivo](analysis/README.es.md). |
 | **.wiki-clone/** | Contenido de la wiki (EN+ES): `01-home`, `02-guide`, `03-reference`, `04-results`, `05-corpus`. [Índice](.wiki-clone/README.md). Ver README allí para publicar en GitHub Wiki. |
 | **ROADMAP.md** / **ROADMAP.es.md** | Próximos pasos: documentación bilingüe; criterios de diversidad (|r| < 0,7, cos_dist). Versión en castellano: [ROADMAP.es.md](ROADMAP.es.md). |
@@ -404,7 +404,11 @@ El análisis del corpus (extracción de features, correlación entre escenarios,
 
 - **Script principal:** `scenarios/analysis/run_analysis.py`, ejecutable por fases: `features` → `normalize` → `correlation` → `figures` → `output_metrics` → `outputs`. Ver `scenarios/analysis/README.es.md` para la lista completa de fases y opciones.
 - **Salidas:** `analysis/data/` (CSV de features, normalizados, matrices de correlación y distancias, `output_metrics.csv`), `analysis/figures/` (heatmaps, histogramas, scatter), `analysis/reports/` (informes de texto).
-- **Criterio de benchmark:** 46 features por escenario; |r| < 0,7 en ≥95% de pares (**95,9 %** cumplido); distancia coseno mín > 0,05 (**0,0527**, 0 pares por debajo); max |r| **0,938**; **98** pares (4,1 %) con |r| ≥ 0,7. Ver [analysis/reports/diversity_targets.md](analysis/reports/diversity_targets.md) para objetivos completos y estado.
+- **Criterio de benchmark (freeze final optimizado):**  
+  - **Full-46:** 46 pares (2,6 %) con `|r| >= 0,7`; `max |r| = 0,9377`; `distancia coseno mínima = 0,0620`; `silhouette = 0,2929`; `97,4 %` de pares por debajo de 0,7.  
+  - **Core-23:** 58 pares (3,3 %) con `|r| >= 0,7`; `max |r| = 0,9829`; `distancia coseno mínima = 0,0152`; `silhouette = 0,2681`.  
+  - Dependencia feature-feature residual en core: `mm_WDM <-> mm_Bus = 0,9393`.  
+  Estado de congelación: **baseline mejorado, estable y publicable** (no óptimo final).
 
 **Dashboard interactivo:** para visualizar todo en un solo sitio (resumen, resultados por fase, detalle por escenario, comparación entre escenarios):
 
