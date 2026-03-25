@@ -1469,6 +1469,772 @@ def run_phase_figures(out_dir: Path, threshold: float = 0.7) -> bool:
     return True
 
 
+def run_phase_figures_paper(out_dir: Path, threshold: float = 0.7) -> bool:
+    """
+    Figuras "paper-ready" sin tocar figuras actuales:
+    escribe solo en figures/paper/(main|supplementary) y genera versiones más limpias
+    (anotaciones en histogramas, PCA por familia/cluster, plots de ablación).
+    """
+    if plt is None:
+        print("matplotlib is required for --phase figures_paper")
+        return False
+    if pd is None:
+        print("pandas is required for --phase figures_paper")
+        return False
+
+    out_dir = Path(out_dir)
+    data_dir = out_dir / "data"
+    figures_paper_dir = out_dir / "figures" / "paper"
+    main_dir = figures_paper_dir / "main"
+    supp_dir = figures_paper_dir / "supplementary"
+    main_dir.mkdir(parents=True, exist_ok=True)
+    supp_dir.mkdir(parents=True, exist_ok=True)
+
+    def _save_png_pdf(fig, path_no_ext: Path) -> None:
+        fig.savefig(path_no_ext.with_suffix(".png"), dpi=150, bbox_inches="tight")
+        fig.savefig(path_no_ext.with_suffix(".pdf"), dpi=150, bbox_inches="tight")
+
+    # ---------------- Inputs ----------------
+    path_r = data_dir / "correlation_pearson.csv"
+    path_rs = data_dir / "correlation_spearman.csv"
+    path_z = data_dir / "features_normalized.csv"
+    path_ablation = data_dir / "ablation_metrics.csv"
+    path_clusters = data_dir / "cluster_assignments.csv"
+    path_outputs = data_dir / "output_metrics.csv"
+    path_ff_core = data_dir / "feature_feature_correlation_core.csv"
+
+    if not path_r.exists():
+        print(f"Not found: {path_r}. Run --phase correlation first.")
+        return False
+
+    R_pearson = pd.read_csv(path_r, index_col=0)
+    labels = R_pearson.index.tolist()
+    n = len(labels)
+    triu = np.triu_indices(n, k=1)
+    r_flat = R_pearson.values[triu[0], triu[1]]
+    abs_r = np.abs(r_flat)
+    n_pairs = int(len(r_flat))
+    n_high = int(np.sum(abs_r >= threshold))
+    pct_high = 100.0 * n_high / n_pairs if n_pairs else 0.0
+
+    # ---------------- Histogram Pearson (paper) ----------------
+    fig, ax = plt.subplots(1, 1, figsize=(6, 4))
+    nbins = min(50, max(15, len(r_flat) // 30))
+    ax.hist(r_flat, bins=nbins, color="steelblue", edgecolor="black", alpha=0.7)
+    ax.axvline(threshold, color="red", linestyle="--", label=f"|r| = {threshold}")
+    ax.axvline(-threshold, color="red", linestyle="--")
+    ax.set_xlabel("Pearson r (pares de escenarios)")
+    ax.set_ylabel("Frecuencia")
+    ax.set_title("Distribución de correlaciones Pearson entre escenarios")
+    ax.legend()
+    ax.text(
+        0.02,
+        0.98,
+        f"pares: {n_pairs}\\n|r|≥{threshold}: {n_high} ({pct_high:.1f}%)",
+        transform=ax.transAxes,
+        va="top",
+        ha="left",
+        fontsize=9,
+        bbox=dict(facecolor="white", alpha=0.85, edgecolor="none"),
+    )
+    ax.grid(True, alpha=0.2)
+    fig.tight_layout()
+    _save_png_pdf(fig, main_dir / "histogram_correlations_pearson_paper")
+    plt.close(fig)
+
+    # ---------------- Histogram Spearman (paper) ----------------
+    if path_rs.exists():
+        R_spearman = pd.read_csv(path_rs, index_col=0).values
+        r_sp_flat = R_spearman[triu[0], triu[1]]
+        abs_sp = np.abs(r_sp_flat)
+        n_high_sp = int(np.sum(abs_sp >= threshold))
+        pct_high_sp = 100.0 * n_high_sp / n_pairs if n_pairs else 0.0
+
+        fig, ax = plt.subplots(1, 1, figsize=(6, 4))
+        ax.hist(r_sp_flat, bins=nbins, color="seagreen", edgecolor="black", alpha=0.7)
+        ax.axvline(threshold, color="red", linestyle="--", label=f"|r| = {threshold}")
+        ax.axvline(-threshold, color="red", linestyle="--")
+        ax.set_xlabel("Spearman r (pares de escenarios)")
+        ax.set_ylabel("Frecuencia")
+        ax.set_title("Distribución de correlaciones Spearman entre escenarios")
+        ax.legend()
+        ax.text(
+            0.02,
+            0.98,
+            f"pares: {n_pairs}\\n|r|≥{threshold}: {n_high_sp} ({pct_high_sp:.1f}%)",
+            transform=ax.transAxes,
+            va="top",
+            ha="left",
+            fontsize=9,
+            bbox=dict(facecolor="white", alpha=0.85, edgecolor="none"),
+        )
+        ax.grid(True, alpha=0.2)
+        fig.tight_layout()
+        _save_png_pdf(fig, supp_dir / "histogram_correlations_spearman_paper")
+        plt.close(fig)
+
+    # ---------------- PCA by family / cluster ----------------
+    if path_z.exists():
+        Z_df = pd.read_csv(path_z, index_col=0)
+        Z = Z_df.values
+        scen = Z_df.index.tolist()
+
+        # PCA via SVD (same as figures, but no per-point labels)
+        Z_centered = Z - np.nanmean(Z, axis=0)
+        try:
+            U, S, _Vt = np.linalg.svd(Z_centered, full_matrices=False)
+            pc1 = U[:, 0] * S[0]
+            pc2 = U[:, 1] * S[1]
+        except Exception:
+            pc1 = np.arange(len(scen), dtype=float)
+            pc2 = np.zeros(len(scen), dtype=float)
+
+        family_map = {
+            "U": "Urban",
+            "C": "Campus",
+            "V": "Vehicles",
+            "R": "Rural",
+            "D": "Disaster",
+            "S": "Social",
+            "T": "Traffic",
+        }
+        fam = []
+        for s in scen:
+            key = s[:1].upper() if s else "?"
+            fam.append(family_map.get(key, "Other"))
+
+        # PCA colored by family
+        fam_order = [v for v in family_map.values()]
+        fam_to_idx = {name: i for i, name in enumerate(fam_order)}
+        colors = [fam_to_idx.get(x, len(fam_order)) for x in fam]
+        cmap = plt.get_cmap("tab10")
+
+        fig, ax = plt.subplots(1, 1, figsize=(8, 6))
+        for name in fam_order:
+            idx = [i for i, f in enumerate(fam) if f == name]
+            if not idx:
+                continue
+            ax.scatter(
+                pc1[idx],
+                pc2[idx],
+                s=60,
+                alpha=0.85,
+                edgecolors="black",
+                linewidths=0.4,
+                label=name,
+                color=cmap(fam_to_idx[name] % 10),
+            )
+        ax.set_xlabel("PC1")
+        ax.set_ylabel("PC2")
+        ax.set_title("PCA 2D del corpus (coloreado por familia)")
+        ax.grid(True, alpha=0.25)
+        ax.legend(loc="best", fontsize=9)
+        fig.tight_layout()
+        _save_png_pdf(fig, main_dir / "pca_by_family")
+        plt.close(fig)
+
+        # PCA colored by cluster (if available)
+        if path_clusters.exists():
+            cl_df = pd.read_csv(path_clusters)
+            cl_map = {row["scenario"]: int(row["cluster"]) for _i, row in cl_df.iterrows()}
+            clusters = [cl_map.get(s, -1) for s in scen]
+            uniq = sorted({c for c in clusters if c != -1})
+            cmap2 = plt.get_cmap("tab10")
+
+            fig, ax = plt.subplots(1, 1, figsize=(8, 6))
+            for c in uniq:
+                idx = [i for i, cc in enumerate(clusters) if cc == c]
+                ax.scatter(
+                    pc1[idx],
+                    pc2[idx],
+                    s=60,
+                    alpha=0.85,
+                    edgecolors="black",
+                    linewidths=0.4,
+                    label=f"Cluster {c}",
+                    color=cmap2((c - 1) % 10),
+                )
+            ax.set_xlabel("PC1")
+            ax.set_ylabel("PC2")
+            ax.set_title("PCA 2D del corpus (coloreado por cluster Ward k=7)")
+            ax.grid(True, alpha=0.25)
+            ax.legend(loc="best", fontsize=9, ncol=2)
+            fig.tight_layout()
+            _save_png_pdf(fig, main_dir / "pca_by_cluster")
+            plt.close(fig)
+
+    # ---------------- Ablation plots ----------------
+    if path_ablation.exists():
+        df_ab = pd.read_csv(path_ablation)
+        # stable order
+        order = ["reduced_17", "core_23", "full_46"]
+        df_ab["set"] = pd.Categorical(df_ab["set"], categories=order, ordered=True)
+        df_ab = df_ab.sort_values("set")
+
+        # % high pairs
+        fig, ax = plt.subplots(1, 1, figsize=(6, 4))
+        ax.bar(df_ab["set"].astype(str), df_ab["pct_above"], color=["gray", "steelblue", "seagreen"], edgecolor="black")
+        ax.set_ylabel(f"% pares con |r| ≥ {threshold}")
+        ax.set_title("Ablación: redundancia (pares altos)")
+        for i, v in enumerate(df_ab["pct_above"].tolist()):
+            ax.text(i, v + 0.2, f"{v:.1f}%", ha="center", va="bottom", fontsize=9)
+        ax.grid(True, axis="y", alpha=0.25)
+        fig.tight_layout()
+        _save_png_pdf(fig, main_dir / "ablation_pairs_high_bar")
+        plt.close(fig)
+
+        # silhouette
+        fig, ax = plt.subplots(1, 1, figsize=(6, 4))
+        ax.bar(df_ab["set"].astype(str), df_ab["silhouette"], color=["gray", "steelblue", "seagreen"], edgecolor="black")
+        ax.set_ylabel("Silhouette (Ward k=7)")
+        ax.set_title("Ablación: estructura de clustering")
+        for i, v in enumerate(df_ab["silhouette"].tolist()):
+            ax.text(i, v + 0.01, f"{v:.3f}", ha="center", va="bottom", fontsize=9)
+        ax.set_ylim(0, max(0.35, float(np.nanmax(df_ab["silhouette"])) + 0.05))
+        ax.grid(True, axis="y", alpha=0.25)
+        fig.tight_layout()
+        _save_png_pdf(fig, main_dir / "ablation_silhouette_bar")
+        plt.close(fig)
+
+    # ---------------- Feature-feature core heatmap (paper copy) ----------------
+    if path_ff_core.exists():
+        ff = pd.read_csv(path_ff_core, index_col=0)
+        fig, ax = plt.subplots(1, 1, figsize=(10, 8))
+        im = ax.imshow(ff.values, cmap="RdBu_r", vmin=-1, vmax=1)
+        ax.set_xticks(range(len(ff.columns)))
+        ax.set_yticks(range(len(ff.columns)))
+        ax.set_xticklabels(ff.columns, rotation=45, ha="right", fontsize=7)
+        ax.set_yticklabels(ff.columns, fontsize=7)
+        plt.colorbar(im, ax=ax, label="Pearson r (feature–feature)")
+        ax.set_title("Correlación feature–feature (core 23)")
+        fig.tight_layout()
+        _save_png_pdf(fig, main_dir / "heatmap_feature_feature_core")
+        plt.close(fig)
+
+    # ---------------- Outputs heatmap (paper copy) ----------------
+    if path_outputs.exists():
+        out_df = pd.read_csv(path_outputs)
+        if "scenario" in out_df.columns:
+            out_df = out_df.set_index("scenario")
+        # Keep only numeric columns
+        out_num = out_df.select_dtypes(include=[np.number])
+        if len(out_num.columns) >= 2 and len(out_num) >= 3:
+            R_out = out_num.T.corr(method="pearson").values
+            scen_out = out_num.index.tolist()
+            fig, ax = plt.subplots(1, 1, figsize=(10, 8))
+            im = ax.imshow(R_out, cmap="RdBu_r", vmin=-1, vmax=1)
+            ax.set_xticks(range(len(scen_out)))
+            ax.set_yticks(range(len(scen_out)))
+            ax.set_xticklabels(scen_out, rotation=45, ha="right", fontsize=6)
+            ax.set_yticklabels(scen_out, fontsize=6)
+            plt.colorbar(im, ax=ax, label="Pearson r (outputs)")
+            ax.set_title("Correlación entre escenarios en output-space (Pearson)")
+            fig.tight_layout()
+            _save_png_pdf(fig, supp_dir / "heatmap_pearson_outputs_paper")
+            plt.close(fig)
+
+    print(f"Written paper figures to {figures_paper_dir}")
+    return True
+
+
+def _parse_feature_fichas_tecnicas(path: Path) -> dict[str, dict[str, str]]:
+    """
+    Parse de `scenarios/internal/*-feature_fichas_tecnicas*.md`.
+
+    Devuelve dict:
+      feature -> {
+        "type": ...,
+        "coverage": ...,
+        "category": ...,
+        "reason": ...
+      }
+    """
+    import re
+
+    txt = path.read_text(encoding="utf-8", errors="replace")
+    features: dict[str, dict[str, str]] = {}
+
+    current: dict[str, str] | None = None
+    current_name: str | None = None
+
+    for raw_line in txt.splitlines():
+        line = raw_line.strip()
+        if not line:
+            continue
+
+        m_feat = re.match(r"^Feature:\s*`([^`]+)`\s*$", line)
+        if m_feat:
+            if current_name and current is not None:
+                features[current_name] = current
+            current_name = m_feat.group(1).strip()
+            current = {}
+            continue
+
+        if current is None or current_name is None:
+            continue
+
+        if line.startswith("Tipo:"):
+            current["type"] = line.split(":", 1)[1].strip()
+        elif line.startswith("Cobertura:"):
+            current["coverage"] = line.split(":", 1)[1].strip()
+        elif line.startswith("Categoría metodológica:"):
+            current["category"] = line.split(":", 1)[1].strip()
+        elif line.startswith("Razón:"):
+            current["reason"] = line.split(":", 1)[1].strip()
+
+    if current_name and current is not None and current_name not in features:
+        features[current_name] = current
+    return features
+
+
+def _parse_diversity_report(path: Path) -> dict[str, Any]:
+    """
+    Parsea `correlation_report.txt` o `correlation_core23_report.txt`.
+    """
+    import re
+
+    txt = path.read_text(encoding="utf-8", errors="replace")
+    # Escenarios y features: "Escenarios: n=60, features: d=46."
+    m_nf = re.search(r"Escenarios:\s*n\s*=\s*(\d+)\s*,\s*features:\s*d\s*=\s*(\d+)", txt)
+    if not m_nf:
+        m_nf = re.search(r"Escenarios:\s*n\s*=\s*(\d+)\s*,\s*features:\s*d\s*=\s*(\d+)", txt.replace(" ", ""))
+    n_scenarios = int(m_nf.group(1)) if m_nf else None
+    n_features = int(m_nf.group(2)) if m_nf else None
+
+    m_max = re.search(r"max\s*\|r\|\s*=\s*([0-9.]+)", txt)
+    m_mean = re.search(r"media\s*\|r\|\s*=\s*([0-9.]+)", txt)
+    max_abs_r = float(m_max.group(1)) if m_max else None
+    mean_abs_r = float(m_mean.group(1)) if m_mean else None
+
+    m_pairs = re.search(r"Pares con\s*\|r\|\s*>=\s*([0-9.]+):\s*(\d+)\s*\(([^%]+)%\)", txt)
+    if m_pairs:
+        thr = float(m_pairs.group(1))
+        pairs = int(m_pairs.group(2))
+        pct = float(m_pairs.group(3))
+    else:
+        # Fallback: "Pares con |r| >= 0.7: 46 (2.6%)"
+        m_pairs2 = re.search(r"Pares con\s*\|r\|\s*>=\s*[0-9.]+:\s*(\d+)\s*\(([^%]+)%\)", txt)
+        thr = 0.7
+        pairs = int(m_pairs2.group(1)) if m_pairs2 else None
+        pct = float(m_pairs2.group(2)) if m_pairs2 else None
+
+    # min cosine distance: "Distancia coseno ... mín = 0.0620"
+    m_mincos = re.search(r"Distancia coseno.*?mín\s*=\s*([0-9.]+)", txt, flags=re.S)
+    min_cosine_distance = float(m_mincos.group(1)) if m_mincos else None
+
+    # silhouette: "Silhouette (Ward...): 0.2929"
+    m_sil = re.search(r"Silhouette.*?:\s*([0-9.]+)", txt)
+    silhouette = float(m_sil.group(1)) if m_sil else None
+
+    out = {
+        "n_scenarios": n_scenarios,
+        "n_features": n_features,
+        "max_abs_r": max_abs_r,
+        "mean_abs_r": mean_abs_r,
+        "pairs_r_ge_threshold": pairs,
+        "pct_pairs_r_ge_threshold": pct,
+        "min_cosine_distance": min_cosine_distance,
+        "silhouette": silhouette,
+        "threshold": thr,
+    }
+    return out
+
+
+def run_phase_tables_paper(out_dir: Path, threshold: float = 0.7) -> bool:
+    """
+    Genera tablas Markdown paper-ready dentro de:
+      analysis/figures/paper/tables/
+    Sin sobrescribir `analysis/figures/` (solo escribe .md en tablas/).
+    """
+    import re
+
+    out_dir = Path(out_dir)
+    figures_dir = out_dir / "figures"
+    paper_dir = figures_dir / "paper"
+    tables_dir = paper_dir / "tables"
+    tables_dir.mkdir(parents=True, exist_ok=True)
+
+    # Inputs base
+    data_dir = out_dir / "data"
+    reports_dir = out_dir / "reports"
+
+    corr_full_path = reports_dir / "correlation_report.txt"
+    corr_core_path = reports_dir / "correlation_core23_report.txt"
+    ablation_csv = data_dir / "ablation_metrics.csv"
+    clusters_full_csv = data_dir / "cluster_assignments.csv"
+    clusters_core_csv = data_dir / "cluster_assignments_core23.csv"  # existe en el snapshot
+
+    features_norm_csv = data_dir / "features_normalized.csv"
+
+    internal_dir = out_dir.parent / "internal"  # scenarios/internal
+    fichas_path = internal_dir / "03-feature_fichas_tecnicas.md"
+
+    # Basic checks
+    required = [
+        corr_full_path,
+        corr_core_path,
+        ablation_csv,
+        clusters_full_csv,
+        clusters_core_csv,
+        features_norm_csv,
+        fichas_path,
+    ]
+    missing = [p for p in required if not p.exists()]
+    if missing:
+        print("Missing inputs for tables_paper:")
+        for p in missing:
+            print(f"  - {p}")
+        return False
+
+    # Imports local to keep phase lean
+    import pandas as pd
+
+    # Feature metadata (core/extended)
+    fichas = _parse_feature_fichas_tecnicas(fichas_path)
+
+    # Features (all 46)
+    Z_df = pd.read_csv(features_norm_csv, index_col=0)
+    all_features = list(Z_df.columns)
+    core_features = list(FEATURES_CORE_23)
+    ext_features = [f for f in all_features if f not in set(core_features)]
+
+    def _feature_row(feature_name: str) -> dict[str, str]:
+        meta = fichas.get(feature_name, {})
+        return {
+            "feature": feature_name,
+            "category": meta.get("category", "—"),
+            "reason": meta.get("reason", "—"),
+            "coverage": meta.get("coverage", "—"),
+            "type": meta.get("type", "—"),
+        }
+
+    core_rows = [_feature_row(f) for f in core_features]
+    ext_rows = [_feature_row(f) for f in ext_features]
+
+    # Diversity metrics
+    div_full = _parse_diversity_report(corr_full_path)
+    div_core = _parse_diversity_report(corr_core_path)
+
+    def _cluster_stats(path_csv: Path) -> dict[str, int]:
+        df = pd.read_csv(path_csv)
+        if "cluster" not in df.columns:
+            return {"n_clusters": 0, "largest_cluster_size": 0}
+        counts = df["cluster"].value_counts()
+        return {
+            "n_clusters": int(counts.shape[0]),
+            "largest_cluster_size": int(counts.max()) if not counts.empty else 0,
+        }
+
+    cs_full = _cluster_stats(clusters_full_csv)
+    cs_core = _cluster_stats(clusters_core_csv)
+
+    # Ablation metrics
+    df_ab = pd.read_csv(ablation_csv)
+    order = ["reduced_17", "core_23", "full_46"]
+    df_ab["set"] = pd.Categorical(df_ab["set"], categories=order, ordered=True)
+    df_ab = df_ab.sort_values("set")
+
+    # Families
+    # ES file: Scenario-families-es.md, EN file: Scenario-families.md
+    families_es_path = out_dir.parent / ".wiki-clone" / "05-corpus" / "Scenario-families-es.md"
+    families_en_path = out_dir.parent / ".wiki-clone" / "05-corpus" / "Scenario-families.md"
+    scenario_list_path = data_dir / "scenario_list.txt"
+    if not families_es_path.exists() or not families_en_path.exists() or not scenario_list_path.exists():
+        print("Missing families inputs for tables_paper:")
+        for p in [families_es_path, families_en_path, scenario_list_path]:
+            if not p.exists():
+                print(f"  - {p}")
+        return False
+
+    scenario_list = scenario_list_path.read_text(encoding="utf-8", errors="replace").splitlines()
+    scenario_list = [s.strip() for s in scenario_list if s.strip()]
+
+    prefix_to_family = {
+        "U": "Urban",
+        "C": "Campus",
+        "V": "Vehicles",
+        "R": "Rural",
+        "D": "Disaster",
+        "S": "Social",
+        "T": "Traffic",
+    }
+
+    fam_examples: dict[str, list[str]] = {k: [] for k in prefix_to_family.values()}
+    for s in scenario_list:
+        pref = s[:1]
+        fam = prefix_to_family.get(pref)
+        if fam is None:
+            continue
+        fam_examples[fam].append(s)
+
+    for k in fam_examples:
+        fam_examples[k] = fam_examples[k][:3]
+
+    def _parse_families_md(path: Path) -> dict[str, dict[str, str]]:
+        # Parse markdown table rows: | Urban | ... | 7 |
+        out: dict[str, dict[str, str]] = {}
+        txt = path.read_text(encoding="utf-8", errors="replace")
+        for line in txt.splitlines():
+            line = line.strip()
+            if not line.startswith("|"):
+                continue
+            cells = [c.strip() for c in line.strip("|").split("|")]
+            if len(cells) != 3:
+                continue
+            family, goal, n_sc = cells
+            family = family.strip()
+            goal = goal.strip()
+            out[family] = {"goal": goal, "n_scenarios": n_sc}
+        return out
+
+    fam_es = _parse_families_md(families_es_path)
+    fam_en = _parse_families_md(families_en_path)
+
+    def _families_table_rows(lang: str) -> list[dict[str, str]]:
+        fam_map = fam_es if lang == "es" else fam_en
+        # Ensure consistent family order
+        fam_order = ["Urban", "Campus", "Vehicles", "Rural", "Disaster", "Social", "Traffic"]
+        rows: list[dict[str, str]] = []
+        for fam in fam_order:
+            item = fam_map.get(fam)
+            if not item:
+                continue
+            rows.append({
+                "family": fam,
+                "n_scenarios": item["n_scenarios"],
+                "purpose": item["goal"],
+                "dominant_traits": item["goal"],
+                "example_scenarios": ", ".join(fam_examples.get(fam, [])),
+            })
+        return rows
+
+    fam_rows_es = _families_table_rows("es")
+    fam_rows_en = _families_table_rows("en")
+
+    # ------------ Markdown writers ------------
+    def _md_table(header: list[str], rows: list[list[Any]]) -> str:
+        # rows already ordered
+        sep = "|" + "|".join(["---"] * len(header)) + "|"
+        out_lines = [
+            "|" + "|".join(header) + "|",
+            sep,
+        ]
+        for r in rows:
+            out_lines.append("|" + "|".join(str(x).replace("\n", " ").replace("|", "/") for x in r) + "|")
+        return "\n".join(out_lines)
+
+    # ES: Core vs extended
+    core_md_es = _md_table(
+        ["feature", "categoría", "short_reason", "cobertura", "tipo"],
+        [[r["feature"], r["category"], r["reason"], r["coverage"], r["type"]] for r in core_rows],
+    )
+    ext_md_es = _md_table(
+        ["feature", "categoría", "short_reason", "cobertura", "tipo"],
+        [[r["feature"], r["category"], r["reason"], r["coverage"], r["type"]] for r in ext_rows],
+    )
+
+    (tables_dir / "table_core_vs_extended_es.md").write_text(
+        "\n".join([
+            "# Core vs extended features (paper, ES)",
+            "",
+            "## Core",
+            "",
+            core_md_es,
+            "",
+            "## Extended",
+            "",
+            ext_md_es,
+            "",
+        ]),
+        encoding="utf-8",
+    )
+
+    # EN: same content, different headings/labels only
+    core_md_en = _md_table(
+        ["feature", "category", "short_reason", "coverage", "type"],
+        [[r["feature"], r["category"], r["reason"], r["coverage"], r["type"]] for r in core_rows],
+    )
+    ext_md_en = _md_table(
+        ["feature", "category", "short_reason", "coverage", "type"],
+        [[r["feature"], r["category"], r["reason"], r["coverage"], r["type"]] for r in ext_rows],
+    )
+    (tables_dir / "table_core_vs_extended_en.md").write_text(
+        "\n".join([
+            "# Core vs extended features (paper, EN)",
+            "",
+            "## Core",
+            "",
+            core_md_en,
+            "",
+            "## Extended",
+            "",
+            ext_md_en,
+            "",
+        ]),
+        encoding="utf-8",
+    )
+
+    # Diversity metrics
+    def _div_row(space: str, div: dict[str, Any], cs: dict[str, int]) -> list[Any]:
+        return [
+            space,
+            div["n_scenarios"],
+            div["n_features"],
+            div["max_abs_r"],
+            div["mean_abs_r"],
+            div["pairs_r_ge_threshold"],
+            div["pct_pairs_r_ge_threshold"],
+            div["min_cosine_distance"],
+            div["silhouette"],
+            cs["n_clusters"],
+            cs["largest_cluster_size"],
+        ]
+
+    div_table_es = _md_table(
+        ["space", "n_scenarios", "n_features", "max_abs_r", "mean_abs_r", "pairs_r_ge_0.7", "pct_pairs_r_ge_0.7", "min_cosine_distance", "silhouette", "n_clusters", "largest_cluster_size"],
+        [
+            _div_row("full_46", div_full, cs_full),
+            _div_row("core_23", div_core, cs_core),
+        ],
+    )
+    (tables_dir / "table_diversity_metrics_es.md").write_text(
+        "\n".join([
+            "# Diversidad del corpus (paper, ES)",
+            "",
+            div_table_es,
+            "",
+        ]),
+        encoding="utf-8",
+    )
+
+    div_table_en = _md_table(
+        ["space", "n_scenarios", "n_features", "max_abs_r", "mean_abs_r", "pairs_r_ge_0.7", "pct_pairs_r_ge_0.7", "min_cosine_distance", "silhouette", "n_clusters", "largest_cluster_size"],
+        [
+            _div_row("full_46", div_full, cs_full),
+            _div_row("core_23", div_core, cs_core),
+        ],
+    )
+    (tables_dir / "table_diversity_metrics_en.md").write_text(
+        "\n".join([
+            "# Corpus diversity (paper, EN)",
+            "",
+            div_table_en,
+            "",
+        ]),
+        encoding="utf-8",
+    )
+
+    # Ablation metrics
+    ab_rows = []
+    for _i, row in df_ab.iterrows():
+        ab_rows.append([
+            row["set"],
+            int(row["n_features"]),
+            float(row["max_abs_r"]),
+            float(row["mean_abs_r"]),
+            int(row["pairs_r_above_threshold"]),
+            float(row["pct_above"]),
+            float(row["silhouette"]) if not pd.isna(row["silhouette"]) else "—",
+        ])
+    ab_md = _md_table(
+        ["feature_set", "n_features", "max_abs_r", "mean_abs_r", "pairs_r_ge_0.7", "pct_pairs_r_ge_0.7", "silhouette"],
+        ab_rows,
+    )
+    (tables_dir / "table_ablation_metrics_es.md").write_text(
+        "\n".join([
+            "# Ablación (paper, ES)",
+            "",
+            ab_md,
+            "",
+        ]),
+        encoding="utf-8",
+    )
+    (tables_dir / "table_ablation_metrics_en.md").write_text(
+        "\n".join([
+            "# Ablation (paper, EN)",
+            "",
+            ab_md,
+            "",
+        ]),
+        encoding="utf-8",
+    )
+
+    # Families
+    fam_md_es = _md_table(
+        ["family", "n_scenarios", "purpose", "dominant_traits", "example_scenarios"],
+        [[r["family"], r["n_scenarios"], r["purpose"], r["dominant_traits"], r["example_scenarios"]] for r in fam_rows_es],
+    )
+    (tables_dir / "table_families_es.md").write_text(
+        "\n".join([
+            "# Familias de escenarios (paper, ES)",
+            "",
+            fam_md_es,
+            "",
+        ]),
+        encoding="utf-8",
+    )
+
+    fam_md_en = _md_table(
+        ["family", "n_scenarios", "purpose", "dominant_traits", "example_scenarios"],
+        [[r["family"], r["n_scenarios"], r["purpose"], r["dominant_traits"], r["example_scenarios"]] for r in fam_rows_en],
+    )
+    (tables_dir / "table_families_en.md").write_text(
+        "\n".join([
+            "# Scenario families (paper, EN)",
+            "",
+            fam_md_en,
+            "",
+        ]),
+        encoding="utf-8",
+    )
+
+    # Optional README
+    readme_path = tables_dir / "README.md"
+    readme_path.write_text(
+        "\n".join([
+            "## Paper tables (Markdown)",
+            "",
+            "Generadas automáticamente por:",
+            "",
+            "```bash",
+            "cd /home/raul/Documents/the-one/scenarios/analysis",
+            "source /home/raul/Documents/the-one/venv/bin/activate",
+            "python run_analysis.py --corpus corpus_v1 --phase tables_paper",
+            "```",
+            "",
+            "Incluye (ES+EN):",
+            "- Core vs extended features: `table_core_vs_extended_{es,en}.md`",
+            "- Diversidad final: `table_diversity_metrics_{es,en}.md`",
+            "- Ablación: `table_ablation_metrics_{es,en}.md`",
+            "- Familias: `table_families_{es,en}.md`",
+            "",
+        ]),
+        encoding="utf-8",
+    )
+
+    # QA: output count
+    expected = [
+        "table_core_vs_extended_es.md",
+        "table_core_vs_extended_en.md",
+        "table_diversity_metrics_es.md",
+        "table_diversity_metrics_en.md",
+        "table_ablation_metrics_es.md",
+        "table_ablation_metrics_en.md",
+        "table_families_es.md",
+        "table_families_en.md",
+    ]
+    out_files = [f.name for f in tables_dir.glob("*.md")]
+    missing = [f for f in expected if f not in out_files]
+    if missing:
+        print("tables_paper QA failed, missing:")
+        for m in missing:
+            print(f"  - {m}")
+        return False
+
+    print(f"Written paper tables to {tables_dir}")
+    return True
+
+
 # Columnas esperadas en output_metrics.csv (nombres alternativos aceptados)
 OUTPUT_METRIC_COLUMNS = [
     ("delivery_ratio", ["delivery_ratio", "delivery_prob", "delivery prob"]),
@@ -1865,8 +2631,8 @@ def main():
     ap = argparse.ArgumentParser(description="Análisis del corpus de escenarios (por partes).")
     ap.add_argument("--corpus", type=str, default="corpus_v1", help="Directorio del corpus (p. ej. corpus_v1)")
     ap.add_argument("--phase", type=str, default="features",
-                    choices=("features", "features_report", "normalize", "correlation", "feature_correlation", "ablation", "figures", "output_metrics", "outputs", "all"),
-                    help="Fase: features, normalize, correlation, feature_correlation (23×23), ablation (17 vs 23 vs 46), figures, output_metrics, outputs, all")
+                    choices=("features", "features_report", "normalize", "correlation", "feature_correlation", "ablation", "figures", "figures_paper", "tables_paper", "output_metrics", "outputs", "all"),
+                    help="Fase: features, normalize, correlation, feature_correlation (23×23), ablation (17 vs 23 vs 46), figures, figures_paper, tables_paper, output_metrics, outputs, all")
     ap.add_argument("--threshold", type=float, default=0.7,
                     help="Umbral |r| para criterio de correlación (default 0.7)")
     ap.add_argument("--strict", action="store_true",
@@ -1914,6 +2680,12 @@ def main():
     if args.phase == "figures" or args.phase == "all":
         if not run_phase_figures(out_dir, threshold=args.threshold):
             return 1
+    if args.phase == "figures_paper":
+        if not run_phase_figures_paper(out_dir, threshold=args.threshold):
+            return 1
+    if args.phase == "tables_paper":
+        if not run_phase_tables_paper(out_dir, threshold=args.threshold):
+            return 1
     reports_dir = Path(args.reports_dir) if args.reports_dir else (base.parent.parent / "reports")
     if args.phase == "output_metrics" or args.phase == "all":
         allowed_scenarios = None
@@ -1935,26 +2707,35 @@ def main():
 
     # Documentación "siempre actual": genera/actualiza informes de referencia
     # a partir de los resultados calculados arriba.
-    if scenario_paths:
-        # features_report no depende de normalización/correlación; se refresca siempre que se ejecuta el script.
-        run_phase_features_report(corpus_dir, out_dir, scenario_paths)
-
-    # feature-feature correlation requiere features_core.csv (creada en normalize).
-    # Si falta (por ejemplo al ejecutar una fase parcial), generamos lo necesario
-    # para que el informe se actualice igualmente.
-    core_path = out_dir / "data" / "features_core.csv"
-    if core_path.exists():
-        run_phase_feature_feature_correlation(out_dir)
-    else:
-        data_features_path = out_dir / "data" / "features.csv"
-        if scenario_paths and not data_features_path.exists():
-            # Necesario para poder hacer normalize
-            run_phase_features(scenario_paths, out_dir)
+    #
+    # Excepción: --phase figures_paper está diseñado para no tocar artefactos
+    # fuera de figures/paper/, así que saltamos el refresco automático.
+    if args.phase not in ("figures_paper", "tables_paper"):
         if scenario_paths:
-            if run_phase_normalize(out_dir):
-                run_phase_feature_feature_correlation(out_dir)
+            # features_report no depende de normalización/correlación; se refresca siempre que se ejecuta el script.
+            run_phase_features_report(corpus_dir, out_dir, scenario_paths)
 
-    run_phase_results_actuales(out_dir, corpus_name=str(args.corpus), threshold=args.threshold, scenario_count=len(scenario_paths) if scenario_paths else None)
+        # feature-feature correlation requiere features_core.csv (creada en normalize).
+        # Si falta (por ejemplo al ejecutar una fase parcial), generamos lo necesario
+        # para que el informe se actualice igualmente.
+        core_path = out_dir / "data" / "features_core.csv"
+        if core_path.exists():
+            run_phase_feature_feature_correlation(out_dir)
+        else:
+            data_features_path = out_dir / "data" / "features.csv"
+            if scenario_paths and not data_features_path.exists():
+                # Necesario para poder hacer normalize
+                run_phase_features(scenario_paths, out_dir)
+            if scenario_paths:
+                if run_phase_normalize(out_dir):
+                    run_phase_feature_feature_correlation(out_dir)
+
+        run_phase_results_actuales(
+            out_dir,
+            corpus_name=str(args.corpus),
+            threshold=args.threshold,
+            scenario_count=len(scenario_paths) if scenario_paths else None,
+        )
     return 0
 
 
