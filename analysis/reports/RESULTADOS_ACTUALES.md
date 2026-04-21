@@ -22,7 +22,7 @@ Silhouette (Ward k=7): 0.2929
 ---
 ## Ablación y validación de correlación
 ## Ablación (17 vs 23 vs 46, umbral |r|≥0.7)
-- reduced_17: max|r|=0.9861, pares≥=0.7=63, silhouette=0.2215
+- reduced_17: max|r|=0.9998, pares≥=0.7=92, silhouette=0.3269
 - core_23: max|r|=0.9829, pares≥=0.7=58, silhouette=0.2681
 - full_46: max|r|=0.9377, pares≥=0.7=46, silhouette=0.2929
 

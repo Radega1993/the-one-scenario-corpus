@@ -2,7 +2,7 @@
 Escenarios: n = 60. Umbral |r| = 0.7. Clusters Ward k = 7.
 
 Métricas por conjunto:
-  reduced_17 (d=17): max|r|=0.9861, mean|r|=0.2339, pares |r|>=0.7=63 (3.6%), silhouette=0.2215
+  reduced_17 (d=17): max|r|=0.9998, mean|r|=0.2680, pares |r|>=0.7=92 (5.2%), silhouette=0.3269
   core_23 (d=23): max|r|=0.9829, mean|r|=0.2159, pares |r|>=0.7=58 (3.3%), silhouette=0.2681
   full_46 (d=46): max|r|=0.9377, mean|r|=0.2076, pares |r|>=0.7=46 (2.6%), silhouette=0.2929
 

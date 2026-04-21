@@ -400,12 +400,25 @@ FEATURES_CORE_23 = [
     "pattern_burst", "pattern_hub_target",
     "workDayLength", "ownCarProb",
 ]
-# Subconjunto mínimo razonable (tesis / ablación 17)
+# Subconjunto reducido 17 (alineado con el marco Diego Freire 2022, implementable
+# con las features disponibles en este extractor basado en settings).
+#
+# Nota metodológica:
+# - Diego combina directas + indirectas de trazas/contactos.
+# - En este pipeline no se extraen métricas de centralidad/encuentros sobre trazas
+#   (p. ej. betweenness, inter-contact explícito), por lo que usamos proxies
+#   estructurales/operativos presentes en el vector de 46.
+# - Referencia doctoral: freire2022thesis (scenarios/internal/12-references.bib).
 FEATURES_REDUCED_17 = [
-    "world_area", "aspect_ratio", "N", "nrofHostGroups", "speed_mean", "wait_mean",
-    "mm_WDM", "mm_RWP", "mm_MapRoute",
-    "transmitRange", "bufferSize", "transmitSpeed", "msgTtl",
-    "event_interval_mean", "event_size_mean", "pattern_burst", "pattern_hub_target",
+    # Espacio / población / organización
+    "world_area", "aspect_ratio", "N", "nrofHostGroups", "density",
+    # Movilidad y dinámica base
+    "mm_WDM", "mm_RWP", "mm_MapRoute", "speed_mean", "wait_mean",
+    # Proxies de interacción/contacto y temporalidad
+    "contact_rate_proxy", "event_interval_mean", "nrof_event_generators",
+    "pattern_burst", "pattern_hub_target",
+    # Alcance físico + horizonte temporal
+    "transmitRange", "Scenario.endTime",
 ]
 
 # Metadatos para el informe de features: nombre -> (descripción, setting(s) origen)
@@ -1465,6 +1478,96 @@ def run_phase_figures(out_dir: Path, threshold: float = 0.7) -> bool:
     plt.savefig(figures_dir / "scatter_max_r_pair_regression.pdf", dpi=150, bbox_inches="tight")
     plt.close()
 
+    # ---------- Figuras comparables por espacio (17 / 23 / 46) ----------
+    by_space_dir = figures_dir / "by_space"
+    by_space_dir.mkdir(parents=True, exist_ok=True)
+
+    spaces: list[tuple[str, Path]] = [
+        ("reduced_17", data_dir / "features_reduced.csv"),
+        ("core_23", data_dir / "features_core.csv"),
+        ("full_46", data_dir / "features_normalized.csv"),
+    ]
+
+    for space_name, path_space in spaces:
+        if not path_space.exists():
+            continue
+        Zs_df = pd.read_csv(path_space, index_col=0)
+        Zs = Zs_df.values
+        labels_s = Zs_df.index.tolist()
+        n_s, d_s = Zs.shape
+        if n_s < 2 or d_s < 2:
+            continue
+
+        Rs = np.corrcoef(Zs)
+        triu_s = np.triu_indices(n_s, k=1)
+        rs_flat = Rs[triu_s[0], triu_s[1]]
+        nbins_s = min(50, max(15, len(rs_flat) // 30))
+
+        # Heatmap Pearson por espacio
+        fig, ax = plt.subplots(1, 1, figsize=(10, 8))
+        im = ax.imshow(Rs, cmap="RdBu_r", vmin=-1, vmax=1)
+        ax.set_xticks(range(n_s))
+        ax.set_yticks(range(n_s))
+        ax.set_xticklabels(labels_s, rotation=45, ha="right", fontsize=6)
+        ax.set_yticklabels(labels_s, fontsize=6)
+        plt.colorbar(im, ax=ax, label="Pearson r")
+        ax.set_title(f"Correlación entre escenarios (Pearson, {space_name}, d={d_s})")
+        plt.tight_layout()
+        plt.savefig(by_space_dir / f"heatmap_pearson_{space_name}.png", dpi=150, bbox_inches="tight")
+        plt.savefig(by_space_dir / f"heatmap_pearson_{space_name}.pdf", dpi=150, bbox_inches="tight")
+        plt.close()
+
+        # Histograma Pearson por espacio
+        fig, ax = plt.subplots(1, 1, figsize=(6, 4))
+        ax.hist(rs_flat, bins=nbins_s, color="steelblue", edgecolor="black", alpha=0.7)
+        ax.axvline(threshold, color="red", linestyle="--", label=f"|r| = {threshold}")
+        ax.axvline(-threshold, color="red", linestyle="--")
+        ax.set_xlabel("Pearson r (pares de escenarios)")
+        ax.set_ylabel("Frecuencia")
+        ax.set_title(f"Distribución Pearson ({space_name}, d={d_s})")
+        ax.legend()
+        plt.tight_layout()
+        plt.savefig(by_space_dir / f"histogram_correlations_pearson_{space_name}.png", dpi=150, bbox_inches="tight")
+        plt.savefig(by_space_dir / f"histogram_correlations_pearson_{space_name}.pdf", dpi=150, bbox_inches="tight")
+        plt.close()
+
+        # PCA scatter por espacio
+        Zs_centered = Zs - np.nanmean(Zs, axis=0)
+        try:
+            U_s, S_s, _Vt_s = np.linalg.svd(Zs_centered, full_matrices=False)
+            pc1_s = U_s[:, 0] * S_s[0]
+            pc2_s = U_s[:, 1] * S_s[1]
+            if np.var(pc1_s) > 1e-10:
+                r_pc_s = np.corrcoef(pc1_s, pc2_s)[0, 1]
+                a_s = np.cov(pc1_s, pc2_s)[0, 1] / np.var(pc1_s)
+                b_s = np.mean(pc2_s) - a_s * np.mean(pc1_s)
+                x_line_s = np.linspace(pc1_s.min(), pc1_s.max(), 100)
+                y_line_s = a_s * x_line_s + b_s
+                r2_s = r_pc_s ** 2
+            else:
+                x_line_s = y_line_s = np.nan
+                r2_s = np.nan
+        except Exception:
+            pc1_s = pc2_s = np.arange(n_s, dtype=float)
+            x_line_s = y_line_s = np.nan
+            r2_s = np.nan
+
+        fig, ax = plt.subplots(1, 1, figsize=(8, 6))
+        ax.scatter(pc1_s, pc2_s, s=60, alpha=0.8, edgecolors="black", linewidths=0.5)
+        if not (np.any(np.isnan(x_line_s)) or np.any(np.isnan(y_line_s))):
+            ax.plot(x_line_s, y_line_s, "r-", linewidth=2, label=f"Regresión (R² = {r2_s:.3f})")
+        ax.set_xlabel("PC1")
+        ax.set_ylabel("PC2")
+        ax.set_title(f"PCA 2D + regresión ({space_name}, d={d_s})")
+        ax.legend(loc="best", fontsize=9)
+        ax.grid(True, alpha=0.3)
+        ax.axhline(0, color="gray", linestyle=":", alpha=0.5)
+        ax.axvline(0, color="gray", linestyle=":", alpha=0.5)
+        plt.tight_layout()
+        plt.savefig(by_space_dir / f"scatter_pca_regression_{space_name}.png", dpi=150, bbox_inches="tight")
+        plt.savefig(by_space_dir / f"scatter_pca_regression_{space_name}.pdf", dpi=150, bbox_inches="tight")
+        plt.close()
+
     print(f"Written {len(list(figures_dir.glob('*.png')))} figures to {figures_dir}")
     return True
 
@@ -1734,6 +1837,504 @@ def run_phase_figures_paper(out_dir: Path, threshold: float = 0.7) -> bool:
             plt.close(fig)
 
     print(f"Written paper figures to {figures_paper_dir}")
+    return True
+
+
+def _parse_contact_times_histogram(path: Path) -> tuple[float, float, int]:
+    """
+    Parsea ContactTimesReport de The ONE en formato:
+      <duration_seconds> <count>
+    Devuelve:
+      (contact_time_mean_s, total_encounters, valid_rows)
+    """
+    total_count = 0.0
+    weighted_sum = 0.0
+    valid_rows = 0
+    for raw in path.read_text(encoding="utf-8", errors="replace").splitlines():
+        line = raw.strip()
+        if not line:
+            continue
+        parts = line.split()
+        if len(parts) < 2:
+            continue
+        try:
+            duration_s = float(parts[0])
+            count = float(parts[1])
+        except (TypeError, ValueError):
+            continue
+        if np.isnan(duration_s) or np.isnan(count):
+            continue
+        if count < 0:
+            continue
+        weighted_sum += duration_s * count
+        total_count += count
+        valid_rows += 1
+    if total_count <= 0:
+        return (np.nan, 0.0, valid_rows)
+    return (weighted_sum / total_count, total_count, valid_rows)
+
+
+def _parse_distribution_report(path: Path) -> tuple[list[tuple[float, int]], int]:
+    """
+    Parsea reportes de distribución de The ONE (formato 'value count').
+    Devuelve:
+      - lista de tuplas (value, count)
+      - número de filas válidas
+    """
+    rows: list[tuple[float, int]] = []
+    valid_rows = 0
+    for raw in path.read_text(encoding="utf-8", errors="replace").splitlines():
+        line = raw.strip()
+        if not line:
+            continue
+        parts = line.split()
+        if len(parts) < 2:
+            continue
+        try:
+            value = float(parts[0])
+            count = int(float(parts[1]))
+        except (TypeError, ValueError):
+            continue
+        if count < 0:
+            continue
+        rows.append((value, count))
+        valid_rows += 1
+    return rows, valid_rows
+
+
+def _weighted_mean_from_distribution(rows: list[tuple[float, int]]) -> float:
+    total = sum(c for _, c in rows)
+    if total <= 0:
+        return np.nan
+    return float(sum(v * c for v, c in rows) / total)
+
+
+def _expand_distribution_values(rows: list[tuple[float, int]], max_expand: int = 200000) -> list[float]:
+    """
+    Expande una distribución (value,count) a lista de valores repetidos.
+    Limita tamaño para evitar explosión.
+    """
+    out: list[float] = []
+    n = 0
+    for v, c in rows:
+        reps = max(0, int(c))
+        if reps == 0:
+            continue
+        if n + reps > max_expand:
+            reps = max(0, max_expand - n)
+        out.extend([float(v)] * reps)
+        n += reps
+        if n >= max_expand:
+            break
+    return out
+
+
+def _brandes_betweenness_undirected(adj: dict[int, set[int]]) -> dict[int, float]:
+    """
+    Betweenness centrality no normalizada (Brandes) para grafo no dirigido.
+    """
+    nodes = list(adj.keys())
+    bc = {v: 0.0 for v in nodes}
+    for s in nodes:
+        stack: list[int] = []
+        pred: dict[int, list[int]] = {w: [] for w in nodes}
+        sigma: dict[int, float] = {w: 0.0 for w in nodes}
+        sigma[s] = 1.0
+        dist: dict[int, int] = {w: -1 for w in nodes}
+        dist[s] = 0
+        q = [s]
+        while q:
+            v = q.pop(0)
+            stack.append(v)
+            for w in adj.get(v, set()):
+                if dist[w] < 0:
+                    q.append(w)
+                    dist[w] = dist[v] + 1
+                if dist[w] == dist[v] + 1:
+                    sigma[w] += sigma[v]
+                    pred[w].append(v)
+        delta: dict[int, float] = {w: 0.0 for w in nodes}
+        while stack:
+            w = stack.pop()
+            for v in pred[w]:
+                if sigma[w] > 0:
+                    delta[v] += (sigma[v] / sigma[w]) * (1.0 + delta[w])
+            if w != s:
+                bc[w] += delta[w]
+    # Grafo no dirigido: dividir entre 2
+    for v in bc:
+        bc[v] /= 2.0
+    return bc
+
+
+def _parse_connectivity_one_report(path: Path, window_s: float = 3600.0) -> dict[str, Any]:
+    """
+    Parsea ConnectivityONEReport:
+      "<time> CONN <a> <b> up|down"
+    Devuelve métricas por escenario para indirectas tipo Diego.
+    """
+    import re
+
+    line_re = re.compile(r"^\s*([0-9]+(?:\.[0-9]+)?)\s+CONN\s+(\d+)\s+(\d+)\s+(up|down)\s*$", re.I)
+    active: dict[tuple[int, int], float] = {}
+    # métricas base
+    encounter_events = 0
+    contact_time_sum = 0.0
+    intercontact_sum = 0.0
+    intercontact_n = 0
+    last_down: dict[tuple[int, int], float] = {}
+    node_encounters: dict[int, int] = defaultdict(int)
+    node_neighbors: dict[int, set[int]] = defaultdict(set)
+    all_nodes: set[int] = set()
+    static_adj: dict[int, set[int]] = defaultdict(set)
+    window_edges: dict[int, set[tuple[int, int]]] = defaultdict(set)
+
+    for raw in path.read_text(encoding="utf-8", errors="replace").splitlines():
+        m = line_re.match(raw.strip())
+        if not m:
+            continue
+        t = float(m.group(1))
+        a = int(m.group(2))
+        b = int(m.group(3))
+        state = m.group(4).lower()
+        if a == b:
+            continue
+        u, v = (a, b) if a < b else (b, a)
+        pair = (u, v)
+        all_nodes.add(u)
+        all_nodes.add(v)
+
+        if state == "up":
+            encounter_events += 1
+            node_encounters[u] += 1
+            node_encounters[v] += 1
+            node_neighbors[u].add(v)
+            node_neighbors[v].add(u)
+            static_adj[u].add(v)
+            static_adj[v].add(u)
+            win = int(t // window_s)
+            window_edges[win].add(pair)
+            if pair in last_down and t >= last_down[pair]:
+                intercontact_sum += (t - last_down[pair])
+                intercontact_n += 1
+            active[pair] = t
+        elif state == "down":
+            t0 = active.pop(pair, None)
+            if t0 is not None and t >= t0:
+                contact_time_sum += (t - t0)
+            last_down[pair] = t
+
+    # cerrar contactos abiertos al final con último timestamp observado si hay
+    # (aquí no tenemos fin de simulación seguro; se omiten para evitar sesgo fuerte).
+
+    # asegurar que nodos sin vecinos estén en adj
+    for n in all_nodes:
+        static_adj.setdefault(n, set())
+
+    # betweenness global
+    if all_nodes:
+        bc = _brandes_betweenness_undirected(static_adj)
+        betweenness_mean = float(np.mean(list(bc.values()))) if bc else np.nan
+    else:
+        bc = {}
+        betweenness_mean = np.nan
+
+    # centralidad por ventana
+    win_means: list[float] = []
+    for _w, edges in sorted(window_edges.items()):
+        nodes_w: set[int] = set()
+        for e in edges:
+            nodes_w.update(e)
+        if not nodes_w:
+            continue
+        adj_w: dict[int, set[int]] = {n: set() for n in nodes_w}
+        for u, v in edges:
+            adj_w[u].add(v)
+            adj_w[v].add(u)
+        bc_w = _brandes_betweenness_undirected(adj_w)
+        if bc_w:
+            win_means.append(float(np.mean(list(bc_w.values()))))
+    window_centrality_mean = float(np.mean(win_means)) if win_means else np.nan
+
+    n_nodes = len(all_nodes)
+    if n_nodes > 1:
+        ratio_contact_nodes = float(np.mean([len(node_neighbors.get(n, set())) / (n_nodes - 1) for n in all_nodes]))
+        unique_ratios = sorted([len(node_neighbors.get(n, set())) / (n_nodes - 1) for n in all_nodes], reverse=True)
+    else:
+        ratio_contact_nodes = np.nan
+        unique_ratios = []
+
+    enc_values = sorted([node_encounters.get(n, 0) for n in all_nodes], reverse=True)
+    k_top = max(1, int(np.ceil(0.1 * n_nodes))) if n_nodes else 0
+    if k_top > 0 and enc_values:
+        encounters_top10_mean = float(np.mean(enc_values[:k_top]))
+        total_node_enc = float(sum(enc_values))
+        sociability_top10_mean = float(np.mean([(v / total_node_enc) if total_node_enc > 0 else np.nan for v in enc_values[:k_top]]))
+    else:
+        encounters_top10_mean = np.nan
+        sociability_top10_mean = np.nan
+
+    if unique_ratios and k_top > 0:
+        popularity_top10_ratio = float(np.mean(unique_ratios[:k_top]))
+    else:
+        popularity_top10_ratio = np.nan
+
+    contact_time_mean = (contact_time_sum / encounter_events) if encounter_events > 0 else np.nan
+    inter_contact_time_mean = (intercontact_sum / intercontact_n) if intercontact_n > 0 else np.nan
+
+    return {
+        "n_nodes_in_trace": n_nodes,
+        "total_encounters": float(encounter_events),
+        "contact_time_mean_s": float(contact_time_mean) if not np.isnan(contact_time_mean) else np.nan,
+        "inter_contact_time_mean_s": float(inter_contact_time_mean) if not np.isnan(inter_contact_time_mean) else np.nan,
+        "betweenness_centrality": betweenness_mean,
+        "ratio_contact_nodes": ratio_contact_nodes,
+        "popularity_top10_ratio": popularity_top10_ratio,
+        "window_centrality_mean": window_centrality_mean,
+        "encounters_top10_mean": encounters_top10_mean,
+        "sociability_top10_mean": sociability_top10_mean,
+    }
+
+
+def run_phase_indirects(out_dir: Path, reports_dir: Path, scenario_paths: list[Path] | None = None) -> bool:
+    """
+    Calcula indirectas tipo Diego.
+    Prioriza trazas ricas (ConnectivityONEReport) y usa fallback a reportes agregados
+    (ContactTimes/InterContact/TotalEncounters/UniqueEncounters) cuando falten.
+    """
+    out_dir = Path(out_dir)
+    reports_dir = Path(reports_dir)
+    data_dir = out_dir / "data"
+    reports_out_dir = out_dir / "reports"
+    data_dir.mkdir(parents=True, exist_ok=True)
+    reports_out_dir.mkdir(parents=True, exist_ok=True)
+
+    if not reports_dir.exists():
+        print(f"Reports directory not found: {reports_dir}")
+        return False
+
+    # Map escenario -> endTime y n_hosts desde settings del corpus activo
+    end_time_by_scenario: dict[str, float] = {}
+    n_hosts_by_scenario: dict[str, int] = {}
+    if scenario_paths:
+        for p in scenario_paths:
+            try:
+                d = load_settings(p)
+                sname = d.get("Scenario.name", p.stem)
+                end_time_by_scenario[sname] = _get_float(d, "Scenario.endTime", np.nan)
+                # Reusar extractor base para N
+                vec = settings_to_reportable_features(d)
+                n_hosts_by_scenario[sname] = int(vec.get("N", 0))
+            except Exception:
+                continue
+
+    contact_files = {p.stem.replace("_ContactTimesReport", ""): p for p in sorted(reports_dir.glob("*_ContactTimesReport.txt"))}
+    intercontact_files = {p.stem.replace("_InterContactTimesReport", ""): p for p in sorted(reports_dir.glob("*_InterContactTimesReport.txt"))}
+    totalenc_files = {p.stem.replace("_TotalEncountersReport", ""): p for p in sorted(reports_dir.glob("*_TotalEncountersReport.txt"))}
+    uniqueenc_files = {p.stem.replace("_UniqueEncountersReport", ""): p for p in sorted(reports_dir.glob("*_UniqueEncountersReport.txt"))}
+    conn_files = {p.stem.replace("_ConnectivityONEReport", ""): p for p in sorted(reports_dir.glob("*_ConnectivityONEReport.txt"))}
+
+    # Universe de escenarios del corpus activo (evitar stale reports)
+    scenarios_active = sorted(end_time_by_scenario.keys()) if end_time_by_scenario else sorted(set(contact_files.keys()) | set(conn_files.keys()))
+    if not scenarios_active:
+        print("No active scenarios resolved for indirects phase.")
+        return False
+
+    rows: list[dict[str, Any]] = []
+    n_from_conn = 0
+    n_from_agg = 0
+    for scenario in scenarios_active:
+        end_time_s = end_time_by_scenario.get(scenario, np.nan)
+        n_hosts = n_hosts_by_scenario.get(scenario, 0)
+
+        # Defaults
+        contact_time_mean_s = np.nan
+        inter_contact_time_mean_s = np.nan
+        total_encounters = np.nan
+        betweenness_centrality = np.nan
+        ratio_contact_nodes = np.nan
+        popularity_top10_ratio = np.nan
+        window_centrality_mean = np.nan
+        encounters_top10_mean = np.nan
+        sociability_top10_mean = np.nan
+        contact_hist_rows = 0
+        intercontact_hist_rows = 0
+        trace_nodes = np.nan
+        availability_note = ""
+
+        if scenario in conn_files:
+            met = _parse_connectivity_one_report(conn_files[scenario], window_s=3600.0)
+            contact_time_mean_s = met["contact_time_mean_s"]
+            inter_contact_time_mean_s = met["inter_contact_time_mean_s"]
+            total_encounters = met["total_encounters"]
+            betweenness_centrality = met["betweenness_centrality"]
+            ratio_contact_nodes = met["ratio_contact_nodes"]
+            popularity_top10_ratio = met["popularity_top10_ratio"]
+            window_centrality_mean = met["window_centrality_mean"]
+            encounters_top10_mean = met["encounters_top10_mean"]
+            sociability_top10_mean = met["sociability_top10_mean"]
+            trace_nodes = met["n_nodes_in_trace"]
+            n_from_conn += 1
+            availability_note = "Indirectas calculadas desde ConnectivityONEReport (traza por evento)."
+        else:
+            # Fallback agregado
+            if scenario in contact_files:
+                c_mean, c_total, c_rows = _parse_contact_times_histogram(contact_files[scenario])
+                contact_time_mean_s = c_mean
+                total_encounters = c_total
+                contact_hist_rows = c_rows
+            if scenario in intercontact_files:
+                ic_rows, ic_valid = _parse_distribution_report(intercontact_files[scenario])
+                inter_contact_time_mean_s = _weighted_mean_from_distribution(ic_rows)
+                intercontact_hist_rows = ic_valid
+            if scenario in totalenc_files:
+                te_rows, _ = _parse_distribution_report(totalenc_files[scenario])
+                # distribución encounters_por_nodo -> cantidad_nodos
+                values = _expand_distribution_values(te_rows)
+                if values:
+                    total_encounters = float(np.sum(values) / 2.0)  # contar conexiones globales (no por nodo)
+                    k_top = max(1, int(np.ceil(0.1 * len(values))))
+                    top_vals = sorted(values, reverse=True)[:k_top]
+                    encounters_top10_mean = float(np.mean(top_vals))
+                    total_node_enc = float(np.sum(values))
+                    sociability_top10_mean = float(np.mean([(v / total_node_enc) if total_node_enc > 0 else np.nan for v in top_vals]))
+            if scenario in uniqueenc_files:
+                ue_rows, _ = _parse_distribution_report(uniqueenc_files[scenario])  # promille, count_nodes
+                ue_vals_promille = _expand_distribution_values(ue_rows)
+                if ue_vals_promille:
+                    ue_vals = [v / 1000.0 for v in ue_vals_promille]
+                    ratio_contact_nodes = float(np.mean(ue_vals))
+                    k_top = max(1, int(np.ceil(0.1 * len(ue_vals))))
+                    popularity_top10_ratio = float(np.mean(sorted(ue_vals, reverse=True)[:k_top]))
+            n_from_agg += 1
+            availability_note = (
+                "Fallback agregado (Contact/InterContact/Total/Unique reports). "
+                "Centralidad real requiere ConnectivityONEReport."
+            )
+
+        if isinstance(end_time_s, (int, float)) and not np.isnan(end_time_s) and end_time_s > 0 and isinstance(total_encounters, (int, float)) and not np.isnan(total_encounters):
+            contact_time_per_min = float(total_encounters / (end_time_s / 60.0)) if total_encounters > 0 else 0.0
+            inter_contact_time_proxy_s = float(end_time_s / total_encounters) if total_encounters > 0 else np.nan
+        else:
+            contact_time_per_min = np.nan
+            inter_contact_time_proxy_s = np.nan
+
+        rows.append({
+            "scenario": scenario,
+            "N_hosts": n_hosts,
+            "contact_time_mean_s": contact_time_mean_s,
+            "inter_contact_time_mean_s": inter_contact_time_mean_s,
+            "contact_time_per_min": contact_time_per_min,
+            "total_encounters": total_encounters,
+            "inter_contact_time_proxy_s": inter_contact_time_proxy_s,
+            "betweenness_centrality": betweenness_centrality,
+            "ratio_contact_nodes": ratio_contact_nodes,
+            "popularity_top10_ratio": popularity_top10_ratio,
+            "window_centrality_mean": window_centrality_mean,
+            "encounters_top10_mean": encounters_top10_mean,
+            "sociability_top10_mean": sociability_top10_mean,
+            "availability_note": availability_note,
+            "contact_hist_rows": contact_hist_rows,
+            "intercontact_hist_rows": intercontact_hist_rows,
+            "trace_nodes": trace_nodes,
+            "scenario_end_time_s": end_time_s,
+        })
+
+    if pd is None:
+        import csv
+        out_csv = data_dir / "indirect_features_diego.csv"
+        fieldnames = list(rows[0].keys()) if rows else []
+        with out_csv.open("w", newline="", encoding="utf-8") as f:
+            w = csv.DictWriter(f, fieldnames=fieldnames)
+            w.writeheader()
+            for r in rows:
+                w.writerow(r)
+    else:
+        df = pd.DataFrame(rows).sort_values("scenario")
+        out_csv = data_dir / "indirect_features_diego.csv"
+        df.to_csv(out_csv, index=False)
+
+    n_total = len(rows)
+    n_with_contact = sum(1 for r in rows if isinstance(r["total_encounters"], (int, float)) and r["total_encounters"] > 0)
+    n_with_endtime = sum(
+        1 for r in rows
+        if isinstance(r["scenario_end_time_s"], (int, float)) and not np.isnan(r["scenario_end_time_s"])
+    )
+
+    report_txt_lines = [
+        "=== Indirectas tipo Diego (estado actual de datos) ===",
+        f"Escenarios procesados: {n_total}",
+        f"Calculados con ConnectivityONEReport: {n_from_conn}",
+        f"Calculados con fallback agregado: {n_from_agg}",
+        f"Con encounters > 0: {n_with_contact}",
+        f"Con Scenario.endTime disponible: {n_with_endtime}",
+        "",
+        "Calculadas con datos actuales (cuando hay datos):",
+        "  - contact_time_mean_s",
+        "  - inter_contact_time_mean_s",
+        "  - contact_time_per_min",
+        "  - total_encounters",
+        "  - inter_contact_time_proxy_s",
+        "  - ratio_contact_nodes",
+        "  - popularity_top10_ratio",
+        "  - encounters_top10_mean",
+        "  - sociability_top10_mean",
+        "  - betweenness_centrality (solo con ConnectivityONEReport)",
+        "  - window_centrality_mean (solo con ConnectivityONEReport)",
+        "",
+        "Para completar fase Diego17 real, ejecuta simulaciones con overrides:",
+        "  scenarios/analysis/diego17_reports_overrides.txt",
+        "Ejemplo:",
+        "  python scenarios/analysis/run_all_scenarios.py --corpus corpus_v1 \\",
+        "    --extra-settings scenarios/analysis/diego17_reports_overrides.txt",
+        "",
+        "Salida:",
+        f"  - {out_csv}",
+    ]
+    report_txt = "\n".join(report_txt_lines)
+    (reports_out_dir / "indirect_features_report.txt").write_text(report_txt, encoding="utf-8")
+
+    report_md_lines = [
+        "# Indirectas tipo Diego (estado actual de datos)",
+        "",
+        f"- Escenarios procesados: **{n_total}**",
+        f"- Calculados con `ConnectivityONEReport`: **{n_from_conn}**",
+        f"- Calculados con fallback agregado: **{n_from_agg}**",
+        f"- Con encounters > 0: **{n_with_contact}**",
+        f"- Con `Scenario.endTime` disponible: **{n_with_endtime}**",
+        "",
+        "## Calculadas con datos actuales (cuando hay datos)",
+        "",
+        "- `contact_time_mean_s`",
+        "- `inter_contact_time_mean_s`",
+        "- `contact_time_per_min`",
+        "- `total_encounters`",
+        "- `inter_contact_time_proxy_s`",
+        "- `ratio_contact_nodes`",
+        "- `popularity_top10_ratio`",
+        "- `encounters_top10_mean`",
+        "- `sociability_top10_mean`",
+        "- `betweenness_centrality` (solo con `ConnectivityONEReport`)",
+        "- `window_centrality_mean` (solo con `ConnectivityONEReport`)",
+        "",
+        "## Para completar Diego17 real",
+        "",
+        "Ejecuta simulaciones con overrides de reportes:",
+        "",
+        "```",
+        "python scenarios/analysis/run_all_scenarios.py --corpus corpus_v1 \\",
+        "  --extra-settings scenarios/analysis/diego17_reports_overrides.txt",
+        "```",
+        "",
+        "Luego re-ejecuta `run_all_scenarios.py` y después `run_analysis.py --phase indirects`.",
+        "",
+        f"CSV: `{out_csv}`",
+        "",
+    ]
+    (reports_out_dir / "indirect_features_report.md").write_text("\n".join(report_md_lines), encoding="utf-8")
+
+    print(f"Written {out_csv}")
+    print(f"Written {reports_out_dir / 'indirect_features_report.txt'} and indirect_features_report.md")
     return True
 
 
@@ -2631,8 +3232,8 @@ def main():
     ap = argparse.ArgumentParser(description="Análisis del corpus de escenarios (por partes).")
     ap.add_argument("--corpus", type=str, default="corpus_v1", help="Directorio del corpus (p. ej. corpus_v1)")
     ap.add_argument("--phase", type=str, default="features",
-                    choices=("features", "features_report", "normalize", "correlation", "feature_correlation", "ablation", "figures", "figures_paper", "tables_paper", "output_metrics", "outputs", "all"),
-                    help="Fase: features, normalize, correlation, feature_correlation (23×23), ablation (17 vs 23 vs 46), figures, figures_paper, tables_paper, output_metrics, outputs, all")
+                    choices=("features", "features_report", "normalize", "correlation", "feature_correlation", "ablation", "figures", "figures_paper", "tables_paper", "indirects", "output_metrics", "outputs", "all"),
+                    help="Fase: features, normalize, correlation, feature_correlation (23×23), ablation (17 vs 23 vs 46), figures, figures_paper, tables_paper, indirects, output_metrics, outputs, all")
     ap.add_argument("--threshold", type=float, default=0.7,
                     help="Umbral |r| para criterio de correlación (default 0.7)")
     ap.add_argument("--strict", action="store_true",
@@ -2687,6 +3288,9 @@ def main():
         if not run_phase_tables_paper(out_dir, threshold=args.threshold):
             return 1
     reports_dir = Path(args.reports_dir) if args.reports_dir else (base.parent.parent / "reports")
+    if args.phase == "indirects":
+        if not run_phase_indirects(out_dir, reports_dir, scenario_paths=scenario_paths):
+            return 1
     if args.phase == "output_metrics" or args.phase == "all":
         allowed_scenarios = None
         if scenario_paths:
@@ -2704,13 +3308,16 @@ def main():
     if args.phase == "outputs":
         if not run_phase_outputs(out_dir, threshold=args.threshold):
             return 1
+    if args.phase == "all":
+        # Cálculo de indirectas (hasta donde permiten reportes agregados de contacto)
+        run_phase_indirects(out_dir, reports_dir, scenario_paths=scenario_paths)
 
     # Documentación "siempre actual": genera/actualiza informes de referencia
     # a partir de los resultados calculados arriba.
     #
     # Excepción: --phase figures_paper está diseñado para no tocar artefactos
     # fuera de figures/paper/, así que saltamos el refresco automático.
-    if args.phase not in ("figures_paper", "tables_paper"):
+    if args.phase not in ("figures_paper", "tables_paper", "indirects"):
         if scenario_paths:
             # features_report no depende de normalización/correlación; se refresca siempre que se ejecuta el script.
             run_phase_features_report(corpus_dir, out_dir, scenario_paths)

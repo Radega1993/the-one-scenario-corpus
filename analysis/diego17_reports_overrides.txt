@@ -1,0 +1,15 @@
+#
+# Overrides de reportes para fase Diego17 real
+# Se aplica como settings adicional DESPUÉS del escenario para forzar estos reportes.
+#
+
+Report.nrofReports = 7
+Report.reportDir = reports/
+Report.report1 = MessageStatsReport
+Report.report2 = ContactTimesReport
+Report.report3 = InterContactTimesReport
+Report.report4 = TotalEncountersReport
+Report.report5 = UniqueEncountersReport
+Report.report6 = ContactsPerHourReport
+Report.report7 = ConnectivityONEReport
+

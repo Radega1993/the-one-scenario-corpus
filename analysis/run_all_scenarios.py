@@ -34,6 +34,7 @@ def run_one_scenario(
     repo_root: Path,
     one_script: str,
     default_settings: str,
+    extra_settings: str | None,
     dry_run: bool,
     timeout_s: int,
 ) -> tuple[bool, str]:
@@ -52,6 +53,8 @@ def run_one_scenario(
         return True, ""
     # -b 1 = batch mode (sin GUI), 1 run por archivo
     cmd = [one_script, "-b", "1", default_settings, str(rel)]
+    if extra_settings:
+        cmd.append(extra_settings)
     try:
         r = subprocess.run(
             cmd,
@@ -96,6 +99,12 @@ def main() -> int:
         metavar="SEG",
         help="Timeout por escenario en segundos (default: 7200 = 2h). Si se supera, el proceso se mata y los reportes quedan vacíos.",
     )
+    ap.add_argument(
+        "--extra-settings",
+        type=str,
+        default=None,
+        help="Settings adicional a aplicar al final (sobrescribe claves del escenario). Útil para forzar Report.* en todos los escenarios.",
+    )
     args = ap.parse_args()
 
     repo_root = Path(args.repo_dir).resolve() if args.repo_dir else REPO_ROOT
@@ -111,6 +120,18 @@ def main() -> int:
         print(f"Error: no encontrado {one_script}. Ejecuta desde el repo del ONE.", file=sys.stderr)
         return 1
     default_settings = "default_settings.txt"
+    extra_settings = args.extra_settings
+    if extra_settings:
+        extra_path = Path(extra_settings)
+        if not extra_path.is_absolute():
+            extra_path = repo_root / extra_path
+        if not extra_path.exists():
+            print(f"Error: no existe --extra-settings: {extra_path}", file=sys.stderr)
+            return 1
+        try:
+            extra_settings = str(extra_path.relative_to(repo_root))
+        except ValueError:
+            extra_settings = str(extra_path)
 
     scenario_paths = collect_scenario_files(corpus_dir)
     if not scenario_paths:
@@ -140,7 +161,7 @@ def main() -> int:
             rel = p
         print(f"[{i}/{n}] {rel} ... ", end="", flush=True)
         success, err_msg = run_one_scenario(
-            p, repo_root, str(one_script), default_settings, dry_run=False, timeout_s=args.timeout
+            p, repo_root, str(one_script), default_settings, extra_settings, dry_run=False, timeout_s=args.timeout
         )
         if success:
             print("OK")
