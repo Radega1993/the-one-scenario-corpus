@@ -4,9 +4,13 @@ Ejecuta todas las simulaciones del corpus de escenarios (The ONE).
 Por cada .settings ejecuta one.sh en modo batch (-b 1, sin GUI) y genera los reportes en reports/ (MessageStatsReport, etc.).
 
 Uso:
-  python run_all_scenarios.py --corpus corpus_v1
-  python run_all_scenarios.py --corpus corpus_v1 --dry-run
-  python run_all_scenarios.py --corpus corpus_v1 --timeout 14400   # 4 h por escenario
+  python3 scenarios/analysis/run_all_scenarios.py --corpus corpus_v1
+  python3 scenarios/analysis/run_all_scenarios.py --corpus corpus_v2 --dry-run
+  python3 scenarios/analysis/run_all_scenarios.py --corpus corpus_v2 \\
+    --extra-settings scenarios/analysis/diego17_reports_overrides.txt \\
+    --extra-settings scenarios/analysis/protocol_overlays/router_prophet.txt
+  python3 scenarios/analysis/run_all_scenarios.py --corpus corpus_v2 \\
+    --name-regex 'U1_CBD.*__TP03' --dry-run
 
 Requisitos: Java, el ONE compilado (one.sh en la raíz del repo). Los reportes se escriben
 en el directorio configurado en cada .settings (por defecto reports/ en la raíz).
@@ -17,6 +21,7 @@ from __future__ import annotations
 import argparse
 import subprocess
 import sys
+import re
 from pathlib import Path
 
 BASE = Path(__file__).resolve().parent
@@ -34,7 +39,7 @@ def run_one_scenario(
     repo_root: Path,
     one_script: str,
     default_settings: str,
-    extra_settings: str | None,
+    extra_settings: list[str] | None,
     dry_run: bool,
     timeout_s: int,
 ) -> tuple[bool, str]:
@@ -54,7 +59,7 @@ def run_one_scenario(
     # -b 1 = batch mode (sin GUI), 1 run por archivo
     cmd = [one_script, "-b", "1", default_settings, str(rel)]
     if extra_settings:
-        cmd.append(extra_settings)
+        cmd.extend(extra_settings)
     try:
         r = subprocess.run(
             cmd,
@@ -101,9 +106,20 @@ def main() -> int:
     )
     ap.add_argument(
         "--extra-settings",
+        action="append",
+        default=None,
+        metavar="PATH",
+        help=(
+            "Settings adicional a aplicar al final (puede repetirse; orden importa). "
+            "Útil para forzar Report.* y/o overlays de router/protocolo."
+        ),
+    )
+    ap.add_argument(
+        "--name-regex",
         type=str,
         default=None,
-        help="Settings adicional a aplicar al final (sobrescribe claves del escenario). Útil para forzar Report.* en todos los escenarios.",
+        metavar="REGEX",
+        help="Si se define, solo ejecuta escenarios cuya ruta/nombre coincida (re.search)",
     )
     args = ap.parse_args()
 
@@ -120,20 +136,24 @@ def main() -> int:
         print(f"Error: no encontrado {one_script}. Ejecuta desde el repo del ONE.", file=sys.stderr)
         return 1
     default_settings = "default_settings.txt"
-    extra_settings = args.extra_settings
-    if extra_settings:
-        extra_path = Path(extra_settings)
-        if not extra_path.is_absolute():
-            extra_path = repo_root / extra_path
-        if not extra_path.exists():
-            print(f"Error: no existe --extra-settings: {extra_path}", file=sys.stderr)
-            return 1
-        try:
-            extra_settings = str(extra_path.relative_to(repo_root))
-        except ValueError:
-            extra_settings = str(extra_path)
+    extra_settings_paths: list[str] = []
+    if args.extra_settings:
+        for raw in args.extra_settings:
+            extra_path = Path(raw)
+            if not extra_path.is_absolute():
+                extra_path = repo_root / extra_path
+            if not extra_path.exists():
+                print(f"Error: no existe --extra-settings: {extra_path}", file=sys.stderr)
+                return 1
+            try:
+                extra_settings_paths.append(str(extra_path.relative_to(repo_root)))
+            except ValueError:
+                extra_settings_paths.append(str(extra_path))
 
     scenario_paths = collect_scenario_files(corpus_dir)
+    if args.name_regex:
+        rx = re.compile(args.name_regex)
+        scenario_paths = [p for p in scenario_paths if rx.search(p.as_posix())]
     if not scenario_paths:
         print(f"No hay archivos .settings en {corpus_dir}")
         return 0
@@ -161,7 +181,13 @@ def main() -> int:
             rel = p
         print(f"[{i}/{n}] {rel} ... ", end="", flush=True)
         success, err_msg = run_one_scenario(
-            p, repo_root, str(one_script), default_settings, extra_settings, dry_run=False, timeout_s=args.timeout
+            p,
+            repo_root,
+            str(one_script),
+            default_settings,
+            extra_settings_paths if extra_settings_paths else None,
+            dry_run=False,
+            timeout_s=args.timeout,
         )
         if success:
             print("OK")

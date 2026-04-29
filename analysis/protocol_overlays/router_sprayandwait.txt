@@ -1,0 +1,16 @@
+# Overlay: SprayAndWaitRouter on all groups.
+Group.router = SprayAndWaitRouter
+Group1.router = SprayAndWaitRouter
+Group2.router = SprayAndWaitRouter
+Group3.router = SprayAndWaitRouter
+Group4.router = SprayAndWaitRouter
+Group5.router = SprayAndWaitRouter
+Group6.router = SprayAndWaitRouter
+Group7.router = SprayAndWaitRouter
+Group8.router = SprayAndWaitRouter
+Group9.router = SprayAndWaitRouter
+Group10.router = SprayAndWaitRouter
+Group11.router = SprayAndWaitRouter
+Group12.router = SprayAndWaitRouter
+SprayAndWaitRouter.nrofCopies = 6
+SprayAndWaitRouter.binaryMode = false

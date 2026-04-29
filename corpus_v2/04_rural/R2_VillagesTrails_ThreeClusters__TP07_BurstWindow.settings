@@ -1,0 +1,82 @@
+# Corpus v2 traffic profile (TP07 BurstWindow) — generated from corpus_v1. Mobility unchanged; Events* and Group*.msgTtl overridden.
+# =========================================================
+# R2 - Villages & trails
+# 3 separate spatial clusters (villages); mobility within each.
+# Levers: 3 groups with ClusterMovement, different clusterCenter + clusterRange.
+# (Inter-village trails would require custom movement.)
+# =========================================================
+
+Scenario.name = R2_VillagesTrails_ThreeClusters__TP07_BurstWindow
+Scenario.simulateConnections = true
+Scenario.updateInterval = 0.1
+Scenario.endTime = 43200
+MovementModel.rngSeed = 30
+MovementModel.worldSize = 5000, 5000
+
+Group.movementModel = ClusterMovement
+Group.router = EpidemicRouter
+Group.bufferSize = 50M
+Group.nrofInterfaces = 1
+Group.interface1 = bt0
+Group.speed = 0.3, 0.9
+Group.waitTime = 180, 480
+
+bt0.type = SimpleBroadcastInterface
+bt0.transmitSpeed = 2M
+bt0.transmitRange = 10
+
+Scenario.nrofHostGroups = 3
+
+# Village 1
+Group1.groupID = v
+Group1.nrofHosts = 12
+Group1.movementModel = ClusterMovement
+Group1.clusterCenter = 800, 800
+Group1.clusterRange = 350
+Group1.speed = 0.3, 0.9
+Group1.waitTime = 180, 480
+Group1.bufferSize = 50M
+Group1.router = EpidemicRouter
+Group1.nrofInterfaces = 1
+Group1.interface1 = bt0
+
+# Village 2
+Group2.groupID = v
+Group2.nrofHosts = 12
+Group2.movementModel = ClusterMovement
+Group2.clusterCenter = 2800, 800
+Group2.clusterRange = 350
+Group2.speed = 0.3, 0.9
+Group2.waitTime = 180, 480
+Group2.bufferSize = 50M
+Group2.router = EpidemicRouter
+Group2.nrofInterfaces = 1
+Group2.interface1 = bt0
+
+# Village 3
+Group3.groupID = v
+Group3.nrofHosts = 12
+Group3.movementModel = ClusterMovement
+Group3.clusterCenter = 1800, 2800
+Group3.clusterRange = 350
+Group3.speed = 0.3, 0.9
+Group3.waitTime = 180, 480
+Group3.bufferSize = 50M
+Group3.router = EpidemicRouter
+Group3.nrofInterfaces = 1
+Group3.interface1 = bt0
+
+Group.msgTtl = 7200
+
+Events.nrof = 1
+Events1.class = MessageEventGenerator
+Events1.interval = 5, 15
+Events1.size = 50k, 150k
+Events1.hosts = 0, 36
+Events1.time = 8640, 12096
+Events1.prefix = M
+
+Report.nrofReports = 2
+Report.reportDir = reports/
+Report.report1 = MessageStatsReport
+Report.report2 = ContactTimesReport

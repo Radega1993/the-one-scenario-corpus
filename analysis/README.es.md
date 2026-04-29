@@ -20,7 +20,7 @@ Metodología core/extended: [docs/features_core_vs_extended.md](docs/features_co
 Se usa **un solo script** (`run_analysis.py`) con varias fases ejecutables de forma independiente. Espacio: **world_area** (Wx×Wy) y **aspect_ratio** = min(Wx,Wy)/max(Wx,Wy). **Política NaN (§4):** z-score por columna ignorando NaN; luego imputar NaN → 0 en espacio estandarizado.
 
 - **Ventajas**: una única entrada, resultados intermedios en `data/` (p. ej. `features.csv` -> `features_normalized.csv`, `features_core.csv` 23 cols, `features_reduced.csv` 17 cols), posibilidad de `--phase all` para correr todo.
-- **Fases**: `features` → `normalize` → `correlation` → `feature_correlation` → `ablation` → `figures` → `output_metrics` → `outputs`. Cada fase escribe en `data/`, `figures/` o `reports/`.
+- **Fases**: `features` → `features_report` → `normalize` → `correlation` → `feature_correlation` → `ablation` → `figures` → `figures_paper` → `tables_paper` → `indirects` → `output_metrics` → `outputs`. Cada fase escribe en `data/`, `figures/` o `reports/`.
 
 Alternativa con **varios scripts** (uno por paso) sería útil si quisieras orquestar pasos en otro lenguaje o herramienta; por ahora el diseño con un script y fases es más simple de mantener.
 
@@ -124,12 +124,15 @@ El script se organiza **por partes**:
 3. **Correlación entre escenarios** (`--phase correlation`): Lee `data/features_normalized.csv` (matriz Z, n×d con n = número de escenarios). **Pearson** r(Si, Sk) = corr(Zi, Zk); **Spearman** (correlación de rangos); **métricas geométricas**: distancia coseno (1 − cos_sim) y distancia euclídea entre filas de Z. Salidas en `data/`: `correlation_pearson.csv`, `correlation_spearman.csv`, `distance_cosine.csv`, `distance_euclidean.csv`, `correlation_pearson_pvalues.csv`. Criterio: **|r| < 0.7** para todos o ≥95% de los pares (`--strict` exige 100%). **Test y corrección múltiple**: p-value por par (H0: ρ=0), **FDR (Benjamini-Hochberg)** y **Bonferroni** (`--fdr-alpha`). Objetivo: no pares con |r| alto y significativos tras corrección. Informes: `reports/correlation_report.txt` (incluye resumen Spearman y distancias), `reports/multiple_comparisons_report.txt`. Matrices de Pearson/Spearman entre vectores de escenarios, distancias coseno y euclídea; se guardan en `data/`.
 4. **Correlación feature-feature** (`--phase feature_correlation`): Matriz 23x23 entre las features del core. Salida: `data/feature_feature_correlation_core.csv`, `figures/heatmap_feature_feature_core.png`, `reports/feature_feature_correlation_report.txt`.
 5. **Ablación** (`--phase ablation`): Compara métricas (max |r|, media |r|, pares >=0.7, Silhouette) para 17, 23 y 46 features. Salida: `reports/ablation_report.txt`, `data/ablation_metrics.csv`.
-6. **Figuras** (`--phase figures`): Heatmaps Pearson/Spearman, histogramas de correlaciones, scatter PCA 2D y scatter par con mayor |r|; se guardan en `figures/` (.png y .pdf).
-7. **Rellenado de métricas de salida** (`--phase output_metrics`): **Automatiza** la creación de `data/output_metrics.csv` a partir de los ficheros `*_MessageStatsReport.txt` en el directorio de reportes (por defecto `reports/` en la raíz del repo; `--reports-dir` para otro). Parsea: `delivery_prob` → `delivery_ratio`, `latency_avg` → `latency_mean`, `overhead_ratio`, `drop_ratio` = dropped/created. Una fila por escenario (nombre del fichero). No hace falta rellenar el CSV a mano si ya tienes los reportes del ONE.
-8. **Validación sobre outputs** (`--phase outputs`): Vectores Y_s por escenario (delivery_ratio, latency_mean, overhead_ratio, drop_ratio) a partir de `data/output_metrics.csv`; mismo procedimiento (z-score, Pearson, Spearman, distancias). Salidas en `data/` y `reports/outputs_correlation_report.txt`; heatmap en `figures/heatmap_pearson_outputs.png`. Requiere `output_metrics.csv` (generable con `--phase output_metrics`).
+6. **Figuras** (`--phase figures`): Heatmaps Pearson/Spearman, histogramas de correlaciones, scatter PCA 2D y scatter par con mayor |r|; se guardan en `figures/` (.png y .pdf). Además genera comparativas por espacio en `figures/by_space/` (`reduced_17`, `core_23`, `full_46`).
+7. **Figuras paper** (`--phase figures_paper`): paquete curado para paper en `figures/paper/{main,supplementary}` (PNG+PDF).
+8. **Tablas paper** (`--phase tables_paper`): tablas Markdown ES/EN en `figures/paper/tables/`.
+9. **Indirectas Diego** (`--phase indirects`): calcula indirectas desde reportes (`data/indirect_features_diego.csv`, `reports/indirect_features_report.*`).
+10. **Rellenado de métricas de salida** (`--phase output_metrics`): **Automatiza** la creación de `data/output_metrics.csv` a partir de los ficheros `*_MessageStatsReport.txt` en el directorio de reportes (por defecto `reports/` en la raíz del repo; `--reports-dir` para otro). Parsea: `delivery_prob` → `delivery_ratio`, `latency_avg` → `latency_mean`, `overhead_ratio`, `drop_ratio` = dropped/created. Una fila por escenario (nombre del fichero). No hace falta rellenar el CSV a mano si ya tienes los reportes del ONE.
+11. **Validación sobre outputs** (`--phase outputs`): Vectores Y_s por escenario (delivery_ratio, latency_mean, overhead_ratio, drop_ratio) a partir de `data/output_metrics.csv`; mismo procedimiento (z-score, Pearson, Spearman, distancias). Salidas en `data/` y `reports/outputs_correlation_report.txt`; heatmap en `figures/heatmap_pearson_outputs.png`. Requiere `output_metrics.csv` (generable con `--phase output_metrics`).
 9. **(Opcional) Informe final**: Resumen en `reports/report.txt` (y opcionalmente más salidas) con max |r|, fracción de pares por encima del umbral y conclusión sobre “no correlación lineal fuerte” / “conjunto no redundante”.
 
-Con `--phase all` se ejecutan: features → normalize → correlation → feature_correlation → ablation → figures → output_metrics. La validación `outputs` se ejecuta con `--phase outputs` por separado.
+Con `--phase all` se ejecutan: features → features_report → normalize → correlation → feature_correlation → ablation → figures → output_metrics → indirects. La validación `outputs` se ejecuta con `--phase outputs` por separado.
 
 ---
 
@@ -143,6 +146,14 @@ python3 scenarios/analysis/run_all_scenarios.py --corpus corpus_v1
 
 # Solo listar, sin ejecutar
 python3 scenarios/analysis/run_all_scenarios.py --corpus corpus_v1 --dry-run
+
+# Forzar todos los reportes necesarios para Diego17 real / indirectas
+python3 scenarios/analysis/run_all_scenarios.py --corpus corpus_v1 \
+  --extra-settings scenarios/analysis/diego17_reports_overrides.txt
+
+# Mismo comando con el venv del proyecto
+./venv/bin/python scenarios/analysis/run_all_scenarios.py --corpus corpus_v1 \
+  --extra-settings scenarios/analysis/diego17_reports_overrides.txt
 ```
 
 Requisitos: Java, el ONE compilado (`one.sh` en la raíz). Los reportes se escriben en el directorio configurado en cada `.settings` (por defecto `reports/`). Después puedes ejecutar `run_analysis.py --phase output_metrics` para rellenar `data/output_metrics.csv` desde esos reportes.
@@ -151,7 +162,7 @@ Requisitos: Java, el ONE compilado (`one.sh` en la raíz). Los reportes se escri
 
 ## Cómo ejecutar (análisis)
 
-Desde el directorio `scenarios/` (o con el path adecuado a `corpus_v1`):
+Desde el directorio `scenarios/analysis/` (o con el path adecuado a `corpus_v1`):
 
 ```bash
 # Extracción de features → data/features.csv
@@ -173,6 +184,15 @@ python3 run_analysis.py --phase ablation
 # Gráficos → figures/*.png, figures/*.pdf (requiere correlation previa)
 python3 run_analysis.py --phase figures
 
+# Figuras paper (main/supplementary, PNG+PDF)
+python3 run_analysis.py --phase figures_paper
+
+# Tablas paper (ES+EN)
+python3 run_analysis.py --phase tables_paper
+
+# Indirectas estilo Diego desde reports/
+python3 run_analysis.py --phase indirects
+
 # Rellenar output_metrics.csv desde reports/*_MessageStatsReport.txt (automatizado)
 python3 run_analysis.py --phase output_metrics
 # Si los reportes están en otro directorio:
@@ -181,18 +201,19 @@ python3 run_analysis.py --phase output_metrics --reports-dir /ruta/a/reports
 # Validación sobre outputs (requiere data/output_metrics.csv)
 python3 run_analysis.py --phase outputs
 
-# Todas las fases (features → normalize → correlation → figures → output_metrics; outputs por separado)
+# Todas las fases (features → ... → output_metrics → indirects; outputs por separado)
 python3 run_analysis.py --corpus corpus_v1 --phase all
 
 # Con el venv del proyecto (si numpy/pandas están en el venv)
 ../venv/bin/python run_analysis.py --corpus corpus_v1 --phase features
 ../venv/bin/python run_analysis.py --corpus corpus_v1 --phase normalize
+../venv/bin/python run_analysis.py --corpus corpus_v1 --phase all
 ```
 
 O desde la raíz del repo:
 
 ```bash
-cd scenarios && python3 run_analysis.py --corpus corpus_v1 --phase features
+python3 scenarios/analysis/run_analysis.py --corpus corpus_v1 --phase features
 ```
 
 Las rutas de salida son siempre relativas a `scenarios/analysis/` (data/, figures/, reports/). Requiere `numpy` y, para CSV cómodo, `pandas`.
@@ -205,6 +226,8 @@ Para ver todos los resultados en un único sitio (resumen, por fase, por escenar
 streamlit run dashboard.py   # desde scenarios/analysis
 # o desde la raíz del repo:
 streamlit run scenarios/analysis/dashboard.py
+# o con venv:
+./venv/bin/streamlit run scenarios/analysis/dashboard.py
 ```
 
 Requiere `streamlit` y `pandas`.

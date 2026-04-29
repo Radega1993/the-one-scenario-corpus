@@ -1,0 +1,58 @@
+# Corpus v2 traffic profile (TP01 Baseline) — generated from corpus_v1. Mobility unchanged; Events* and Group*.msgTtl overridden.
+# =========================================================
+# D4 - Medical triage (two traffic classes)
+# The ONE doesn't support message priority classes without code changes, but
+# we can approximate "triage" by generating critical traffic from a small
+# responder group with short TTL, and routine traffic from civilians with long TTL.
+# Levers: 2 host groups with different msgTtl, 2 generators with different sizes/intervals.
+# =========================================================
+
+Scenario.name = D4_MedicalTriage_TwoClasses__TP01_Baseline
+Scenario.simulateConnections = true
+Scenario.updateInterval = 0.1
+Scenario.endTime = 43200
+MovementModel.rngSeed = 40
+MovementModel.worldSize = 5500, 4500
+
+Group.router = EpidemicRouter
+Group.bufferSize = 50M
+Group.nrofInterfaces = 1
+Group.interface1 = bt0
+Group.movementModel = RandomWaypoint
+Group.speed = 0.4, 1.4
+Group.waitTime = 20, 240
+
+bt0.type = SimpleBroadcastInterface
+bt0.transmitSpeed = 2M
+bt0.transmitRange = 10
+
+Scenario.nrofHostGroups = 2
+
+# Responders / triage team: small group, short TTL (minutes)
+Group1.groupID = med
+Group1.nrofHosts = 10
+Group1.msgTtl = 7200
+Group1.speed = 0.6, 1.8
+Group1.waitTime = 0, 120
+
+# Civilians: larger group, long TTL (minutes)
+Group2.groupID = civ
+Group2.nrofHosts = 40
+Group2.msgTtl = 7200
+Group2.speed = 0.3, 1.2
+Group2.waitTime = 30, 300
+
+Group.msgTtl = 7200
+
+Events.nrof = 1
+Events1.class = MessageEventGenerator
+Events1.interval = 60, 120
+Events1.size = 50k, 150k
+Events1.hosts = 0, 50
+Events1.prefix = M
+
+Report.nrofReports = 2
+Report.reportDir = reports/
+Report.report1 = MessageStatsReport
+Report.report2 = ContactTimesReport
+

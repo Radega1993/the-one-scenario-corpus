@@ -1,6 +1,6 @@
 # Resultados actuales del corpus (referencia única)
 
-**Corpus:** 60 escenarios en `corpus_v1/`.
+**Corpus:** 720 escenarios en `corpus_v2/`.
 **Umbral |r|:** 0.7
 ---
 ## Métricas en espacio CORE (23 features)
@@ -9,7 +9,7 @@
 | max |r| | 0.9829 |
 | Pares con |r| ≥ 0.7 | 58 (3.3%) |
 
-Total pares (i<k): 1770
+Total pares (i<k): 258840
 ---
 ## Métricas en espacio completo (46 features)
 | Métrica | Valor |

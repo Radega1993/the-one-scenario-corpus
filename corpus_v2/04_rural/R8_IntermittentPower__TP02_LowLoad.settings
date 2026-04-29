@@ -1,0 +1,47 @@
+# Corpus v2 traffic profile (TP02 LowLoad) — generated from corpus_v1. Mobility unchanged; Events* and Group*.msgTtl overridden.
+# =========================================================
+# R8 - Intermittent power
+# Nodes "sleep" part of the time (activeTimes).
+# Levers: activeTimes = (start1, end1, start2, end2, ...) in seconds.
+# =========================================================
+
+Scenario.name = R8_IntermittentPower__TP02_LowLoad
+Scenario.simulateConnections = true
+Scenario.updateInterval = 0.1
+Scenario.endTime = 43200
+MovementModel.rngSeed = 36
+MovementModel.worldSize = 6000, 5000
+
+Group.movementModel = RandomWaypoint
+Group.router = EpidemicRouter
+Group.nrofHosts = 35
+# Diversificar core 24 vs T6: buffer y transmitSpeed distintos
+Group.bufferSize = 42M
+Group.nrofInterfaces = 1
+Group.interface1 = bt0
+Group.speed = 0.4, 1.0
+Group.waitTime = 60, 300
+# R8 lever: active only in time windows (0-1h, 2h-3h, 4h-5h, ... every 2h for 1h)
+Group.activeTimes = 0, 3600, 7200, 10800, 14400, 18000, 21600, 25200, 28800, 32400, 36000, 39600
+
+bt0.type = SimpleBroadcastInterface
+bt0.transmitSpeed = 1.75M
+bt0.transmitRange = 10
+
+Scenario.nrofHostGroups = 1
+Group1.groupID = i
+Group1.activeTimes = 0, 3600, 7200, 10800, 14400, 18000, 21600, 25200, 28800, 32400, 36000, 39600
+
+Group.msgTtl = 21600
+
+Events.nrof = 1
+Events1.class = MessageEventGenerator
+Events1.interval = 300, 600
+Events1.size = 10k, 100k
+Events1.hosts = 0, 35
+Events1.prefix = M
+
+Report.nrofReports = 2
+Report.reportDir = reports/
+Report.report1 = MessageStatsReport
+Report.report2 = ContactTimesReport

@@ -1,0 +1,65 @@
+# Corpus v2 traffic profile (TP09 Bimodal) — generated from corpus_v1. Mobility unchanged; Events* and Group*.msgTtl overridden.
+# =========================================================
+# D8 - Infrastructure returns (backbone links appear mid-simulation)
+# The ONE doesn't support time-varying transmitRange from settings alone.
+# We approximate "infrastructure comes back" using forced connection events
+# that bring up persistent links between partitions after t = 6h.
+# Levers: ExternalEventsQueue + CONN up events at mid-sim.
+# =========================================================
+
+Scenario.name = D8_InfrastructureReturns_BackboneLinks__TP09_Bimodal
+Scenario.simulateConnections = true
+Scenario.updateInterval = 0.1
+Scenario.endTime = 43200
+MovementModel.rngSeed = 44
+MovementModel.worldSize = 10000, 4000
+
+Group.router = EpidemicRouter
+Group.bufferSize = 50M
+Group.nrofInterfaces = 1
+Group.interface1 = bt0
+
+bt0.type = SimpleBroadcastInterface
+bt0.transmitSpeed = 2M
+bt0.transmitRange = 10
+
+Scenario.nrofHostGroups = 2
+
+# Partition A (no roaming between partitions)
+Group1.groupID = a
+Group1.nrofHosts = 40
+Group1.movementModel = ClusterMovement
+Group1.clusterCenter = 2000, 2000
+Group1.clusterRange = 350
+Group1.speed = 0.4, 1.2
+Group1.waitTime = 30, 240
+
+# Partition B (no roaming between partitions)
+Group2.groupID = b
+Group2.nrofHosts = 40
+Group2.movementModel = ClusterMovement
+Group2.clusterCenter = 8000, 2000
+Group2.clusterRange = 350
+Group2.speed = 0.4, 1.2
+Group2.waitTime = 30, 240
+
+Group.msgTtl = 7200
+
+Events.nrof = 2
+Events1.class = MessageEventGenerator
+Events1.interval = 60, 120
+Events1.size = 10k, 50k
+Events1.hosts = 0, 80
+Events1.prefix = M
+
+Events2.class = MessageEventGenerator
+Events2.interval = 300, 600
+Events2.size = 1M, 5M
+Events2.hosts = 0, 80
+Events2.prefix = N
+
+Report.nrofReports = 2
+Report.reportDir = reports/
+Report.report1 = MessageStatsReport
+Report.report2 = ContactTimesReport
+

@@ -1,0 +1,74 @@
+# Corpus v2 traffic profile (TP02 LowLoad) — generated from corpus_v1. Mobility unchanged; Events* and Group*.msgTtl overridden.
+# =========================================================
+# S1 - Strong communities
+# Clusters with few links between clusters (well-separated POIs/clusters).
+# Levers: several ClusterMovement groups, clusters far apart, no bridge nodes.
+# =========================================================
+
+Scenario.name = S1_StrongCommunities_SeparateClusters__TP02_LowLoad
+Scenario.simulateConnections = true
+Scenario.updateInterval = 0.1
+Scenario.endTime = 43200
+MovementModel.rngSeed = 45
+MovementModel.worldSize = 8000, 6000
+
+Group.router = EpidemicRouter
+Group.bufferSize = 50M
+Group.nrofInterfaces = 1
+Group.interface1 = bt0
+
+bt0.type = SimpleBroadcastInterface
+bt0.transmitSpeed = 2M
+bt0.transmitRange = 10
+
+Scenario.nrofHostGroups = 4
+
+# Community A (north-west)
+Group1.groupID = cA
+Group1.nrofHosts = 30
+Group1.movementModel = ClusterMovement
+Group1.clusterCenter = 1200, 1200
+Group1.clusterRange = 200
+Group1.speed = 0.4, 1.0
+Group1.waitTime = 60, 300
+
+# Community B (north-east)
+Group2.groupID = cB
+Group2.nrofHosts = 28
+Group2.movementModel = ClusterMovement
+Group2.clusterCenter = 6800, 1200
+Group2.clusterRange = 200
+Group2.speed = 0.4, 1.0
+Group2.waitTime = 60, 300
+
+# Community C (south-west)
+Group3.groupID = cC
+Group3.nrofHosts = 25
+Group3.movementModel = ClusterMovement
+Group3.clusterCenter = 1200, 4800
+Group3.clusterRange = 200
+Group3.speed = 0.4, 1.0
+Group3.waitTime = 60, 300
+
+# Community D (south-east)
+Group4.groupID = cD
+Group4.nrofHosts = 27
+Group4.movementModel = ClusterMovement
+Group4.clusterCenter = 6800, 4800
+Group4.clusterRange = 200
+Group4.speed = 0.4, 1.0
+Group4.waitTime = 60, 300
+
+Group.msgTtl = 21600
+
+Events.nrof = 1
+Events1.class = MessageEventGenerator
+Events1.interval = 300, 600
+Events1.size = 10k, 100k
+Events1.hosts = 0, 110
+Events1.prefix = M
+
+Report.nrofReports = 2
+Report.reportDir = reports/
+Report.report1 = MessageStatsReport
+Report.report2 = ContactTimesReport

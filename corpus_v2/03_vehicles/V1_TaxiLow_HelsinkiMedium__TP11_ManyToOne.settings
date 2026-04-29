@@ -1,0 +1,65 @@
+# Corpus v2 traffic profile (TP11 ManyToOne) — generated from corpus_v1. Mobility unchanged; Events* and Group*.msgTtl overridden.
+# =========================================================
+# V1 - Taxi low
+# Few taxis, high mobility (MapRouteMovement as taxi-like).
+# Levers: small group, MapRouteMovement, high speed.
+# Dataset: HelsinkiMedium (map + route)
+# =========================================================
+
+Scenario.name = V1_TaxiLow_HelsinkiMedium__TP11_ManyToOne
+Scenario.simulateConnections = true
+Scenario.updateInterval = 0.1
+Scenario.endTime = 43200
+MovementModel.rngSeed = 21
+# Diversificar core 24: world_area, aspect_ratio distintos
+# Ajuste para evitar "Map node is out of world bounds" (x:7911.27 > 7900).
+MovementModel.worldSize = 8400, 7504
+
+MapBasedMovement.nrofMapFiles = 1
+MapBasedMovement.mapFile1 = data/HelsinkiMedium/roads.wkt
+
+# Diversificar vs V2: buffer menor (pocos taxis)
+Group.bufferSize = 30M
+Group.nrofInterfaces = 1
+Group.interface1 = bt0
+bt0.type = SimpleBroadcastInterface
+# Diversificar vs V2: menor ancho de banda (pocos taxis)
+bt0.transmitSpeed = 1M
+# Diversificar: pocos taxis → rango menor
+bt0.transmitRange = 8
+
+# V1 lever: few "taxis" (MapRouteMovement), high speed
+# Diversificar vs V2: velocidad y espera distintas (pocos taxis = más espera)
+Group.movementModel = MapRouteMovement
+Group.routeFile = data/HelsinkiMedium/A_bus.wkt
+Group.routeType = 1
+Group.speed = 8, 14
+Group.waitTime = 8, 25
+
+Scenario.nrofHostGroups = 1
+Group1.groupID = t
+Group1.nrofHosts = 5
+Group1.movementModel = MapRouteMovement
+Group1.routeFile = data/HelsinkiMedium/A_bus.wkt
+Group1.routeType = 1
+Group1.speed = 8, 14
+Group1.waitTime = 8, 25
+Group1.bufferSize = 30M
+Group1.router = EpidemicRouter
+Group1.nrofInterfaces = 1
+Group1.interface1 = bt0
+
+Group.msgTtl = 7200
+
+Events.nrof = 1
+Events1.class = MessageEventGenerator
+Events1.interval = 30, 60
+Events1.size = 10k, 100k
+Events1.hosts = 1, 5
+Events1.tohosts = 0, 1
+Events1.prefix = M
+
+Report.nrofReports = 2
+Report.reportDir = reports/
+Report.report1 = MessageStatsReport
+Report.report2 = ContactTimesReport

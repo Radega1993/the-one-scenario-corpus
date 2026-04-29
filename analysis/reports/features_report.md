@@ -61,9 +61,7 @@ Features utilizados para correlación y diversidad, y settings no utilizados con
 | `Events1.hosts` | DESCARTADO: Redundante con N. |
 | `Events1.prefix` | DESCARTADO: Identificador de mensajes. |
 | `Events2.class` | DESCARTADO: Tipo/identificador; no comparable. |
-| `Events2.filePath` | DESCARTADO: Tráfico desde fichero; no extraemos número comparable. |
 | `Events2.hosts` | DESCARTADO: Redundante con N. |
-| `Events2.nrofPreload` | DESCARTADO: No priorizado para diversidad. |
 | `Events2.prefix` | DESCARTADO: Identificador. |
 | `Group.LinearMovement.endLocation` | DESCARTADO: Coordenadas; dependen del mapa. |
 | `Group.LinearMovement.initLocType` | DESCARTADO: Solo 1 escenario; sin variabilidad. |

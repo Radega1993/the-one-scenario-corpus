@@ -1,0 +1,44 @@
+# Corpus v2 traffic profile (TP03 ManySmall) — generated from corpus_v1. Mobility unchanged; Events* and Group*.msgTtl overridden.
+# =========================================================
+# T13 - Buffer 256 KB (radical)
+# Buffer microscópico: descartes frecuentes.
+# Eje recursos: buffer mínimo.
+# =========================================================
+
+Scenario.name = T13_Buffer_256k__TP03_ManySmall
+Scenario.simulateConnections = true
+Scenario.updateInterval = 0.1
+Scenario.endTime = 43200
+MovementModel.rngSeed = 63
+# Diversificación estructural vs T9/T1 (mantener grupo Traffic): mundo grande para no solaparse con T1/T9
+MovementModel.worldSize = 7200, 5600
+
+Group.movementModel = RandomWaypoint
+Group.router = EpidemicRouter
+Group.nrofHosts = 30
+# R11: bajar r vs R7
+Group.bufferSize = 256k
+Group.msgTtl = 7200
+Group.nrofInterfaces = 1
+Group.interface1 = bt0
+Group.speed = 0.9, 2.0
+Group.waitTime = 30, 120
+
+bt0.type = SimpleBroadcastInterface
+bt0.transmitSpeed = 2.2M
+bt0.transmitRange = 6
+
+Scenario.nrofHostGroups = 1
+Group1.groupID = t13
+
+Events.nrof = 1
+Events1.class = MessageEventGenerator
+Events1.interval = 10, 30
+Events1.size = 1k, 10k
+Events1.hosts = 0, 30
+Events1.prefix = M
+
+Report.nrofReports = 2
+Report.reportDir = reports/
+Report.report1 = MessageStatsReport
+Report.report2 = ContactTimesReport

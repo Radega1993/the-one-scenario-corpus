@@ -1,0 +1,46 @@
+# Corpus v2 traffic profile (TP08 HubTarget) — generated from corpus_v1. Mobility unchanged; Events* and Group*.msgTtl overridden.
+# =========================================================
+# D9 - Critical messages 1 min TTL (radical)
+# Desastre: mensajes críticos con TTL 1 minuto.
+# Eje dinámico: TTL muy corto en contexto disaster.
+# =========================================================
+
+Scenario.name = D9_Critical_1minTTL__TP08_HubTarget
+Scenario.simulateConnections = true
+Scenario.updateInterval = 0.1
+Scenario.endTime = 43200
+MovementModel.rngSeed = 49
+# Diversificación estructural vs D3/T5/T4/T11 (mantener grupo Disaster)
+MovementModel.worldSize = 7800, 5800
+
+Group.movementModel = RandomWaypoint
+Group.router = EpidemicRouter
+Group.nrofHosts = 44
+# Diversificar core 24 vs T4
+Group.bufferSize = 70M
+Group.msgTtl = 7200
+Group.nrofInterfaces = 1
+Group.interface1 = bt0
+# Diversificar: movilidad más errática (desastre)
+Group.speed = 0.2, 1.2
+Group.waitTime = 90, 400
+
+bt0.type = SimpleBroadcastInterface
+bt0.transmitSpeed = 3.6M
+bt0.transmitRange = 20
+
+Scenario.nrofHostGroups = 1
+Group1.groupID = d9
+
+Events.nrof = 1
+Events1.class = MessageEventGenerator
+Events1.interval = 30, 60
+Events1.size = 50k, 150k
+Events1.hosts = 5, 44
+Events1.tohosts = 0, 5
+Events1.prefix = M
+
+Report.nrofReports = 2
+Report.reportDir = reports/
+Report.report1 = MessageStatsReport
+Report.report2 = ContactTimesReport

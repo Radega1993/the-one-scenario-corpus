@@ -1,0 +1,14 @@
+# Overlay: ProphetRouter on all groups (settings parsed last win).
+Group.router = ProphetRouter
+Group1.router = ProphetRouter
+Group2.router = ProphetRouter
+Group3.router = ProphetRouter
+Group4.router = ProphetRouter
+Group5.router = ProphetRouter
+Group6.router = ProphetRouter
+Group7.router = ProphetRouter
+Group8.router = ProphetRouter
+Group9.router = ProphetRouter
+Group10.router = ProphetRouter
+Group11.router = ProphetRouter
+Group12.router = ProphetRouter

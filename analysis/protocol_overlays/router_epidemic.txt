@@ -1,0 +1,15 @@
+# Overlay: enforce EpidemicRouter on every host group (corpus_v2 defaults already Epidemic;
+# use after another overlay if needed).
+Group.router = EpidemicRouter
+Group1.router = EpidemicRouter
+Group2.router = EpidemicRouter
+Group3.router = EpidemicRouter
+Group4.router = EpidemicRouter
+Group5.router = EpidemicRouter
+Group6.router = EpidemicRouter
+Group7.router = EpidemicRouter
+Group8.router = EpidemicRouter
+Group9.router = EpidemicRouter
+Group10.router = EpidemicRouter
+Group11.router = EpidemicRouter
+Group12.router = EpidemicRouter

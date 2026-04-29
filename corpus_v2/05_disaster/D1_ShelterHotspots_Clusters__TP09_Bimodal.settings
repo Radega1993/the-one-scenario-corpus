@@ -1,0 +1,81 @@
+# Corpus v2 traffic profile (TP09 Bimodal) — generated from corpus_v1. Mobility unchanged; Events* and Group*.msgTtl overridden.
+# =========================================================
+# D1 - Shelter hotspots
+# Shelters act as human hubs: many nodes concentrate in a few small areas,
+# plus a small roaming volunteer group that occasionally connects shelters.
+# Levers: multiple ClusterMovement groups (hotspots) + small roaming group.
+# =========================================================
+
+Scenario.name = D1_ShelterHotspots_Clusters__TP09_Bimodal
+Scenario.simulateConnections = true
+Scenario.updateInterval = 0.1
+Scenario.endTime = 43200
+MovementModel.rngSeed = 37
+# Diversificación estructural vs S1 (mantener grupo Disaster)
+MovementModel.worldSize = 5600, 4600
+
+Group.router = EpidemicRouter
+Group.bufferSize = 50M
+Group.nrofInterfaces = 1
+Group.interface1 = bt0
+
+bt0.type = SimpleBroadcastInterface
+bt0.transmitSpeed = 2M
+bt0.transmitRange = 10
+
+Scenario.nrofHostGroups = 4
+
+# Shelter A (dense)
+Group1.groupID = sA
+Group1.nrofHosts = 35
+Group1.movementModel = ClusterMovement
+Group1.clusterCenter = 1200, 1200
+Group1.clusterRange = 150
+Group1.speed = 0.4, 1.2
+Group1.waitTime = 20, 120
+
+# Shelter B (dense)
+Group2.groupID = sB
+Group2.nrofHosts = 25
+Group2.movementModel = ClusterMovement
+Group2.clusterCenter = 4200, 1400
+Group2.clusterRange = 150
+Group2.speed = 0.4, 1.2
+Group2.waitTime = 20, 120
+
+# Shelter C (smaller)
+Group3.groupID = sC
+Group3.nrofHosts = 15
+Group3.movementModel = ClusterMovement
+Group3.clusterCenter = 3200, 3800
+Group3.clusterRange = 150
+Group3.speed = 0.4, 1.2
+Group3.waitTime = 20, 120
+
+# Volunteers / aid workers roaming between shelters
+Group4.groupID = v
+Group4.nrofHosts = 5
+Group4.movementModel = RandomWaypoint
+Group4.speed = 0.8, 1.8
+Group4.waitTime = 0, 60
+
+Group.msgTtl = 7200
+
+Events.nrof = 2
+Events1.class = MessageEventGenerator
+Events1.interval = 60, 120
+Events1.size = 10k, 50k
+Events1.hosts = 0, 80
+Events1.prefix = M
+
+Events2.class = MessageEventGenerator
+Events2.interval = 300, 600
+Events2.size = 1M, 5M
+Events2.hosts = 0, 80
+Events2.prefix = N
+
+Report.nrofReports = 2
+Report.reportDir = reports/
+Report.report1 = MessageStatsReport
+Report.report2 = ContactTimesReport
+

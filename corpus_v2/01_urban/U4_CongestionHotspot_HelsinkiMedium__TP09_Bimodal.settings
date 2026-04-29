@@ -1,0 +1,139 @@
+# Corpus v2 traffic profile (TP09 Bimodal) — generated from corpus_v1. Mobility unchanged; Events* and Group*.msgTtl overridden.
+# =========================================================
+# U4 - Congestion hotspot (WDM)
+# Map okMaps limited to main roads only (congestion / construction).
+# Levers: Group.okMaps (restrict to map index 1 = main roads if multiple maps).
+# With single map file, okMaps = 1 restricts group to that map type.
+# Dataset: HelsinkiMedium (single map; okMaps = 1)
+# =========================================================
+
+Scenario.name = U4_CongestionHotspot_HelsinkiMedium__TP09_Bimodal
+Scenario.simulateConnections = true
+Scenario.updateInterval = 0.1
+Scenario.endTime = 43200
+MovementModel.rngSeed = 8
+# Diversificación estructural: hotspot = zona acotada
+MovementModel.worldSize = 8495, 7504
+
+MapBasedMovement.nrofMapFiles = 1
+MapBasedMovement.mapFile1 = data/HelsinkiMedium/roads.wkt
+
+# R11: bajar r vs V6/U1
+Group.bufferSize = 44M
+Group.msgTtl = 7200
+Group.busControlSystemNr = -1
+Group1.routeFile = data/HelsinkiMedium/A_bus.wkt
+Group1.busControlSystemNr = -1
+
+Group.nrofInterfaces = 1
+Group.interface1 = bt0
+bt0.type = SimpleBroadcastInterface
+bt0.transmitSpeed = 2.6M
+bt0.transmitRange = 5
+
+Group.movementModel = WorkingDayMovement
+Group.routeFile = data/HelsinkiMedium/A_bus.wkt
+Group.speed = 0.5, 1.5
+Group.waitTime = 0, 120
+# U8 lever: restrict pedestrians to map type 1 only (main roads / congestion)
+Group.okMaps = 1
+
+Group.homeLocationsFile = data/HelsinkiMedium/A_homes.wkt
+Group.officeLocationsFile = data/HelsinkiMedium/A_offices.wkt
+Group.meetingSpotsFile = data/HelsinkiMedium/A_meetingspots.wkt
+
+Group.timeDiffSTD = 1800
+# Diversificar core 24: 7.75h (hotspot = jornada intermedia)
+Group.workDayLength = 27900
+# Diversificar vs U4: congestión = más oficinas en hotspot
+Group.nrOfOffices = 14
+Group.officeSize = 40
+Group.officeWaitTimeParetoCoeff = 1.4
+Group.officeMinWaitTime = 300
+Group.officeMaxWaitTime = 900
+Group.nrOfMeetingSpots = 10
+Group.minGroupSize = 1
+Group.maxGroupSize = 5
+Group.minWaitTime = 300
+Group.maxWaitTime = 1800
+Group.eveningActivityControlSystemNr = -1
+Group.shoppingControlSystemNr = -1
+Group.nrOfShops = 15
+Group.shopSize = 25
+Group.shoppingWaitTimeParetoCoeff = 1.4
+Group.shoppingMinWaitTime = 60
+Group.shoppingMaxWaitTime = 600
+Group.minAfterShoppingStopTime = 60
+Group.maxAfterShoppingStopTime = 600
+Group.probGoShoppingAfterWork = 0.3
+Group.ownCarProb = 0.0
+
+Scenario.nrofHostGroups = 2
+
+Group1.groupID = b
+Group1.nrofHosts = 1
+Group1.movementModel = BusMovement
+Group1.routeFile = data/HelsinkiMedium/A_bus.wkt
+Group1.routeType = 1
+Group1.busControlSystemNr = -1
+Group1.bufferSize = 44M
+Group1.router = EpidemicRouter
+Group1.nrofInterfaces = 1
+Group1.interface1 = bt0
+Group1.speed = 7, 10
+Group1.waitTime = 10, 30
+
+Group2.groupID = p
+Group2.nrofHosts = 80
+Group2.bufferSize = 44M
+Group2.movementModel = WorkingDayMovement
+Group2.routeFile = data/HelsinkiMedium/A_bus.wkt
+Group2.busControlSystemNr = -1
+Group2.okMaps = 1
+Group2.homeLocationsFile = data/HelsinkiMedium/A_homes.wkt
+Group2.officeLocationsFile = data/HelsinkiMedium/A_offices.wkt
+Group2.meetingSpotsFile = data/HelsinkiMedium/A_meetingspots.wkt
+Group2.speed = 0.5, 1.5
+Group2.waitTime = 0, 120
+Group2.timeDiffSTD = 1800
+Group2.workDayLength = 27900
+Group2.nrOfOffices = 14
+Group2.officeSize = 40
+Group2.officeWaitTimeParetoCoeff = 1.4
+Group2.officeMinWaitTime = 300
+Group2.officeMaxWaitTime = 900
+Group2.nrOfMeetingSpots = 10
+Group2.minGroupSize = 1
+Group2.maxGroupSize = 5
+Group2.minWaitTime = 300
+Group2.maxWaitTime = 1800
+Group2.eveningActivityControlSystemNr = -1
+Group2.shoppingControlSystemNr = -1
+Group2.nrOfShops = 15
+Group2.shopSize = 25
+Group2.shoppingWaitTimeParetoCoeff = 1.4
+Group2.shoppingMinWaitTime = 60
+Group2.shoppingMaxWaitTime = 600
+Group2.minAfterShoppingStopTime = 60
+Group2.maxAfterShoppingStopTime = 600
+Group2.probGoShoppingAfterWork = 0.3
+Group2.ownCarProb = 0.0
+
+Group.router = EpidemicRouter
+Events.nrof = 2
+Events1.class = MessageEventGenerator
+Events1.interval = 60, 120
+Events1.size = 10k, 50k
+Events1.hosts = 0, 81
+Events1.prefix = M
+
+Events2.class = MessageEventGenerator
+Events2.interval = 300, 600
+Events2.size = 1M, 5M
+Events2.hosts = 0, 81
+Events2.prefix = N
+
+Report.nrofReports = 2
+Report.reportDir = reports/
+Report.report1 = MessageStatsReport
+Report.report2 = ContactTimesReport

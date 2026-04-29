@@ -1,0 +1,14 @@
+# Overlay: MaxPropRouter on all groups.
+Group.router = MaxPropRouter
+Group1.router = MaxPropRouter
+Group2.router = MaxPropRouter
+Group3.router = MaxPropRouter
+Group4.router = MaxPropRouter
+Group5.router = MaxPropRouter
+Group6.router = MaxPropRouter
+Group7.router = MaxPropRouter
+Group8.router = MaxPropRouter
+Group9.router = MaxPropRouter
+Group10.router = MaxPropRouter
+Group11.router = MaxPropRouter
+Group12.router = MaxPropRouter

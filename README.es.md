@@ -25,8 +25,18 @@ El directorio del corpus se llama **`corpus_v1`** (y no solo `corpus`) para pode
 # Ejecutar todas las simulaciones del corpus (modo batch, sin GUI)
 python3 scenarios/analysis/run_all_scenarios.py --corpus corpus_v1
 
-# Análisis completo (features → correlación → figuras → output_metrics)
+# (Opcional) forzar todos los reportes para Diego17 real / indirectas
+python3 scenarios/analysis/run_all_scenarios.py --corpus corpus_v1 \
+  --extra-settings scenarios/analysis/diego17_reports_overrides.txt
+
+# Análisis completo (features → feature_correlation → ablation → figuras → output_metrics → indirectas)
 python3 scenarios/analysis/run_analysis.py --corpus corpus_v1 --phase all
+
+# Paquete paper (figuras + tablas)
+python3 scenarios/analysis/run_analysis.py --phase figures_paper
+python3 scenarios/analysis/run_analysis.py --phase tables_paper
+
+# Validación en espacio de outputs
 python3 scenarios/analysis/run_analysis.py --phase outputs
 
 # Dashboard interactivo
@@ -402,7 +412,7 @@ Con esta guía puedes definir de forma precisa cada aspecto del escenario y plan
 
 El análisis del corpus (extracción de features, correlación entre escenarios, validación sobre outputs) se hace con el **pipeline en `scenarios/analysis/`**:
 
-- **Script principal:** `scenarios/analysis/run_analysis.py`, ejecutable por fases: `features` → `normalize` → `correlation` → `figures` → `output_metrics` → `outputs`. Ver `scenarios/analysis/README.es.md` para la lista completa de fases y opciones.
+- **Script principal:** `scenarios/analysis/run_analysis.py`, ejecutable por fases: `features` → `features_report` → `normalize` → `correlation` → `feature_correlation` → `ablation` → `figures` → `figures_paper` → `tables_paper` → `indirects` → `output_metrics` → `outputs`. Ver `scenarios/analysis/README.es.md` para la lista completa de fases y opciones.
 - **Salidas:** `analysis/data/` (CSV de features, normalizados, matrices de correlación y distancias, `output_metrics.csv`), `analysis/figures/` (heatmaps, histogramas, scatter), `analysis/reports/` (informes de texto).
 - **Criterio de benchmark (freeze final optimizado):**  
   - **Full-46:** 46 pares (2,6 %) con `|r| >= 0,7`; `max |r| = 0,9377`; `distancia coseno mínima = 0,0620`; `silhouette = 0,2929`; `97,4 %` de pares por debajo de 0,7.  
@@ -410,7 +420,7 @@ El análisis del corpus (extracción de features, correlación entre escenarios,
   - Dependencia feature-feature residual en core: `mm_WDM <-> mm_Bus = 0,9393`.  
   Estado de congelación: **baseline mejorado, estable y publicable** (no óptimo final).
 
-**Dashboard interactivo:** para visualizar todo en un solo sitio (resumen, resultados por fase, detalle por escenario, comparación entre escenarios):
+**Dashboard interactivo:** para visualizar todo en un solo sitio (resumen, resultados por fase, detalle por escenario, comparación entre escenarios y reportes crudos):
 
 ```bash
 # Desde la raíz del repo
@@ -418,6 +428,9 @@ streamlit run scenarios/analysis/dashboard.py
 
 # O desde scenarios/analysis
 cd scenarios/analysis && streamlit run dashboard.py
+
+# O usando el venv del proyecto
+./venv/bin/streamlit run scenarios/analysis/dashboard.py
 ```
 
 Requiere `streamlit`, `pandas` (y las dependencias del análisis en el venv del proyecto).

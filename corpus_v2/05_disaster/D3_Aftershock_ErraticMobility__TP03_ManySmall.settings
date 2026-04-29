@@ -1,0 +1,47 @@
+# Corpus v2 traffic profile (TP03 ManySmall) — generated from corpus_v1. Mobility unchanged; Events* and Group*.msgTtl overridden.
+# =========================================================
+# D3 - Aftershock mobility
+# Erratic movement: very wide speed range and long/short waits mixed.
+# Levers: RandomWaypoint with wide speed and waitTime ranges.
+# =========================================================
+
+Scenario.name = D3_Aftershock_ErraticMobility__TP03_ManySmall
+Scenario.simulateConnections = true
+Scenario.updateInterval = 0.1
+Scenario.endTime = 43200
+MovementModel.rngSeed = 39
+# Diversificación estructural vs D9/T5/S3/T11 (mantener grupo Disaster)
+MovementModel.worldSize = 6600, 5600
+
+Group.movementModel = RandomWaypoint
+Group.router = EpidemicRouter
+Group.nrofHosts = 54
+Group.bufferSize = 50M
+# Diversificar: aftershock = mensajes críticos TTL corto
+Group.msgTtl = 7200
+Group.nrofInterfaces = 1
+Group.interface1 = bt0
+
+# D3 lever: erratic speeds and pauses
+Group.speed = 0.1, 3.5
+Group.waitTime = 0, 900
+
+bt0.type = SimpleBroadcastInterface
+bt0.transmitSpeed = 2M
+bt0.transmitRange = 8
+
+Scenario.nrofHostGroups = 1
+Group1.groupID = e
+
+Events.nrof = 1
+Events1.class = MessageEventGenerator
+Events1.interval = 10, 30
+Events1.size = 1k, 10k
+Events1.hosts = 0, 54
+Events1.prefix = M
+
+Report.nrofReports = 2
+Report.reportDir = reports/
+Report.report1 = MessageStatsReport
+Report.report2 = ContactTimesReport
+

@@ -1,0 +1,49 @@
+# Corpus v2 traffic profile (TP09 Bimodal) — generated from corpus_v1. Mobility unchanged; Events* and Group*.msgTtl overridden.
+# =========================================================
+# T14 - Buffer 200 MB (radical)
+# Poca presión de buffer; impacto en orden/prioridad.
+# Eje recursos: buffer máximo. Diferenciado de T12: TTL limitado, rango mayor.
+# =========================================================
+
+Scenario.name = T14_Buffer_200M__TP09_Bimodal
+Scenario.simulateConnections = true
+Scenario.updateInterval = 0.1
+Scenario.endTime = 43200
+MovementModel.rngSeed = 64
+# Diversificación estructural vs T12 (mantener grupo Traffic)
+MovementModel.worldSize = 4600, 3600
+
+Group.movementModel = RandomWaypoint
+Group.router = EpidemicRouter
+Group.nrofHosts = 46
+Group.bufferSize = 200M
+Group.msgTtl = 7200
+Group.nrofInterfaces = 1
+Group.interface1 = bt0
+Group.speed = 0.8, 1.5
+Group.waitTime = 40, 200
+
+bt0.type = SimpleBroadcastInterface
+bt0.transmitSpeed = 900k
+bt0.transmitRange = 12
+
+Scenario.nrofHostGroups = 1
+Group1.groupID = t14
+
+Events.nrof = 2
+Events1.class = MessageEventGenerator
+Events1.interval = 60, 120
+Events1.size = 10k, 50k
+Events1.hosts = 0, 46
+Events1.prefix = M
+
+Events2.class = MessageEventGenerator
+Events2.interval = 300, 600
+Events2.size = 1M, 5M
+Events2.hosts = 0, 46
+Events2.prefix = N
+
+Report.nrofReports = 2
+Report.reportDir = reports/
+Report.report1 = MessageStatsReport
+Report.report2 = ContactTimesReport

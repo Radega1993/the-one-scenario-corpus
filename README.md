@@ -25,8 +25,18 @@ The corpus directory is named **`corpus_v1`** (not just `corpus`) so the **scena
 # Run all corpus simulations (batch, no GUI)
 python3 scenarios/analysis/run_all_scenarios.py --corpus corpus_v1
 
-# Full analysis (features → correlation → figures → output_metrics)
+# (Optional) force full reports for Diego17 real / indirects:
+python3 scenarios/analysis/run_all_scenarios.py --corpus corpus_v1 \
+  --extra-settings scenarios/analysis/diego17_reports_overrides.txt
+
+# Full analysis (features → feature_correlation → ablation → figures → output_metrics → indirects)
 python3 scenarios/analysis/run_analysis.py --corpus corpus_v1 --phase all
+
+# Paper-ready package
+python3 scenarios/analysis/run_analysis.py --phase figures_paper
+python3 scenarios/analysis/run_analysis.py --phase tables_paper
+
+# Output-space validation
 python3 scenarios/analysis/run_analysis.py --phase outputs
 
 # Interactive dashboard
@@ -47,7 +57,7 @@ The long reference for all `.settings` options (Scenario, MovementModel, Groups,
 
 Analysis (feature extraction, correlation between scenarios, validation on outputs) is done with the **pipeline in `scenarios/analysis/`**:
 
-- **Main script:** `scenarios/analysis/run_analysis.py`, run by phase: `features` → `features_report` → `normalize` → `correlation` → `figures` → `output_metrics` → `outputs`. See [analysis/README.md](analysis/README.md) for the full phase list and options.
+- **Main script:** `scenarios/analysis/run_analysis.py`, run by phase: `features` → `features_report` → `normalize` → `correlation` → `feature_correlation` → `ablation` → `figures` → `figures_paper` → `tables_paper` → `indirects` → `output_metrics` → `outputs`. See [analysis/README.md](analysis/README.md) for the full phase list and options.
 - **Outputs:** `analysis/data/` (feature CSV, normalised, correlation/distance matrices, `output_metrics.csv`), `analysis/figures/` (heatmaps, histograms, scatter), `analysis/reports/` (text reports).
 - **Benchmark criterion (final optimized freeze):** 60 scenarios; **23 core features** and full 46 for diagnostics.  
   - **Full-46:** 46 pairs (2.6%) with `|r| >= 0.7`; `max |r| = 0.9377`; min cosine distance `0.0620`; silhouette `0.2929`.  
@@ -56,10 +66,12 @@ Analysis (feature extraction, correlation between scenarios, validation on outpu
   Freeze status: **stable and publishable baseline** (not optimal final corpus).  
   Justification of **why 23 are core** and **why others are discarded**: [analysis/docs/features_core_vs_extended.md](analysis/docs/features_core_vs_extended.md); settings not used: [analysis/docs/features_decision.md](analysis/docs/features_decision.md). Single reference: [analysis/reports/RESULTADOS_ACTUALES.md](analysis/reports/RESULTADOS_ACTUALES.md).
 
-**Interactive dashboard:** to view everything in one place (summary, results by phase, per-scenario detail, compare scenarios):
+**Interactive dashboard:** to view everything in one place (summary, results by phase, per-scenario detail, compare scenarios, raw simulation reports):
 
 ```bash
 streamlit run scenarios/analysis/dashboard.py   # from repo root
+# or with venv:
+./venv/bin/streamlit run scenarios/analysis/dashboard.py
 ```
 
 Requires `streamlit` and `pandas` (and analysis dependencies in the project venv).

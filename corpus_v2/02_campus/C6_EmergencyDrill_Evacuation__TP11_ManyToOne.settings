@@ -1,0 +1,57 @@
+# Corpus v2 traffic profile (TP11 ManyToOne) — generated from corpus_v1. Mobility unchanged; Events* and Group*.msgTtl overridden.
+# =========================================================
+# C6 - Emergency drill / evacuation
+# Directional, fast movement (linear toward exit).
+# Levers: LinearMovement, high speed, targetType = far end.
+# Free-space (LinearMovement).
+# =========================================================
+
+Scenario.name = C6_EmergencyDrill_Evacuation__TP11_ManyToOne
+Scenario.simulateConnections = true
+Scenario.updateInterval = 0.5
+Scenario.endTime = 7200
+MovementModel.rngSeed = 20
+MovementModel.worldSize = 500, 400
+
+Group.movementModel = LinearMovement
+Group.router = EpidemicRouter
+Group.nrofHosts = 80
+Group.bufferSize = 50M
+Group.nrofInterfaces = 1
+Group.interface1 = bt0
+# C8 lever: fast directional movement (evacuation)
+Group.speed = 2.0, 4.0
+Group.waitTime = 0, 10
+
+# Line: from one side (entrance) toward far end (exit)
+Group.LinearMovement.startLocation = 50, 200
+Group.LinearMovement.endLocation = 450, 200
+# 0 = random init on line, 1 = far end (evacuation target)
+Group.LinearMovement.initLocType = 0
+Group.LinearMovement.targetType = 1
+
+bt0.type = SimpleBroadcastInterface
+bt0.transmitSpeed = 2M
+bt0.transmitRange = 10
+
+Scenario.nrofHostGroups = 1
+Group1.groupID = v
+Group1.LinearMovement.startLocation = 50, 200
+Group1.LinearMovement.endLocation = 450, 200
+Group1.LinearMovement.initLocType = 0
+Group1.LinearMovement.targetType = 1
+
+Group.msgTtl = 7200
+
+Events.nrof = 1
+Events1.class = MessageEventGenerator
+Events1.interval = 30, 60
+Events1.size = 10k, 100k
+Events1.hosts = 1, 80
+Events1.tohosts = 0, 1
+Events1.prefix = M
+
+Report.nrofReports = 2
+Report.reportDir = reports/
+Report.report1 = MessageStatsReport
+Report.report2 = ContactTimesReport
