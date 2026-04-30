@@ -154,9 +154,21 @@ python3 scenarios/analysis/run_all_scenarios.py --corpus corpus_v1 \
 # Mismo comando con el venv del proyecto
 ./venv/bin/python scenarios/analysis/run_all_scenarios.py --corpus corpus_v1 \
   --extra-settings scenarios/analysis/diego17_reports_overrides.txt
+
+# Ejecución en paralelo (recomendado para corpus grandes como corpus_v2)
+python3 scenarios/analysis/run_all_scenarios.py --corpus corpus_v2 \
+  --extra-settings scenarios/analysis/diego17_reports_overrides.txt \
+  --timeout 14400 --jobs 6
 ```
 
 Requisitos: Java, el ONE compilado (`one.sh` en la raíz). Los reportes se escriben en el directorio configurado en cada `.settings` (por defecto `reports/`). Después puedes ejecutar `run_analysis.py --phase output_metrics` para rellenar `data/output_metrics.csv` desde esos reportes.
+
+### Paralelización (`--jobs`)
+
+- `run_all_scenarios.py` soporta ejecución paralela con `--jobs N`.
+- Empieza con `--jobs 4` o `--jobs 6`; sube solo si CPU/RAM están estables.
+- En esta máquina (`16` cores), un rango práctico suele ser `--jobs 6..8`.
+- No lances dos ejecuciones completas del corpus al mismo tiempo sobre el mismo directorio `reports/`.
 
 ---
 

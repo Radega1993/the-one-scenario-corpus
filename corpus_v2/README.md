@@ -139,7 +139,7 @@ Comando de piloto:
 python3 scenarios/analysis/run_all_scenarios.py --corpus corpus_v2 \
   --name-regex '(U1_CBD_Commuting_HelsinkiMedium|R1_Rural_RandomWaypoint|D2_PartitionedCity_MuleBridge)__TP' \
   --extra-settings scenarios/analysis/diego17_reports_overrides.txt \
-  --timeout 14400
+  --timeout 14400 --jobs 6
 ```
 
 Analisis tras simulacion:
@@ -166,6 +166,12 @@ Checklist metodologico para ejecuciones masivas (por protocolo/seed):
 - Confirmar que no hay sobrescritura en `reports/` (garantizado por `Scenario.name` unico).
 - Revisar cobertura rural (R1 como control extremo y al menos un rural con contactos reales).
 - Validar que `output_metrics.csv` e `indirect_features_diego.csv` reflejan el piloto esperado.
+
+Recomendación operacional para ejecución masiva:
+
+- Usar paralelización con `--jobs` en `run_all_scenarios.py` (inicio sugerido: `--jobs 4` o `--jobs 6`).
+- En esta máquina (`16` cores), un rango estable suele ser `--jobs 6..8`.
+- No ejecutar dos barridos completos simultáneos sobre el mismo `reports/`.
 
 Reportes de decision/check del piloto:
 

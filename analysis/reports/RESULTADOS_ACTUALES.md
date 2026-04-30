@@ -6,25 +6,24 @@
 ## Métricas en espacio CORE (23 features)
 | Métrica | Valor |
 |---|---|
-| max |r| | 0.9829 |
-| Pares con |r| ≥ 0.7 | 58 (3.3%) |
+| max |r| | 1.0 |
+| Pares con |r| ≥ 0.7 | 11325 (4.4%) |
 
 Total pares (i<k): 258840
 ---
 ## Métricas en espacio completo (46 features)
 | Métrica | Valor |
 |---|---|
-| max |r| | 0.9377 |
-| Pares con |r| ≥ 0.7 | 46 (2.6%) |
+| max |r| | 1.0 |
+| Pares con |r| ≥ 0.7 | 8356 (3.2%) |
 
-Distancia coseno mínima (geom): 0.0620
-Silhouette (Ward k=7): 0.2929
+Silhouette (Ward k=7): 0.2680
 ---
 ## Ablación y validación de correlación
 ## Ablación (17 vs 23 vs 46, umbral |r|≥0.7)
-- reduced_17: max|r|=0.9998, pares≥=0.7=92, silhouette=0.3269
-- core_23: max|r|=0.9829, pares≥=0.7=58, silhouette=0.2681
-- full_46: max|r|=0.9377, pares≥=0.7=46, silhouette=0.2929
+- reduced_17: max|r|=1.0000, pares≥=0.7=15410, silhouette=0.2318
+- core_23: max|r|=1.0000, pares≥=0.7=11325, silhouette=0.3451
+- full_46: max|r|=1.0000, pares≥=0.7=8356, silhouette=0.2680
 
 ## Informes en este directorio (`reports/`)
 

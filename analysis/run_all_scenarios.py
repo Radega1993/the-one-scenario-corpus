@@ -22,6 +22,7 @@ import argparse
 import subprocess
 import sys
 import re
+from concurrent.futures import ThreadPoolExecutor, as_completed
 from pathlib import Path
 
 BASE = Path(__file__).resolve().parent
@@ -105,6 +106,13 @@ def main() -> int:
         help="Timeout por escenario en segundos (default: 7200 = 2h). Si se supera, el proceso se mata y los reportes quedan vacíos.",
     )
     ap.add_argument(
+        "--jobs",
+        type=int,
+        default=1,
+        metavar="N",
+        help="Numero de simulaciones en paralelo (default: 1).",
+    )
+    ap.add_argument(
         "--extra-settings",
         action="append",
         default=None,
@@ -172,32 +180,69 @@ def main() -> int:
             print(f"  {i:3d}/{n}  {rel}")
         return 0
 
+    jobs = max(1, args.jobs)
     ok = 0
     fail = 0
-    for i, p in enumerate(scenario_paths, 1):
-        try:
-            rel = p.relative_to(repo_root)
-        except ValueError:
-            rel = p
-        print(f"[{i}/{n}] {rel} ... ", end="", flush=True)
-        success, err_msg = run_one_scenario(
-            p,
-            repo_root,
-            str(one_script),
-            default_settings,
-            extra_settings_paths if extra_settings_paths else None,
-            dry_run=False,
-            timeout_s=args.timeout,
-        )
-        if success:
-            print("OK")
-            ok += 1
-        else:
-            print("FALLO")
-            if err_msg:
-                for line in err_msg.splitlines()[:5]:
-                    print(f"    {line}")
-            fail += 1
+    if jobs == 1:
+        for i, p in enumerate(scenario_paths, 1):
+            try:
+                rel = p.relative_to(repo_root)
+            except ValueError:
+                rel = p
+            print(f"[{i}/{n}] {rel} ... ", end="", flush=True)
+            success, err_msg = run_one_scenario(
+                p,
+                repo_root,
+                str(one_script),
+                default_settings,
+                extra_settings_paths if extra_settings_paths else None,
+                dry_run=False,
+                timeout_s=args.timeout,
+            )
+            if success:
+                print("OK")
+                ok += 1
+            else:
+                print("FALLO")
+                if err_msg:
+                    for line in err_msg.splitlines()[:5]:
+                        print(f"    {line}")
+                fail += 1
+    else:
+        print(f"Paralelo: {jobs} workers")
+        future_map = {}
+        with ThreadPoolExecutor(max_workers=jobs) as ex:
+            for i, p in enumerate(scenario_paths, 1):
+                future = ex.submit(
+                    run_one_scenario,
+                    p,
+                    repo_root,
+                    str(one_script),
+                    default_settings,
+                    extra_settings_paths if extra_settings_paths else None,
+                    False,
+                    args.timeout,
+                )
+                future_map[future] = (i, p)
+
+            done = 0
+            for future in as_completed(future_map):
+                done += 1
+                i, p = future_map[future]
+                try:
+                    rel = p.relative_to(repo_root)
+                except ValueError:
+                    rel = p
+                success, err_msg = future.result()
+                if success:
+                    print(f"[{done}/{n}] ({i}) {rel} ... OK")
+                    ok += 1
+                else:
+                    print(f"[{done}/{n}] ({i}) {rel} ... FALLO")
+                    if err_msg:
+                        for line in err_msg.splitlines()[:5]:
+                            print(f"    {line}")
+                    fail += 1
 
     print("")
     print(f"Resumen: {ok} OK, {fail} fallos de {n} escenarios.")

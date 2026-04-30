@@ -1,45 +1,45 @@
 === Correlación entre escenarios en espacio CORE 23 (referencia para investigación) ===
-Vectores Z_core: n=60 escenarios, d=23 features. r(Si, Sk) = Pearson entre filas de Z_core.
+Vectores Z_core: n=720 escenarios, d=23 features. r(Si, Sk) = Pearson entre filas de Z_core.
 
-  max |r| = 0.9829
-  media |r| = 0.2159
-  Total pares: 1770
-  Pares con |r| >= 0.7: 58 (3.3%)
+  max |r| = 1.0000
+  media |r| = 0.2197
+  Total pares: 258840
+  Pares con |r| >= 0.7: 11325 (4.4%)
 
-  Distancia coseno mínima = 0.0152
-  Silhouette (Ward k=7 sobre Z_core) = 0.2681
+  Distancia coseno mínima = -0.0000
+  Silhouette (Ward k=7 sobre Z_core) = 0.3451
 
 Objetivo investigación: diversidad y resultados se evalúan con las 23 core. Priorizar reducción de pares |r|>=0.7 en este espacio.
 
 Pares con |r| >= 0.7 (máximo 30):
-  U6_OfficeWaitHeavyTail_HelsinkiMedium <-> U7_HighTimeVariance_HelsinkiMedium  r = 0.9829
-  U6_OfficeWaitHeavyTail_HelsinkiMedium <-> V4_CarOwnership_0_HelsinkiMedium  r = 0.9635
-  U4_CongestionHotspot_HelsinkiMedium <-> V4_CarOwnership_0_HelsinkiMedium  r = 0.9622
-  U4_CongestionHotspot_HelsinkiMedium <-> U6_OfficeWaitHeavyTail_HelsinkiMedium  r = 0.9550
-  U7_HighTimeVariance_HelsinkiMedium <-> V4_CarOwnership_0_HelsinkiMedium  r = 0.9446
-  V1_TaxiLow_HelsinkiMedium <-> V2_TaxiHigh_HelsinkiMedium  r = 0.9404
-  U4_CongestionHotspot_HelsinkiMedium <-> U7_HighTimeVariance_HelsinkiMedium  r = 0.9335
-  T12_TTL_Infinite_Buffer200M <-> T14_Buffer_200M  r = 0.8987
-  S4_RandomMixing_NoHotspots <-> T9_BufferStress_SmallBufferHighTraffic  r = 0.8918
-  S5_TwoLayer_StudentsStaff <-> T7_TargetedToHubs_FewDestinations  r = 0.8779
-  R4_ParkRangers_HelsinkiMedium <-> D5_UAVMule_FastRoute_HelsinkiMedium  r = 0.8720
-  D3_Aftershock_ErraticMobility <-> S3_PeriodicMeetings_RegularRhythm  r = 0.8570
-  R11_SpeedExtremeLow <-> R1_Rural_RandomWaypoint  r = 0.8551
-  T1_ManySmallMsgs_HighRate <-> T9_BufferStress_SmallBufferHighTraffic  r = 0.8479
-  R8_IntermittentPower <-> T6_UniformSources_RandomFromTo  r = 0.8474
-  C2_ExamDay_LongStays <-> C5_Library_Quiet  r = 0.8431
-  D2_PartitionedCity_MuleBridge <-> D8_InfrastructureReturns_BackboneLinks  r = 0.8353
-  D6_ShortTtlCritical_5to10min <-> S3_PeriodicMeetings_RegularRhythm  r = 0.8322
-  D9_Critical_1minTTL <-> T11_TTL_1min  r = 0.8272
-  V1_TaxiLow_HelsinkiMedium <-> R4_ParkRangers_HelsinkiMedium  r = 0.8248
-  S3_PeriodicMeetings_RegularRhythm <-> T5_VeryLongTtl_6to24h  r = 0.8224
-  D3_Aftershock_ErraticMobility <-> T5_VeryLongTtl_6to24h  r = 0.8201
-  R5_MountainRescue <-> D6_ShortTtlCritical_5to10min  r = 0.8187
-  U1_CBD_Commuting_HelsinkiMedium <-> U2_SparseSuburb_HelsinkiMedium  r = 0.8174
-  D1_ShelterHotspots_Clusters <-> S1_StrongCommunities_SeparateClusters  r = 0.8173
-  S2_WeakCommunities_HighMixing <-> S4_RandomMixing_NoHotspots  r = 0.8156
-  C4_Stadium_IngressEgress <-> T8_BurstTraffic_TimeWindows  r = 0.8122
-  U1_CBD_Commuting_HelsinkiMedium <-> U5_WorkdayShort_HelsinkiMedium  r = 0.8100
-  U1_CBD_Commuting_HelsinkiMedium <-> U3_MicroMobility_HelsinkiMedium  r = 0.8082
-  S4_RandomMixing_NoHotspots <-> T1_ManySmallMsgs_HighRate  r = 0.8043
-  ... y 28 más.
+  U1_CBD_Commuting_HelsinkiMedium__TP06_OneToMany <-> U1_CBD_Commuting_HelsinkiMedium__TP11_ManyToOne  r = 1.0000
+  U2_SparseSuburb_HelsinkiMedium__TP06_OneToMany <-> U2_SparseSuburb_HelsinkiMedium__TP11_ManyToOne  r = 1.0000
+  U3_MicroMobility_HelsinkiMedium__TP06_OneToMany <-> U3_MicroMobility_HelsinkiMedium__TP11_ManyToOne  r = 1.0000
+  U4_CongestionHotspot_HelsinkiMedium__TP06_OneToMany <-> U4_CongestionHotspot_HelsinkiMedium__TP11_ManyToOne  r = 1.0000
+  U5_WorkdayShort_HelsinkiMedium__TP06_OneToMany <-> U5_WorkdayShort_HelsinkiMedium__TP11_ManyToOne  r = 1.0000
+  U6_OfficeWaitHeavyTail_HelsinkiMedium__TP06_OneToMany <-> U6_OfficeWaitHeavyTail_HelsinkiMedium__TP11_ManyToOne  r = 1.0000
+  U7_HighTimeVariance_HelsinkiMedium__TP06_OneToMany <-> U7_HighTimeVariance_HelsinkiMedium__TP11_ManyToOne  r = 1.0000
+  C1_Campus_ClassChange__TP06_OneToMany <-> C1_Campus_ClassChange__TP11_ManyToOne  r = 1.0000
+  C2_ExamDay_LongStays__TP06_OneToMany <-> C2_ExamDay_LongStays__TP11_ManyToOne  r = 1.0000
+  C3_Hackathon_24h__TP06_OneToMany <-> C3_Hackathon_24h__TP11_ManyToOne  r = 1.0000
+  C4_Stadium_IngressEgress__TP06_OneToMany <-> C4_Stadium_IngressEgress__TP11_ManyToOne  r = 1.0000
+  C5_Library_Quiet__TP06_OneToMany <-> C5_Library_Quiet__TP11_ManyToOne  r = 1.0000
+  C6_EmergencyDrill_Evacuation__TP06_OneToMany <-> C6_EmergencyDrill_Evacuation__TP11_ManyToOne  r = 1.0000
+  V1_TaxiLow_HelsinkiMedium__TP06_OneToMany <-> V1_TaxiLow_HelsinkiMedium__TP11_ManyToOne  r = 1.0000
+  V2_TaxiHigh_HelsinkiMedium__TP06_OneToMany <-> V2_TaxiHigh_HelsinkiMedium__TP11_ManyToOne  r = 1.0000
+  V3_BusOnlyCarriers_HelsinkiMedium__TP06_OneToMany <-> V3_BusOnlyCarriers_HelsinkiMedium__TP11_ManyToOne  r = 1.0000
+  V4_CarOwnership_0_HelsinkiMedium__TP06_OneToMany <-> V4_CarOwnership_0_HelsinkiMedium__TP11_ManyToOne  r = 1.0000
+  V5_CarOwnership_100_HelsinkiMedium__TP06_OneToMany <-> V5_CarOwnership_100_HelsinkiMedium__TP11_ManyToOne  r = 1.0000
+  R10_TinyRange_5m__TP06_OneToMany <-> R10_TinyRange_5m__TP11_ManyToOne  r = 1.0000
+  R11_SpeedExtremeLow__TP06_OneToMany <-> R11_SpeedExtremeLow__TP11_ManyToOne  r = 1.0000
+  R12_SpeedExtremeHigh__TP06_OneToMany <-> R12_SpeedExtremeHigh__TP11_ManyToOne  r = 1.0000
+  R1_Rural_RandomWaypoint__TP06_OneToMany <-> R1_Rural_RandomWaypoint__TP11_ManyToOne  r = 1.0000
+  R2_VillagesTrails_ThreeClusters__TP06_OneToMany <-> R2_VillagesTrails_ThreeClusters__TP11_ManyToOne  r = 1.0000
+  R3_WildlifeTracking__TP06_OneToMany <-> R3_WildlifeTracking__TP11_ManyToOne  r = 1.0000
+  R4_ParkRangers_HelsinkiMedium__TP06_OneToMany <-> R4_ParkRangers_HelsinkiMedium__TP11_ManyToOne  r = 1.0000
+  R5_MountainRescue__TP06_OneToMany <-> R5_MountainRescue__TP11_ManyToOne  r = 1.0000
+  R6_SparseLongRange__TP06_OneToMany <-> R6_SparseLongRange__TP11_ManyToOne  r = 1.0000
+  R7_SparseTinyBuffer__TP06_OneToMany <-> R7_SparseTinyBuffer__TP11_ManyToOne  r = 1.0000
+  R8_IntermittentPower__TP06_OneToMany <-> R8_IntermittentPower__TP11_ManyToOne  r = 1.0000
+  R9_ExtremeRange_200m__TP06_OneToMany <-> R9_ExtremeRange_200m__TP11_ManyToOne  r = 1.0000
+  ... y 11295 más.

@@ -81,9 +81,21 @@ python3 scenarios/analysis/run_all_scenarios.py --corpus corpus_v1 \
 # Same command using project venv:
 ./venv/bin/python scenarios/analysis/run_all_scenarios.py --corpus corpus_v1 \
   --extra-settings scenarios/analysis/diego17_reports_overrides.txt
+
+# Parallel run (recommended for large corpora like corpus_v2)
+python3 scenarios/analysis/run_all_scenarios.py --corpus corpus_v2 \
+  --extra-settings scenarios/analysis/diego17_reports_overrides.txt \
+  --timeout 14400 --jobs 6
 ```
 
 Requires Java and the ONE built (`one.sh` at repo root). Then run `run_analysis.py --phase output_metrics` to fill `data/output_metrics.csv` from those reports.
+
+### Parallelization (`--jobs`)
+
+- `run_all_scenarios.py` supports parallel execution with `--jobs N`.
+- Start with `--jobs 4` or `--jobs 6`; increase only if CPU/RAM remain stable.
+- For this workstation (`16` cores), a practical range is usually `--jobs 6..8`.
+- Do **not** launch two full corpus runs at the same time over the same `reports/` directory.
 
 ---
 
