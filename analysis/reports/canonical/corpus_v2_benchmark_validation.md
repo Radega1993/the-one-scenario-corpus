@@ -1,6 +1,6 @@
 # Corpus v2 benchmark validation
 
-Generated: 2026-05-24 12:07 UTC
+Generated: 2026-05-24 20:47 UTC
 
 ## Executive summary
 
@@ -9,15 +9,14 @@ Generated: 2026-05-24 12:07 UTC
 - **Manifest rows:** 720
 - **Output metrics:** 720 rows
 - **Spatial metrics:** 720 rows
-- **Scenarios needing attention (non-ok, non-valido_extremo):** 135
+- **Scenarios needing attention (non-ok, non-valido_extremo):** 134
 
 ### Validation status counts
 
 | Status | Count |
 |--------|------:|
 | `configuracion_sospechosa` | 130 |
-| `error_probable` | 1 |
-| `ok` | 273 |
+| `ok` | 274 |
 | `pendiente_revision` | 4 |
 | `valido_extremo` | 312 |
 
@@ -34,7 +33,7 @@ Generated: 2026-05-24 12:07 UTC
 | indirect_features_diego.csv | 720 |
 | message_creation_time_summary.csv | 720 |
 | useful_simulation_time_metrics.csv | 720 |
-| Null delivery_ratio | 1 |
+| Null delivery_ratio | 0 |
 | Zero delivery_ratio | 65 |
 | Zero total_encounters | 24 |
 
@@ -49,7 +48,7 @@ Generated: 2026-05-24 12:07 UTC
 | `03_vehicles` | 49 | 7 | 1 | 3 | 0 |
 | `04_rural` | 56 | 40 | 0 | 48 | 0 |
 | `05_disaster` | 34 | 18 | 0 | 56 | 0 |
-| `06_social` | 56 | 9 | 0 | 6 | 1 |
+| `06_social` | 57 | 9 | 0 | 6 | 0 |
 | `07_traffic` | 0 | 180 | 0 | 0 | 0 |
 
 ### By traffic profile
@@ -58,7 +57,7 @@ Generated: 2026-05-24 12:07 UTC
 |----|---:|---:|---:|---:|---:|
 | `TP01` | 26 | 21 | 0 | 13 | 0 |
 | `TP02` | 26 | 22 | 0 | 12 | 0 |
-| `TP03` | 27 | 21 | 0 | 11 | 1 |
+| `TP03` | 28 | 21 | 0 | 11 | 0 |
 | `TP04` | 17 | 37 | 0 | 6 | 0 |
 | `TP05` | 24 | 32 | 0 | 4 | 0 |
 | `TP06` | 24 | 19 | 0 | 17 | 0 |
@@ -68,10 +67,6 @@ Generated: 2026-05-24 12:07 UTC
 | `TP10` | 23 | 28 | 0 | 9 | 0 |
 | `TP11` | 26 | 29 | 0 | 5 | 0 |
 | `TP12` | 19 | 28 | 4 | 9 | 0 |
-
-### error_probable scenarios
-
-- `S1_StrongCommunities_SeparateClusters__TP03_ManySmall` — missing delivery_ratio (simulation report incomplete or absent)
 
 ## Methodological answers
 
@@ -93,7 +88,7 @@ Count `valido_extremo`: **312** scenarios.
 
 ### 3. Which scenarios need review before the paper?
 
-- **1** scenarios with missing outputs → re-simulate
+- **0** scenarios with missing outputs → re-simulate
 - **130** suspicious configs (zero delivery with contacts, etc.)
 - **4** pending revision (P0/P1 map, worldSize, latency window)
 - Urban WDM **MAP_TOO_LARGE / MAP_UNDERUSED** — document in Methods, optional worldSize crop
