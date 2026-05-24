@@ -8,7 +8,7 @@ Example:
 
 ```bash
 python3 scenarios/analysis/run_all_scenarios.py --corpus corpus_v2 \
-  --extra-settings scenarios/analysis/diego17_reports_overrides.txt \
+  --extra-settings scenarios/analysis/overlays/routing_contact_reports_overrides.txt \
   --extra-settings scenarios/analysis/protocol_overlays/router_prophet.txt
 ```
 

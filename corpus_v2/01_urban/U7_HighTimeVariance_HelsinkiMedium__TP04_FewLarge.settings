@@ -12,7 +12,7 @@ Scenario.updateInterval = 0.1
 Scenario.endTime = 43200
 MovementModel.rngSeed = 12
 # Diversificación estructural vs V4/V8 (mantener grupo Urban, mismo mapa Helsinki)
-MovementModel.worldSize = 8450, 7450
+MovementModel.worldSize = 9124, 8034
 
 MapBasedMovement.nrofMapFiles = 1
 MapBasedMovement.mapFile1 = data/HelsinkiMedium/roads.wkt
@@ -120,7 +120,7 @@ Group.router = EpidemicRouter
 Events.nrof = 1
 Events1.class = MessageEventGenerator
 Events1.interval = 180, 300
-Events1.size = 1M, 5M
+Events1.size = 500k, 2M
 Events1.hosts = 0, 81
 Events1.prefix = M
 

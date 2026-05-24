@@ -1,14 +1,17 @@
-## Paper figures package (auto-generated)
+## Paper figures package (corpus_v2)
 
-Este directorio se genera con:
+Generado con:
 
 ```bash
-cd /home/raul/Documents/the-one/scenarios/analysis
-source /home/raul/Documents/the-one/venv/bin/activate
-python run_analysis.py --corpus corpus_v1 --phase figures_paper
+cd scenarios/analysis
+.venv/bin/python run_analysis.py --corpus corpus_v2 --phase figures_paper
+.venv/bin/python run_figures_aggregated.py --corpus corpus_v2
+.venv/bin/python build_paper_figures_tables_index.py
 ```
 
-Regla: **no sobrescribe** nada en `scenarios/analysis/figures/` (solo escribe aquí).
+Índice maestro: [`FIGURES_AND_TABLES_INDEX.md`](FIGURES_AND_TABLES_INDEX.md).
+
+Regla: **no sobrescribe** nada en `scenarios/analysis/figures/` raíz (solo escribe en `paper/`).
 
 ### Main (`main/`)
 
@@ -29,8 +32,10 @@ Regla: **no sobrescribe** nada en `scenarios/analysis/figures/` (solo escribe aq
 
 - `histogram_correlations_spearman_paper.(png|pdf)`  
   Histograma Spearman (robustez).
+- `histogram_correlations_outputs_paper.(png|pdf)`  
+  Distribución de correlaciones Pearson entre vectores de salida (delivery, latency, overhead, drops).
 - `heatmap_pearson_outputs_paper.(png|pdf)`  
-  Correlación entre escenarios en output-space (Pearson).
+  Solo con `--include-full-heatmaps` y fase `outputs` previa (N×N; depuración).
 
 ### Trazabilidad a artefactos
 

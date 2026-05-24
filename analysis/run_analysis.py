@@ -39,6 +39,19 @@ try:
 except ImportError:
     plt = None
 
+BASE_ANALYSIS = Path(__file__).resolve().parent
+if str(BASE_ANALYSIS) not in __import__("sys").path:
+    __import__("sys").path.insert(0, str(BASE_ANALYSIS))
+
+from lib.report_paths import RESULTADOS_ACTUALES  # noqa: E402
+
+
+def _pipeline_reports_dir(out_dir: Path) -> Path:
+    """Pipeline text/md reports live under reports/pipeline/."""
+    d = Path(out_dir) / "reports" / "pipeline"
+    d.mkdir(parents=True, exist_ok=True)
+    return d
+
 
 # ---------- Parser de settings (reutilizado del script de correlación) ----------
 
@@ -580,8 +593,7 @@ def run_phase_features_report(corpus_dir: Path, out_dir: Path, scenario_paths: l
     - Lista de settings presentes en el corpus que NO se usan y motivo.
     """
     out_dir = Path(out_dir)
-    reports_dir = out_dir / "reports"
-    reports_dir.mkdir(parents=True, exist_ok=True)
+    reports_dir = _pipeline_reports_dir(out_dir)
 
     all_keys = collect_all_settings_keys(corpus_dir, scenario_paths)
     used_keys = _all_used_key_variants(all_keys)
@@ -862,7 +874,7 @@ def run_phase_correlation(out_dir: Path, threshold: float = 0.7, criterion_95: b
         return False
     out_dir = Path(out_dir)
     data_dir = out_dir / "data"
-    reports_dir = out_dir / "reports"
+    reports_dir = _pipeline_reports_dir(out_dir)
     path_z = data_dir / "features_normalized.csv"
     if not path_z.exists():
         print(f"Not found: {path_z}. Run --phase normalize first.")
@@ -1170,7 +1182,7 @@ def run_phase_feature_feature_correlation(out_dir: Path) -> bool:
     out_dir = Path(out_dir)
     data_dir = out_dir / "data"
     figures_dir = out_dir / "figures"
-    reports_dir = out_dir / "reports"
+    reports_dir = _pipeline_reports_dir(out_dir)
     path_core = data_dir / "features_core.csv"
     if not path_core.exists():
         print(f"Not found: {path_core}. Run --phase normalize first.")
@@ -1237,7 +1249,7 @@ def run_phase_ablation(out_dir: Path, threshold: float = 0.7, n_clusters: int = 
         return False
     out_dir = Path(out_dir)
     data_dir = out_dir / "data"
-    reports_dir = out_dir / "reports"
+    reports_dir = _pipeline_reports_dir(out_dir)
     path_norm = data_dir / "features_normalized.csv"
     path_core = data_dir / "features_core.csv"
     path_red = data_dir / "features_reduced.csv"
@@ -1317,7 +1329,64 @@ def run_phase_ablation(out_dir: Path, threshold: float = 0.7, n_clusters: int = 
     return True
 
 
-def run_phase_figures(out_dir: Path, threshold: float = 0.7) -> bool:
+def _resolve_include_full_heatmaps(n_scenarios: int, include_full_heatmaps: bool | None) -> bool:
+    """Por defecto no generar heatmaps N×N si n > 100 (corpus_v2)."""
+    if include_full_heatmaps is not None:
+        return include_full_heatmaps
+    return n_scenarios <= 100
+
+
+def _plot_correlation_histogram(
+    r_flat: np.ndarray,
+    path_base: Path,
+    threshold: float,
+    title: str,
+    *,
+    xlabel: str = "Pearson r (pares de escenarios)",
+    color: str = "steelblue",
+) -> None:
+    """Guarda histograma PNG+PDF de correlaciones entre escenarios."""
+    if plt is None:
+        return
+    r_flat = np.asarray(r_flat, dtype=float)
+    r_flat = r_flat[np.isfinite(r_flat)]
+    if len(r_flat) == 0:
+        return
+    n_pairs = len(r_flat)
+    n_high = int(np.sum(np.abs(r_flat) >= threshold))
+    pct_high = 100.0 * n_high / n_pairs if n_pairs else 0.0
+    nbins = min(50, max(15, n_pairs // 30))
+    fig, ax = plt.subplots(1, 1, figsize=(6, 4))
+    ax.hist(r_flat, bins=nbins, color=color, edgecolor="black", alpha=0.7)
+    ax.axvline(threshold, color="red", linestyle="--", label=f"|r| = {threshold}")
+    ax.axvline(-threshold, color="red", linestyle="--")
+    ax.set_xlabel(xlabel)
+    ax.set_ylabel("Frecuencia")
+    ax.set_title(title)
+    ax.legend()
+    ax.text(
+        0.02,
+        0.98,
+        f"pares: {n_pairs}\n|r|≥{threshold}: {n_high} ({pct_high:.1f}%)",
+        transform=ax.transAxes,
+        va="top",
+        ha="left",
+        fontsize=9,
+        bbox=dict(facecolor="white", alpha=0.85, edgecolor="none"),
+    )
+    ax.grid(True, alpha=0.2)
+    fig.tight_layout()
+    path_base.parent.mkdir(parents=True, exist_ok=True)
+    fig.savefig(path_base.with_suffix(".png"), dpi=150, bbox_inches="tight")
+    fig.savefig(path_base.with_suffix(".pdf"), dpi=150, bbox_inches="tight")
+    plt.close(fig)
+
+
+def run_phase_figures(
+    out_dir: Path,
+    threshold: float = 0.7,
+    include_full_heatmaps: bool | None = None,
+) -> bool:
     """
     Fase 4: gráficos a partir de data/ (correlaciones, Z).
     Requiere que existan features_normalized.csv y correlation_pearson.csv (ejecutar --phase correlation antes).
@@ -1348,68 +1417,61 @@ def run_phase_figures(out_dir: Path, threshold: float = 0.7) -> bool:
 
     triu = np.triu_indices(n, k=1)
     r_flat = R_pearson[triu[0], triu[1]]
+    include_heatmaps = _resolve_include_full_heatmaps(n, include_full_heatmaps)
+    if not include_heatmaps:
+        print(
+            f"Heatmaps N×N omitidos (n={n}). Ver figures/README.md y "
+            "figures/aggregated/. Use --include-full-heatmaps para forzarlos."
+        )
 
-    # ---------- Heatmap Pearson ----------
-    fig, ax = plt.subplots(1, 1, figsize=(10, 8))
-    im = ax.imshow(R_pearson, cmap="RdBu_r", vmin=-1, vmax=1)
-    ax.set_xticks(range(n))
-    ax.set_yticks(range(n))
-    ax.set_xticklabels(labels, rotation=45, ha="right", fontsize=6)
-    ax.set_yticklabels(labels, fontsize=6)
-    plt.colorbar(im, ax=ax, label="Pearson r")
-    ax.set_title("Correlación entre escenarios (Pearson, vectores Z)")
-    plt.tight_layout()
-    plt.savefig(figures_dir / "heatmap_pearson.png", dpi=150, bbox_inches="tight")
-    plt.savefig(figures_dir / "heatmap_pearson.pdf", dpi=150, bbox_inches="tight")
-    plt.close()
-
-    # ---------- Heatmap Spearman ----------
-    if R_spearman is not None:
+    # ---------- Heatmap Pearson / Spearman (opcional) ----------
+    if include_heatmaps:
         fig, ax = plt.subplots(1, 1, figsize=(10, 8))
-        im = ax.imshow(R_spearman, cmap="RdBu_r", vmin=-1, vmax=1)
+        im = ax.imshow(R_pearson, cmap="RdBu_r", vmin=-1, vmax=1)
         ax.set_xticks(range(n))
         ax.set_yticks(range(n))
         ax.set_xticklabels(labels, rotation=45, ha="right", fontsize=6)
         ax.set_yticklabels(labels, fontsize=6)
-        plt.colorbar(im, ax=ax, label="Spearman r")
-        ax.set_title("Correlación entre escenarios (Spearman, vectores Z)")
+        plt.colorbar(im, ax=ax, label="Pearson r")
+        ax.set_title("Correlación entre escenarios (Pearson, vectores Z)")
         plt.tight_layout()
-        plt.savefig(figures_dir / "heatmap_spearman.png", dpi=150, bbox_inches="tight")
-        plt.savefig(figures_dir / "heatmap_spearman.pdf", dpi=150, bbox_inches="tight")
+        plt.savefig(figures_dir / "heatmap_pearson.png", dpi=150, bbox_inches="tight")
+        plt.savefig(figures_dir / "heatmap_pearson.pdf", dpi=150, bbox_inches="tight")
         plt.close()
 
-    # ---------- Histograma Pearson r ----------
-    fig, ax = plt.subplots(1, 1, figsize=(6, 4))
-    nbins = min(50, max(15, len(r_flat) // 30))
-    ax.hist(r_flat, bins=nbins, color="steelblue", edgecolor="black", alpha=0.7)
-    ax.axvline(threshold, color="red", linestyle="--", label=f"|r| = {threshold}")
-    ax.axvline(-threshold, color="red", linestyle="--")
-    ax.set_xlabel("Pearson r (pares de escenarios)")
-    ax.set_ylabel("Frecuencia")
-    ax.set_title("Distribución de correlaciones Pearson entre escenarios")
-    ax.legend()
-    plt.tight_layout()
-    plt.savefig(figures_dir / "histogram_correlations_pearson.png", dpi=150, bbox_inches="tight")
-    plt.savefig(figures_dir / "histogram_correlations_pearson.pdf", dpi=150, bbox_inches="tight")
-    plt.close()
+        if R_spearman is not None:
+            fig, ax = plt.subplots(1, 1, figsize=(10, 8))
+            im = ax.imshow(R_spearman, cmap="RdBu_r", vmin=-1, vmax=1)
+            ax.set_xticks(range(n))
+            ax.set_yticks(range(n))
+            ax.set_xticklabels(labels, rotation=45, ha="right", fontsize=6)
+            ax.set_yticklabels(labels, fontsize=6)
+            plt.colorbar(im, ax=ax, label="Spearman r")
+            ax.set_title("Correlación entre escenarios (Spearman, vectores Z)")
+            plt.tight_layout()
+            plt.savefig(figures_dir / "heatmap_spearman.png", dpi=150, bbox_inches="tight")
+            plt.savefig(figures_dir / "heatmap_spearman.pdf", dpi=150, bbox_inches="tight")
+            plt.close()
 
-    # ---------- Histograma Spearman r ----------
+    # ---------- Histogramas ----------
+    _plot_correlation_histogram(
+        r_flat,
+        figures_dir / "histogram_correlations_pearson",
+        threshold,
+        "Distribución de correlaciones Pearson entre escenarios",
+    )
     if R_spearman is not None:
         r_sp_flat = R_spearman[triu[0], triu[1]]
-        fig, ax = plt.subplots(1, 1, figsize=(6, 4))
-        ax.hist(r_sp_flat, bins=nbins, color="seagreen", edgecolor="black", alpha=0.7)
-        ax.axvline(threshold, color="red", linestyle="--", label=f"|r| = {threshold}")
-        ax.axvline(-threshold, color="red", linestyle="--")
-        ax.set_xlabel("Spearman r (pares de escenarios)")
-        ax.set_ylabel("Frecuencia")
-        ax.set_title("Distribución de correlaciones Spearman entre escenarios")
-        ax.legend()
-        plt.tight_layout()
-        plt.savefig(figures_dir / "histogram_correlations_spearman.png", dpi=150, bbox_inches="tight")
-        plt.savefig(figures_dir / "histogram_correlations_spearman.pdf", dpi=150, bbox_inches="tight")
-        plt.close()
+        _plot_correlation_histogram(
+            r_sp_flat,
+            figures_dir / "histogram_correlations_spearman",
+            threshold,
+            "Distribución de correlaciones Spearman entre escenarios",
+            color="seagreen",
+            xlabel="Spearman r (pares de escenarios)",
+        )
 
-    # ---------- Scatter PCA 2D + regresión ----------
+    # ---------- Scatter PCA 2D + regresión (omitir etiquetas si N grande) ----------
     Z_centered = Z - np.nanmean(Z, axis=0)
     try:
         U, S, Vt = np.linalg.svd(Z_centered, full_matrices=False)
@@ -1430,23 +1492,26 @@ def run_phase_figures(out_dir: Path, threshold: float = 0.7) -> bool:
         x_line = y_line = np.nan
         r2_pc = np.nan
 
-    fig, ax = plt.subplots(1, 1, figsize=(8, 6))
-    ax.scatter(pc1, pc2, s=60, alpha=0.8, edgecolors="black", linewidths=0.5)
-    if not (np.any(np.isnan(x_line)) or np.any(np.isnan(y_line))):
-        ax.plot(x_line, y_line, "r-", linewidth=2, label=f"Regresión (R² = {r2_pc:.3f})")
-    for i, lb in enumerate(labels):
-        ax.annotate(lb, (pc1[i], pc2[i]), fontsize=5, xytext=(3, 3), textcoords="offset points", alpha=0.85)
-    ax.set_xlabel("PC1 (primera componente principal)")
-    ax.set_ylabel("PC2 (segunda componente principal)")
-    ax.set_title("Escenarios en espacio PCA 2D + regresión\n(R² bajo ⇒ escenarios no alineados en una recta)")
-    ax.legend(loc="best", fontsize=9)
-    ax.grid(True, alpha=0.3)
-    ax.axhline(0, color="gray", linestyle=":", alpha=0.5)
-    ax.axvline(0, color="gray", linestyle=":", alpha=0.5)
-    plt.tight_layout()
-    plt.savefig(figures_dir / "scatter_pca_regression.png", dpi=150, bbox_inches="tight")
-    plt.savefig(figures_dir / "scatter_pca_regression.pdf", dpi=150, bbox_inches="tight")
-    plt.close()
+    if n <= 100:
+        fig, ax = plt.subplots(1, 1, figsize=(8, 6))
+        ax.scatter(pc1, pc2, s=60, alpha=0.8, edgecolors="black", linewidths=0.5)
+        if not (np.any(np.isnan(x_line)) or np.any(np.isnan(y_line))):
+            ax.plot(x_line, y_line, "r-", linewidth=2, label=f"Regresión (R² = {r2_pc:.3f})")
+        for i, lb in enumerate(labels):
+            ax.annotate(lb, (pc1[i], pc2[i]), fontsize=5, xytext=(3, 3), textcoords="offset points", alpha=0.85)
+        ax.set_xlabel("PC1 (primera componente principal)")
+        ax.set_ylabel("PC2 (segunda componente principal)")
+        ax.set_title("Escenarios en espacio PCA 2D + regresión\n(R² bajo ⇒ escenarios no alineados en una recta)")
+        ax.legend(loc="best", fontsize=9)
+        ax.grid(True, alpha=0.3)
+        ax.axhline(0, color="gray", linestyle=":", alpha=0.5)
+        ax.axvline(0, color="gray", linestyle=":", alpha=0.5)
+        plt.tight_layout()
+        plt.savefig(figures_dir / "scatter_pca_regression.png", dpi=150, bbox_inches="tight")
+        plt.savefig(figures_dir / "scatter_pca_regression.pdf", dpi=150, bbox_inches="tight")
+        plt.close()
+    else:
+        print(f"scatter_pca_regression omitido (n={n}); usar figures/paper/main/pca_by_family.png")
 
     # ---------- Scatter par con mayor |r| (por feature) + regresión ----------
     imax = np.argmax(np.abs(r_flat))
@@ -1503,19 +1568,19 @@ def run_phase_figures(out_dir: Path, threshold: float = 0.7) -> bool:
         rs_flat = Rs[triu_s[0], triu_s[1]]
         nbins_s = min(50, max(15, len(rs_flat) // 30))
 
-        # Heatmap Pearson por espacio
-        fig, ax = plt.subplots(1, 1, figsize=(10, 8))
-        im = ax.imshow(Rs, cmap="RdBu_r", vmin=-1, vmax=1)
-        ax.set_xticks(range(n_s))
-        ax.set_yticks(range(n_s))
-        ax.set_xticklabels(labels_s, rotation=45, ha="right", fontsize=6)
-        ax.set_yticklabels(labels_s, fontsize=6)
-        plt.colorbar(im, ax=ax, label="Pearson r")
-        ax.set_title(f"Correlación entre escenarios (Pearson, {space_name}, d={d_s})")
-        plt.tight_layout()
-        plt.savefig(by_space_dir / f"heatmap_pearson_{space_name}.png", dpi=150, bbox_inches="tight")
-        plt.savefig(by_space_dir / f"heatmap_pearson_{space_name}.pdf", dpi=150, bbox_inches="tight")
-        plt.close()
+        if include_heatmaps:
+            fig, ax = plt.subplots(1, 1, figsize=(10, 8))
+            im = ax.imshow(Rs, cmap="RdBu_r", vmin=-1, vmax=1)
+            ax.set_xticks(range(n_s))
+            ax.set_yticks(range(n_s))
+            ax.set_xticklabels(labels_s, rotation=45, ha="right", fontsize=6)
+            ax.set_yticklabels(labels_s, fontsize=6)
+            plt.colorbar(im, ax=ax, label="Pearson r")
+            ax.set_title(f"Correlación entre escenarios (Pearson, {space_name}, d={d_s})")
+            plt.tight_layout()
+            plt.savefig(by_space_dir / f"heatmap_pearson_{space_name}.png", dpi=150, bbox_inches="tight")
+            plt.savefig(by_space_dir / f"heatmap_pearson_{space_name}.pdf", dpi=150, bbox_inches="tight")
+            plt.close()
 
         # Histograma Pearson por espacio
         fig, ax = plt.subplots(1, 1, figsize=(6, 4))
@@ -1552,27 +1617,32 @@ def run_phase_figures(out_dir: Path, threshold: float = 0.7) -> bool:
             x_line_s = y_line_s = np.nan
             r2_s = np.nan
 
-        fig, ax = plt.subplots(1, 1, figsize=(8, 6))
-        ax.scatter(pc1_s, pc2_s, s=60, alpha=0.8, edgecolors="black", linewidths=0.5)
-        if not (np.any(np.isnan(x_line_s)) or np.any(np.isnan(y_line_s))):
-            ax.plot(x_line_s, y_line_s, "r-", linewidth=2, label=f"Regresión (R² = {r2_s:.3f})")
-        ax.set_xlabel("PC1")
-        ax.set_ylabel("PC2")
-        ax.set_title(f"PCA 2D + regresión ({space_name}, d={d_s})")
-        ax.legend(loc="best", fontsize=9)
-        ax.grid(True, alpha=0.3)
-        ax.axhline(0, color="gray", linestyle=":", alpha=0.5)
-        ax.axvline(0, color="gray", linestyle=":", alpha=0.5)
-        plt.tight_layout()
-        plt.savefig(by_space_dir / f"scatter_pca_regression_{space_name}.png", dpi=150, bbox_inches="tight")
-        plt.savefig(by_space_dir / f"scatter_pca_regression_{space_name}.pdf", dpi=150, bbox_inches="tight")
-        plt.close()
+        if n_s <= 100:
+            fig, ax = plt.subplots(1, 1, figsize=(8, 6))
+            ax.scatter(pc1_s, pc2_s, s=60, alpha=0.8, edgecolors="black", linewidths=0.5)
+            if not (np.any(np.isnan(x_line_s)) or np.any(np.isnan(y_line_s))):
+                ax.plot(x_line_s, y_line_s, "r-", linewidth=2, label=f"Regresión (R² = {r2_s:.3f})")
+            ax.set_xlabel("PC1")
+            ax.set_ylabel("PC2")
+            ax.set_title(f"PCA 2D + regresión ({space_name}, d={d_s})")
+            ax.legend(loc="best", fontsize=9)
+            ax.grid(True, alpha=0.3)
+            ax.axhline(0, color="gray", linestyle=":", alpha=0.5)
+            ax.axvline(0, color="gray", linestyle=":", alpha=0.5)
+            plt.tight_layout()
+            plt.savefig(by_space_dir / f"scatter_pca_regression_{space_name}.png", dpi=150, bbox_inches="tight")
+            plt.savefig(by_space_dir / f"scatter_pca_regression_{space_name}.pdf", dpi=150, bbox_inches="tight")
+            plt.close()
 
     print(f"Written {len(list(figures_dir.glob('*.png')))} figures to {figures_dir}")
     return True
 
 
-def run_phase_figures_paper(out_dir: Path, threshold: float = 0.7) -> bool:
+def run_phase_figures_paper(
+    out_dir: Path,
+    threshold: float = 0.7,
+    include_full_heatmaps: bool | None = None,
+) -> bool:
     """
     Figuras "paper-ready" sin tocar figuras actuales:
     escribe solo en figures/paper/(main|supplementary) y genera versiones más limpias
@@ -1814,27 +1884,45 @@ def run_phase_figures_paper(out_dir: Path, threshold: float = 0.7) -> bool:
         _save_png_pdf(fig, main_dir / "heatmap_feature_feature_core")
         plt.close(fig)
 
-    # ---------------- Outputs heatmap (paper copy) ----------------
-    if path_outputs.exists():
-        out_df = pd.read_csv(path_outputs)
-        if "scenario" in out_df.columns:
-            out_df = out_df.set_index("scenario")
-        # Keep only numeric columns
-        out_num = out_df.select_dtypes(include=[np.number])
-        if len(out_num.columns) >= 2 and len(out_num) >= 3:
-            R_out = out_num.T.corr(method="pearson").values
-            scen_out = out_num.index.tolist()
-            fig, ax = plt.subplots(1, 1, figsize=(10, 8))
-            im = ax.imshow(R_out, cmap="RdBu_r", vmin=-1, vmax=1)
-            ax.set_xticks(range(len(scen_out)))
-            ax.set_yticks(range(len(scen_out)))
-            ax.set_xticklabels(scen_out, rotation=45, ha="right", fontsize=6)
-            ax.set_yticklabels(scen_out, fontsize=6)
-            plt.colorbar(im, ax=ax, label="Pearson r (outputs)")
-            ax.set_title("Correlación entre escenarios en output-space (Pearson)")
-            fig.tight_layout()
-            _save_png_pdf(fig, supp_dir / "heatmap_pearson_outputs_paper")
-            plt.close(fig)
+    # ---------------- Outputs correlation histogram (paper supplementary) ----------------
+    path_r_out = data_dir / "correlation_pearson_outputs.csv"
+    if path_r_out.exists():
+        R_out_df = pd.read_csv(path_r_out, index_col=0)
+        n_out = len(R_out_df)
+        triu_out = np.triu_indices(n_out, k=1)
+        r_out_flat = R_out_df.values[triu_out[0], triu_out[1]]
+        _plot_correlation_histogram(
+            r_out_flat,
+            supp_dir / "histogram_correlations_outputs_paper",
+            threshold,
+            "Distribución de correlaciones Pearson (vectores de salida Y)",
+            xlabel="Pearson r (pares de escenarios, outputs)",
+        )
+        include_heatmaps = _resolve_include_full_heatmaps(n_out, include_full_heatmaps)
+        if include_heatmaps and path_outputs.exists():
+            out_df = pd.read_csv(path_outputs)
+            if "scenario" in out_df.columns:
+                out_df = out_df.set_index("scenario")
+            out_num = out_df.select_dtypes(include=[np.number])
+            if len(out_num.columns) >= 2 and len(out_num) >= 3:
+                R_out = out_num.T.corr(method="pearson").values
+                scen_out = out_num.index.tolist()
+                fig, ax = plt.subplots(1, 1, figsize=(10, 8))
+                im = ax.imshow(R_out, cmap="RdBu_r", vmin=-1, vmax=1)
+                ax.set_xticks(range(len(scen_out)))
+                ax.set_yticks(range(len(scen_out)))
+                ax.set_xticklabels(scen_out, rotation=45, ha="right", fontsize=6)
+                ax.set_yticklabels(scen_out, fontsize=6)
+                plt.colorbar(im, ax=ax, label="Pearson r (outputs)")
+                ax.set_title("Correlación entre escenarios en output-space (Pearson)")
+                fig.tight_layout()
+                _save_png_pdf(fig, supp_dir / "heatmap_pearson_outputs_paper")
+                plt.close(fig)
+    elif path_outputs.exists():
+        print(
+            f"Not found: {path_r_out}. Run --phase outputs first for "
+            "histogram_correlations_outputs_paper."
+        )
 
     print(f"Written paper figures to {figures_paper_dir}")
     return True
@@ -2105,9 +2193,8 @@ def run_phase_indirects(out_dir: Path, reports_dir: Path, scenario_paths: list[P
     out_dir = Path(out_dir)
     reports_dir = Path(reports_dir)
     data_dir = out_dir / "data"
-    reports_out_dir = out_dir / "reports"
+    reports_out_dir = _pipeline_reports_dir(out_dir)
     data_dir.mkdir(parents=True, exist_ok=True)
-    reports_out_dir.mkdir(parents=True, exist_ok=True)
 
     if not reports_dir.exists():
         print(f"Reports directory not found: {reports_dir}")
@@ -2282,11 +2369,11 @@ def run_phase_indirects(out_dir: Path, reports_dir: Path, scenario_paths: list[P
         "  - betweenness_centrality (solo con ConnectivityONEReport)",
         "  - window_centrality_mean (solo con ConnectivityONEReport)",
         "",
-        "Para completar fase Diego17 real, ejecuta simulaciones con overrides:",
-        "  scenarios/analysis/diego17_reports_overrides.txt",
+        "Para métricas indirectas, ejecuta simulaciones con overlay routing/contacto:",
+        "  scenarios/analysis/overlays/routing_contact_reports_overrides.txt",
         "Ejemplo:",
         "  python scenarios/analysis/run_all_scenarios.py --corpus corpus_v1 \\",
-        "    --extra-settings scenarios/analysis/diego17_reports_overrides.txt",
+        "    --extra-settings scenarios/analysis/overlays/routing_contact_reports_overrides.txt",
         "",
         "Salida:",
         f"  - {out_csv}",
@@ -2323,7 +2410,7 @@ def run_phase_indirects(out_dir: Path, reports_dir: Path, scenario_paths: list[P
         "",
         "```",
         "python scenarios/analysis/run_all_scenarios.py --corpus corpus_v1 \\",
-        "  --extra-settings scenarios/analysis/diego17_reports_overrides.txt",
+        "  --extra-settings scenarios/analysis/overlays/routing_contact_reports_overrides.txt",
         "```",
         "",
         "Luego re-ejecuta `run_all_scenarios.py` y después `run_analysis.py --phase indirects`.",
@@ -2395,8 +2482,14 @@ def _parse_diversity_report(path: Path) -> dict[str, Any]:
     import re
 
     txt = path.read_text(encoding="utf-8", errors="replace")
-    # Escenarios y features: "Escenarios: n=60, features: d=46."
+    # Escenarios y features: "Escenarios: n=720, features: d=46." or "n=720 escenarios, d=23 features"
     m_nf = re.search(r"Escenarios:\s*n\s*=\s*(\d+)\s*,\s*features:\s*d\s*=\s*(\d+)", txt)
+    if not m_nf:
+        m_nf = re.search(
+            r"n\s*=\s*(\d+)\s*escenarios\s*,\s*d\s*=\s*(\d+)\s*features",
+            txt,
+            flags=re.I,
+        )
     if not m_nf:
         m_nf = re.search(r"Escenarios:\s*n\s*=\s*(\d+)\s*,\s*features:\s*d\s*=\s*(\d+)", txt.replace(" ", ""))
     n_scenarios = int(m_nf.group(1)) if m_nf else None
@@ -2419,12 +2512,12 @@ def _parse_diversity_report(path: Path) -> dict[str, Any]:
         pairs = int(m_pairs2.group(1)) if m_pairs2 else None
         pct = float(m_pairs2.group(2)) if m_pairs2 else None
 
-    # min cosine distance: "Distancia coseno ... mín = 0.0620"
-    m_mincos = re.search(r"Distancia coseno.*?mín\s*=\s*([0-9.]+)", txt, flags=re.S)
+    # min cosine distance: "Distancia coseno ... mín = 0.0620" or "Distancia coseno mínima = -0.0000"
+    m_mincos = re.search(r"Distancia coseno.*?mín(?:ima)?\s*=\s*([0-9.]+)", txt, flags=re.S)
     min_cosine_distance = float(m_mincos.group(1)) if m_mincos else None
 
-    # silhouette: "Silhouette (Ward...): 0.2929"
-    m_sil = re.search(r"Silhouette.*?:\s*([0-9.]+)", txt)
+    # silhouette: "Silhouette (Ward k=7): 0.2680" or "(Ward k=7 sobre Z_core) = 0.3451"
+    m_sil = re.search(r"Silhouette\s*\([^)]+\)\s*[=:]\s*([0-9.]+)", txt)
     silhouette = float(m_sil.group(1)) if m_sil else None
 
     out = {
@@ -2457,7 +2550,7 @@ def run_phase_tables_paper(out_dir: Path, threshold: float = 0.7) -> bool:
 
     # Inputs base
     data_dir = out_dir / "data"
-    reports_dir = out_dir / "reports"
+    reports_dir = _pipeline_reports_dir(out_dir)
 
     corr_full_path = reports_dir / "correlation_report.txt"
     corr_core_path = reports_dir / "correlation_core23_report.txt"
@@ -2537,8 +2630,17 @@ def run_phase_tables_paper(out_dir: Path, threshold: float = 0.7) -> bool:
 
     # Families
     # ES file: Scenario-families-es.md, EN file: Scenario-families.md
-    families_es_path = out_dir.parent / ".wiki-clone" / "05-corpus" / "Scenario-families-es.md"
-    families_en_path = out_dir.parent / ".wiki-clone" / "05-corpus" / "Scenario-families.md"
+    wiki_corpus = out_dir.parent / ".wiki-clone" / "05-corpus"
+    archive_wiki = (
+        out_dir.parent
+        / "_archive/wiki/wiki_backup_20260523_20260524_101911/_legacy_pre_paper_rebuild/05-corpus"
+    )
+    families_es_path = wiki_corpus / "Scenario-families-es.md"
+    families_en_path = wiki_corpus / "Scenario-families.md"
+    if not families_es_path.exists() and archive_wiki.is_dir():
+        families_es_path = archive_wiki / "Scenario-families-es.md"
+    if not families_en_path.exists() and archive_wiki.is_dir():
+        families_en_path = archive_wiki / "Scenario-families.md"
     scenario_list_path = data_dir / "scenario_list.txt"
     if not families_es_path.exists() or not families_en_path.exists() or not scenario_list_path.exists():
         print("Missing families inputs for tables_paper:")
@@ -2943,10 +3045,10 @@ def run_phase_results_actuales(
     que dependan del estado histórico.
     """
     out_dir = Path(out_dir)
-    reports_dir = out_dir / "reports"
-    correlation_core_path = reports_dir / "correlation_core23_report.txt"
-    correlation_full_path = reports_dir / "correlation_report.txt"
-    ablation_path = reports_dir / "ablation_report.txt"
+    pipeline_dir = _pipeline_reports_dir(out_dir)
+    correlation_core_path = pipeline_dir / "correlation_core23_report.txt"
+    correlation_full_path = pipeline_dir / "correlation_report.txt"
+    ablation_path = pipeline_dir / "ablation_report.txt"
 
     if not correlation_core_path.exists() or not correlation_full_path.exists():
         print("Skip RESULTADOS_ACTUALES.md: missing correlation reports.")
@@ -3092,22 +3194,26 @@ def run_phase_results_actuales(
             "",
             "| Informe | Contenido |",
             "|---|---|",
-            "| [correlation_core23_report.txt](correlation_core23_report.txt) | Pares con |r|≥umbral en core 23 |",
-            "| [correlation_report.txt](correlation_report.txt) | Correlación en espacio completo (46 features) |",
-            "| [ablation_report.txt](ablation_report.txt) | Ablación 17 vs 23 vs 46 |",
-            "| [multiple_comparisons_report.txt](multiple_comparisons_report.txt) | FDR y Bonferroni |",
-            "| [features_report.md](features_report.md) / [features_report.txt](features_report.txt) | Features usados / descartados |",
-            "| [feature_feature_correlation_report.txt](feature_feature_correlation_report.txt) | Correlación feature–feature (core 23) |",
+            "| [correlation_core23_report.txt](pipeline/correlation_core23_report.txt) | Pares con |r|≥umbral en core 23 |",
+            "| [correlation_report.txt](pipeline/correlation_report.txt) | Correlación en espacio completo (46 features) |",
+            "| [ablation_report.txt](pipeline/ablation_report.txt) | Ablación 17 vs 23 vs 46 |",
+            "| [multiple_comparisons_report.txt](pipeline/multiple_comparisons_report.txt) | FDR y Bonferroni |",
+            "| [features_report.md](pipeline/features_report.md) / [features_report.txt](pipeline/features_report.txt) | Features usados / descartados |",
+            "| [feature_feature_correlation_report.txt](pipeline/feature_feature_correlation_report.txt) | Correlación feature–feature (core 23) |",
         ]
     )
 
-    report_path = reports_dir / "RESULTADOS_ACTUALES.md"
+    report_path = RESULTADOS_ACTUALES
     report_path.write_text("\n".join(lines), encoding="utf-8")
     print(f"Written {report_path}")
     return True
 
 
-def run_phase_outputs(out_dir: Path, threshold: float = 0.7) -> bool:
+def run_phase_outputs(
+    out_dir: Path,
+    threshold: float = 0.7,
+    include_full_heatmaps: bool | None = None,
+) -> bool:
     """
     Validación sobre outputs: vectores Y_s por escenario (delivery ratio, latency media,
     overhead ratio, drop ratio) y correlaciones entre escenarios.
@@ -3120,7 +3226,7 @@ def run_phase_outputs(out_dir: Path, threshold: float = 0.7) -> bool:
         return False
     out_dir = Path(out_dir)
     data_dir = out_dir / "data"
-    reports_dir = out_dir / "reports"
+    reports_dir = _pipeline_reports_dir(out_dir)
     path_csv = data_dir / "output_metrics.csv"
     if not path_csv.exists():
         print(f"Not found: {path_csv}. Create it with one row per scenario and columns:")
@@ -3211,29 +3317,77 @@ def run_phase_outputs(out_dir: Path, threshold: float = 0.7) -> bool:
     if plt is not None:
         figures_dir = out_dir / "figures"
         figures_dir.mkdir(parents=True, exist_ok=True)
-        fig, ax = plt.subplots(1, 1, figsize=(10, 8))
-        im = ax.imshow(R_pearson, cmap="RdBu_r", vmin=-1, vmax=1)
-        ax.set_xticks(range(n))
-        ax.set_yticks(range(n))
-        ax.set_xticklabels(labels, rotation=45, ha="right", fontsize=6)
-        ax.set_yticklabels(labels, fontsize=6)
-        plt.colorbar(im, ax=ax, label="Pearson r")
-        ax.set_title("Correlación entre escenarios (vectores de salida Y)\ndelivery_ratio, latency_mean, overhead_ratio, drop_ratio")
-        plt.tight_layout()
-        plt.savefig(figures_dir / "heatmap_pearson_outputs.png", dpi=150, bbox_inches="tight")
-        plt.savefig(figures_dir / "heatmap_pearson_outputs.pdf", dpi=150, bbox_inches="tight")
-        plt.close()
-        print(f"Written {figures_dir / 'heatmap_pearson_outputs.png'}")
+        _plot_correlation_histogram(
+            r_flat,
+            figures_dir / "histogram_correlations_outputs",
+            threshold,
+            "Distribución de correlaciones Pearson (vectores de salida Y)",
+            xlabel="Pearson r (pares de escenarios, outputs)",
+        )
+        print(f"Written {figures_dir / 'histogram_correlations_outputs.png'}")
+        include_heatmaps = _resolve_include_full_heatmaps(n, include_full_heatmaps)
+        if include_heatmaps:
+            fig, ax = plt.subplots(1, 1, figsize=(10, 8))
+            im = ax.imshow(R_pearson, cmap="RdBu_r", vmin=-1, vmax=1)
+            ax.set_xticks(range(n))
+            ax.set_yticks(range(n))
+            ax.set_xticklabels(labels, rotation=45, ha="right", fontsize=6)
+            ax.set_yticklabels(labels, fontsize=6)
+            plt.colorbar(im, ax=ax, label="Pearson r")
+            ax.set_title(
+                "Correlación entre escenarios (vectores de salida Y)\n"
+                "delivery_ratio, latency_mean, overhead_ratio, drop_ratio"
+            )
+            plt.tight_layout()
+            plt.savefig(figures_dir / "heatmap_pearson_outputs.png", dpi=150, bbox_inches="tight")
+            plt.savefig(figures_dir / "heatmap_pearson_outputs.pdf", dpi=150, bbox_inches="tight")
+            plt.close()
+            print(f"Written {figures_dir / 'heatmap_pearson_outputs.png'}")
+        else:
+            print(
+                f"Heatmap outputs omitido (n={n}). Ver figures/aggregated/ y figures/README.md."
+            )
 
     return True
+
+
+def run_phase_figures_aggregated(
+    out_dir: Path,
+    corpus: str,
+    include_block_heatmap: bool = False,
+) -> bool:
+    """Delega en run_figures_aggregated.py (figuras por familia/TP/base)."""
+    import subprocess
+    import sys
+
+    script = Path(__file__).resolve().parent / "run_figures_aggregated.py"
+    if not script.is_file():
+        print(f"Not found: {script}")
+        return False
+    cmd = [sys.executable, str(script), "--corpus", corpus]
+    if include_block_heatmap:
+        cmd.append("--include-block-heatmap")
+    print("→", " ".join(cmd))
+    r = subprocess.run(cmd, cwd=Path(__file__).resolve().parent)
+    return r.returncode == 0
 
 
 def main():
     ap = argparse.ArgumentParser(description="Análisis del corpus de escenarios (por partes).")
     ap.add_argument("--corpus", type=str, default="corpus_v1", help="Directorio del corpus (p. ej. corpus_v1)")
     ap.add_argument("--phase", type=str, default="features",
-                    choices=("features", "features_report", "normalize", "correlation", "feature_correlation", "ablation", "figures", "figures_paper", "tables_paper", "indirects", "output_metrics", "outputs", "all"),
-                    help="Fase: features, normalize, correlation, feature_correlation (23×23), ablation (17 vs 23 vs 46), figures, figures_paper, tables_paper, indirects, output_metrics, outputs, all")
+                    choices=("features", "features_report", "normalize", "correlation", "feature_correlation", "ablation", "figures", "figures_paper", "figures_aggregated", "tables_paper", "indirects", "output_metrics", "outputs", "all"),
+                    help="Fase: features, normalize, correlation, feature_correlation (23×23), ablation (17 vs 23 vs 46), figures, figures_paper, figures_aggregated, tables_paper, indirects, output_metrics, outputs, all")
+    ap.add_argument(
+        "--include-full-heatmaps",
+        action="store_true",
+        help="Generar heatmaps N×N aunque haya >100 escenarios (depuración)",
+    )
+    ap.add_argument(
+        "--include-block-heatmap",
+        action="store_true",
+        help="Con --phase figures_aggregated: generar pearson_block_heatmap_ordered.png",
+    )
     ap.add_argument("--threshold", type=float, default=0.7,
                     help="Umbral |r| para criterio de correlación (default 0.7)")
     ap.add_argument("--strict", action="store_true",
@@ -3278,11 +3432,23 @@ def main():
     if args.phase == "ablation" or args.phase == "all":
         if not run_phase_ablation(out_dir, threshold=args.threshold):
             pass
+    include_hm = True if args.include_full_heatmaps else None
     if args.phase == "figures" or args.phase == "all":
-        if not run_phase_figures(out_dir, threshold=args.threshold):
+        if not run_phase_figures(
+            out_dir, threshold=args.threshold, include_full_heatmaps=include_hm
+        ):
             return 1
     if args.phase == "figures_paper":
-        if not run_phase_figures_paper(out_dir, threshold=args.threshold):
+        if not run_phase_figures_paper(
+            out_dir, threshold=args.threshold, include_full_heatmaps=include_hm
+        ):
+            return 1
+    if args.phase == "figures_aggregated":
+        if not run_phase_figures_aggregated(
+            out_dir,
+            str(args.corpus),
+            include_block_heatmap=args.include_block_heatmap,
+        ):
             return 1
     if args.phase == "tables_paper":
         if not run_phase_tables_paper(out_dir, threshold=args.threshold):
@@ -3306,7 +3472,9 @@ def main():
         if not run_phase_output_metrics(out_dir, reports_dir, allowed_scenarios=allowed_scenarios):
             return 1
     if args.phase == "outputs":
-        if not run_phase_outputs(out_dir, threshold=args.threshold):
+        if not run_phase_outputs(
+            out_dir, threshold=args.threshold, include_full_heatmaps=include_hm
+        ):
             return 1
     if args.phase == "all":
         # Cálculo de indirectas (hasta donde permiten reportes agregados de contacto)

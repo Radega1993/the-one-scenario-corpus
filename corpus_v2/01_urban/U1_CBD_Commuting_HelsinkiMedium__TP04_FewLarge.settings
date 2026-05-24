@@ -15,7 +15,7 @@ Scenario.endTime = 43200
 MovementModel.rngSeed = 1
 
 # --- World ---
-MovementModel.worldSize = 8495, 7504
+MovementModel.worldSize = 9124, 8034
 
 # =========================================================
 # MapBasedMovement base (required by WDM stack)
@@ -163,7 +163,7 @@ Group.router = EpidemicRouter
 Events.nrof = 1
 Events1.class = MessageEventGenerator
 Events1.interval = 180, 300
-Events1.size = 1M, 5M
+Events1.size = 500k, 2M
 Events1.hosts = 0, 81
 Events1.prefix = M
 

@@ -1,0 +1,7 @@
+#
+# Adds CreatedMessagesReport for message creation_time audits.
+# Use after routing_contact_reports_overrides.txt (increments report count).
+#
+
+Report.nrofReports = 8
+Report.report8 = CreatedMessagesReport

@@ -1,0 +1,1 @@
+"""Shared helpers for `scenarios/analysis` scripts (paths, parsers, I/O)."""

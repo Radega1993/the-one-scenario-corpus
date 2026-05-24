@@ -29,9 +29,9 @@ Silhouette (Ward k=7): 0.2680
 
 | Informe | Contenido |
 |---|---|
-| [correlation_core23_report.txt](correlation_core23_report.txt) | Pares con |r|≥umbral en core 23 |
-| [correlation_report.txt](correlation_report.txt) | Correlación en espacio completo (46 features) |
-| [ablation_report.txt](ablation_report.txt) | Ablación 17 vs 23 vs 46 |
-| [multiple_comparisons_report.txt](multiple_comparisons_report.txt) | FDR y Bonferroni |
-| [features_report.md](features_report.md) / [features_report.txt](features_report.txt) | Features usados / descartados |
-| [feature_feature_correlation_report.txt](feature_feature_correlation_report.txt) | Correlación feature–feature (core 23) |
+| [correlation_core23_report.txt](pipeline/correlation_core23_report.txt) | Pares con |r|≥umbral en core 23 |
+| [correlation_report.txt](pipeline/correlation_report.txt) | Correlación en espacio completo (46 features) |
+| [ablation_report.txt](pipeline/ablation_report.txt) | Ablación 17 vs 23 vs 46 |
+| [multiple_comparisons_report.txt](pipeline/multiple_comparisons_report.txt) | FDR y Bonferroni |
+| [features_report.md](pipeline/features_report.md) / [features_report.txt](pipeline/features_report.txt) | Features usados / descartados |
+| [feature_feature_correlation_report.txt](pipeline/feature_feature_correlation_report.txt) | Correlación feature–feature (core 23) |

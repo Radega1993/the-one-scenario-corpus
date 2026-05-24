@@ -2,48 +2,123 @@
 
 *(Versión en castellano. English: [README.md](README.md).)*
 
-**Corpus de escenarios y pipeline de análisis** para el simulador [The ONE](https://akeranen.github.io/the-one/) (Opportunistic Network Environment). Este proyecto proporciona un conjunto de configuraciones de simulación (`.settings`), herramientas para extraer características, analizar correlaciones y validar que los escenarios no son redundantes, y un dashboard para visualizar resultados. Está pensado para **evaluar protocolos de enrutamiento en redes oportunistas** (DTN/OppNets) en el marco de tesis o artículos: un benchmark reproducible con escenarios variados y documentados.
+**Corpus de escenarios y pipeline de análisis** para el simulador [The ONE](https://akeranen.github.io/the-one/) (Opportunistic Network Environment). Este proyecto proporciona configuraciones de simulación (`.settings`), herramientas para extraer características, analizar correlaciones y validar diversidad de escenarios, y un dashboard para explorar resultados. Está pensado para **evaluar protocolos de enrutamiento en redes oportunistas** (DTN/OppNets) en tesis o artículos: un benchmark reproducible con escenarios y perfiles de tráfico documentados.
 
-| Contenido | Descripción |
-|-----------|-------------|
-| **corpus_v1/** | 60 escenarios `.settings` por familia (urban, campus, vehicles, rural, disaster, social, traffic). |
-| **analysis/** | Extracción de features, correlación, métricas de salida, figuras y [dashboard interactivo](analysis/README.es.md). |
-| **.wiki-clone/** | Contenido de la wiki (EN+ES): `01-home`, `02-guide`, `03-reference`, `04-results`, `05-corpus`. [Índice](.wiki-clone/README.md). Ver README allí para publicar en GitHub Wiki. |
-| **ROADMAP.md** / **ROADMAP.es.md** | Próximos pasos: documentación bilingüe; criterios de diversidad (|r| < 0,7, cos_dist). Versión en castellano: [ROADMAP.es.md](ROADMAP.es.md). |
+**Requisitos:** Java y el ONE compilado (raíz del repo); Python 3 con `numpy`, `pandas`, `scipy`, `matplotlib`, `streamlit` (p. ej. venv del proyecto).
 
-### Por qué nombres como `corpus_v1`
+---
 
-El directorio del corpus se llama **`corpus_v1`** (y no solo `corpus`) para poder **versionar el conjunto de escenarios** sin romper scripts ni rutas: si más adelante se define un segundo corpus con otros criterios (p. ej. `corpus_v2` con menos escenarios o otra taxonomía), se mantiene `corpus_v1` intacto y los comandos pueden elegir `--corpus corpus_v1` o `--corpus corpus_v2`. La misma idea aplica a nombres de escenarios (U1, D2, T10…) y a ficheros de datos (p. ej. `output_metrics.csv.example`): un sufijo o prefijo de versión ayuda a convivir con futuras iteraciones del proyecto.
+## Estado actual listo para paper
 
-**Flujo típico:** ejecutar simulaciones → generar reportes en `reports/` → análisis (`run_analysis.py`) → visualizar en el dashboard.
+| Elemento | Valor |
+|----------|--------|
+| **Corpus activo** | [`corpus_v2/`](corpus_v2/) |
+| **Simulaciones** | **720** (= 60 escenarios base × 12 Traffic Profiles TP01–TP12) |
+| **Escenarios base** | 60 (referencia movilidad en [`corpus_v1/`](corpus_v1/)) |
+| **Perfiles de tráfico** | 12 (TP01 Baseline … TP12 GroupToGroup) |
+| **Estado** | Benchmark principal en **congelación / revisión metodológica** |
+| **Resultados canónicos** | [analysis/reports/RESULTADOS_ACTUALES.md](analysis/reports/RESULTADOS_ACTUALES.md) |
+| **Figuras paper** | [analysis/figures/paper/](analysis/figures/paper/) |
+| **Tablas paper** | [analysis/figures/paper/tables/](analysis/figures/paper/tables/) |
+| **Checklist freeze** | [analysis/reports/paper_freeze_checklist.md](analysis/reports/paper_freeze_checklist.md) |
+| **Política KPI protocolos** | [analysis/reports/canonical/protocol_benchmark_kpi_policy.md](analysis/reports/canonical/protocol_benchmark_kpi_policy.md) |
+| **v1 archivado** | [`_archive/corpus_dropped_v1/`](_archive/corpus_dropped_v1/) |
 
-**Requisitos:** Java y el ONE compilado (raíz del repo), Python 3 con `numpy`, `pandas`, `scipy`, `matplotlib`, `streamlit` (p. ej. venv del proyecto).
+**Resumen diversidad (720 escenarios, análisis congelado):**
 
-**Comandos rápidos** (desde la raíz del repo):
+- **Core-23:** max \|r\| = 1,0; 11 325 pares (4,4 %) con \|r\| ≥ 0,7; silhouette ablación (Ward k=7) = **0,3451**
+- **Full-46:** 8 356 pares (3,2 %) con \|r\| ≥ 0,7; silhouette = **0,2680**
+- **Feature–feature (core):** persiste 1 par alto: `mm_WDM ↔ mm_Bus = 0,9393`
+
+**No existe `corpus_v3/`**; cualquier propuesta v3 está solo en [`_archive/`](_archive/) como material histórico.
+
+---
+
+## Estructura del proyecto
+
+| Ruta | Rol |
+|------|-----|
+| [`corpus_v2/`](corpus_v2/) | **Benchmark activo** — 720 `.settings`, [`manifest.csv`](corpus_v2/manifest.csv) |
+| [`corpus_v1/`](corpus_v1/) | Base histórica de movilidad — 60 `.settings` |
+| [`corpus_dropped_v1/`](corpus_dropped_v1/) | Escenarios v1 archivados por redundancia (10) |
+| [`analysis/`](analysis/) | Pipeline, `data/`, `figures/`, `reports/`, dashboard |
+| [`_archive/`](_archive/) | Artefactos históricos (backups wiki, pilotos, scripts v3) |
+| [`.wiki-clone/`](.wiki-clone/) | **Wiki paper activa** (EN, páginas numeradas `01-` … `14-`) |
+| [`INVENTARIO.md`](INVENTARIO.md) | Mapa completo del repositorio |
+| [`internal/`](internal/) | Notas metodológicas privadas (gitignored) |
+
+Los directorios de corpus están **versionados** (`corpus_v1`, `corpus_v2`, …) para que los scripts usen `--corpus corpus_v2` sin romper rutas antiguas.
+
+---
+
+## Documentación
+
+| Documento | Propósito |
+|-----------|-----------|
+| [INVENTARIO.md](INVENTARIO.md) | Mapa de ficheros y archivo `_archive/` |
+| [analysis/SCRIPTS_INDEX.md](analysis/SCRIPTS_INDEX.md) | Roles de scripts y **pipeline oficial paper** |
+| [analysis/reports/RESULTADOS_ACTUALES.md](analysis/reports/RESULTADOS_ACTUALES.md) | Métricas congeladas de diversidad y ablación |
+| [analysis/figures/README.md](analysis/figures/README.md) | Catálogo de figuras (720 escenarios) |
+| [analysis/docs/features_core_vs_extended.md](analysis/docs/features_core_vs_extended.md) | Core 23 vs extended 46 |
+| [corpus_v2/README.md](corpus_v2/README.md) | Perfiles TP y diseño del benchmark |
+
+Detalle del pipeline: [analysis/README.es.md](analysis/README.es.md). Referencia **.settings** (secciones 1–15): más abajo en este documento.
+
+---
+
+## Fuente vs generado
+
+| Tipo | Rutas |
+|------|--------|
+| **Fuente (versionar)** | `corpus_v2/`, `corpus_v1/`, `corpus_dropped_v1/`, scripts `analysis/`, `analysis/docs/`, overlays, `.wiki-clone/` |
+| **Generado (regenerable)** | `analysis/data/*.csv`, la mayoría de `analysis/reports/`, `analysis/figures/` (PNG/PDF) |
+| **Salidas simulación (costosas)** | `reports/` en la raíz del repo (`*MessageStatsReport.txt`, CSVs espaciales, etc.) |
+
+Regenerar con el [pipeline oficial](#pipeline-oficial) siguiente.
+
+---
+
+## Pipeline oficial
+
+Comandos paso a paso completos: **[analysis/SCRIPTS_INDEX.md](analysis/SCRIPTS_INDEX.md)**.
+
+**Inicio rápido** (desde la raíz del repo):
 
 ```bash
-# Ejecutar todas las simulaciones del corpus (modo batch, sin GUI)
-python3 scenarios/analysis/run_all_scenarios.py --corpus corpus_v1
+# 1. Simulaciones (batch)
+python3 scenarios/analysis/run_all_scenarios.py --corpus corpus_v2 \
+  --extra-settings scenarios/analysis/overlays/routing_contact_reports_overrides.txt \
+  --extra-settings scenarios/analysis/overlays/spatial_occupancy_reports_overrides.txt \
+  --jobs 4
 
-# (Opcional) forzar todos los reportes para Diego17 real / indirectas
-python3 scenarios/analysis/run_all_scenarios.py --corpus corpus_v1 \
-  --extra-settings scenarios/analysis/diego17_reports_overrides.txt
+# 2. Fases de análisis
+python3 scenarios/analysis/run_analysis.py --corpus corpus_v2 --phase output_metrics
+python3 scenarios/analysis/run_analysis.py --corpus corpus_v2 --phase indirects
+python3 scenarios/analysis/run_analysis.py --corpus corpus_v2 --phase all
+python3 scenarios/analysis/run_analysis.py --corpus corpus_v2 --phase figures_paper
+python3 scenarios/analysis/run_analysis.py --corpus corpus_v2 --phase tables_paper
 
-# Análisis completo (features → feature_correlation → ablation → figuras → output_metrics → indirectas)
-python3 scenarios/analysis/run_analysis.py --corpus corpus_v1 --phase all
+# 3. Espacial, tiempos de mensajes, validación TP
+python3 scenarios/analysis/scripts/validation/analyze_spatial_occupancy.py \
+  --manifest scenarios/corpus_v2/manifest.csv --reports-dir reports --corpus corpus_v2
+python3 scenarios/analysis/analyze_message_creation_times.py
+python3 scenarios/analysis/scripts/validation/validate_traffic_profiles.py
 
-# Paquete paper (figuras + tablas)
-python3 scenarios/analysis/run_analysis.py --phase figures_paper
-python3 scenarios/analysis/run_analysis.py --phase tables_paper
+# 4. Figuras agregadas
+python3 scenarios/analysis/run_figures_aggregated.py --corpus corpus_v2
+```
 
-# Validación en espacio de outputs
-python3 scenarios/analysis/run_analysis.py --phase outputs
+---
 
-# Dashboard interactivo
+## Dashboard
+
+Exploración interactiva (salud del corpus, perfiles TP, heatmaps espaciales, reportes crudos):
+
+```bash
 streamlit run scenarios/analysis/dashboard.py
 ```
 
-Detalle de fases y opciones en [analysis/README.es.md](analysis/README.es.md); referencia de opciones .settings más abajo en este documento.
+Detalle de fases y opciones en [analysis/README.es.md](analysis/README.es.md); referencia de opciones `.settings` más abajo en este documento.
 
 ---
 
@@ -55,7 +130,7 @@ Esta guía documenta **todas** las opciones de configuración disponibles en los
 
 ## 1. Cómo se cargan los settings
 
-- El simulador carga primero `default_settings.txt` (en la raíz del proyecto) y luego el archivo que pasas por línea de comandos (p. ej. `scenarios/corpus_v1/01_urban/U1_CBD_Commuting_HelsinkiMedium.settings`).
+- El simulador carga primero `default_settings.txt` (en la raíz del proyecto) y luego el archivo que pasas por línea de comandos (p. ej. `scenarios/corpus_v2/01_urban/U1_CBD_Commuting_HelsinkiMedium__TP01_Baseline.settings`).
 - Las claves del archivo de escenario **sobrescriben** las del default.
 - **Namespaces**: muchas opciones se buscan con prefijo (p. ej. `Scenario.endTime`, `Group1.speed`). Los valores por grupo heredan de `Group.*` si no se definen en `Group1.*`, `Group2.*`, etc.
 - **Sintaxis**: pares `clave = valor`. Comentarios con `#`. En rutas de archivo usar siempre **`/`** (no `\`).

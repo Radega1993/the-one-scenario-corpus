@@ -1,0 +1,54 @@
+# Realism rules (pre-execution)
+
+Flags applied in `diagnose_scenarios.py` using thresholds below.
+
+```yaml
+# Thresholds for scenario realism flags (corpus audit).
+# Adjust after reviewing distributions in scenario_diagnosis.md.
+
+delivery:
+  saturated_min: 0.95
+  zero_max: 0.0
+
+overhead:
+  extreme_min: 100.0
+
+drops:
+  extreme_min: 50.0
+
+contacts:
+  zero_max: 0.0
+
+spatial:
+  map_underused_coverage_world_max: 0.12
+  map_too_large_accessible_ratio_min: 2.0
+  world_vs_roads_area_ratio_min: 3.0
+
+corpus:
+  single_map_dependency_pct: 90.0
+
+traffic_profile:
+  tp_not_differentiating_std_max: 0.02
+
+priority:
+  p0_flags: ZERO_DELIVERY,EXTREME_OVERHEAD,EXTREME_DROPS,ZERO_CONTACTS
+  p1_flags: MAP_UNDERUSED,MAP_TOO_LARGE,TP_NOT_DIFFERENTIATING
+  p2_flags: SATURATED_DELIVERY,SINGLE_MAP_DEPENDENCY
+```
+
+## Interpretation
+
+| Flag | Meaning |
+|------|---------|
+| `ZERO_DELIVERY` | No delivered messages; not explained by partition |
+| `STRUCTURAL_PARTITION_VALID` | TP12 / cross-group traffic; zero delivery expected |
+| `SATURATED_DELIVERY` | delivery ≥ 0.95 |
+| `EXTREME_OVERHEAD` | overhead > 100 |
+| `EXTREME_DROPS` | drop_ratio > 50 |
+| `ZERO_CONTACTS` | No encounters |
+| `MAP_UNDERUSED` | coverage_world_ratio < 0.12 |
+| `MAP_TOO_LARGE` | Accessible/world coverage ratio high or world >> roads |
+| `SINGLE_MAP_DEPENDENCY` | Corpus >90% HelsinkiMedium |
+| `TP_NOT_DIFFERENTIATING` | Per-base delivery std < 0.02 |
+
+Adjust thresholds in `data/realism_thresholds.yaml` after reviewing distributions.

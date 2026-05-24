@@ -12,7 +12,7 @@ Scenario.updateInterval = 0.1
 Scenario.endTime = 43200
 MovementModel.rngSeed = 41
 # Diversificación estructural vs R4 (mantener grupo Disaster, mismo mapa Helsinki)
-MovementModel.worldSize = 8400, 7504
+MovementModel.worldSize = 9124, 8034
 
 MapBasedMovement.nrofMapFiles = 1
 MapBasedMovement.mapFile1 = data/HelsinkiMedium/roads.wkt
@@ -52,7 +52,7 @@ Group.msgTtl = 14400
 Events.nrof = 1
 Events1.class = MessageEventGenerator
 Events1.interval = 180, 300
-Events1.size = 1M, 5M
+Events1.size = 500k, 2M
 Events1.hosts = 0, 62
 Events1.prefix = M
 

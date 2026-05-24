@@ -25,3 +25,8 @@ internal/
 
 # Clone of GitHub Wiki (solo para publicar; el contenido editable está en wiki/)
 .wiki-clone/
+
+# Backups locales (tar.gz grandes; no subir a GitHub)
+# Nota: .gitignore solo evita ficheros NUEVOS; si ya estaban en git hay que quitarlos con git rm --cached
+analysis/backups/
+_archive/backups/

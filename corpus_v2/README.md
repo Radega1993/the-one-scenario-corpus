@@ -16,7 +16,7 @@ El piloto de 36 simulaciones se mantiene como evidencia de validacion inicial.
 ## Estado actual
 
 - Base de generacion: [`../corpus_v1`](../corpus_v1)
-- Generador: [`../analysis/generate_corpus_v2_traffic.py`](../analysis/generate_corpus_v2_traffic.py)
+- Definiciones TP (corpus congelado): [`../analysis/lib/traffic_profile_generator.py`](../analysis/lib/traffic_profile_generator.py)
 - Artefacto de trazabilidad: `manifest.csv` (una fila por `.settings` generado)
 - Documentacion metodologica extensa: [`../internal/15-corpus_v2_traffic_benchmark.md`](../internal/15-corpus_v2_traffic_benchmark.md)
 - Conteo actual: **720** `.settings` y **720** filas en `manifest.csv` (consistente por familia y TP).
@@ -138,7 +138,7 @@ Comando de piloto:
 ```bash
 python3 scenarios/analysis/run_all_scenarios.py --corpus corpus_v2 \
   --name-regex '(U1_CBD_Commuting_HelsinkiMedium|R1_Rural_RandomWaypoint|D2_PartitionedCity_MuleBridge)__TP' \
-  --extra-settings scenarios/analysis/diego17_reports_overrides.txt \
+  --extra-settings scenarios/analysis/overlays/routing_contact_reports_overrides.txt \
   --timeout 14400 --jobs 6
 ```
 
@@ -151,10 +151,10 @@ python3 scenarios/analysis/run_analysis.py --corpus corpus_v2 --phase indirects
 
 Reportes resultantes del piloto:
 
-- `scenarios/analysis/reports/piloto_corpus_v2_36_resultados.md`
-- `scenarios/analysis/reports/go_no_go_corpus_v2_12perfiles.md`
-- `scenarios/analysis/reports/check_tp12_d2.md`
-- `scenarios/analysis/reports/resumen_tp_excluyendo_no_contacto.md`
+- `scenarios/_archive/reports/piloto_corpus_v2_36_resultados.md`
+- `scenarios/_archive/reports/go_no_go_corpus_v2_12perfiles.md`
+- `scenarios/analysis/reports/_archive_local/check_tp12_d2.md`
+- `scenarios/analysis/reports/_archive_local/resumen_tp_excluyendo_no_contacto.md`
 
 ---
 
@@ -175,23 +175,12 @@ Recomendación operacional para ejecución masiva:
 
 Reportes de decision/check del piloto:
 
-- `scenarios/analysis/reports/go_no_go_corpus_v2_12perfiles.md`
-- `scenarios/analysis/reports/check_tp12_d2.md`
-- `scenarios/analysis/reports/resumen_tp_excluyendo_no_contacto.md`
+- `scenarios/_archive/reports/go_no_go_corpus_v2_12perfiles.md`
+- `scenarios/analysis/reports/_archive_local/check_tp12_d2.md`
+- `scenarios/analysis/reports/_archive_local/resumen_tp_excluyendo_no_contacto.md`
 
 ---
 
 ## Regeneracion
 
-Regenerar todo `corpus_v2` (sobrescribe carpeta + `manifest.csv`):
-
-```bash
-python3 scenarios/analysis/generate_corpus_v2_traffic.py
-```
-
-Nota: si cambias definicion de perfiles, recomienda borrar y regenerar:
-
-```bash
-rm -rf scenarios/corpus_v2
-python3 scenarios/analysis/generate_corpus_v2_traffic.py
-```
+El corpus está **congelado** (720 escenarios). El generador histórico `generate_corpus_v2_traffic.py` fue eliminado; recuperar desde `analysis/scripts_backup_20260524_184900.tar.gz` o git si hace falta regenerar desde `corpus_v1`.

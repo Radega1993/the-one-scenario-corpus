@@ -1,0 +1,173 @@
+"""Canonical paths for analysis reports (post-reorganization layout)."""
+
+from __future__ import annotations
+
+from pathlib import Path
+
+ANALYSIS_DIR = Path(__file__).resolve().parent.parent
+
+REPORTS_ROOT = ANALYSIS_DIR / "reports"
+REPORTS_CANONICAL_DIR = REPORTS_ROOT / "canonical"
+REPORTS_PIPELINE_DIR = REPORTS_ROOT / "pipeline"
+REPORTS_VALIDATION_DIR = REPORTS_ROOT / "validation"
+REPORTS_POLICIES_DIR = REPORTS_ROOT / "policies"
+REPORTS_PAPER_GATE_DIR = REPORTS_ROOT / "paper_gate"
+REPORTS_SPATIAL_DIR = REPORTS_ROOT / "spatial"
+REPORTS_TRAFFIC_PROFILES_DIR = REPORTS_ROOT / "traffic_profiles"
+REPORTS_WIKI_META_DIR = REPORTS_ROOT / "wiki_meta"
+REPORTS_PROJECT_DIR = REPORTS_ROOT / "project"
+REPORTS_ARCHIVE_LOCAL_DIR = REPORTS_ROOT / "_archive_local"
+
+# Root-only canonical files
+RESULTADOS_ACTUALES = REPORTS_ROOT / "RESULTADOS_ACTUALES.md"
+PAPER_FREEZE_CHECKLIST = REPORTS_ROOT / "paper_freeze_checklist.md"
+REPORTS_README = REPORTS_ROOT / "README.md"
+
+# Canonical subdirectory
+TRAFFIC_PROFILE_KPI_ANALYSIS = REPORTS_CANONICAL_DIR / "traffic_profile_kpi_analysis.md"
+PROTOCOL_BENCHMARK_KPI_POLICY = REPORTS_CANONICAL_DIR / "protocol_benchmark_kpi_policy.md"
+MESSAGE_ANALYSIS_WINDOW_POLICY = REPORTS_CANONICAL_DIR / "message_analysis_window_policy.md"
+SPATIAL_VS_PERFORMANCE_ANALYSIS = REPORTS_CANONICAL_DIR / "spatial_vs_performance_analysis.md"
+CORPUS_V2_BENCHMARK_VALIDATION = REPORTS_CANONICAL_DIR / "corpus_v2_benchmark_validation.md"
+
+# Pipeline
+FEATURES_REPORT_TXT = REPORTS_PIPELINE_DIR / "features_report.txt"
+FEATURES_REPORT_MD = REPORTS_PIPELINE_DIR / "features_report.md"
+CORRELATION_REPORT_TXT = REPORTS_PIPELINE_DIR / "correlation_report.txt"
+CORRELATION_CORE23_REPORT_TXT = REPORTS_PIPELINE_DIR / "correlation_core23_report.txt"
+FEATURE_FEATURE_CORRELATION_REPORT_TXT = REPORTS_PIPELINE_DIR / "feature_feature_correlation_report.txt"
+ABLATION_REPORT_TXT = REPORTS_PIPELINE_DIR / "ablation_report.txt"
+MULTIPLE_COMPARISONS_REPORT_TXT = REPORTS_PIPELINE_DIR / "multiple_comparisons_report.txt"
+OUTPUTS_CORRELATION_REPORT_TXT = REPORTS_PIPELINE_DIR / "outputs_correlation_report.txt"
+SCENARIOS_TO_DIVERSIFY_TXT = REPORTS_PIPELINE_DIR / "scenarios_to_diversify.txt"
+SCENARIOS_TO_DIVERSIFY_CORE23_TXT = REPORTS_PIPELINE_DIR / "scenarios_to_diversify_core23.txt"
+CLUSTERING_REPORT_TXT = REPORTS_PIPELINE_DIR / "clustering_report.txt"
+INDIRECT_FEATURES_REPORT_TXT = REPORTS_PIPELINE_DIR / "indirect_features_report.txt"
+INDIRECT_FEATURES_REPORT_MD = REPORTS_PIPELINE_DIR / "indirect_features_report.md"
+
+# Validation
+SETTINGS_AUDIT = REPORTS_VALIDATION_DIR / "settings_audit.md"
+SCENARIO_DIAGNOSIS = REPORTS_VALIDATION_DIR / "scenario_diagnosis.md"
+TP_VALIDATION_REPORT = REPORTS_VALIDATION_DIR / "tp_validation_report.md"
+MESSAGE_CREATION_TIME_AUDIT = REPORTS_VALIDATION_DIR / "message_creation_time_audit.md"
+EVALUATION_METRICS_REVIEW = REPORTS_VALIDATION_DIR / "evaluation_metrics_review.md"
+CURRENT_RESULTS_REVIEW = REPORTS_VALIDATION_DIR / "current_results_review.md"
+
+# Policies
+SIMULATION_TIME_POLICY = REPORTS_POLICIES_DIR / "simulation_time_policy.md"
+
+# Paper gate
+PAPER_FIGURES_TABLES_READINESS = REPORTS_PAPER_GATE_DIR / "paper_figures_tables_readiness.md"
+DASHBOARD_READINESS_REPORT = REPORTS_PAPER_GATE_DIR / "dashboard_readiness_report.md"
+PAPER_PHASE1_ACTION_PLAN = REPORTS_PAPER_GATE_DIR / "paper_phase1_action_plan.md"
+
+# Spatial
+SPATIAL_OCCUPANCY_REPORT = REPORTS_SPATIAL_DIR / "spatial_occupancy_report.md"
+SPATIAL_OCCUPANCY_ANALYSIS_SUMMARY = REPORTS_SPATIAL_DIR / "spatial_occupancy_analysis_summary.md"
+USEFUL_SIMULATION_TIME_REPORT = REPORTS_SPATIAL_DIR / "useful_simulation_time_report.md"
+
+# Wiki meta
+WIKI_PAPER_REBUILD_REPORT = REPORTS_WIKI_META_DIR / "wiki_paper_rebuild_report.md"
+WIKI_REBUILD_SUMMARY = REPORTS_WIKI_META_DIR / "wiki_rebuild_summary.md"
+WIKI_NEW_INDEX = REPORTS_WIKI_META_DIR / "wiki_new_index.md"
+WIKI_OLD_AUDIT = REPORTS_WIKI_META_DIR / "wiki_old_audit.md"
+
+# Project
+PROJECT_REORGANIZATION_REPORT = REPORTS_PROJECT_DIR / "project_reorganization_report.md"
+INVENTORY_UPDATE_REPORT = REPORTS_PROJECT_DIR / "inventory_update_report.md"
+CORPUS_V2_REVISION_PLAN = REPORTS_PROJECT_DIR / "corpus_v2_revision_plan.md"
+CORPUS_V2_REVISION_CHANGELOG = REPORTS_PROJECT_DIR / "corpus_v2_revision_changelog.md"
+REPORTS_INVENTORY = REPORTS_PROJECT_DIR / "REPORTS_INVENTORY.md"
+REPORTS_REORGANIZATION_REPORT = REPORTS_PROJECT_DIR / "reports_reorganization_report.md"
+
+# Search order: root, then thematic subdirs (canonical first per user rule)
+_SEARCH_DIRS: tuple[Path, ...] = (
+    REPORTS_ROOT,
+    REPORTS_CANONICAL_DIR,
+    REPORTS_POLICIES_DIR,
+    REPORTS_VALIDATION_DIR,
+    REPORTS_PIPELINE_DIR,
+    REPORTS_PAPER_GATE_DIR,
+    REPORTS_SPATIAL_DIR,
+    REPORTS_TRAFFIC_PROFILES_DIR,
+    REPORTS_WIKI_META_DIR,
+    REPORTS_PROJECT_DIR,
+    REPORTS_ARCHIVE_LOCAL_DIR,
+)
+
+# Basename -> preferred path (for writers and fast lookup)
+_REPORT_BY_NAME: dict[str, Path] = {
+    p.name: p
+    for p in (
+        RESULTADOS_ACTUALES,
+        PAPER_FREEZE_CHECKLIST,
+        REPORTS_README,
+        TRAFFIC_PROFILE_KPI_ANALYSIS,
+        PROTOCOL_BENCHMARK_KPI_POLICY,
+        MESSAGE_ANALYSIS_WINDOW_POLICY,
+        SPATIAL_VS_PERFORMANCE_ANALYSIS,
+        CORPUS_V2_BENCHMARK_VALIDATION,
+        FEATURES_REPORT_TXT,
+        FEATURES_REPORT_MD,
+        CORRELATION_REPORT_TXT,
+        CORRELATION_CORE23_REPORT_TXT,
+        FEATURE_FEATURE_CORRELATION_REPORT_TXT,
+        ABLATION_REPORT_TXT,
+        MULTIPLE_COMPARISONS_REPORT_TXT,
+        OUTPUTS_CORRELATION_REPORT_TXT,
+        SCENARIOS_TO_DIVERSIFY_TXT,
+        SCENARIOS_TO_DIVERSIFY_CORE23_TXT,
+        CLUSTERING_REPORT_TXT,
+        INDIRECT_FEATURES_REPORT_TXT,
+        INDIRECT_FEATURES_REPORT_MD,
+        SETTINGS_AUDIT,
+        SCENARIO_DIAGNOSIS,
+        TP_VALIDATION_REPORT,
+        MESSAGE_CREATION_TIME_AUDIT,
+        EVALUATION_METRICS_REVIEW,
+        CURRENT_RESULTS_REVIEW,
+        SIMULATION_TIME_POLICY,
+        PAPER_FIGURES_TABLES_READINESS,
+        DASHBOARD_READINESS_REPORT,
+        PAPER_PHASE1_ACTION_PLAN,
+        SPATIAL_OCCUPANCY_REPORT,
+        SPATIAL_OCCUPANCY_ANALYSIS_SUMMARY,
+        USEFUL_SIMULATION_TIME_REPORT,
+        WIKI_PAPER_REBUILD_REPORT,
+        WIKI_REBUILD_SUMMARY,
+        WIKI_NEW_INDEX,
+        WIKI_OLD_AUDIT,
+        PROJECT_REORGANIZATION_REPORT,
+        INVENTORY_UPDATE_REPORT,
+        CORPUS_V2_REVISION_PLAN,
+        CORPUS_V2_REVISION_CHANGELOG,
+        REPORTS_INVENTORY,
+        REPORTS_REORGANIZATION_REPORT,
+    )
+}
+
+CANONICAL_REPORTS: tuple[Path, ...] = (
+    RESULTADOS_ACTUALES,
+    TRAFFIC_PROFILE_KPI_ANALYSIS,
+    PROTOCOL_BENCHMARK_KPI_POLICY,
+    MESSAGE_ANALYSIS_WINDOW_POLICY,
+    SPATIAL_VS_PERFORMANCE_ANALYSIS,
+    CORPUS_V2_BENCHMARK_VALIDATION,
+    PAPER_FREEZE_CHECKLIST,
+)
+
+
+def resolve_report(name: str) -> Path:
+    """Return path for report basename; prefers registered layout, else first match."""
+    if name in _REPORT_BY_NAME:
+        return _REPORT_BY_NAME[name]
+    for d in _SEARCH_DIRS:
+        p = d / name
+        if p.is_file():
+            return p
+    return REPORTS_ROOT / name
+
+
+def report_path(name: str) -> Path:
+    """Alias for resolve_report."""
+    return resolve_report(name)

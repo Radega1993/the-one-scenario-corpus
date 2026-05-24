@@ -1,0 +1,13 @@
+tp_id,tp_name,window_type,median_first_norm,median_median_norm,median_last_norm,mean_pct_first_10,mean_pct_last_10,max_pct_last_10,tp_decision,n_late_bias,n_sensitivity,interpretation
+TP01,Baseline,full_simulation,0.002014,0.500266,0.998704,10.1407,9.9967,10.559,complete_window,0,34,Full simulation window; primary metrics use all messages.
+TP02,LowLoad,full_simulation,0.007569,0.496042,0.994618,10.4283,10.0813,12.1212,sensitivity_required,2,23,Low load with extended generation; elevated late-message fraction (~10%).
+TP03,ManySmall,full_simulation,0.000394,0.500081,0.999815,9.9717,10.0137,10.3182,complete_window,0,26,Full simulation window; primary metrics use all messages.
+TP04,FewLarge,full_simulation,0.006181,0.503993,0.997338,9.5971,9.8169,10.3825,complete_window,0,26,Full simulation window; primary metrics use all messages.
+TP05,CriticalTTL,full_simulation,0.002014,0.500266,0.998704,10.1407,9.9967,10.559,complete_window,0,34,Full simulation window; primary metrics use all messages.
+TP06,OneToMany,directional,0.001319,0.498113,0.999375,10.0129,10.1958,10.6557,sensitivity_required,0,53,Directional fan-out; include censored sensitivity analysis.
+TP07,BurstWindow,burst_only,0.200278,0.240307,0.279861,0.0,0.0,0.0,burst_exception,0,0,Early burst window (20-28% endTime); late cutoff not applicable.
+TP08,HubTarget,directional,0.001319,0.498113,0.999375,10.0146,10.1924,10.6557,sensitivity_required,0,53,Hub-target directional traffic; include censored sensitivity analysis.
+TP09,Bimodal,full_simulation,0.002014,0.50099,0.998889,9.8192,9.9556,10.4167,complete_window,0,28,Full simulation window; primary metrics use all messages.
+TP10,Storm,full_simulation,0.000162,0.499734,0.999931,10.0785,9.9324,10.2664,stress_profile,0,0,Storm/saturation stress tier; report separately from normal traffic profiles.
+TP11,ManyToOne,directional,0.001319,0.498113,0.999375,10.0129,10.1958,10.6557,sensitivity_required,0,53,Directional fan-in; include censored sensitivity analysis.
+TP12,GroupToGroup,directional,0.002014,0.503565,0.998773,9.853,9.6164,10.3976,complete_window,0,3,Full simulation window; primary metrics use all messages.
