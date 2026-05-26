@@ -29,4 +29,9 @@ internal/
 # Backups locales (tar.gz grandes; no subir a GitHub)
 # Nota: .gitignore solo evita ficheros NUEVOS; si ya estaban en git hay que quitarlos con git rm --cached
 analysis/backups/
-_archive/backups/
+_archive/
+
+# Map pipeline — datos regenerables (bootstrap_maps.sh los recrea)
+maps/raw/
+maps/processed/
+setup/.venv_osmnx/
