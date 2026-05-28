@@ -1,0 +1,34 @@
+{
+  "map_name": "ControlCompactGrid",
+  "checks": {
+    "connectivity": true,
+    "worldSize_fits": true,
+    "no_isolated_nodes": true,
+    "coverage_reasonable": true,
+    "poi_homes_within_bounds": true,
+    "poi_offices_within_bounds": true,
+    "poi_meetingspots_within_bounds": true,
+    "bus_route_exists": true
+  },
+  "status": "PASS",
+  "notes": [
+    "All checks passed"
+  ],
+  "n_road_segments": 24,
+  "n_unique_points": 143,
+  "span_x": 1800.0,
+  "span_y": 1500.0,
+  "world_size_x": 2000,
+  "world_size_y": 1700,
+  "source": "synthetic",
+  "family": "07_stress_controls",
+  "crs": "local",
+  "n_components": 1,
+  "n_isolated": 0,
+  "coverage_pct": 11.56,
+  "total_road_length_m": 39300.0,
+  "n_homes": 50,
+  "n_offices": 30,
+  "n_meetingspots": 20,
+  "n_bus_stops": 15
+}

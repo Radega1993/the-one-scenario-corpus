@@ -1,10 +1,10 @@
 # Indirectas tipo Diego (estado actual de datos)
 
-- Escenarios procesados: **720**
-- Calculados con `ConnectivityONEReport`: **720**
-- Calculados con fallback agregado: **0**
-- Con encounters > 0: **696**
-- Con `Scenario.endTime` disponible: **720**
+- Escenarios procesados: **570**
+- Calculados con `ConnectivityONEReport`: **566**
+- Calculados con fallback agregado: **4**
+- Con encounters > 0: **566**
+- Con `Scenario.endTime` disponible: **570**
 
 ## Calculadas con datos actuales (cuando hay datos)
 
@@ -26,7 +26,7 @@ Ejecuta simulaciones con overrides de reportes:
 
 ```
 python scenarios/analysis/run_all_scenarios.py --corpus corpus_v1 \
-  --extra-settings scenarios/analysis/diego17_reports_overrides.txt
+  --extra-settings scenarios/analysis/overlays/routing_contact_reports_overrides.txt
 ```
 
 Luego re-ejecuta `run_all_scenarios.py` y después `run_analysis.py --phase indirects`.

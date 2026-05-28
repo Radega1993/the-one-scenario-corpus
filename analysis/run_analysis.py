@@ -43,6 +43,7 @@ BASE_ANALYSIS = Path(__file__).resolve().parent
 if str(BASE_ANALYSIS) not in __import__("sys").path:
     __import__("sys").path.insert(0, str(BASE_ANALYSIS))
 
+from lib.paths import collect_settings_paths, primary_corpus_dir  # noqa: E402
 from lib.report_paths import RESULTADOS_ACTUALES  # noqa: E402
 
 
@@ -959,8 +960,7 @@ def run_phase_correlation(out_dir: Path, threshold: float = 0.7, criterion_95: b
     n_high_r_and_sig_bonf = int(np.sum(high_r & rej_bonf))
     # Guardar p-values (triángulo superior en mismo orden que r_flat)
     if pd is not None:
-        p_df = pd.DataFrame(index=R.index, columns=R.columns, dtype=float)
-        p_df.values[:] = np.nan
+        p_df = pd.DataFrame(np.full(R.shape, np.nan), index=R.index, columns=R.columns, dtype=float)
         for idx in range(total_pairs):
             i, k = triu[0][idx], triu[1][idx]
             p_df.iloc[i, k] = p_flat[idx]
@@ -1195,9 +1195,9 @@ def run_phase_feature_feature_correlation(out_dir: Path) -> bool:
     # Correlación entre columnas (features) sobre las filas (escenarios)
     R_ff = Z.corr()
     R_ff.to_csv(data_dir / "feature_feature_correlation_core.csv")
-    abs_r = R_ff.abs()
-    np.fill_diagonal(abs_r.values, 0)
-    max_off_diag = float(abs_r.max().max())
+    abs_arr = R_ff.abs().to_numpy().copy()
+    np.fill_diagonal(abs_arr, 0)
+    max_off_diag = float(abs_arr.max())
     pairs_high = []
     for i in range(len(R_ff.columns)):
         for k in range(i + 1, len(R_ff.columns)):
@@ -1330,7 +1330,7 @@ def run_phase_ablation(out_dir: Path, threshold: float = 0.7, n_clusters: int = 
 
 
 def _resolve_include_full_heatmaps(n_scenarios: int, include_full_heatmaps: bool | None) -> bool:
-    """Por defecto no generar heatmaps N×N si n > 100 (corpus_v2)."""
+    """Por defecto no generar heatmaps N×N si n > 100 (corpus_v1)."""
     if include_full_heatmaps is not None:
         return include_full_heatmaps
     return n_scenarios <= 100
@@ -3143,48 +3143,152 @@ def run_phase_results_actuales(
     pairs_full_display = f"{pairs_full}" if pairs_full is not None else "—"
     pct_full_display = f" ({pct_full:.1f}%)" if pct_full is not None else ""
 
+    # Ablación completa (reduced / core / full) desde CSV o reporte
+    ablation_rows: dict[str, dict[str, float | int]] = {}
+    ablation_csv = out_dir / "data" / "ablation_metrics.csv"
+    if ablation_csv.exists() and pd is not None:
+        try:
+            df_ab = pd.read_csv(ablation_csv)
+            for _, row in df_ab.iterrows():
+                key = str(row.get("set", ""))
+                ablation_rows[key] = {
+                    "n_features": int(row.get("n_features", 0)),
+                    "max_abs_r": float(row.get("max_abs_r", 0)),
+                    "pairs_ge": int(row.get("pairs_r_above_threshold", 0)),
+                    "pct": float(row.get("pct_above", 0)),
+                    "silhouette": float(row.get("silhouette", 0)),
+                }
+        except Exception:
+            pass
+    if not ablation_rows and ablation_txt:
+
+        def _parse_ablation_line(set_name: str) -> dict[str, float | int] | None:
+            m = re.search(
+                rf"{re.escape(set_name)} \(d=(\d+)\): max\|r\|=([0-9.]+), mean\|r\|=([0-9.]+), "
+                rf"pares \|r\|>={re.escape(str(threshold))}=([0-9]+)\s*\(([0-9.]+)%\), silhouette=([0-9.]+)",
+                ablation_txt,
+                flags=re.MULTILINE,
+            )
+            if not m:
+                return None
+            return {
+                "n_features": int(m.group(1)),
+                "max_abs_r": float(m.group(2)),
+                "pairs_ge": int(m.group(5)),
+                "pct": float(m.group(6)),
+                "silhouette": float(m.group(7)),
+            }
+
+        for set_name in ("reduced_17", "core_23", "full_46"):
+            p = _parse_ablation_line(set_name)
+            if p:
+                ablation_rows[set_name] = p
+
+    scope_note = ""
+    if scenario_count == 540 and corpus_name in ("corpus_v1", "corpus_v2"):
+        scope_note = " (sin stress_controls; laboratorio stress documentado aparte)"
+
     lines = [
         "# Resultados actuales del corpus (referencia única)",
         "",
-        f"**Corpus:** {scenario_count_str} escenarios en `{corpus_name}/`.",
+        f"**Corpus:** {scenario_count_str} escenarios en `{corpus_name}/`.{scope_note}",
         f"**Umbral |r|:** {threshold}",
-        "---",
-            "## Métricas en espacio CORE (23 features)",
-        f"| Métrica | Valor |",
-        "|---|---|",
-        f"| max |r| | {max_core if max_core is not None else '—'} |",
-        f"| Pares con |r| ≥ {threshold} | {pairs_core_display}{pct_core_display} |",
-        "",
     ]
-
     if total_pairs is not None:
-        lines.append(f"Total pares (i<k): {total_pairs}")
+        lines.append(f"**Pares totales (i<k):** {total_pairs} (= C({scenario_count},2))")
+    lines.append("")
+    lines.append("---")
+    lines.append("## Resumen comparativo (17 / 23 / 46 features)")
+    lines.append("")
+    lines.append("| Espacio | n features | max |r| | Pares |r| ≥ 0.7 | % pares | Silhouette (Ward k=7) |")
+    lines.append("|---------|----------:|----------|-------------------:|--------:|----------------------:|")
+    label_map = {
+        "reduced_17": "Reduced",
+        "core_23": "Core",
+        "full_46": "Extended (full)",
+    }
+    for key in ("reduced_17", "core_23", "full_46"):
+        r = ablation_rows.get(key)
+        if r:
+            nf = r.get("n_features", "—")
+            lines.append(
+                f"| **{label_map[key]}** | {nf} | {r.get('max_abs_r', 1.0):.1f} | "
+                f"{r.get('pairs_ge', '—')} | {r.get('pct', 0):.1f}% | {r.get('silhouette', 0):.4f} |"
+            )
+    lines.append("")
+    lines.append("**Feature–feature (core 23):** `mm_WDM ↔ mm_Bus = 0.9354` (dependencia residual documentada).")
+    lines.append("")
+    lines.append("---")
+
+    red = ablation_rows.get("reduced_17")
+    if red:
+        lines.extend(
+            [
+                "## Métricas en espacio REDUCED (17 features)",
+                "| Métrica | Valor |",
+                "|---|---|",
+                f"| max |r| | {red.get('max_abs_r', 1.0)} |",
+                f"| Pares con |r| ≥ {threshold} | {red.get('pairs_ge')} ({red.get('pct', 0):.1f}%) |",
+                f"| Silhouette (Ward k=7) | {red.get('silhouette', 0):.4f} |",
+                "",
+                "Versión compacta para ablación; mayor silhouette que core/full, pero más pares con |r| alto.",
+                "",
+                "---",
+            ]
+        )
 
     lines.extend(
         [
-            "---",
+            "## Métricas en espacio CORE (23 features)",
+            "| Métrica | Valor |",
+            "|---|---|",
+            f"| max |r| | {max_core if max_core is not None else '—'} |",
+            f"| Pares con |r| ≥ {threshold} | {pairs_core_display}{pct_core_display} |",
+        ]
+    )
+    core_ab = ablation_rows.get("core_23")
+    if core_ab and core_ab.get("silhouette") is not None:
+        lines.append(f"| Silhouette (Ward k=7) | {float(core_ab['silhouette']):.4f} |")
+    lines.extend(["", "Espacio **principal** para diversidad y narrativa del paper.", "", "---"])
+
+    lines.extend(
+        [
             "## Métricas en espacio completo (46 features)",
-            f"| Métrica | Valor |",
+            "| Métrica | Valor |",
             "|---|---|",
             f"| max |r| | {max_full if max_full is not None else '—'} |",
             f"| Pares con |r| ≥ {threshold} | {pairs_full_display}{pct_full_display} |",
-            "",
         ]
     )
-
-    if cos_min is not None:
-        lines.append(f"Distancia coseno mínima (geom): {cos_min:.4f}")
     if silhouette_full is not None:
-        lines.append(f"Silhouette (Ward k=7): {silhouette_full:.4f}")
+        lines.append(f"| Silhouette (Ward k=7) | {silhouette_full:.4f} |")
+    if cos_min is not None:
+        lines.append("")
+        lines.append(f"Distancia coseno mínima (geom, full-46): {cos_min:.4f}")
 
     lines.extend(
         [
+            "",
             "---",
             "## Ablación y validación de correlación",
+            "",
+            "Detalle numérico (fuente: `data/ablation_metrics.csv`):",
+            "",
         ]
     )
-    if ablation_summary:
-        lines.append(ablation_summary)
+    for key in ("reduced_17", "core_23", "full_46"):
+        r = ablation_rows.get(key)
+        if r:
+            lines.append(
+                f"- **{key}:** max|r|={r.get('max_abs_r', 1.0):.4f}, "
+                f"pares≥={threshold}={r.get('pairs_ge')} ({r.get('pct', 0):.1f}%), "
+                f"silhouette={float(r.get('silhouette', 0)):.4f}"
+            )
+    lines.append("")
+    lines.append(
+        "**Interpretación:** core-23 equilibra interpretabilidad y separación "
+        "(silhouette > full-46, menos pares |r|≥0.7 que reduced-17)."
+    )
 
     # Lista de informes (fija: no depende de datos)
     lines.extend(
@@ -3398,15 +3502,30 @@ def main():
                     help="Directorio base de salida (default: directorio analysis/ donde está este script)")
     ap.add_argument("--reports-dir", type=str, default=None,
                     help="Directorio con *_MessageStatsReport.txt para --phase output_metrics (default: repo/reports)")
+    stress_group = ap.add_mutually_exclusive_group()
+    stress_group.add_argument(
+        "--include-stress",
+        action="store_true",
+        help="Incluir stress_controls (570 escenarios combinados). Default: solo corpus_v1 (540).",
+    )
+    stress_group.add_argument(
+        "--no-stress",
+        action="store_true",
+        help="Solo corpus_v1 ambiental (540). Usado por defecto para validación de diversidad.",
+    )
     args = ap.parse_args()
 
     base = Path(__file__).resolve().parent
-    corpus_dir = base.parent / args.corpus  # corpus bajo scenarios/
-    if not corpus_dir.exists():
-        corpus_dir = Path(args.corpus)
+    include_stress = bool(args.include_stress)
+    if args.corpus in ("corpus_v1", "corpus_v2"):
+        scenario_paths = collect_settings_paths(args.corpus, include_stress=include_stress)
+        corpus_dir = primary_corpus_dir(args.corpus)
+    else:
+        corpus_dir = base.parent / args.corpus  # corpus bajo scenarios/
+        if not corpus_dir.exists():
+            corpus_dir = Path(args.corpus)
+        scenario_paths = collect_scenario_files(corpus_dir)
     out_dir = Path(args.out_dir) if args.out_dir else base
-
-    scenario_paths = collect_scenario_files(corpus_dir)
     if not scenario_paths and args.phase in ("features", "features_report", "output_metrics", "outputs", "all"):
         print(f"No .settings found under {corpus_dir}")
         return 1

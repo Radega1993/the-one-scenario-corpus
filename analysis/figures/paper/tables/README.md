@@ -3,8 +3,9 @@
 Generadas automáticamente por:
 
 ```bash
-cd scenarios/analysis
-.venv/bin/python run_analysis.py --corpus corpus_v2 --phase tables_paper
+cd /home/raul/Documents/the-one/scenarios/analysis
+source /home/raul/Documents/the-one/venv/bin/activate
+python run_analysis.py --corpus corpus_v1 --phase tables_paper
 ```
 
 Incluye (ES+EN):

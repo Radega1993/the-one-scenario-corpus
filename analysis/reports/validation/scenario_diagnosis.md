@@ -1,4 +1,4 @@
-# Scenario diagnosis (corpus_v2)
+# Scenario diagnosis (corpus_v1)
 
 - Scenarios: **720**
 - With any flag: **392**
@@ -41,7 +41,7 @@
 | `04_rural` | 45 |
 | `05_disaster` | 36 |
 | `01_urban` | 33 |
-| `07_traffic` | 28 |
+| `07_stress_controls` | 28 |
 | `02_campus` | 16 |
 | `06_social` | 13 |
 | `03_vehicles` | 10 |

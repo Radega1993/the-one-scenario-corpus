@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Validate Traffic Profiles v1.0 (TP01–TP12) for corpus_v2 and summarize benchmark readiness.
+Validate Traffic Profiles v1.0 (TP01–TP12) for corpus_v1 and summarize benchmark readiness.
 
 Outputs (default under scenarios/analysis/):
   data/traffic_profile_windows.csv   — per-scenario simulation / generation windows
@@ -23,6 +23,10 @@ from pathlib import Path
 from statistics import mean, pstdev
 from typing import Any
 
+_ANALYSIS = Path(__file__).resolve().parents[2]
+if str(_ANALYSIS) not in sys.path:
+    sys.path.insert(0, str(_ANALYSIS))
+
 # Reuse canonical TP definitions from the generator (single source of truth).
 from lib.traffic_profile_generator import (  # noqa: E402
     PROFILE_ORDER,
@@ -33,14 +37,16 @@ from lib.traffic_profile_generator import (  # noqa: E402
     profile_ttl_minutes,
 )
 
-_ANALYSIS = Path(__file__).resolve().parents[2]
-if str(_ANALYSIS) not in sys.path:
-    sys.path.insert(0, str(_ANALYSIS))
-from lib.paths import CORPUS_V2, DATA_DIR, REPORTS_ANALYSIS_DIR, SCENARIOS_DIR  # noqa: E402
+from lib.paths import (  # noqa: E402
+    COMBINED_MANIFEST_CSV,
+    DATA_DIR,
+    REPORTS_ANALYSIS_DIR,
+    SCENARIOS_DIR,
+    collect_settings_paths,
+)
 from lib.report_paths import TP_VALIDATION_REPORT  # noqa: E402
 
-DEFAULT_CORPUS = CORPUS_V2
-DEFAULT_MANIFEST = DEFAULT_CORPUS / "manifest.csv"
+DEFAULT_MANIFEST = COMBINED_MANIFEST_CSV
 DEFAULT_DATA = DATA_DIR
 DEFAULT_REPORTS = REPORTS_ANALYSIS_DIR
 
@@ -432,7 +438,12 @@ def _write_csv(path: Path, rows: list[dict], fieldnames: list[str] | None = None
 
 def main() -> int:
     ap = argparse.ArgumentParser(description="Validate TP01–TP12 and summarize benchmark metrics.")
-    ap.add_argument("--corpus-dir", type=Path, default=DEFAULT_CORPUS)
+    ap.add_argument(
+        "--corpus",
+        type=str,
+        default="corpus_v1",
+        help="Logical corpus name (corpus_v1 includes stress_controls)",
+    )
     ap.add_argument("--manifest", type=Path, default=DEFAULT_MANIFEST)
     ap.add_argument("--data-dir", type=Path, default=DEFAULT_DATA)
     ap.add_argument("--reports-dir", type=Path, default=DEFAULT_REPORTS)
@@ -442,11 +453,13 @@ def main() -> int:
     ap.add_argument("--skip-metrics", action="store_true")
     args = ap.parse_args()
 
-    settings_paths = sorted(args.corpus_dir.rglob("*.settings"))
+    include_stress = args.corpus.strip() in ("corpus_v1", "corpus_v2")
+    settings_paths = collect_settings_paths(args.corpus, include_stress=include_stress)
     manifest_rows = _read_csv(args.manifest)
 
-    if len(settings_paths) != 720:
-        print(f"Warning: expected 720 settings, found {len(settings_paths)}", file=sys.stderr)
+    expected = 570 if include_stress else len(settings_paths)
+    if include_stress and len(settings_paths) != 570:
+        print(f"Warning: expected 570 active settings, found {len(settings_paths)}", file=sys.stderr)
     if manifest_rows and len(manifest_rows) != len(settings_paths):
         print(
             f"Warning: manifest rows ({len(manifest_rows)}) != settings files ({len(settings_paths)})",

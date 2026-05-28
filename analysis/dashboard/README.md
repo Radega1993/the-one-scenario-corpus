@@ -1,4 +1,4 @@
-# Dashboard corpus_v2 (Streamlit)
+# Dashboard corpus_v1 (Streamlit)
 
 Exploración interactiva del benchmark **720 simulaciones** (60 bases × 12 Traffic Profiles).
 
@@ -20,7 +20,7 @@ streamlit run scenarios/analysis/dashboard.py
 | Ventana mensajes | `message_analysis_window_policy.csv` |
 | Tiempo útil | `useful_simulation_time_metrics.csv` |
 | Espacial | `spatial_occupancy_metrics.csv`, heatmaps |
-| Diagnóstico | `scenario_diagnosis.csv`, `corpus_v2_benchmark_validation.csv` |
+| Diagnóstico | `scenario_diagnosis.csv`, `corpus_v1_benchmark_validation.csv` |
 | Protocolos | placeholder multi-protocolo |
 | Detalle escenario | fila master + reportes ONE |
 | Figuras / Pipeline / Reportes | auxiliares |
@@ -33,9 +33,9 @@ streamlit run scenarios/analysis/dashboard.py
 
 ## CSVs unidos en `data_loaders.build_master_table()`
 
-Obligatorio: `scenarios/corpus_v2/manifest.csv`
+Obligatorio: `scenarios/corpus_v1/manifest.csv`
 
-Opcionales en `scenarios/analysis/data/`: `output_metrics.csv`, `scenario_diagnosis.csv`, `settings_audit.csv`, `spatial_occupancy_metrics.csv`, `message_creation_time_summary.csv`, `tp_validation_settings.csv`, `useful_simulation_time_metrics.csv`, `message_analysis_window_policy.csv`, `corpus_v2_benchmark_validation.csv`, `traffic_profile_kpi_summary.csv` (join por TP), `indirect_features_diego.csv`.
+Opcionales en `scenarios/analysis/data/`: `output_metrics.csv`, `scenario_diagnosis.csv`, `settings_audit.csv`, `spatial_occupancy_metrics.csv`, `message_creation_time_summary.csv`, `tp_validation_settings.csv`, `useful_simulation_time_metrics.csv`, `message_analysis_window_policy.csv`, `corpus_v1_benchmark_validation.csv`, `traffic_profile_kpi_summary.csv` (join por TP), `indirect_features_diego.csv`.
 
 `features.csv` / `features_core.csv` se cargan bajo demanda (`load_features_table`), no en la tabla maestra.
 

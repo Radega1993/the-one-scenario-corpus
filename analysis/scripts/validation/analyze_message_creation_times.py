@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Analyze message creation_time distributions for corpus_v2.
+Analyze message creation_time distributions for corpus_v1.
 
 Uses MessageEventGenerator semantics (Java-compatible RNG) from each .settings file.
 Validated against CreatedMessagesReport when present in reports/.
@@ -32,7 +32,7 @@ _ANALYSIS = Path(__file__).resolve().parents[2]
 if str(_ANALYSIS) not in sys.path:
     sys.path.insert(0, str(_ANALYSIS))
 
-from lib.paths import ANALYSIS_DIR, CORPUS_V2, DATA_DIR, REPO_ROOT, REPORTS_DIR  # noqa: E402
+from lib.paths import ANALYSIS_DIR, CORPUS_V1_DIR, DATA_DIR, REPO_ROOT, REPORTS_DIR  # noqa: E402
 from lib.report_paths import MESSAGE_CREATION_TIME_AUDIT  # noqa: E402
 
 FIGURES_DIR = ANALYSIS_DIR / "figures"
@@ -296,7 +296,7 @@ def validate_against_reports(scenarios: list[str]) -> list[str]:
             continue
         emp = parse_created_messages_report(rep)
         # find settings
-        matches = list(CORPUS_V2.rglob(f"{scen}.settings"))
+        matches = list(CORPUS_V1_DIR.rglob(f"{scen}.settings"))
         if not matches:
             notes.append(f"{scen}: report found, settings missing")
             continue
@@ -352,7 +352,7 @@ def make_figures(all_times_by_tp: dict[str, list[float]], end_time_default: floa
             ax.set_ylabel("Count")
         if idx >= 8:
             ax.set_xlabel("creation_time / endTime")
-    fig.suptitle("Message creation time (normalized) by traffic profile — corpus_v2", fontsize=11)
+    fig.suptitle("Message creation time (normalized) by traffic profile — corpus_v1", fontsize=11)
     fig.tight_layout()
     fig.savefig(FIGURES_DIR / "message_creation_time_hist_by_tp.png", dpi=150)
     plt.close(fig)
@@ -393,11 +393,11 @@ def write_audit_md(rows: list[dict], validation_notes: list[str], path: Path) ->
         return statistics.mean(vals) if vals else float("nan")
 
     lines = [
-        "# Auditoría de tiempos de creación de mensajes (corpus_v2)",
+        "# Auditoría de tiempos de creación de mensajes (corpus_v1)",
         "",
         "## Método",
         "",
-        "- **Fuente:** replicación determinista de `MessageEventGenerator` (The ONE) a partir de cada `.settings` de `corpus_v2`, con RNG compatible con Java (`prefix.hashCode()`).",
+        "- **Fuente:** replicación determinista de `MessageEventGenerator` (The ONE) a partir de cada `.settings` de `corpus_v1`, con RNG compatible con Java (`prefix.hashCode()`).",
         "- **Validación:** contrastado con `CreatedMessagesReport` cuando existe en `reports/`.",
         "- **Nota:** el primer mensaje **no** se crea en `t=0` salvo que `Events*.time` lo fije; el constructor programa el primer evento en `t0 + interval_min + U(0, interval_max-interval_min)`.",
         "",
@@ -509,7 +509,7 @@ def write_audit_md(rows: list[dict], validation_notes: list[str], path: Path) ->
 
 def main() -> int:
     ap = argparse.ArgumentParser()
-    ap.add_argument("--corpus-dir", type=Path, default=CORPUS_V2)
+    ap.add_argument("--corpus-dir", type=Path, default=CORPUS_V1_DIR)
     ap.add_argument("--use-reports", action="store_true", help="Prefer CreatedMessagesReport if present")
     args = ap.parse_args()
 

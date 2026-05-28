@@ -1,4 +1,4 @@
-# Settings audit (corpus_v2)
+# Settings audit (corpus_v1)
 
 Generated: 2026-05-20 10:58 UTC
 
@@ -16,7 +16,7 @@ Generated: 2026-05-20 10:58 UTC
 | `04_rural` | 144 |
 | `05_disaster` | 108 |
 | `06_social` | 72 |
-| `07_traffic` | 180 |
+| `07_stress_controls` | 180 |
 
 ## Map datasets
 

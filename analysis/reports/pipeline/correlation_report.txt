@@ -1,71 +1,71 @@
-=== Correlación entre escenarios (vectores Z, 720×d) ===
-r(Si, Sk) = corr(Zi, Zk).  Escenarios: n=720, features: d=46.
+=== Correlación entre escenarios (vectores Z, 540×d) ===
+r(Si, Sk) = corr(Zi, Zk).  Escenarios: n=540, features: d=46.
 
 Matriz de Pearson:
   max |r| = 1.0000
-  media |r| = 0.2086
-  Total pares (i<k): 258840
-  Pares con |r| >= 0.7: 8356 (3.2%)
+  media |r| = 0.2210
+  Total pares (i<k): 145530
+  Pares con |r| >= 0.7: 3378 (2.3%)
 
 Criterio: |r| < 0.7 para todos los pares O para ≥95% de los pares.
   ¿Todos |r| < 0.7? False
-  ¿Al menos 95% con |r| < 0.7? True (96.8% cumplen)
+  ¿Al menos 95% con |r| < 0.7? True (97.7% cumplen)
   Criterio cumplido: True
 
 Spearman (correlación de rangos entre vectores Z):
   max |r| = 1.0000
-  media |r| = 0.3369
-  Pares con |r| >= 0.7: 18704
+  media |r| = 0.2897
+  Pares con |r| >= 0.7: 7352
 
 Métricas geométricas (sobre Z normalizado):
   Distancia coseno (1 - cos_sim; 0=idénticos, 2=opuestos):
-    mín = -0.0000, media = 0.9901
+    mín = -0.0000, media = 0.9976
   Distancia euclídea:
-    mín = 0.0000, media = 7.1492
+    mín = 0.0000, media = 7.2450
 
 Criterios de diversidad geométrica (objetivo: espacio bien distribuido):
   dist_coseno mínima = -0.0000  (objetivo: > 0.05; si < 0.05 hay pares casi idénticos)
-  Pares con cos_dist < 0.05: 1102
-  Silhouette (k=7 clusters, Ward): 0.2680  (objetivo > 0.3)
+  Pares con cos_dist < 0.05: 477
+  Silhouette (k=7 clusters, Ward): 0.2354  (objetivo > 0.3)
   Objetivos realistas: max |r| < 0.85, pares |r|>=0.7 < 3%, cos_dist mín > 0.05, silhouette > 0.3
 
 Pares con |r| >= 0.7 (máximo 20 mostrados):
-  U1_CBD_Commuting_HelsinkiMedium__TP06_OneToMany <-> U1_CBD_Commuting_HelsinkiMedium__TP11_ManyToOne  r = 1.0000
-  U2_SparseSuburb_HelsinkiMedium__TP06_OneToMany <-> U2_SparseSuburb_HelsinkiMedium__TP11_ManyToOne  r = 1.0000
-  U3_MicroMobility_HelsinkiMedium__TP06_OneToMany <-> U3_MicroMobility_HelsinkiMedium__TP11_ManyToOne  r = 1.0000
-  U4_CongestionHotspot_HelsinkiMedium__TP06_OneToMany <-> U4_CongestionHotspot_HelsinkiMedium__TP11_ManyToOne  r = 1.0000
-  U5_WorkdayShort_HelsinkiMedium__TP06_OneToMany <-> U5_WorkdayShort_HelsinkiMedium__TP11_ManyToOne  r = 1.0000
-  U6_OfficeWaitHeavyTail_HelsinkiMedium__TP06_OneToMany <-> U6_OfficeWaitHeavyTail_HelsinkiMedium__TP11_ManyToOne  r = 1.0000
-  U7_HighTimeVariance_HelsinkiMedium__TP06_OneToMany <-> U7_HighTimeVariance_HelsinkiMedium__TP11_ManyToOne  r = 1.0000
+  U1_CBD_Commuting_HelsinkiDowntown__TP06_OneToMany <-> U1_CBD_Commuting_HelsinkiDowntown__TP11_ManyToOne  r = 1.0000
+  U2_SparseSuburb_HelsinkiDowntown__TP06_OneToMany <-> U2_SparseSuburb_HelsinkiDowntown__TP11_ManyToOne  r = 1.0000
+  U3_MicroMobility_HelsinkiDowntown__TP06_OneToMany <-> U3_MicroMobility_HelsinkiDowntown__TP11_ManyToOne  r = 1.0000
+  U4_CongestionHotspot_HelsinkiDowntown__TP06_OneToMany <-> U4_CongestionHotspot_HelsinkiDowntown__TP11_ManyToOne  r = 1.0000
+  U5_WorkdayShort_HelsinkiDowntown__TP06_OneToMany <-> U5_WorkdayShort_HelsinkiDowntown__TP11_ManyToOne  r = 1.0000
+  U6_OfficeWaitHeavyTail_HelsinkiDowntown__TP06_OneToMany <-> U6_OfficeWaitHeavyTail_HelsinkiDowntown__TP11_ManyToOne  r = 1.0000
+  U7_HighTimeVariance_HelsinkiDowntown__TP06_OneToMany <-> U7_HighTimeVariance_HelsinkiDowntown__TP11_ManyToOne  r = 1.0000
   C1_Campus_ClassChange__TP06_OneToMany <-> C1_Campus_ClassChange__TP11_ManyToOne  r = 1.0000
   C2_ExamDay_LongStays__TP06_OneToMany <-> C2_ExamDay_LongStays__TP11_ManyToOne  r = 1.0000
   C3_Hackathon_24h__TP06_OneToMany <-> C3_Hackathon_24h__TP11_ManyToOne  r = 1.0000
   C4_Stadium_IngressEgress__TP06_OneToMany <-> C4_Stadium_IngressEgress__TP11_ManyToOne  r = 1.0000
   C5_Library_Quiet__TP06_OneToMany <-> C5_Library_Quiet__TP11_ManyToOne  r = 1.0000
   C6_EmergencyDrill_Evacuation__TP06_OneToMany <-> C6_EmergencyDrill_Evacuation__TP11_ManyToOne  r = 1.0000
-  V1_TaxiLow_HelsinkiMedium__TP06_OneToMany <-> V1_TaxiLow_HelsinkiMedium__TP11_ManyToOne  r = 1.0000
-  V2_TaxiHigh_HelsinkiMedium__TP06_OneToMany <-> V2_TaxiHigh_HelsinkiMedium__TP11_ManyToOne  r = 1.0000
-  V3_BusOnlyCarriers_HelsinkiMedium__TP06_OneToMany <-> V3_BusOnlyCarriers_HelsinkiMedium__TP11_ManyToOne  r = 1.0000
-  V4_CarOwnership_0_HelsinkiMedium__TP06_OneToMany <-> V4_CarOwnership_0_HelsinkiMedium__TP11_ManyToOne  r = 1.0000
-  V5_CarOwnership_100_HelsinkiMedium__TP06_OneToMany <-> V5_CarOwnership_100_HelsinkiMedium__TP11_ManyToOne  r = 1.0000
+  V1_TaxiLow_ManhattanMidtownGrid__TP06_OneToMany <-> V1_TaxiLow_ManhattanMidtownGrid__TP11_ManyToOne  r = 1.0000
+  V2_TaxiHigh_ManhattanMidtownGrid__TP06_OneToMany <-> V2_TaxiHigh_ManhattanMidtownGrid__TP11_ManyToOne  r = 1.0000
+  V3_BusOnlyCarriers_ManhattanMidtownGrid__TP06_OneToMany <-> V3_BusOnlyCarriers_ManhattanMidtownGrid__TP11_ManyToOne  r = 1.0000
+  V4_CarOwnership_0_ManhattanMidtownGrid__TP06_OneToMany <-> V4_CarOwnership_0_ManhattanMidtownGrid__TP11_ManyToOne  r = 1.0000
+  V5_CarOwnership_100_ManhattanMidtownGrid__TP06_OneToMany <-> V5_CarOwnership_100_ManhattanMidtownGrid__TP11_ManyToOne  r = 1.0000
   R10_TinyRange_5m__TP06_OneToMany <-> R10_TinyRange_5m__TP11_ManyToOne  r = 1.0000
   R11_SpeedExtremeLow__TP06_OneToMany <-> R11_SpeedExtremeLow__TP11_ManyToOne  r = 1.0000
-  ... y 8336 más.
+  ... y 3358 más.
 
 --- Test estadístico y corrección por comparaciones múltiples ---
-Pares: m = 258840 = C(720,2). Para cada par, p-value de H0: rho=0 (Pearson, n=d=46).
+Pares: m = 145530 = C(540,2). Para cada par, p-value de H0: rho=0 (Pearson, n=d=46).
 
 FDR (Benjamini-Hochberg, alpha=0.05):
-  Rechazos (pares significativos): 36056
-  Pares con |r| >= 0.7 Y significativos (FDR): 8356
+  Rechazos (pares significativos): 21759
+  Pares con |r| >= 0.7 Y significativos (FDR): 3378
 
-Bonferroni (alpha/258840 = 0.000000):
-  Rechazos: 9064
-  Pares con |r| >= 0.7 Y significativos (Bonferroni): 8356
+Bonferroni (alpha/145530 = 0.000000):
+  Rechazos: 4074
+  Pares con |r| >= 0.7 Y significativos (Bonferroni): 3378
 
 Objetivo: demostrar que no hay pares con |r| alto y significativo tras corrección.
-  Tras FDR: No (8356 pares con |r|>=0.7 significativos).
-  Tras Bonferroni: No (8356 pares con |r|>=0.7 significativos).
+  Tras FDR: No (3378 pares con |r|>=0.7 significativos).
+  Tras Bonferroni: No (3378 pares con |r|>=0.7 significativos).
 
 Diagnóstico: 0 rechazos no implica ausencia de correlación; con n=d la potencia depende de d (features).
 El problema real es geométrico: escenarios casi colineales (mismo subespacio).

@@ -11,12 +11,12 @@ Generates:
 
 Example:
   python3 scenarios/analysis/scripts/validation/analyze_spatial_occupancy.py \\
-    --reports-dir reports --corpus corpus_v2 \\
-    --manifest scenarios/corpus_v2/manifest.csv
+    --reports-dir reports --corpus corpus_v1 \\
+    --manifest scenarios/corpus_v1/manifest.csv
 
   # Solo escenarios concretos (fusiona con metrics/timeseries existentes):
   python3 scenarios/analysis/scripts/validation/analyze_spatial_occupancy.py \\
-    --manifest scenarios/corpus_v2/manifest.csv --reports-dir reports \\
+    --manifest scenarios/corpus_v1/manifest.csv --reports-dir reports \\
     --name-regex 'S1_StrongCommunities_SeparateClusters__TP(03|11)'
 """
 
@@ -334,7 +334,7 @@ def main() -> int:
 
     ap = argparse.ArgumentParser(description="Analyze spatial occupancy CSVs from The ONE.")
     ap.add_argument("--reports-dir", type=str, default="reports", help="Directory with report CSVs (repo-relative)")
-    ap.add_argument("--corpus", type=str, default="corpus_v2", help="Corpus folder name under scenarios/ or 'none'")
+    ap.add_argument("--corpus", type=str, default="corpus_v1", help="Corpus folder name under scenarios/ or 'none'")
     ap.add_argument(
         "--manifest",
         type=str,

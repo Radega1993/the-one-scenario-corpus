@@ -26,7 +26,7 @@ if str(_ANALYSIS) not in sys.path:
 
 from lib.connectivity_timeline import classify_useful_time, parse_connectivity_timeline
 from lib.paths import (
-    CORPUS_V2,
+    CORPUS_V1_DIR,
     DATA_DIR,
     REPORTS_DIR,
 )
@@ -157,7 +157,7 @@ def write_report(rows: list[dict], path: Path) -> None:
         "",
         "| Fuente | Disponible en pipeline actual | Uso en este informe |",
         "|--------|------------------------------|---------------------|",
-        "| `ConnectivityONEReport` | Sí (720/720 en corpus_v2 con Diego17 overrides) | **Principal** — traza `CONN up/down` |",
+        "| `ConnectivityONEReport` | Sí (720/720 en corpus_v1 con Diego17 overrides) | **Principal** — traza `CONN up/down` |",
         "| `MessageStatsReport` | Sí | No usado aquí (entrega, no exploración) |",
         "| `ContactTimesReport` / `TotalEncountersReport` | Sí | Fallback posible; no necesario con traza ONE |",
         "| Logs de posiciones (`MovementReport`, GPS) | **No** | Ocupación espacial vía **cobertura de pares** en grafo de contactos |",
@@ -283,7 +283,7 @@ def write_report(rows: list[dict], path: Path) -> None:
 
 def main() -> int:
     ap = argparse.ArgumentParser(description="Compute useful simulation time metrics.")
-    ap.add_argument("--corpus-dir", type=Path, default=CORPUS_V2)
+    ap.add_argument("--corpus-dir", type=Path, default=CORPUS_V1_DIR)
     ap.add_argument("--reports-dir", type=Path, default=REPORTS_DIR)
     ap.add_argument("--data-dir", type=Path, default=DATA_DIR)
     ap.add_argument("--reports-out", type=Path, default=REPORTS_OUT)

@@ -1,9 +1,9 @@
 === Indirectas tipo Diego (estado actual de datos) ===
-Escenarios procesados: 720
-Calculados con ConnectivityONEReport: 720
-Calculados con fallback agregado: 0
-Con encounters > 0: 696
-Con Scenario.endTime disponible: 720
+Escenarios procesados: 570
+Calculados con ConnectivityONEReport: 566
+Calculados con fallback agregado: 4
+Con encounters > 0: 566
+Con Scenario.endTime disponible: 570
 
 Calculadas con datos actuales (cuando hay datos):
   - contact_time_mean_s
@@ -18,11 +18,11 @@ Calculadas con datos actuales (cuando hay datos):
   - betweenness_centrality (solo con ConnectivityONEReport)
   - window_centrality_mean (solo con ConnectivityONEReport)
 
-Para completar fase Diego17 real, ejecuta simulaciones con overrides:
-  scenarios/analysis/diego17_reports_overrides.txt
+Para métricas indirectas, ejecuta simulaciones con overlay routing/contacto:
+  scenarios/analysis/overlays/routing_contact_reports_overrides.txt
 Ejemplo:
   python scenarios/analysis/run_all_scenarios.py --corpus corpus_v1 \
-    --extra-settings scenarios/analysis/diego17_reports_overrides.txt
+    --extra-settings scenarios/analysis/overlays/routing_contact_reports_overrides.txt
 
 Salida:
   - /home/raul/Documents/the-one/scenarios/analysis/data/indirect_features_diego.csv

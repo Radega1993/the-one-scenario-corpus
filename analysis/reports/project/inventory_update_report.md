@@ -7,7 +7,7 @@ Generated: 2026-05-24 17:01 UTC
 | Metric | Count |
 |--------|------:|
 | Total files (excl. .git, .venv, __pycache__) | 2777 |
-| `corpus_v2` `.settings` | 720 |
+| `corpus_v1` `.settings` | 720 |
 | `analysis/data/` CSV files | 45 |
 | `analysis/reports/` files | 51 |
 | Figures PNG | 770 |

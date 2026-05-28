@@ -15,7 +15,7 @@ Por tanto, el criterio relevante es: *¿cada escenario aporta información disti
 
 ---
 
-## 2. Qué mide actualmente el pipeline (core 24)
+## 2. Qué mide actualmente el pipeline (core 23, n=540)
 
 ### 2.1 Métrica actual: correlación en el espacio de **configuración** (inputs)
 
@@ -38,7 +38,7 @@ Por tanto, el criterio relevante es: *¿cada escenario aporta información disti
 
 ## 3. Qué no capturamos (brecha metodológica)
 
-| Dimensión | En core 24 | No capturado / no usado aquí |
+| Dimensión | En core 23 | No capturado / no usado aquí |
 |-----------|------------|------------------------------|
 | **Estructura de contactos** | transmitRange, N, world_area, speed, wait | Topología real del grafo de contactos en el tiempo; distribución de inter-contact times; centralidad de nodos (p. ej. buses). |
 | **Comportamiento del protocolo** | — | delivery_ratio, latency_mean, overhead_ratio, drop_ratio (existen en el pipeline como `--phase outputs` pero no definen la diversidad del corpus). |
@@ -77,7 +77,7 @@ Por tanto: **bajar |r| en 24D en este bloque no garantiza que cada escenario apo
 ## 5. Ablación 17 vs 24 vs 46 (recordatorio)
 
 - En **espacio completo (46 features)** hay **92 pares (3,8%)** con |r| ≥ 0.7.
-- En **core 24** hay **200 pares (8,3%)** con |r| ≥ 0.7.
+- En **core 23** (freeze 540) hay **5029 pares (3,5%)** con |r| ≥ 0.7 — ver `RESULTADOS_ACTUALES.md` (cifras históricas 200/8,3% eran de un corpus anterior).
 
 Las 22 features extendidas (timeDiffSTD, nrOfOffices, officeWaitTime_mean, etc.) **sí separan** mejor los escenarios urbanos entre sí. Es decir: **hay información en la configuración que distingue escenarios y que hemos decidido no usar** como referencia de diversidad (para mantener el core corpus-wide e interpretable). Eso refuerza que:
 

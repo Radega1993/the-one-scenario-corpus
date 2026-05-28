@@ -1,45 +1,45 @@
 === Correlación entre escenarios en espacio CORE 23 (referencia para investigación) ===
-Vectores Z_core: n=720 escenarios, d=23 features. r(Si, Sk) = Pearson entre filas de Z_core.
+Vectores Z_core: n=540 escenarios, d=23 features. r(Si, Sk) = Pearson entre filas de Z_core.
 
   max |r| = 1.0000
-  media |r| = 0.2197
-  Total pares: 258840
-  Pares con |r| >= 0.7: 11325 (4.4%)
+  media |r| = 0.2341
+  Total pares: 145530
+  Pares con |r| >= 0.7: 5029 (3.5%)
 
   Distancia coseno mínima = -0.0000
-  Silhouette (Ward k=7 sobre Z_core) = 0.3451
+  Silhouette (Ward k=7 sobre Z_core) = 0.3045
 
 Objetivo investigación: diversidad y resultados se evalúan con las 23 core. Priorizar reducción de pares |r|>=0.7 en este espacio.
 
 Pares con |r| >= 0.7 (máximo 30):
-  U1_CBD_Commuting_HelsinkiMedium__TP06_OneToMany <-> U1_CBD_Commuting_HelsinkiMedium__TP11_ManyToOne  r = 1.0000
-  U2_SparseSuburb_HelsinkiMedium__TP06_OneToMany <-> U2_SparseSuburb_HelsinkiMedium__TP11_ManyToOne  r = 1.0000
-  U3_MicroMobility_HelsinkiMedium__TP06_OneToMany <-> U3_MicroMobility_HelsinkiMedium__TP11_ManyToOne  r = 1.0000
-  U4_CongestionHotspot_HelsinkiMedium__TP06_OneToMany <-> U4_CongestionHotspot_HelsinkiMedium__TP11_ManyToOne  r = 1.0000
-  U5_WorkdayShort_HelsinkiMedium__TP06_OneToMany <-> U5_WorkdayShort_HelsinkiMedium__TP11_ManyToOne  r = 1.0000
-  U6_OfficeWaitHeavyTail_HelsinkiMedium__TP06_OneToMany <-> U6_OfficeWaitHeavyTail_HelsinkiMedium__TP11_ManyToOne  r = 1.0000
-  U7_HighTimeVariance_HelsinkiMedium__TP06_OneToMany <-> U7_HighTimeVariance_HelsinkiMedium__TP11_ManyToOne  r = 1.0000
+  U1_CBD_Commuting_HelsinkiDowntown__TP06_OneToMany <-> U1_CBD_Commuting_HelsinkiDowntown__TP11_ManyToOne  r = 1.0000
+  U2_SparseSuburb_HelsinkiDowntown__TP06_OneToMany <-> U2_SparseSuburb_HelsinkiDowntown__TP11_ManyToOne  r = 1.0000
+  U3_MicroMobility_HelsinkiDowntown__TP06_OneToMany <-> U3_MicroMobility_HelsinkiDowntown__TP11_ManyToOne  r = 1.0000
+  U4_CongestionHotspot_HelsinkiDowntown__TP06_OneToMany <-> U4_CongestionHotspot_HelsinkiDowntown__TP11_ManyToOne  r = 1.0000
+  U5_WorkdayShort_HelsinkiDowntown__TP06_OneToMany <-> U5_WorkdayShort_HelsinkiDowntown__TP11_ManyToOne  r = 1.0000
+  U6_OfficeWaitHeavyTail_HelsinkiDowntown__TP06_OneToMany <-> U6_OfficeWaitHeavyTail_HelsinkiDowntown__TP11_ManyToOne  r = 1.0000
+  U7_HighTimeVariance_HelsinkiDowntown__TP06_OneToMany <-> U7_HighTimeVariance_HelsinkiDowntown__TP11_ManyToOne  r = 1.0000
   C1_Campus_ClassChange__TP06_OneToMany <-> C1_Campus_ClassChange__TP11_ManyToOne  r = 1.0000
   C2_ExamDay_LongStays__TP06_OneToMany <-> C2_ExamDay_LongStays__TP11_ManyToOne  r = 1.0000
   C3_Hackathon_24h__TP06_OneToMany <-> C3_Hackathon_24h__TP11_ManyToOne  r = 1.0000
   C4_Stadium_IngressEgress__TP06_OneToMany <-> C4_Stadium_IngressEgress__TP11_ManyToOne  r = 1.0000
   C5_Library_Quiet__TP06_OneToMany <-> C5_Library_Quiet__TP11_ManyToOne  r = 1.0000
   C6_EmergencyDrill_Evacuation__TP06_OneToMany <-> C6_EmergencyDrill_Evacuation__TP11_ManyToOne  r = 1.0000
-  V1_TaxiLow_HelsinkiMedium__TP06_OneToMany <-> V1_TaxiLow_HelsinkiMedium__TP11_ManyToOne  r = 1.0000
-  V2_TaxiHigh_HelsinkiMedium__TP06_OneToMany <-> V2_TaxiHigh_HelsinkiMedium__TP11_ManyToOne  r = 1.0000
-  V3_BusOnlyCarriers_HelsinkiMedium__TP06_OneToMany <-> V3_BusOnlyCarriers_HelsinkiMedium__TP11_ManyToOne  r = 1.0000
-  V4_CarOwnership_0_HelsinkiMedium__TP06_OneToMany <-> V4_CarOwnership_0_HelsinkiMedium__TP11_ManyToOne  r = 1.0000
-  V5_CarOwnership_100_HelsinkiMedium__TP06_OneToMany <-> V5_CarOwnership_100_HelsinkiMedium__TP11_ManyToOne  r = 1.0000
+  V1_TaxiLow_ManhattanMidtownGrid__TP06_OneToMany <-> V1_TaxiLow_ManhattanMidtownGrid__TP11_ManyToOne  r = 1.0000
+  V2_TaxiHigh_ManhattanMidtownGrid__TP06_OneToMany <-> V2_TaxiHigh_ManhattanMidtownGrid__TP11_ManyToOne  r = 1.0000
+  V3_BusOnlyCarriers_ManhattanMidtownGrid__TP06_OneToMany <-> V3_BusOnlyCarriers_ManhattanMidtownGrid__TP11_ManyToOne  r = 1.0000
+  V4_CarOwnership_0_ManhattanMidtownGrid__TP06_OneToMany <-> V4_CarOwnership_0_ManhattanMidtownGrid__TP11_ManyToOne  r = 1.0000
+  V5_CarOwnership_100_ManhattanMidtownGrid__TP06_OneToMany <-> V5_CarOwnership_100_ManhattanMidtownGrid__TP11_ManyToOne  r = 1.0000
   R10_TinyRange_5m__TP06_OneToMany <-> R10_TinyRange_5m__TP11_ManyToOne  r = 1.0000
   R11_SpeedExtremeLow__TP06_OneToMany <-> R11_SpeedExtremeLow__TP11_ManyToOne  r = 1.0000
   R12_SpeedExtremeHigh__TP06_OneToMany <-> R12_SpeedExtremeHigh__TP11_ManyToOne  r = 1.0000
   R1_Rural_RandomWaypoint__TP06_OneToMany <-> R1_Rural_RandomWaypoint__TP11_ManyToOne  r = 1.0000
   R2_VillagesTrails_ThreeClusters__TP06_OneToMany <-> R2_VillagesTrails_ThreeClusters__TP11_ManyToOne  r = 1.0000
   R3_WildlifeTracking__TP06_OneToMany <-> R3_WildlifeTracking__TP11_ManyToOne  r = 1.0000
-  R4_ParkRangers_HelsinkiMedium__TP06_OneToMany <-> R4_ParkRangers_HelsinkiMedium__TP11_ManyToOne  r = 1.0000
+  R4_ParkRangers_NuuksioSparseTrails__TP06_OneToMany <-> R4_ParkRangers_NuuksioSparseTrails__TP11_ManyToOne  r = 1.0000
   R5_MountainRescue__TP06_OneToMany <-> R5_MountainRescue__TP11_ManyToOne  r = 1.0000
   R6_SparseLongRange__TP06_OneToMany <-> R6_SparseLongRange__TP11_ManyToOne  r = 1.0000
   R7_SparseTinyBuffer__TP06_OneToMany <-> R7_SparseTinyBuffer__TP11_ManyToOne  r = 1.0000
   R8_IntermittentPower__TP06_OneToMany <-> R8_IntermittentPower__TP11_ManyToOne  r = 1.0000
   R9_ExtremeRange_200m__TP06_OneToMany <-> R9_ExtremeRange_200m__TP11_ManyToOne  r = 1.0000
-  ... y 11295 más.
+  ... y 4999 más.

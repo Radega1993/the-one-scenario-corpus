@@ -6,7 +6,7 @@ Guía rápida en español. Lanza scripts con `subprocess` desde la raíz del rep
 python3 scenarios/analysis/analysis_menu.py
 ```
 
-**Corpus activo:** `corpus_v2` (720 escenarios, congelado). No se regenera desde el menú.
+**Corpus activo:** `corpus_v1` (720 escenarios, congelado). No se regenera desde el menú.
 
 ---
 
@@ -35,7 +35,7 @@ Presets de reportes en simulación (opciones 1–2): overlays en `overlays/routi
 |-----|--------|---------------------|
 | 4a | `scripts/validation/validate_traffic_profiles.py` | `data/tp_validation_*`, `reports/validation/tp_validation_report.md` |
 | 4b | `run_analysis.py --phase output_metrics` | `data/output_metrics.csv` |
-| 4c | `scripts/validation/validate_corpus_v2_benchmark.py` | `data/corpus_v2_benchmark_validation.csv` |
+| 4c | `scripts/validation/validate_corpus_benchmark.py` | `data/corpus_benchmark_validation.csv` |
 | 4d | `scripts/paper/analyze_traffic_profile_kpis.py` | `data/traffic_profile_*`, informe KPI TP |
 | 4e | `scripts/paper/build_protocol_benchmark_kpi_policy.py` | política KPI protocolos |
 | 4f | `scripts/paper/build_message_analysis_window_policy.py` | ventana análisis mensajes |

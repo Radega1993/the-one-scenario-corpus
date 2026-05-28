@@ -1,11 +1,11 @@
-## Paper figures package (corpus_v2)
+## Paper figures package (corpus_v1)
 
 Generado con:
 
 ```bash
 cd scenarios/analysis
-.venv/bin/python run_analysis.py --corpus corpus_v2 --phase figures_paper
-.venv/bin/python run_figures_aggregated.py --corpus corpus_v2
+.venv/bin/python run_analysis.py --corpus corpus_v1 --phase figures_paper
+.venv/bin/python run_figures_aggregated.py --corpus corpus_v1
 .venv/bin/python build_paper_figures_tables_index.py
 ```
 

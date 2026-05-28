@@ -53,7 +53,7 @@ Generated: 2026-05-20 (UTC) · **Round2 update:** 2026-05-24
 | Paper phase 1 plan | `paper_phase1_action_plan.md` |
 | **Round2 rebuild report** | `wiki_paper_rebuild_report.md` |
 
-Pre-existing reports integrated: `message_creation_time_audit.md`, `spatial_occupancy_report.md`, `corpus_v2_revision_*`.
+Pre-existing reports integrated: `message_creation_time_audit.md`, `spatial_occupancy_report.md`, `corpus_v1_revision_*`.
 
 ## Methodological decisions documented
 

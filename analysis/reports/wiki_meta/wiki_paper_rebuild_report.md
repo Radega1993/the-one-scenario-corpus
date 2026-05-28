@@ -12,7 +12,7 @@ Generated: 2026-05-24 UTC
 | Log | `BACKUP_INFO.md` in backup folder |
 | Previous backup | `wiki_backup_20260520_133832` (223 pages) |
 
-Pre-rebuild snapshot taken before round2 restructure (flat 18-page taxonomy, corpus_v2 720 metrics).
+Pre-rebuild snapshot taken before round2 restructure (flat 18-page taxonomy, corpus_v1 720 metrics).
 
 ---
 
@@ -32,7 +32,7 @@ Pre-rebuild snapshot taken before round2 restructure (flat 18-page taxonomy, cor
 
 | Page | Changes |
 |------|---------|
-| `Home.md` | New wiki map, corpus_v2 720, synthetic/semi-synthetic disclaimers, canonical links |
+| `Home.md` | New wiki map, corpus_v1 720, synthetic/semi-synthetic disclaimers, canonical links |
 | `01-Research-Goal.md` | Links to 12-Benchmark; template unified |
 | `02-Corpus-Overview.md` | v1/v2/dropped; no corpus_v3; manifest + revision |
 | `03-Scenario-Families.md` | 7 families, 84 scenarios for 01_urban |
@@ -76,7 +76,7 @@ Legacy v1 bilingual wiki remains in `_legacy_pre_paper_rebuild/` (01-home … 05
 | Diversity metrics | Absent or v1 (60 scenarios) in legacy | `RESULTADOS_ACTUALES.md` metrics in `06-Diversity-Validation.md` |
 | Wiki structure | 19 pages with mixed naming | 18 flat pages per paper taxonomy |
 | Freeze checklist | All items unchecked / outdated | output + spatial 720 marked done |
-| TP justification doc | `internal/16-traffic_profiles_v1_justification.md` not found | Cited `corpus_v2/README.md` + tp_validation_report |
+| TP justification doc | `internal/16-traffic_profiles_v1_justification.md` not found | Cited `corpus_v1/README.md` + tp_validation_report |
 | Message window | Documented but not flagged as blocker | Explicit **pending** on 11, 12, 14 |
 
 ---

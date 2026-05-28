@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 """
-Canonical Traffic Profile definitions (TP01–TP12) for corpus_v2 validation and KPI scripts.
+Canonical Traffic Profile definitions (TP01–TP12) for corpus_v1 validation and KPI scripts.
 
-Extracted from the historical `generate_corpus_v2_traffic.py` generator (corpus already frozen).
+Extracted from the historical `generate_corpus_v1_traffic.py` generator (corpus already frozen).
 """
 from __future__ import annotations
 
@@ -336,7 +336,7 @@ Events1.prefix = M"""
     raise ValueError(tp_id)
 
 
-# TP05 default 5 min; U4/U6 use 15 min after corpus_v2 revision (still stress, less extreme).
+# TP05 default 5 min; U4/U6 use 15 min after corpus_v1 revision (still stress, less extreme).
 TP05_RELAXED_TTL_BASES = frozenset(
     {
         "U4_CongestionHotspot_Manhattan",

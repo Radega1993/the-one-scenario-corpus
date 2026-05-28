@@ -12,9 +12,9 @@
 
 | Elemento | Valor |
 |----------|--------|
-| **Corpus activo** | [`corpus_v2/`](corpus_v2/) |
-| **Simulaciones** | **720** (= 60 escenarios base × 12 Traffic Profiles TP01–TP12) |
-| **Escenarios base** | 60 (referencia movilidad en [`corpus_v1/`](corpus_v1/)) |
+| **Benchmark paper** | [`corpus_v1/`](corpus_v1/) (540) + [`stress_controls/`](stress_controls/) (30) = **570** |
+| **Bases estructurales** | [`base_scenarios/`](base_scenarios/) — 45 escenarios sin TP |
+| **Corpus ambiental** | [`corpus_v1/`](corpus_v1/) — 540 escenarios con TP |
 | **Perfiles de tráfico** | 12 (TP01 Baseline … TP12 GroupToGroup) |
 | **Estado** | Benchmark principal en **congelación / revisión metodológica** |
 | **Resultados canónicos** | [analysis/reports/RESULTADOS_ACTUALES.md](analysis/reports/RESULTADOS_ACTUALES.md) |
@@ -24,11 +24,15 @@
 | **Política KPI protocolos** | [analysis/reports/canonical/protocol_benchmark_kpi_policy.md](analysis/reports/canonical/protocol_benchmark_kpi_policy.md) |
 | **v1 archivado** | [`_archive/corpus_dropped_v1/`](_archive/corpus_dropped_v1/) |
 
-**Resumen diversidad (720 escenarios, análisis congelado):**
+**Congelación diversidad (540 escenarios, solo `corpus_v1`, sin stress):**
 
-- **Core-23:** max \|r\| = 1,0; 11 325 pares (4,4 %) con \|r\| ≥ 0,7; silhouette ablación (Ward k=7) = **0,3451**
-- **Full-46:** 8 356 pares (3,2 %) con \|r\| ≥ 0,7; silhouette = **0,2680**
-- **Feature–feature (core):** persiste 1 par alto: `mm_WDM ↔ mm_Bus = 0,9393`
+| Espacio | Pares \|r\| ≥ 0,7 | % | Silhouette |
+|---------|------------------:|--:|-----------:|
+| Reduced-17 | 7425 | 5,1% | 0,3355 |
+| **Core-23** | 5029 | 3,5% | 0,3045 |
+| Full-46 | 3378 | 2,3% | 0,2354 |
+
+Detalle: [RESULTADOS_ACTUALES.md](analysis/reports/RESULTADOS_ACTUALES.md). Gate: [diversity_validation_readiness.md](analysis/reports/diversity_validation_readiness.md).
 
 **No existe `corpus_v3/`**; cualquier propuesta v3 está solo en [`_archive/`](_archive/) como material histórico.
 
@@ -38,7 +42,7 @@
 
 | Ruta | Rol |
 |------|-----|
-| [`corpus_v2/`](corpus_v2/) | **Benchmark activo** — 720 `.settings`, [`manifest.csv`](corpus_v2/manifest.csv) |
+| [`corpus_v1/`](corpus_v1/) | **Benchmark activo** — 720 `.settings`, [`manifest.csv`](corpus_v1/manifest.csv) |
 | [`corpus_v1/`](corpus_v1/) | Base histórica de movilidad — 60 `.settings` |
 | [`corpus_dropped_v1/`](corpus_dropped_v1/) | Escenarios v1 archivados por redundancia (10) |
 | [`analysis/`](analysis/) | Pipeline, `data/`, `figures/`, `reports/`, dashboard |
@@ -47,7 +51,7 @@
 | [`INVENTARIO.md`](INVENTARIO.md) | Mapa completo del repositorio |
 | [`internal/`](internal/) | Notas metodológicas privadas (gitignored) |
 
-Los directorios de corpus están **versionados** (`corpus_v1`, `corpus_v2`, …) para que los scripts usen `--corpus corpus_v2` sin romper rutas antiguas.
+Los directorios de corpus están **versionados** (`corpus_v1`, `corpus_v1`, …) para que los scripts usen `--corpus corpus_v1` sin romper rutas antiguas.
 
 ---
 
@@ -60,7 +64,7 @@ Los directorios de corpus están **versionados** (`corpus_v1`, `corpus_v2`, …)
 | [analysis/reports/RESULTADOS_ACTUALES.md](analysis/reports/RESULTADOS_ACTUALES.md) | Métricas congeladas de diversidad y ablación |
 | [analysis/figures/README.md](analysis/figures/README.md) | Catálogo de figuras (720 escenarios) |
 | [analysis/docs/features_core_vs_extended.md](analysis/docs/features_core_vs_extended.md) | Core 23 vs extended 46 |
-| [corpus_v2/README.md](corpus_v2/README.md) | Perfiles TP y diseño del benchmark |
+| [corpus_v1/README.md](corpus_v1/README.md) | Perfiles TP y diseño del benchmark |
 
 Detalle del pipeline: [analysis/README.es.md](analysis/README.es.md). Referencia **.settings** (secciones 1–15): más abajo en este documento.
 
@@ -70,7 +74,7 @@ Detalle del pipeline: [analysis/README.es.md](analysis/README.es.md). Referencia
 
 | Tipo | Rutas |
 |------|--------|
-| **Fuente (versionar)** | `corpus_v2/`, `corpus_v1/`, `corpus_dropped_v1/`, scripts `analysis/`, `analysis/docs/`, overlays, `.wiki-clone/` |
+| **Fuente (versionar)** | `corpus_v1/`, `corpus_v1/`, `corpus_dropped_v1/`, scripts `analysis/`, `analysis/docs/`, overlays, `.wiki-clone/` |
 | **Generado (regenerable)** | `analysis/data/*.csv`, la mayoría de `analysis/reports/`, `analysis/figures/` (PNG/PDF) |
 | **Salidas simulación (costosas)** | `reports/` en la raíz del repo (`*MessageStatsReport.txt`, CSVs espaciales, etc.) |
 
@@ -86,26 +90,26 @@ Comandos paso a paso completos: **[analysis/SCRIPTS_INDEX.md](analysis/SCRIPTS_I
 
 ```bash
 # 1. Simulaciones (batch)
-python3 scenarios/analysis/run_all_scenarios.py --corpus corpus_v2 \
+python3 scenarios/analysis/run_all_scenarios.py --corpus corpus_v1 \
   --extra-settings scenarios/analysis/overlays/routing_contact_reports_overrides.txt \
   --extra-settings scenarios/analysis/overlays/spatial_occupancy_reports_overrides.txt \
   --jobs 4
 
 # 2. Fases de análisis
-python3 scenarios/analysis/run_analysis.py --corpus corpus_v2 --phase output_metrics
-python3 scenarios/analysis/run_analysis.py --corpus corpus_v2 --phase indirects
-python3 scenarios/analysis/run_analysis.py --corpus corpus_v2 --phase all
-python3 scenarios/analysis/run_analysis.py --corpus corpus_v2 --phase figures_paper
-python3 scenarios/analysis/run_analysis.py --corpus corpus_v2 --phase tables_paper
+python3 scenarios/analysis/run_analysis.py --corpus corpus_v1 --phase output_metrics
+python3 scenarios/analysis/run_analysis.py --corpus corpus_v1 --phase indirects
+python3 scenarios/analysis/run_analysis.py --corpus corpus_v1 --phase all
+python3 scenarios/analysis/run_analysis.py --corpus corpus_v1 --phase figures_paper
+python3 scenarios/analysis/run_analysis.py --corpus corpus_v1 --phase tables_paper
 
 # 3. Espacial, tiempos de mensajes, validación TP
 python3 scenarios/analysis/scripts/validation/analyze_spatial_occupancy.py \
-  --manifest scenarios/corpus_v2/manifest.csv --reports-dir reports --corpus corpus_v2
+  --manifest scenarios/corpus_v1/manifest.csv --reports-dir reports --corpus corpus_v1
 python3 scenarios/analysis/analyze_message_creation_times.py
 python3 scenarios/analysis/scripts/validation/validate_traffic_profiles.py
 
 # 4. Figuras agregadas
-python3 scenarios/analysis/run_figures_aggregated.py --corpus corpus_v2
+python3 scenarios/analysis/run_figures_aggregated.py --corpus corpus_v1
 ```
 
 ---
@@ -130,7 +134,7 @@ Esta guía documenta **todas** las opciones de configuración disponibles en los
 
 ## 1. Cómo se cargan los settings
 
-- El simulador carga primero `default_settings.txt` (en la raíz del proyecto) y luego el archivo que pasas por línea de comandos (p. ej. `scenarios/corpus_v2/01_urban/U1_CBD_Commuting_HelsinkiMedium__TP01_Baseline.settings`).
+- El simulador carga primero `default_settings.txt` (en la raíz del proyecto) y luego el archivo que pasas por línea de comandos (p. ej. `scenarios/corpus_v1/01_urban/U1_CBD_Commuting_HelsinkiMedium__TP01_Baseline.settings`).
 - Las claves del archivo de escenario **sobrescriben** las del default.
 - **Namespaces**: muchas opciones se buscan con prefijo (p. ej. `Scenario.endTime`, `Group1.speed`). Los valores por grupo heredan de `Group.*` si no se definen en `Group1.*`, `Group2.*`, etc.
 - **Sintaxis**: pares `clave = valor`. Comentarios con `#`. En rutas de archivo usar siempre **`/`** (no `\`).

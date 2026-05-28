@@ -1,1 +1,1 @@
-"""Streamlit dashboard package for corpus_v2 scenario analysis."""
+"""Streamlit dashboard package for corpus_v1 scenario analysis."""

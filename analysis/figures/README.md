@@ -1,8 +1,8 @@
-# Catálogo de figuras — análisis corpus_v2
+# Catálogo de figuras — análisis corpus_v1
 
 Guía de **todas las figuras** generadas bajo `scenarios/analysis/figures/`: qué preguntan, de dónde salen y si conviene usarlas en el estudio o en el paper.
 
-**Corpus de referencia:** `corpus_v2` — 720 escenarios = 60 bases × 12 perfiles TP (TP01–TP12), en 7 familias (`01_urban` … `07_traffic`).
+**Corpus de referencia:** `corpus_v1` — 570 escenarios oficiales: 540 environmental (6 familias × 12 TP) + 30 stress/control (`07_stress_controls`, 15 bases × TP01 + TP10).
 
 **Objetivo del estudio (dos ejes):**
 
@@ -22,7 +22,7 @@ figures/
 ├── by_space/                 ← ablación 17 / 23 / 46 features
 ├── aggregated/               ← figuras legibles por familia / TP / base (run_figures_aggregated.py)
 ├── paper/
-│   ├── FIGURES_AND_TABLES_INDEX.md   ← catálogo paper (corpus_v2)
+│   ├── FIGURES_AND_TABLES_INDEX.md   ← catálogo paper (corpus_v1)
 │   ├── main/                 ← figuras para artículo
 │   ├── supplementary/
 │   └── tables/               ← tablas Markdown ES/EN (no raster)
@@ -130,21 +130,21 @@ Desde `scenarios/analysis/` (con venv si aplica):
 
 ```bash
 # Pipeline clásico (sin heatmaps N×N si N>100)
-python3 run_analysis.py --corpus corpus_v2 --phase correlation
-python3 run_analysis.py --corpus corpus_v2 --phase figures
-python3 run_analysis.py --corpus corpus_v2 --phase output_metrics
-python3 run_analysis.py --corpus corpus_v2 --phase outputs
-python3 run_analysis.py --corpus corpus_v2 --phase figures_paper
+python3 run_analysis.py --corpus corpus_v1 --phase correlation
+python3 run_analysis.py --corpus corpus_v1 --phase figures
+python3 run_analysis.py --corpus corpus_v1 --phase output_metrics
+python3 run_analysis.py --corpus corpus_v1 --phase outputs
+python3 run_analysis.py --corpus corpus_v1 --phase figures_paper
 
 # Figuras agregadas (familia / TP / base)
-python3 run_figures_aggregated.py --corpus corpus_v2
+python3 run_figures_aggregated.py --corpus corpus_v1
 
 # Forzar heatmaps completos (depuración)
-python3 run_analysis.py --corpus corpus_v2 --phase figures --include-full-heatmaps
+python3 run_analysis.py --corpus corpus_v1 --phase figures --include-full-heatmaps
 
 # Tiempos de creación y espacial
 python3 analyze_message_creation_times.py
-python3 analyze_spatial_occupancy.py --manifest ../corpus_v2/manifest.csv --reports-dir ../../reports
+python3 analyze_spatial_occupancy.py --manifest ../corpus_v1/manifest.csv --reports-dir ../../reports
 ```
 
 **Menú interactivo:** opción **10** (guía + agregadas) o **3** con fase `figures_aggregated`.

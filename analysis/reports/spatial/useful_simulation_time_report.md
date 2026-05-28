@@ -6,7 +6,7 @@ Generado: 2026-05-20 12:41 UTC
 
 | Fuente | Disponible en pipeline actual | Uso en este informe |
 |--------|------------------------------|---------------------|
-| `ConnectivityONEReport` | Sí (720/720 en corpus_v2 con Diego17 overrides) | **Principal** — traza `CONN up/down` |
+| `ConnectivityONEReport` | Sí (720/720 en corpus_v1 con Diego17 overrides) | **Principal** — traza `CONN up/down` |
 | `MessageStatsReport` | Sí | No usado aquí (entrega, no exploración) |
 | `ContactTimesReport` / `TotalEncountersReport` | Sí | Fallback posible; no necesario con traza ONE |
 | Logs de posiciones (`MovementReport`, GPS) | **No** | Ocupación espacial vía **cobertura de pares** en grafo de contactos |

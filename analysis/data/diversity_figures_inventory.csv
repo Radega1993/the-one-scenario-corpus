@@ -1,0 +1,14 @@
+path,classification,exists,non_empty,scope_n,notes
+figures/paper/main/histogram_correlations_pearson_paper.png,MAIN_PAPER,yes,yes,540,Pearson histogram
+figures/paper/main/pca_by_family.png,MAIN_PAPER,yes,yes,540,PCA by family
+figures/paper/main/pca_by_cluster.png,MAIN_PAPER,yes,yes,540,PCA by Ward cluster
+figures/paper/main/ablation_pairs_high_bar.png,MAIN_PAPER,yes,yes,540,Ablation high-|r| pairs
+figures/paper/main/ablation_silhouette_bar.png,MAIN_PAPER,yes,yes,540,Ablation silhouette
+figures/paper/main/heatmap_feature_feature_core.png,MAIN_PAPER,yes,yes,540,Feature-feature core 23
+figures/paper/main/corpus_overview_paper.png,MAIN_PAPER,yes,yes,540,Corpus design overview
+figures/paper/supplementary/histogram_correlations_spearman_paper.png,SUPPLEMENTARY,yes,yes,540,Spearman robustness
+figures/by_space/heatmap_pearson_core_23.png,INTERNAL_ONLY,yes,yes,540,Exploratory per-space
+figures/by_space/histogram_correlations_pearson_core_23.png,INTERNAL_ONLY,yes,yes,540,Exploratory per-space
+figures/aggregated/correlation_ablation_histogram_compare.png,INTERNAL_ONLY,yes,yes,540,Aggregated ablation compare
+figures/heatmap_pearson.png,OBSOLETE,yes,yes,540,Full N×N exploratory; use paper/main histogram
+figures/heatmap_spearman.png,OBSOLETE,yes,yes,540,Full N×N exploratory

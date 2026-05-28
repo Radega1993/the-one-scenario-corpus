@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Build message analysis window policy for corpus_v2.
+Build message analysis window policy for corpus_v1.
 
 Outputs:
   data/message_analysis_window_policy.csv   — per-scenario policy (720 rows)
@@ -23,11 +23,11 @@ _ANALYSIS = Path(__file__).resolve().parents[2]
 if str(_ANALYSIS) not in sys.path:
     sys.path.insert(0, str(_ANALYSIS))
 
-from lib.paths import CORPUS_V2, DATA_DIR, REPORTS_ANALYSIS_DIR  # noqa: E402
+from lib.paths import CORPUS_V1_DIR, DATA_DIR, REPORTS_ANALYSIS_DIR  # noqa: E402
 from lib.report_paths import MESSAGE_ANALYSIS_WINDOW_POLICY  # noqa: E402
 from lib.traffic_profile_generator import PROFILE_ORDER  # noqa: E402
 
-DEFAULT_MANIFEST = CORPUS_V2 / "manifest.csv"
+DEFAULT_MANIFEST = CORPUS_V1_DIR / "manifest.csv"
 DEFAULT_DATA = DATA_DIR
 DEFAULT_REPORTS = REPORTS_ANALYSIS_DIR
 
@@ -249,7 +249,7 @@ def write_report(
     ]
 
     lines = [
-        "# Message analysis window policy (corpus_v2)",
+        "# Message analysis window policy (corpus_v1)",
         "",
         f"Generated: {_utc()}",
         "",
@@ -261,7 +261,7 @@ def write_report(
         "",
         "## Executive summary",
         "",
-        f"- **Corpus:** corpus_v2 — {len(df)} simulations (60 bases × 12 Traffic Profiles).",
+        f"- **Corpus:** corpus_v1 — {len(df)} simulations (60 bases × 12 Traffic Profiles).",
         "- **Primary policy:** report delivery, latency, overhead, and drop using **all messages** "
         "created during the simulation (`valid_start=0`, `valid_end=endTime`).",
         "- **Optional supplementary analysis:** exclude messages with `creation_time ≥ 0.9×endTime`.",
@@ -288,9 +288,9 @@ def write_report(
         "buffering, and delivery. Even with long TTL, short remaining contact opportunities depress "
         "`delivery_ratio` and inflate or distort `latency_mean` (many never delivered). "
         "`MessageStatsReport` aggregates over **all** created messages, so this censoring is embedded in "
-        "current corpus_v2 metrics.",
+        "current corpus_v1 metrics.",
         "",
-        "## Evidence in corpus_v2",
+        "## Evidence in corpus_v1",
         "",
         f"- Scenarios with `pct_messages_last_10 > 12%`: **{n_late}** (`late_message_bias`).",
         f"- Scenarios with `pct_messages_last_10` in [10%, 12%]: **{n_sens}** (`sensitivity_required`).",
@@ -393,7 +393,7 @@ def write_report(
             "## Cross-references",
             "",
             "- [traffic_profile_kpi_analysis.md](traffic_profile_kpi_analysis.md)",
-            "- [corpus_v2_benchmark_validation.md](corpus_v2_benchmark_validation.md)",
+            "- [corpus_v1_benchmark_validation.md](corpus_v1_benchmark_validation.md)",
         ]
     )
 
@@ -402,7 +402,7 @@ def write_report(
 
 
 def main() -> int:
-    ap = argparse.ArgumentParser(description="Build message analysis window policy for corpus_v2.")
+    ap = argparse.ArgumentParser(description="Build message analysis window policy for corpus_v1.")
     ap.add_argument("--manifest", type=Path, default=DEFAULT_MANIFEST)
     ap.add_argument("--data-dir", type=Path, default=DEFAULT_DATA)
     ap.add_argument("--reports-dir", type=Path, default=DEFAULT_REPORTS)

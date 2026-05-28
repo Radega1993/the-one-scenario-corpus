@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Analyze Traffic Profile KPIs for corpus_v2 (720 simulations, 60 bases × 12 TPs).
+Analyze Traffic Profile KPIs for corpus_v1 (720 simulations, 60 bases × 12 TPs).
 
 Outputs:
   data/traffic_profile_stats.csv       — per-TP distributional stats + pathology counts
@@ -23,11 +23,11 @@ _ANALYSIS = Path(__file__).resolve().parents[2]
 if str(_ANALYSIS) not in sys.path:
     sys.path.insert(0, str(_ANALYSIS))
 
-from lib.paths import CORPUS_V2, DATA_DIR, REPORTS_ANALYSIS_DIR  # noqa: E402
+from lib.paths import CORPUS_V1_DIR, DATA_DIR, REPORTS_ANALYSIS_DIR  # noqa: E402
 from lib.report_paths import TRAFFIC_PROFILE_KPI_ANALYSIS  # noqa: E402
 from lib.traffic_profile_generator import PROFILE_ORDER  # noqa: E402
 
-DEFAULT_CORPUS = CORPUS_V2
+DEFAULT_CORPUS = CORPUS_V1_DIR
 DEFAULT_MANIFEST = DEFAULT_CORPUS / "manifest.csv"
 DEFAULT_DATA = DATA_DIR
 DEFAULT_REPORTS = REPORTS_ANALYSIS_DIR
@@ -200,7 +200,7 @@ def load_and_merge(manifest_path: Path, data_dir: Path) -> pd.DataFrame:
     settings = _read("tp_validation_settings.csv")
     windows = _read("traffic_profile_windows.csv")
 
-    bench_path = data_dir / "corpus_v2_benchmark_validation.csv"
+    bench_path = data_dir / "corpus_benchmark_validation.csv"
     bench = pd.read_csv(bench_path) if bench_path.is_file() else pd.DataFrame()
 
     df = m.copy()
@@ -606,13 +606,13 @@ def write_report(
     tp01 = stats[stats["tp_id"] == "TP01"].iloc[0]
 
     lines: list[str] = [
-        "# Traffic Profile KPI Analysis (corpus_v2)",
+        "# Traffic Profile KPI Analysis (corpus_v1)",
         "",
         f"Generated: {_utc()}",
         "",
         "## Executive summary",
         "",
-        f"- **Corpus:** corpus_v2 — {n_total} simulations (60 base scenarios × 12 Traffic Profiles).",
+        f"- **Corpus:** corpus_v1 — {n_total} simulations (60 base scenarios × 12 Traffic Profiles).",
         f"- **Missing output metrics:** {n_missing} scenario(s) "
         f"({', '.join(df.loc[df['_missing_output'], 'scenario_name'].tolist()) or 'none'}).",
         "- **Protocol:** Epidemic (current corpus); KPIs defined for future multi-protocol comparison.",
@@ -782,7 +782,7 @@ def write_report(
             "## Cross-references",
             "",
             "- [`tp_validation_report.md`](tp_validation_report.md)",
-            "- [`corpus_v2_benchmark_validation.md`](corpus_v2_benchmark_validation.md)",
+            "- [`corpus_v1_benchmark_validation.md`](corpus_v1_benchmark_validation.md)",
             "- [`RESULTADOS_ACTUALES.md`](RESULTADOS_ACTUALES.md)",
             "- [`traffic_profile_stats.csv`](../data/traffic_profile_stats.csv)",
         ]
@@ -793,7 +793,7 @@ def write_report(
 
 
 def main() -> int:
-    ap = argparse.ArgumentParser(description="Analyze Traffic Profile KPIs for corpus_v2.")
+    ap = argparse.ArgumentParser(description="Analyze Traffic Profile KPIs for corpus_v1.")
     ap.add_argument("--manifest", type=Path, default=DEFAULT_MANIFEST)
     ap.add_argument("--data-dir", type=Path, default=DEFAULT_DATA)
     ap.add_argument("--reports-dir", type=Path, default=DEFAULT_REPORTS)

@@ -1,5 +1,5 @@
 === Informe de features (correlación y diversidad) ===
-Generado por run_analysis.py --phase features_report. Corpus: 720 escenarios.
+Generado por run_analysis.py --phase features_report. Corpus: 540 escenarios.
 
 --- FEATURES UTILIZADOS (46) ---
 Estos features forman el vector por escenario y se usan para correlación Pearson/Spearman,

@@ -10,7 +10,7 @@ Generated: 2026-05-24 10:28 UTC
 - `drop_ratio > 50`: **57**
 - `total_encounters == 0`: **24**
 
-> **Caveat:** metrics may reflect settings before `apply_corpus_v2_revision.py`; re-simulation required.
+> **Caveat:** metrics may reflect settings before `apply_corpus_v1_revision.py`; re-simulation required.
 
 ## Top problematic scenarios (P0 from diagnosis)
 
@@ -59,7 +59,7 @@ Generated: 2026-05-24 10:28 UTC
 | `04_rural` | 0.2223 | 232 | 144 |
 | `05_disaster` | 0.1847 | 2045 | 108 |
 | `06_social` | 0.1827 | 2176 | 72 |
-| `07_traffic` | 0.0798 | 72 | 180 |
+| `07_stress_controls` | 0.0798 | 72 | 180 |
 
 ## Interpretation
 

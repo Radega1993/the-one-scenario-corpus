@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Figuras agregadas legibles para corpus_v2 (familia, TP, base×TP).
+Figuras agregadas legibles para corpus_v1 (familia, TP, base×TP).
 
 Salida: scenarios/analysis/figures/aggregated/
 
@@ -33,7 +33,7 @@ FAMILY_ORDER = [
     "04_rural",
     "05_disaster",
     "06_social",
-    "07_traffic",
+    "07_stress_controls",
 ]
 FAMILY_SHORT = {
     "01_urban": "Urban",
@@ -42,7 +42,7 @@ FAMILY_SHORT = {
     "04_rural": "Rural",
     "05_disaster": "Disaster",
     "06_social": "Social",
-    "07_traffic": "Traffic",
+    "07_stress_controls": "Stress/Control",
 }
 
 GALLERY_TPS = ["TP01", "TP07", "TP10", "TP02", "TP03", "TP04", "TP05", "TP06",
@@ -407,7 +407,7 @@ def plot_block_heatmap(manifest: pd.DataFrame, out_dir: Path) -> None:
 
 def main() -> int:
     ap = argparse.ArgumentParser(description="Figuras agregadas por familia/TP/base")
-    ap.add_argument("--corpus", default="corpus_v2")
+    ap.add_argument("--corpus", default="corpus_v1")
     ap.add_argument("--threshold", type=float, default=0.7)
     ap.add_argument(
         "--include-block-heatmap",

@@ -9,14 +9,16 @@ import streamlit as st
 
 from lib.paths import (
     ANALYSIS_DIR,
+    COMBINED_MANIFEST_CSV,
     DATA_DIR,
-    DEFAULT_MANIFEST_V2,
+    DEFAULT_MANIFEST_V1,
     REPORTS_ANALYSIS_DIR,
     REPORTS_DIR,
     REPO_ROOT,
+    build_combined_manifest_csv,
 )
 from lib.report_paths import (
-    CORPUS_V2_BENCHMARK_VALIDATION,
+    CORPUS_BENCHMARK_VALIDATION,
     CORPUS_V2_REVISION_CHANGELOG,
     DASHBOARD_READINESS_REPORT,
     MESSAGE_ANALYSIS_WINDOW_POLICY,
@@ -85,7 +87,7 @@ _OPTIONAL_CSV: dict[str, tuple[str, list[str] | None]] = {
         ],
     ),
     "bench_val": (
-        "corpus_v2_benchmark_validation.csv",
+        "corpus_benchmark_validation.csv",
         ["validation_status", "reason", "recommended_action"],
     ),
 }
@@ -123,7 +125,8 @@ def load_features_table(core_only: bool = False) -> pd.DataFrame | None:
 
 @st.cache_data(ttl=60)
 def load_manifest() -> pd.DataFrame:
-    path = DEFAULT_MANIFEST_V2
+    build_combined_manifest_csv()
+    path = COMBINED_MANIFEST_CSV if COMBINED_MANIFEST_CSV.is_file() else DEFAULT_MANIFEST_V1
     if not path.is_file():
         return pd.DataFrame()
     df = pd.read_csv(path)
@@ -263,7 +266,7 @@ def build_master_table() -> pd.DataFrame:
 @st.cache_data(ttl=60)
 def pipeline_status() -> dict[str, bool]:
     return {
-        "manifest": DEFAULT_MANIFEST_V2.is_file(),
+        "manifest": DEFAULT_MANIFEST_V1.is_file(),
         "features": (DATA_DIR / "features.csv").is_file(),
         "features_core": (DATA_DIR / "features_core.csv").is_file(),
         "output_metrics": (DATA_DIR / "output_metrics.csv").is_file(),
@@ -278,7 +281,7 @@ def pipeline_status() -> dict[str, bool]:
         "useful_time": (DATA_DIR / "useful_simulation_time_metrics.csv").is_file(),
         "msg_window_policy": (DATA_DIR / "message_analysis_window_policy.csv").is_file(),
         "tp_kpi_summary": (DATA_DIR / "traffic_profile_kpi_summary.csv").is_file(),
-        "bench_validation": (DATA_DIR / "corpus_v2_benchmark_validation.csv").is_file(),
+        "bench_validation": (DATA_DIR / "corpus_benchmark_validation.csv").is_file(),
     }
 
 
@@ -371,7 +374,7 @@ def _slider_range(
 
 def render_sidebar_filters(master: pd.DataFrame) -> pd.DataFrame:
     """Global filters in sidebar; returns filtered master table."""
-    st.sidebar.header("Filtros (corpus_v2)")
+    st.sidebar.header("Filtros (corpus_v1)")
     mtime = file_mtime(str(DATA_DIR / "output_metrics.csv"))
     if mtime:
         from datetime import datetime
@@ -472,11 +475,11 @@ def list_markdown_reports() -> list[tuple[str, Path]]:
         ("Validación TP", TP_VALIDATION_REPORT),
         ("KPIs por Traffic Profile", TRAFFIC_PROFILE_KPI_ANALYSIS),
         ("Ventana análisis mensajes", MESSAGE_ANALYSIS_WINDOW_POLICY),
-        ("Validación benchmark", CORPUS_V2_BENCHMARK_VALIDATION),
+        ("Validación benchmark", CORPUS_BENCHMARK_VALIDATION),
         ("Figuras paper readiness", PAPER_FIGURES_TABLES_READINESS),
         ("Tiempos útiles simulación", USEFUL_SIMULATION_TIME_REPORT),
         ("Diagnóstico escenarios", SCENARIO_DIAGNOSIS),
-        ("Revisión corpus v2", CORPUS_V2_REVISION_CHANGELOG),
+        ("Revisión corpus", CORPUS_V2_REVISION_CHANGELOG),
         ("Ocupación espacial (puntero)", SPATIAL_OCCUPANCY_ANALYSIS_SUMMARY),
         ("Dashboard readiness", DASHBOARD_READINESS_REPORT),
     ]
@@ -520,20 +523,20 @@ def write_dashboard_readiness_report(path: Path | None = None) -> Path:
         ("Ventana mensajes", "message_analysis_window_policy", "Message window methodology"),
         ("Tiempo útil", "useful_simulation_time_metrics", "Simulation time vs mobility"),
         ("Espacial", "spatial_occupancy_metrics, heatmaps/", "Spatial coverage, WDM"),
-        ("Diagnóstico", "scenario_diagnosis, corpus_v2_benchmark_validation", "Problem scenarios"),
+        ("Diagnóstico", "scenario_diagnosis, corpus_v1_benchmark_validation", "Problem scenarios"),
         ("Protocolos", "placeholder", "Future routing comparison"),
         ("Detalle escenario", "master row, raw reports/", "Deep dive per scenario"),
         ("Figuras / Pipeline / Reportes", "figures/, reports/", "Auxiliary exploration"),
     ]
 
     lines = [
-        "# Dashboard readiness report (corpus_v2)",
+        "# Dashboard readiness report (corpus_v1)",
         "",
         f"Generated: automated from `build_paper_figures_tables_index.py` / dashboard loaders.",
         "",
         "## Executive summary",
         "",
-        f"- **Corpus:** corpus_v2 — **{n}** simulations in master table.",
+        f"- **Corpus:** corpus_v1 — **{n}** simulations in master table.",
         "- **Launch:** `streamlit run scenarios/analysis/dashboard.py`",
         "- **Reference:** [`RESULTADOS_ACTUALES.md`](RESULTADOS_ACTUALES.md)",
         "",

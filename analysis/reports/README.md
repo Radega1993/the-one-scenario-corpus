@@ -1,6 +1,6 @@
 # Informes de análisis (`analysis/reports/`)
 
-Repositorio temático de informes Markdown y texto del benchmark **corpus_v2** (720 simulaciones). La reorganización de 2026-05-24 agrupa artefactos por función sin borrar ningún fichero.
+Repositorio temático de informes Markdown y texto del benchmark combinado del paper (**570 simulaciones**: 540 `corpus_v1` + 30 `stress_controls`). La reorganización de 2026-05-24 agrupa artefactos por función sin borrar ningún fichero.
 
 ## 1. Overview
 
@@ -30,7 +30,7 @@ Manifiesto de movimientos: [../data/reports_reorganization_manifest.csv](../data
 | [canonical/protocol_benchmark_kpi_policy.md](canonical/protocol_benchmark_kpi_policy.md) | Métricas para comparar protocolos |
 | [canonical/message_analysis_window_policy.md](canonical/message_analysis_window_policy.md) | Ventana de análisis de mensajes |
 | [canonical/spatial_vs_performance_analysis.md](canonical/spatial_vs_performance_analysis.md) | Ocupación espacial vs rendimiento |
-| [canonical/corpus_v2_benchmark_validation.md](canonical/corpus_v2_benchmark_validation.md) | Validación 720 escenarios |
+| [canonical/corpus_benchmark_validation.md](canonical/corpus_benchmark_validation.md) | Validación benchmark combinado (570) |
 
 ## 3. Pipeline reports
 
@@ -100,15 +100,15 @@ Superseded o notas puntuales (2026-04); conservados sin borrar:
 
 ## 10. Regeneration commands
 
-Desde `scenarios/analysis/` (corpus activo: `corpus_v2`):
+Desde `scenarios/analysis/` (corpus activo: `corpus_v1`):
 
 ```bash
 # Pipeline diversidad + RESULTADOS_ACTUALES
-python run_analysis.py --corpus corpus_v2 --phase correlation
-python run_analysis.py --corpus corpus_v2 --phase ablation
+python run_analysis.py --corpus corpus_v1 --phase correlation
+python run_analysis.py --corpus corpus_v1 --phase ablation
 
 # Validación y canónicos
-python validate_corpus_v2_benchmark.py
+python scripts/validation/validate_corpus_benchmark.py
 python analyze_traffic_profile_kpis.py
 python build_protocol_benchmark_kpi_policy.py
 python build_message_analysis_window_policy.py

@@ -48,7 +48,7 @@ PAGES = {
 
 def main() -> None:
     st.set_page_config(
-        page_title="Análisis corpus_v2 — The ONE",
+        page_title="Análisis corpus_v1 — The ONE",
         layout="wide",
         initial_sidebar_state="expanded",
     )
@@ -56,14 +56,14 @@ def main() -> None:
     master = build_master_table()
     if master.empty:
         st.error(
-            "No se encontró `scenarios/corpus_v2/manifest.csv`. "
+            "No se encontró `scenarios/corpus_v1/manifest.csv`. "
             "Genera el corpus o revisa la ruta."
         )
         st.stop()
 
     filtered = render_sidebar_filters(master)
 
-    st.title("Benchmark corpus_v2")
+    st.title("Benchmark corpus_v1")
     st.caption("720 escenarios · 12 perfiles TP · datos en `scenarios/analysis/data/`")
 
     page_names = list(PAGES.keys())

@@ -5,7 +5,7 @@ Generated: 2026-05-24 10:28 UTC
 ## Closed decisions
 
 - Corpus benchmark = **synthetic/semi-synthetic**, not empirical traces
-- **corpus_v2**: 720 scenarios = 60 bases × 12 TP
+- **corpus_v1**: 720 scenarios = 60 bases × 12 TP
 - Traffic = Events overlay; mobility from v1 base per scenario
 - Minimum routing metrics: delivery, latency, overhead, drops
 - Wiki rebuilt paper-oriented; old wiki backed up to `_archive/wiki/wiki_backup_20260520_133832`
@@ -19,8 +19,8 @@ Generated: 2026-05-24 10:28 UTC
 
 ## Priority tasks
 
-1. Re-simulate corpus_v2 with Diego17 + spatial reports
-2. Re-run `diagnose_scenarios.py` and `build_corpus_v2_revision_plan.py`
+1. Re-simulate corpus_v1 with Diego17 + spatial reports
+2. Re-run `diagnose_scenarios.py` and `build_corpus_v1_revision_plan.py`
 3. Regenerate `output_metrics.csv` from new reports
 4. Select **main** benchmark subset (~40 bases × TP01–08) from `manifest_revision.csv`
 5. First protocol comparison (Epidemic vs Prophet vs …) on main split only

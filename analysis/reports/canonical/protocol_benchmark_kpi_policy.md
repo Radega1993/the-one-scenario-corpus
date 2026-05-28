@@ -1,10 +1,10 @@
-# Protocol benchmark KPI policy (corpus_v2)
+# Protocol benchmark KPI policy (corpus_v1)
 
-Generated: 2026-05-24 12:07 UTC
+Generated: 2026-05-27 13:53 UTC
 
 ## Executive summary
 
-- **Corpus:** corpus_v2 — 720 simulations (Epidemic reference router).
+- **Corpus:** corpus_v1 — 720 simulations (Epidemic reference router).
 - **Comparison scope:** same mobility, map, Traffic Profile; only `Group.router` changes via overlays.
 - **Primary metrics window:** full simulation (`valid_start=0`, `valid_end=endTime`) per [message_analysis_window_policy.md](message_analysis_window_policy.md).
 - **Optional sensitivity:** exclude messages with `creation_time >= 0.9 * endTime` (appendix only).
@@ -22,9 +22,9 @@ Generated: 2026-05-24 12:07 UTC
 
 | Split | Scenarios |
 |-------|----------:|
-| `control` | 67 |
-| `main` | 200 |
-| `stress` | 453 |
+| `control` | 53 |
+| `main` | 130 |
+| `stress` | 189 |
 
 ## Tier reporting rules
 
@@ -44,7 +44,7 @@ Generated: 2026-05-24 12:07 UTC
 
 | Protocol | Status | Overlay / notes |
 |----------|--------|-----------------|
-| Epidemic | measured | Current corpus_v2 router in all 720 .settings |
+| Epidemic | measured | Current corpus_v1 router in all 720 .settings |
 | PRoPHET | pending | Overlay: protocol_overlays/router_prophet.txt |
 | MaxProp | pending | Overlay: protocol_overlays/router_maxprop.txt |
 | SprayAndWait | pending | Overlay: protocol_overlays/router_sprayandwait.txt |
@@ -63,7 +63,7 @@ Use [`traffic_profile_kpi_summary.csv`](../data/traffic_profile_kpi_summary.csv)
 - Definitions: [`protocol_benchmark_kpi_definitions.csv`](../data/protocol_benchmark_kpi_definitions.csv)
 - Traffic profiles: [`traffic_profile_kpi_analysis.md`](traffic_profile_kpi_analysis.md)
 - Window policy: [`message_analysis_window_policy.md`](message_analysis_window_policy.md)
-- Validation: [`corpus_v2_benchmark_validation.md`](corpus_v2_benchmark_validation.md)
+- Validation: [`corpus_v1_benchmark_validation.md`](corpus_v1_benchmark_validation.md)
 
 ## Regeneration
 

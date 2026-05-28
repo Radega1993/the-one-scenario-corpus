@@ -1,0 +1,61 @@
+report_path,title,lines,producer_script,category,used_by_wiki,used_by_readme,used_by_paper,status,recommended_action,canonical_replacement,archive_target,notes
+analysis/reports/README.md,Informes de análisis (`analysis/reports/`),131,analysis/run_analysis.py,project,YES,YES,NO,KEEP_SUPPORT,keep,,,contains 720 references; verify historical context
+analysis/reports/RESULTADOS_ACTUALES.md,Resultados actuales del corpus (referencia única),36,analysis/run_analysis.py,project,YES,YES,NO,KEEP_CANONICAL,keep,,,
+analysis/reports/_archive_local/check_tp12_d2.md,Check tecnico TP12 en D2 (GroupToGroup),33,unknown,project,NO,YES,NO,ARCHIVE_LEGACY,archive,,scenarios/_archive/analysis_cleanup_*/reports/,
+analysis/reports/_archive_local/resumen_tp_excluyendo_no_contacto.md,Resumen por TP excluyendo escenarios sin contacto,26,unknown,project,NO,YES,NO,ARCHIVE_LEGACY,archive,,scenarios/_archive/analysis_cleanup_*/reports/,
+analysis/reports/_archive_local/trace_realism_audit.md,Auditoría de realismo de trazas — corpus_v1 y corpus_v2,277,unknown,project,NO,YES,NO,ARCHIVE_LEGACY,archive,,scenarios/_archive/analysis_cleanup_*/reports/,
+analysis/reports/_reports_reorganization_before_20260524_145824.txt,reports/ablation_report.txt,48,unknown,project,NO,NO,NO,ARCHIVE_LEGACY,archive,,scenarios/_archive/analysis_cleanup_*/reports/,
+analysis/reports/base_scenarios_validation.md,base_scenarios validation,10,analysis/validate_base_scenarios.py,project,YES,NO,NO,KEEP_SUPPORT,keep,,,
+analysis/reports/benchmark_redefinition_report.md,Benchmark Redefinition Report,174,unknown,project,NO,NO,NO,KEEP_SUPPORT,keep,,,contains 720 references; verify historical context
+analysis/reports/canonical/corpus_benchmark_validation.md,Corpus v2 benchmark validation,303,analysis/lib/report_paths.py,canonical,NO,NO,YES,KEEP_CANONICAL,keep,,,contains 720 references; verify historical context
+analysis/reports/canonical/corpus_v2_benchmark_validation.md,Corpus v2 benchmark validation,131,unknown,canonical,NO,NO,YES,ARCHIVE_OBSOLETE,archive,analysis/reports/canonical/corpus_benchmark_validation.md,scenarios/_archive/analysis_cleanup_*/reports/,
+analysis/reports/canonical/message_analysis_window_policy.md,Message analysis window policy (corpus_v1),131,analysis/lib/report_paths.py,canonical,YES,YES,YES,KEEP_CANONICAL,keep,,,contains 720 references; verify historical context
+analysis/reports/canonical/protocol_benchmark_kpi_policy.md,Protocol benchmark KPI policy (corpus_v1),73,analysis/lib/report_paths.py,canonical,YES,YES,YES,KEEP_CANONICAL,keep,,,contains 720 references; verify historical context
+analysis/reports/canonical/spatial_vs_performance_analysis.md,Spatial occupancy vs routing performance (corpus_v1),47,analysis/lib/report_paths.py,canonical,YES,YES,YES,KEEP_CANONICAL,keep,,,contains 720 references; verify historical context
+analysis/reports/canonical/traffic_profile_kpi_analysis.md,Traffic Profile KPI Analysis (corpus_v1),192,analysis/lib/report_paths.py,canonical,YES,YES,YES,KEEP_CANONICAL,keep,,,contains 720 references; verify historical context
+analysis/reports/corpus_reorganization_final_report.md,Corpus reorganization — final report,130,unknown,project,NO,NO,NO,KEEP_SUPPORT,keep,,,contains 720 references; verify historical context
+analysis/reports/execution_pipeline_refactor.md,Execution Pipeline Refactor,103,unknown,project,NO,NO,NO,KEEP_SUPPORT,keep,,,
+analysis/reports/map_policy_migration_report.md,Informe de migración de mapas — corpus_v1,176,unknown,project,NO,NO,NO,KEEP_SUPPORT,keep,,,contains 720 references; verify historical context
+analysis/reports/map_preparation_pipeline.md,Map Preparation Pipeline — Informe metodológico,178,unknown,project,NO,NO,NO,KEEP_SUPPORT,keep,,,contains 720 references; verify historical context
+analysis/reports/paper_freeze_checklist.md,Paper freeze checklist (corpus_v1),193,analysis/dashboard/data_loaders.py,project,YES,YES,NO,KEEP_CANONICAL,keep,,,contains 720 references; verify historical context
+analysis/reports/paper_gate/dashboard_readiness_report.md,Dashboard readiness report (corpus_v1),72,analysis/dashboard/data_loaders.py,paper_gate,NO,YES,YES,KEEP_SUPPORT,keep,,,contains 720 references; verify historical context
+analysis/reports/paper_gate/paper_figures_tables_readiness.md,Paper figures and tables readiness (corpus_v1),89,analysis/lib/report_paths.py,paper_gate,YES,NO,YES,KEEP_SUPPORT,keep,,,contains 720 references; verify historical context
+analysis/reports/paper_gate/paper_phase1_action_plan.md,Paper phase 1 action plan,58,analysis/lib/report_paths.py,paper_gate,YES,NO,YES,KEEP_SUPPORT,keep,,,contains 720 references; verify historical context
+analysis/reports/pipeline/ablation_report.txt,=== Ablación 17 vs 23 vs 46 (features_core_vs_extended.md §6) ===,9,analysis/run_analysis.py,pipeline,YES,YES,NO,KEEP_SUPPORT,keep,,,contains 720 references; verify historical context
+analysis/reports/pipeline/clustering_report.txt,"Clustering Ward sobre Z (k=7), silhouette = 0.2680",737,analysis/run_analysis.py,pipeline,NO,YES,NO,KEEP_SUPPORT,keep,,,
+analysis/reports/pipeline/correlation_core23_report.txt,=== Correlación entre escenarios en espacio CORE 23 (referencia para investigación) ===,45,analysis/run_analysis.py,pipeline,YES,YES,NO,KEEP_SUPPORT,keep,,,
+analysis/reports/pipeline/correlation_report.txt,"=== Correlación entre escenarios (vectores Z, 570×d) ===",72,analysis/run_analysis.py,pipeline,YES,YES,NO,KEEP_SUPPORT,keep,,,
+analysis/reports/pipeline/feature_feature_correlation_report.txt,=== Correlación feature–feature (core 23) ===,8,analysis/run_analysis.py,pipeline,YES,YES,NO,KEEP_SUPPORT,keep,,,
+analysis/reports/pipeline/features_report.md,Informe de features,141,analysis/run_analysis.py,pipeline,YES,YES,NO,KEEP_SUPPORT,keep,,,
+analysis/reports/pipeline/features_report.txt,=== Informe de features (correlación y diversidad) ===,441,analysis/run_analysis.py,pipeline,NO,YES,NO,KEEP_SUPPORT,keep,,,
+analysis/reports/pipeline/indirect_features_report.md,Indirectas tipo Diego (estado actual de datos),35,analysis/run_analysis.py,pipeline,NO,YES,NO,KEEP_SUPPORT,keep,,,
+analysis/reports/pipeline/indirect_features_report.txt,=== Indirectas tipo Diego (estado actual de datos) ===,28,analysis/run_analysis.py,pipeline,NO,NO,NO,KEEP_SUPPORT,keep,,,
+analysis/reports/pipeline/multiple_comparisons_report.txt,=== Corrección por comparaciones múltiples (correlación entre escenarios) ===,15,analysis/run_analysis.py,pipeline,NO,YES,NO,KEEP_SUPPORT,keep,,,
+analysis/reports/pipeline/outputs_correlation_report.txt,=== Validación sobre outputs (vectores Y por escenario) ===,19,analysis/run_analysis.py,pipeline,NO,YES,NO,KEEP_SUPPORT,keep,,,contains 720 references; verify historical context
+analysis/reports/pipeline/scenarios_to_diversify.txt,Escenarios a diversificar (aparecen en pares con |r| >= 0.7),574,analysis/run_analysis.py,pipeline,NO,YES,NO,KEEP_SUPPORT,keep,,,
+analysis/reports/pipeline/scenarios_to_diversify_core23.txt,Escenarios a diversificar (core 23) — aparecen en pares con |r| >= 0.7 en espacio de 23 features,573,analysis/run_analysis.py,pipeline,NO,YES,NO,KEEP_SUPPORT,keep,,,
+analysis/reports/policies/simulation_time_policy.md,Simulation time and warmup policy,25,analysis/lib/report_paths.py,policies,YES,YES,YES,KEEP_SUPPORT,keep,,,contains 720 references; verify historical context
+analysis/reports/project/REPORTS_INVENTORY.md,Inventario detallado de `analysis/reports/`,728,analysis/lib/report_paths.py,project,NO,YES,NO,KEEP_SUPPORT,keep,,,contains 720 references; verify historical context
+analysis/reports/project/analysis_artifact_producers.md,Analysis artifact producers,65,unknown,project,NO,NO,NO,KEEP_SUPPORT,keep,,,contains 720 references; verify historical context
+analysis/reports/project/corpus_v2_revision_changelog.md,Corpus v2 revision changelog,263,analysis/lib/report_paths.py,project,YES,NO,NO,ARCHIVE_LEGACY,archive,,scenarios/_archive/analysis_cleanup_*/reports/,
+analysis/reports/project/corpus_v2_revision_plan.md,Plan de revisión corpus_v1 (in-place),166,analysis/lib/report_paths.py,project,NO,NO,NO,ARCHIVE_LEGACY,archive,,scenarios/_archive/analysis_cleanup_*/reports/,
+analysis/reports/project/data_inventory_final.md,Data inventory final,74,unknown,project,NO,NO,NO,KEEP_SUPPORT,keep,,,contains 720 references; verify historical context
+analysis/reports/project/inventory_update_report.md,Inventory update report,32,analysis/lib/report_paths.py,project,NO,NO,NO,KEEP_SUPPORT,keep,,,contains 720 references; verify historical context
+analysis/reports/project/project_reorganization_report.md,Informe de reorganización del subproyecto `scenarios/`,201,analysis/lib/report_paths.py,project,NO,NO,NO,KEEP_SUPPORT,keep,,,
+analysis/reports/project/reports_reorganization_report.md,Reports reorganization audit,154,analysis/lib/report_paths.py,project,NO,NO,NO,KEEP_SUPPORT,keep,,,
+analysis/reports/project/reports_reorganization_validation.md,Validación de reorganización — `analysis/reports/`,163,unknown,project,NO,NO,NO,KEEP_SUPPORT,keep,,,
+analysis/reports/project/scripts_inventory_before_20260524_184900.txt,./analysis_menu.py,36,unknown,project,NO,NO,NO,ARCHIVE_LEGACY,archive,,scenarios/_archive/analysis_cleanup_*/reports/,
+analysis/reports/project/scripts_organization_report.md,Scripts organization report (2026-05-24),104,unknown,project,NO,NO,NO,KEEP_SUPPORT,keep,,,contains 720 references; verify historical context
+analysis/reports/spatial/spatial_occupancy_analysis_summary.md,Spatial occupancy analysis (pointer),6,analysis/lib/report_paths.py,spatial,NO,YES,YES,KEEP_SUPPORT,keep,,,contains 720 references; verify historical context
+analysis/reports/spatial/spatial_occupancy_report.md,Ocupación espacial en The ONE,74,analysis/lib/report_paths.py,spatial,YES,YES,YES,KEEP_SUPPORT,keep,,,
+analysis/reports/spatial/useful_simulation_time_report.md,Tiempo útil de simulación — informe metodológico,176,analysis/lib/report_paths.py,spatial,YES,YES,YES,KEEP_SUPPORT,keep,,,contains 720 references; verify historical context
+analysis/reports/validation/current_results_review.md,Current simulation results review,70,analysis/lib/report_paths.py,validation,NO,YES,NO,KEEP_SUPPORT,keep,,,contains 720 references; verify historical context
+analysis/reports/validation/evaluation_metrics_review.md,Evaluation metrics review (routing benchmark),48,analysis/lib/report_paths.py,validation,YES,YES,NO,KEEP_SUPPORT,keep,,,
+analysis/reports/validation/message_creation_time_audit.md,Auditoría de tiempos de creación de mensajes (corpus_v1),78,analysis/lib/report_paths.py,validation,YES,YES,NO,KEEP_SUPPORT,keep,,,contains 720 references; verify historical context
+analysis/reports/validation/scenario_diagnosis.md,Scenario diagnosis (corpus_v1),54,analysis/lib/report_paths.py,validation,YES,YES,NO,KEEP_SUPPORT,keep,,,contains 720 references; verify historical context
+analysis/reports/validation/settings_audit.md,Settings audit (corpus_v1),70,analysis/lib/report_paths.py,validation,NO,YES,NO,KEEP_SUPPORT,keep,,,contains 720 references; verify historical context
+analysis/reports/validation/tp_validation_report.md,Traffic Profiles v1.0 — validation report,73,analysis/lib/report_paths.py,validation,YES,YES,NO,KEEP_SUPPORT,keep,,,contains 720 references; verify historical context
+analysis/reports/wiki_meta/wiki_new_index.md,Proposed new wiki index (paper-oriented),27,analysis/lib/report_paths.py,wiki_meta,NO,YES,NO,KEEP_SUPPORT,keep,,,contains 720 references; verify historical context
+analysis/reports/wiki_meta/wiki_old_audit.md,Audit of previous wiki (pre-rebuild),86,analysis/lib/report_paths.py,wiki_meta,NO,YES,NO,KEEP_SUPPORT,keep,,,
+analysis/reports/wiki_meta/wiki_paper_rebuild_report.md,Wiki paper rebuild report (round2),135,analysis/lib/report_paths.py,wiki_meta,NO,YES,NO,KEEP_SUPPORT,keep,,,contains 720 references; verify historical context
+analysis/reports/wiki_meta/wiki_rebuild_summary.md,Wiki rebuild — executive summary,84,analysis/lib/report_paths.py,wiki_meta,NO,YES,NO,KEEP_SUPPORT,keep,,,contains 720 references; verify historical context

@@ -27,13 +27,13 @@ def _run(cmd: str) -> str:
 def main() -> int:
     ts = datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M UTC")
     total = _run("find . -type f ! -path './.git/*' ! -path './analysis/.venv/*' ! -path '*/__pycache__/*' ! -path './.wiki-clone/.git/*' | wc -l")
-    settings_v2 = _run("find corpus_v2 -name '*.settings' | wc -l")
+    settings_v2 = _run("find corpus_v1 -name '*.settings' | wc -l")
     csv_data = _run("find analysis/data -name '*.csv' | wc -l")
     reports_n = _run("find analysis/reports -type f | wc -l")
     fig_png = _run("find analysis/figures -name '*.png' | wc -l")
     heatmaps = _run("find analysis/figures/spatial_heatmaps -name '*.png' | wc -l")
     wiki_md = _run("find .wiki-clone -name '*.md' ! -path './.wiki-clone/.git/*' | wc -l")
-    manifest = _run("wc -l < corpus_v2/manifest.csv")
+    manifest = _run("wc -l < corpus_v1/manifest.csv")
     output = _run("wc -l < analysis/data/output_metrics.csv")
 
     text = f"""# Inventory update report
@@ -45,7 +45,7 @@ Generated: {ts}
 | Metric | Count |
 |--------|------:|
 | Total files (excl. .git, .venv, __pycache__) | {total} |
-| `corpus_v2` `.settings` | {settings_v2} |
+| `corpus_v1` `.settings` | {settings_v2} |
 | `analysis/data/` CSV files | {csv_data} |
 | `analysis/reports/` files | {reports_n} |
 | Figures PNG | {fig_png} |

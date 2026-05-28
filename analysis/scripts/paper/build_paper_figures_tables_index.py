@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Audit paper figures/tables for corpus_v2, promote aggregated figures,
+Audit paper figures/tables for corpus_v1, promote aggregated figures,
 generate corpus overview, and write index + readiness report.
 """
 
@@ -24,9 +24,9 @@ _ANALYSIS = Path(__file__).resolve().parents[2]
 if str(_ANALYSIS) not in sys.path:
     sys.path.insert(0, str(_ANALYSIS))
 
-from lib.paths import ANALYSIS_DIR, CORPUS_V2, DATA_DIR, REPORTS_ANALYSIS_DIR, SCENARIOS_DIR  # noqa: E402
+from lib.paths import ANALYSIS_DIR, CORPUS_V1_DIR, DATA_DIR, REPORTS_ANALYSIS_DIR, SCENARIOS_DIR  # noqa: E402
 
-DEFAULT_MANIFEST = CORPUS_V2 / "manifest.csv"
+DEFAULT_MANIFEST = CORPUS_V1_DIR / "manifest.csv"
 DEFAULT_DATA = DATA_DIR
 DEFAULT_REPORTS = REPORTS_ANALYSIS_DIR
 HERE = ANALYSIS_DIR
@@ -43,7 +43,7 @@ TABLES_DIR = PAPER_DIR / "tables"
 AGG_DIR = HERE / "figures" / "aggregated"
 FIGURES_ROOT = HERE / "figures"
 
-EXPECTED_N = 720
+EXPECTED_N = 540  # diversity validation scope: corpus_v1 only (no stress_controls)
 
 # Catalog: stem -> metadata (without extension)
 FIGURE_CATALOG: dict[str, dict[str, str]] = {
@@ -97,10 +97,10 @@ FIGURE_CATALOG: dict[str, dict[str, str]] = {
     },
     "corpus_overview_paper": {
         "type": "main",
-        "data_source": "corpus_v2/manifest.csv",
+        "data_source": "corpus_v1/manifest.csv",
         "generator_script": "build_paper_figures_tables_index.py",
-        "description": "Stacked bar: 720 simulations = 60 bases × 12 TPs across 7 families.",
-        "scientific_message": "Benchmark scale and family×TP factorial design of corpus_v2.",
+        "description": "Stacked bar: 540 simulations = 45 bases × 12 TPs across 6 environmental families.",
+        "scientific_message": "Benchmark scale and family×TP factorial design of corpus_v1.",
         "paper_section": "Methods / Benchmark design",
     },
     "outputs_boxplot_by_tp_paper": {
@@ -124,7 +124,7 @@ FIGURE_CATALOG: dict[str, dict[str, str]] = {
         "data_source": "output_metrics.csv",
         "generator_script": "run_analysis.py --phase figures_paper",
         "description": "Histogram of Pearson r between output metric vectors across scenarios.",
-        "scientific_message": "Outputs are not trivially collinear across the 720 scenarios.",
+        "scientific_message": "Outputs are not trivially collinear across the benchmark scenarios.",
         "paper_section": "Supplementary / Output diversity",
     },
     "spatial_coverage_by_family_paper": {
@@ -148,7 +148,7 @@ FIGURE_CATALOG: dict[str, dict[str, str]] = {
         "data_source": "N/A (future multi-protocol runs)",
         "generator_script": "build_paper_figures_tables_index.py",
         "description": "Placeholder for routing-protocol comparison (not yet simulated).",
-        "scientific_message": "Future work: compare Epidemic with PRoPHET, MaxProp, etc. on corpus_v2 splits.",
+        "scientific_message": "Future work: compare Epidemic with PRoPHET, MaxProp, etc. on corpus_v1 splits.",
         "paper_section": "Discussion / Future work",
     },
 }
@@ -174,7 +174,7 @@ TABLE_CATALOG: dict[str, dict[str, str]] = {
         "type": "table",
         "data_source": "correlation_report.txt, correlation_core23_report.txt, cluster_assignments*.csv",
         "generator_script": "run_analysis.py --phase tables_paper",
-        "description": "Diversity metrics for full_46 and core_23 spaces (n=720).",
+        "description": "Diversity metrics for full_46 and core_23 spaces (n=540).",
         "scientific_message": "Quantitative evidence that the corpus meets diversity thresholds.",
         "paper_section": "Results / Diversity",
     },
@@ -204,15 +204,15 @@ TABLE_CATALOG: dict[str, dict[str, str]] = {
     },
     "table_families_en.md": {
         "type": "table",
-        "data_source": ".wiki-clone/05-corpus/Scenario-families.md",
+        "data_source": ".wiki-clone/04-Scenario-Families.md",
         "generator_script": "run_analysis.py --phase tables_paper",
-        "description": "Seven scenario families (counts are base scenarios per family, not 720).",
+        "description": "Six environmental families + stress lab (base counts per family).",
         "scientific_message": "Taxonomy of mobility/traffic regimes in the benchmark.",
         "paper_section": "Methods / Scenario families",
     },
     "table_families_es.md": {
         "type": "table",
-        "data_source": ".wiki-clone/05-corpus/Scenario-families-es.md",
+        "data_source": ".wiki-clone/04-Scenario-Families.md",
         "generator_script": "run_analysis.py --phase tables_paper",
         "description": "Spanish families table.",
         "scientific_message": "Same as EN.",
@@ -234,21 +234,41 @@ def _utc() -> str:
 
 
 def validate_corpus(manifest_path: Path, data_dir: Path) -> dict[str, Any]:
+    """Validate diversity inputs (540) separately from combined benchmark outputs (570)."""
     m = pd.read_csv(manifest_path)
     n_manifest = len(m)
-    checks: dict[str, Any] = {"n_manifest": n_manifest, "ok": n_manifest == EXPECTED_N}
+    checks: dict[str, Any] = {
+        "n_manifest": n_manifest,
+        "diversity_ok": n_manifest == EXPECTED_N,
+        "benchmark_ok": True,
+        "ok": n_manifest == EXPECTED_N,
+    }
 
-    for name in ("correlation_pearson.csv", "output_metrics.csv", "features_normalized.csv"):
+    for name in ("correlation_pearson.csv", "features_normalized.csv"):
         p = data_dir / name
         if p.is_file():
             df = pd.read_csv(p, index_col=0 if "correlation" in name else None)
             n = len(df) if name != "correlation_pearson.csv" else len(df.index)
             checks[name] = n
             if n != EXPECTED_N:
+                checks["diversity_ok"] = False
                 checks["ok"] = False
         else:
             checks[name] = None
+            checks["diversity_ok"] = False
             checks["ok"] = False
+
+    p_out = data_dir / "output_metrics.csv"
+    if p_out.is_file():
+        n_out = len(pd.read_csv(p_out))
+        checks["output_metrics.csv"] = n_out
+        # Combined benchmark target is 570; does not fail diversity-only index
+        if n_out != EXPECTED_N:
+            checks["benchmark_ok"] = n_out >= EXPECTED_N
+    else:
+        checks["output_metrics.csv"] = None
+
+    checks["ok"] = checks["diversity_ok"]
     return checks
 
 
@@ -271,7 +291,7 @@ def _figure_status(stem: str, png: Path, data_dir: Path) -> str:
         if p.is_file() and _newer_than(p, png):
             stale = True
             break
-    manifest = SCENARIOS_DIR / "corpus_v2" / "manifest.csv"
+    manifest = SCENARIOS_DIR / "corpus_v1" / "manifest.csv"
     if manifest.is_file() and _newer_than(manifest, png):
         stale = True
     if stale and stem not in ("corpus_overview_paper",):
@@ -297,7 +317,7 @@ def _table_status(path: Path, data_dir: Path, reports_dir: Path) -> str:
         text = path.read_text(encoding="utf-8", errors="replace")
         if "n_scenarios" in text and "| 60 |" in text:
             return "regenerar"
-        if name.startswith("table_diversity") and "| 720 |" not in text and "| None |" in text:
+        if name.startswith("table_diversity") and "| 540 |" not in text and "| None |" in text:
             return "regenerar"
     return "lista"
 
@@ -318,9 +338,9 @@ def plot_corpus_overview(manifest_path: Path, out_base: Path) -> None:
     m = pd.read_csv(manifest_path)
     fam_order = [
         "01_urban", "02_campus", "03_vehicles", "04_rural",
-        "05_disaster", "06_social", "07_traffic",
+        "05_disaster", "06_social", "07_stress_controls",
     ]
-    labels = ["Urban", "Campus", "Vehicles", "Rural", "Disaster", "Social", "Traffic"]
+    labels = ["Urban", "Campus", "Vehicles", "Rural", "Disaster", "Social", "Stress/Control"]
     bases = m.groupby("family")["scenario_base"].nunique().reindex(fam_order).fillna(0).astype(int)
     sims = m.groupby("family").size().reindex(fam_order).fillna(0).astype(int)
 
@@ -338,7 +358,7 @@ def plot_corpus_overview(manifest_path: Path, out_base: Path) -> None:
     ax.set_xticks(list(x))
     ax.set_xticklabels(labels, rotation=25, ha="right")
     ax.set_ylabel("Count")
-    ax.set_title("corpus_v2: 720 simulations = 60 bases × 12 Traffic Profiles")
+    ax.set_title("corpus_v1: 540 simulations = 45 bases × 12 Traffic Profiles")
     ax.legend(loc="upper right", fontsize=8)
     for i, (b, s) in enumerate(zip(bases.values, sims.values)):
         ax.text(i, s + 2, str(s), ha="center", fontsize=8)
@@ -364,7 +384,7 @@ def create_protocol_placeholder(out_base: Path) -> None:
     ax.text(
         0.5,
         0.35,
-        "Placeholder — corpus_v2 currently uses Epidemic only.\n"
+        "Placeholder — corpus_v1 currently uses Epidemic only.\n"
         "Future: Epidemic vs PRoPHET / MaxProp / Spray-and-Wait on benchmark splits.",
         ha="center",
         va="center",
@@ -424,12 +444,14 @@ def collect_index_rows(data_dir: Path, reports_dir: Path) -> list[dict[str, str]
 
 def write_index(path: Path, rows: list[dict[str, str]], validation: dict[str, Any]) -> None:
     lines = [
-        "# Paper figures and tables index (corpus_v2)",
+        "# Paper figures and tables index (corpus_v1)",
         "",
         f"Generated: {_utc()}",
         "",
-        f"**Corpus:** corpus_v2 — {validation['n_manifest']} simulations (expected {EXPECTED_N}).",
-        f"**Validation:** {'PASS' if validation.get('ok') else 'CHECK FAILED'}",
+        f"**Corpus:** corpus_v1 — {validation['n_manifest']} simulations (diversity scope {EXPECTED_N}).",
+        f"**Diversity validation:** {'PASS' if validation.get('diversity_ok') else 'CHECK FAILED'}",
+        f"**Benchmark outputs (570):** output_metrics={validation.get('output_metrics.csv', 'n/a')} "
+        f"({'OK' if validation.get('benchmark_ok') else 'incomplete — not a diversity blocker'})",
         "",
         "| filename | type | data_source | generator_script | description | scientific_message | paper_section | status |",
         "|----------|------|-------------|------------------|-------------|--------------------|---------------|--------|",
@@ -449,9 +471,9 @@ def write_index(path: Path, rows: list[dict[str, str]], validation: dict[str, An
             "## Regeneration commands",
             "",
             "```bash",
-            "scenarios/analysis/.venv/bin/python scenarios/analysis/run_analysis.py --corpus corpus_v2 --phase figures_paper",
-            "scenarios/analysis/.venv/bin/python scenarios/analysis/run_analysis.py --corpus corpus_v2 --phase tables_paper",
-            "scenarios/analysis/.venv/bin/python scenarios/analysis/run_figures_aggregated.py --corpus corpus_v2",
+            "scenarios/analysis/.venv/bin/python scenarios/analysis/run_analysis.py --corpus corpus_v1 --phase figures_paper",
+            "scenarios/analysis/.venv/bin/python scenarios/analysis/run_analysis.py --corpus corpus_v1 --phase tables_paper",
+            "scenarios/analysis/.venv/bin/python scenarios/analysis/run_figures_aggregated.py --corpus corpus_v1",
             "scenarios/analysis/.venv/bin/python scenarios/analysis/build_paper_figures_tables_index.py",
             "```",
             "",
@@ -479,16 +501,16 @@ def write_readiness(
                and not (TABLES_DIR / r["filename"]).exists()]
 
     lines = [
-        "# Paper figures and tables readiness (corpus_v2)",
+        "# Paper figures and tables readiness (corpus_v1)",
         "",
         f"Generated: {_utc()}",
         "",
         "## Executive summary",
         "",
-        f"- **Corpus:** corpus_v2, N={validation.get('n_manifest', '?')} simulations.",
+        f"- **Corpus:** corpus_v1, N={validation.get('n_manifest', '?')} simulations.",
         f"- **Data validation:** correlation_pearson={validation.get('correlation_pearson.csv', '?')}, "
         f"output_metrics={validation.get('output_metrics.csv', '?')}.",
-        "- **Policy:** All figures must trace to current `analysis/data/*.csv` (720 rows), not corpus_v1 or 60-scenario pilots.",
+        "- **Policy:** Diversity figures trace to `analysis/data/*.csv` with n=540 (corpus_v1 only). Combined benchmark (570) is separate.",
         "",
         "## Figures ready (main)",
         "",
@@ -523,9 +545,9 @@ def write_readiness(
             "",
             "```bash",
             "cd scenarios/analysis",
-            ".venv/bin/python run_analysis.py --corpus corpus_v2 --phase tables_paper",
-            ".venv/bin/python run_analysis.py --corpus corpus_v2 --phase figures_paper",
-            ".venv/bin/python run_figures_aggregated.py --corpus corpus_v2",
+            ".venv/bin/python run_analysis.py --corpus corpus_v1 --phase tables_paper",
+            ".venv/bin/python run_analysis.py --corpus corpus_v1 --phase figures_paper",
+            ".venv/bin/python run_figures_aggregated.py --corpus corpus_v1",
             ".venv/bin/python build_paper_figures_tables_index.py",
             "```",
             "",
@@ -533,14 +555,14 @@ def write_readiness(
             "",
             "1. **Routing protocol comparison** — placeholder only (`protocol_comparison_placeholder`); requires new simulations.",
             "2. **Optional:** promote additional aggregated heatmaps (`outputs_heatmap_base_x_tp_*`) if space allows.",
-            "3. **README cleanup** — ensure all docs reference `corpus_v2`, not `corpus_v1`.",
+            "3. **README cleanup** — ensure all docs reference `corpus_v1`, not `corpus_v1`.",
             "",
             "## Closure checklist",
             "",
             "- [ ] 8–10 main figures (PNG+PDF) — current count: "
             f"{len([r for r in rows if r['type']=='main'])} indexed",
             "- [ ] 4+ supplementary figures",
-            "- [ ] 4 EN tables regenerated with n=720 diversity metrics",
+            "- [ ] 4 EN tables regenerated with n=540 diversity metrics",
             "- [ ] `FIGURES_AND_TABLES_INDEX.md` committed",
             "- [ ] Cross-check numbers vs `RESULTADOS_ACTUALES.md`",
             "",
@@ -564,7 +586,7 @@ def write_readiness(
 
 
 def main() -> int:
-    ap = argparse.ArgumentParser(description="Build paper figures/tables index for corpus_v2.")
+    ap = argparse.ArgumentParser(description="Build paper figures/tables index for corpus_v1.")
     ap.add_argument("--manifest", type=Path, default=DEFAULT_MANIFEST)
     ap.add_argument("--data-dir", type=Path, default=DEFAULT_DATA)
     ap.add_argument("--reports-dir", type=Path, default=DEFAULT_REPORTS)

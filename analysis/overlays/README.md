@@ -11,7 +11,7 @@ Orden típico (cada `--extra-settings` se aplica después del anterior):
 Ejemplo desde la raíz del repo:
 
 ```bash
-python3 scenarios/analysis/run_all_scenarios.py --corpus corpus_v2 \
+python3 scenarios/analysis/run_all_scenarios.py --corpus corpus_v1 \
   --extra-settings scenarios/analysis/overlays/routing_contact_reports_overrides.txt \
   --extra-settings scenarios/analysis/overlays/spatial_occupancy_reports_overrides.txt
 ```

@@ -9,7 +9,7 @@ import streamlit as st
 from dashboard.components import render_markdown_file
 from dashboard.data_loaders import load_csv
 from lib.report_paths import (
-    CORPUS_V2_BENCHMARK_VALIDATION,
+    CORPUS_BENCHMARK_VALIDATION,
     CORPUS_V2_REVISION_CHANGELOG,
     SCENARIO_DIAGNOSIS,
 )
@@ -20,9 +20,9 @@ def render(filtered: pd.DataFrame, master: pd.DataFrame) -> None:
 
     pool = filtered if not filtered.empty else master
 
-    bench = load_csv("corpus_v2_benchmark_validation.csv")
+    bench = load_csv("corpus_benchmark_validation.csv")
     if bench is not None and not bench.empty:
-        st.subheader("Validación benchmark (corpus_v2)")
+        st.subheader("Validación benchmark (corpus_v1)")
         b = bench.copy()
         sc = "scenario" if "scenario" in b.columns else "scenario_name"
         if sc != "scenario":
@@ -125,13 +125,13 @@ def render(filtered: pd.DataFrame, master: pd.DataFrame) -> None:
             chart = alt.Chart(flags).mark_bar().encode(x="count:Q", y=alt.Y("flag:N", sort="-x"))
             st.altair_chart(chart, use_container_width=True)
 
-    rev = load_csv("corpus_v2_revision_prioritized.csv")
+    rev = load_csv("corpus_v1_revision_prioritized.csv")
     if rev is not None:
-        with st.expander("Plan de revisión corpus_v2"):
+        with st.expander("Plan de revisión corpus_v1"):
             st.dataframe(rev.head(80), use_container_width=True, height=280)
 
     for label, p in [
-        ("Validación benchmark", CORPUS_V2_BENCHMARK_VALIDATION),
+        ("Validación benchmark", CORPUS_BENCHMARK_VALIDATION),
         ("Diagnóstico", SCENARIO_DIAGNOSIS),
         ("Changelog revisión", CORPUS_V2_REVISION_CHANGELOG),
     ]:

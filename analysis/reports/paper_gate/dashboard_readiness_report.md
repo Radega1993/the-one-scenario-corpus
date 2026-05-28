@@ -1,10 +1,10 @@
-# Dashboard readiness report (corpus_v2)
+# Dashboard readiness report (corpus_v1)
 
 Generated: automated from `build_paper_figures_tables_index.py` / dashboard loaders.
 
 ## Executive summary
 
-- **Corpus:** corpus_v2 — **720** simulations in master table.
+- **Corpus:** corpus_v1 — **720** simulations in master table.
 - **Launch:** `streamlit run scenarios/analysis/dashboard.py`
 - **Reference:** [`RESULTADOS_ACTUALES.md`](RESULTADOS_ACTUALES.md)
 
@@ -19,7 +19,7 @@ Generated: automated from `build_paper_figures_tables_index.py` / dashboard load
 | Ventana mensajes | message_analysis_window_policy | Message window methodology |
 | Tiempo útil | useful_simulation_time_metrics | Simulation time vs mobility |
 | Espacial | spatial_occupancy_metrics, heatmaps/ | Spatial coverage, WDM |
-| Diagnóstico | scenario_diagnosis, corpus_v2_benchmark_validation | Problem scenarios |
+| Diagnóstico | scenario_diagnosis, corpus_v1_benchmark_validation | Problem scenarios |
 | Protocolos | placeholder | Future routing comparison |
 | Detalle escenario | master row, raw reports/ | Deep dive per scenario |
 | Figuras / Pipeline / Reportes | figures/, reports/ | Auxiliary exploration |

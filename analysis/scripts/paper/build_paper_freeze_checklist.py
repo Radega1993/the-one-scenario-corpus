@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Build strict paper-freeze checklist for corpus_v2 (protocol-comparison scope).
+Build strict paper-freeze checklist for corpus_v1 (protocol-comparison scope).
 
 Writes:
   - reports/paper_freeze_checklist.md
@@ -26,14 +26,15 @@ if str(_ANALYSIS) not in sys.path:
 
 from lib.paths import (
     ANALYSIS_DIR,
-    CORPUS_V2,
+    COMBINED_MANIFEST_CSV,
+    CORPUS_V1_DIR,
     DATA_DIR,
-    DEFAULT_MANIFEST_V2,
     REPO_ROOT,
     SCENARIOS_DIR,
+    collect_settings_paths,
 )
 from lib.report_paths import (
-    CORPUS_V2_BENCHMARK_VALIDATION,
+    CORPUS_BENCHMARK_VALIDATION,
     DASHBOARD_READINESS_REPORT,
     MESSAGE_ANALYSIS_WINDOW_POLICY,
     PAPER_FREEZE_CHECKLIST,
@@ -47,7 +48,7 @@ from lib.report_paths import (
 Status = Literal["DONE", "PARTIAL", "MISSING", "BLOCKER"]
 Rec = Literal["READY_FOR_WRITING", "READY_WITH_MINOR_FIXES", "NOT_READY", "BLOCKED"]
 
-EXPECTED_N = 720
+EXPECTED_N = 570
 PAPER_DIR = ANALYSIS_DIR / "figures" / "paper"
 FIG_INDEX = PAPER_DIR / "FIGURES_AND_TABLES_INDEX.md"
 WIKI_DIR = SCENARIOS_DIR / ".wiki-clone"
@@ -75,7 +76,7 @@ def _count_csv_rows(path: Path) -> int | None:
 
 
 def _count_settings() -> int:
-    return len(list(CORPUS_V2.rglob("*.settings")))
+    return len(collect_settings_paths("corpus_v1", include_stress=True))
 
 
 def _parse_figure_index() -> list[dict[str, str]]:
@@ -108,7 +109,7 @@ def _wiki_message_window_drift() -> bool:
 
 
 def _bench_validation_counts() -> dict[str, int]:
-    p = DATA_DIR / "corpus_v2_benchmark_validation.csv"
+    p = DATA_DIR / "corpus_benchmark_validation.csv"
     if not p.is_file():
         return {}
     df = pd.read_csv(p)
@@ -150,7 +151,7 @@ def _spatial_summary_stale() -> bool:
 
 
 def audit() -> dict:
-    manifest_n = _count_csv_rows(DEFAULT_MANIFEST_V2)
+    manifest_n = _count_csv_rows(COMBINED_MANIFEST_CSV)
     settings_n = _count_settings()
     output_n = _count_csv_rows(DATA_DIR / "output_metrics.csv")
     features_n = _count_csv_rows(DATA_DIR / "features.csv")
@@ -170,13 +171,13 @@ def audit() -> dict:
     null_del = _null_delivery()
     bench = _bench_validation_counts()
     tp_kpi = _tp_kpi_counts()
-    manifest_revision = (CORPUS_V2 / "manifest_revision.csv").is_file()
+    manifest_revision = (CORPUS_V1_DIR / "manifest_revision.csv").is_file()
     wiki_drift = _wiki_message_window_drift()
     spatial_stale = _spatial_summary_stale()
 
     required_reports = {
         "RESULTADOS_ACTUALES.md": RESULTADOS_ACTUALES,
-        "corpus_v2_benchmark_validation.md": CORPUS_V2_BENCHMARK_VALIDATION,
+        "corpus_benchmark_validation.md": CORPUS_BENCHMARK_VALIDATION,
         "traffic_profile_kpi_analysis.md": TRAFFIC_PROFILE_KPI_ANALYSIS,
         "protocol_benchmark_kpi_policy.md": PROTOCOL_BENCHMARK_KPI_POLICY,
         "message_analysis_window_policy.md": MESSAGE_ANALYSIS_WINDOW_POLICY,
@@ -255,7 +256,7 @@ def build_items(a: dict) -> list[Item]:
         "CORP-02",
         "Factorial design 60 bases x 12 TP x 7 families documented",
         "DONE",
-        "corpus_v2/README.md; corpus_overview_paper.png (lista)",
+        "corpus_v1/README.md; corpus_overview_paper.png (lista)",
     )
     add(
         "corpus",
@@ -268,9 +269,9 @@ def build_items(a: dict) -> list[Item]:
     add(
         "corpus",
         "CORP-04",
-        "Active docs reference corpus_v2 only (no corpus_v3 as active)",
+        "Active docs reference corpus_v1 only (no corpus_v3 as active)",
         "DONE",
-        "README.md and INVENTARIO.md declare corpus_v2 active; corpus_v3 only in _archive",
+        "README.md and INVENTARIO.md declare corpus_v1 active; corpus_v3 only in _archive",
     )
 
     # 2. Settings
@@ -723,12 +724,12 @@ def write_md(path: Path, items: list[Item], rec: Rec, a: dict) -> None:
     blocks = sorted({i.block for i in items})
 
     lines = [
-        "# Paper freeze checklist (corpus_v2)",
+        "# Paper freeze checklist (corpus_v1)",
         "",
         f"Generated: {ts}",
         "",
-        "**Scope:** paper with **multi-protocol routing comparison** on corpus_v2.",
-        "**Active corpus:** `corpus_v2` (not corpus_v3).",
+        "**Scope:** paper with **multi-protocol routing comparison** on corpus_v1.",
+        "**Active corpus:** `corpus_v1` (not corpus_v3).",
         "",
         "## Executive summary",
         "",
@@ -743,7 +744,7 @@ def write_md(path: Path, items: list[Item], rec: Rec, a: dict) -> None:
         "",
         "| Status | Meaning |",
         "|--------|---------|",
-        "| DONE | Complete, corpus_v2-aligned, traceable |",
+        "| DONE | Complete, corpus_v1-aligned, traceable |",
         "| PARTIAL | Exists but incomplete, stale, or needs human review |",
         "| MISSING | Required artifact absent |",
         "| BLOCKER | Blocks central paper claims |",
@@ -857,7 +858,7 @@ def write_md(path: Path, items: list[Item], rec: Rec, a: dict) -> None:
 
 
 def main() -> int:
-    ap = argparse.ArgumentParser(description="Build paper freeze checklist for corpus_v2.")
+    ap = argparse.ArgumentParser(description="Build paper freeze checklist for corpus_v1.")
     ap.add_argument("--report", type=Path, default=PAPER_FREEZE_CHECKLIST)
     ap.add_argument("--csv", type=Path, default=DATA_DIR / "paper_freeze_checklist.csv")
     args = ap.parse_args()

@@ -5,22 +5,34 @@ Por cada .settings ejecuta one.sh en modo batch (-b 1, sin GUI) y genera los rep
 
 Uso:
   python3 scenarios/analysis/run_all_scenarios.py --corpus corpus_v1
-  python3 scenarios/analysis/run_all_scenarios.py --corpus corpus_v2 --dry-run
-  python3 scenarios/analysis/run_all_scenarios.py --corpus corpus_v2 \\
+  python3 scenarios/analysis/run_all_scenarios.py --corpus stress_controls
+  python3 scenarios/analysis/run_all_scenarios.py --corpus corpus_v1 --dry-run
+  python3 scenarios/analysis/run_all_scenarios.py --corpus corpus_v1 \\
     --extra-settings scenarios/analysis/overlays/routing_contact_reports_overrides.txt \\
     --extra-settings scenarios/analysis/spatial_occupancy_reports_overrides.txt
-  python3 scenarios/analysis/run_all_scenarios.py --corpus corpus_v2 \\
+  python3 scenarios/analysis/run_all_scenarios.py --corpus corpus_v1 \\
     --name-regex 'U1_CBD.*__TP03' --dry-run
-  python3 scenarios/analysis/run_all_scenarios.py --corpus corpus_v2 --gui \\
-    --settings scenarios/corpus_v2/01_urban/U1_CBD_Commuting_HelsinkiMedium__TP01_Baseline.settings
-  python3 scenarios/analysis/run_all_scenarios.py --corpus corpus_v2 \\
+  python3 scenarios/analysis/run_all_scenarios.py --corpus corpus_v1 --gui \\
+    --settings scenarios/corpus_v1/01_urban/U1_CBD_Commuting_HelsinkiMedium__TP01_Baseline.settings
+  python3 scenarios/analysis/run_all_scenarios.py --corpus corpus_v1 \\
     --settings path/a.settings --settings path/b.settings --jobs 2
-  python3 scenarios/analysis/run_all_scenarios.py --corpus corpus_v2 --family 01_urban
-  python3 scenarios/analysis/run_all_scenarios.py --corpus corpus_v2 --tp TP07
-  python3 scenarios/analysis/run_all_scenarios.py --corpus corpus_v2 \\
+  python3 scenarios/analysis/run_all_scenarios.py --corpus corpus_v1 --family 01_urban
+  python3 scenarios/analysis/run_all_scenarios.py --corpus corpus_v1 --tp TP07
+  python3 scenarios/analysis/run_all_scenarios.py --corpus corpus_v1 \\
     --family 01_urban --tp TP01 --tp TP05
-  python3 scenarios/analysis/run_all_scenarios.py --corpus corpus_v2 \\
+  python3 scenarios/analysis/run_all_scenarios.py --corpus corpus_v1 \\
     --select-file scenarios/analysis/my_selection.txt
+
+``--corpus corpus_v1`` runs only the 540 environmental scenarios (families 01–06).
+Stress/control (30) is separate: ``--corpus stress_controls`` or ``--benchmark stress``.
+
+Benchmark-aware modes (use benchmark_definition.csv):
+  python3 scenarios/analysis/run_all_scenarios.py --corpus corpus_v1 --benchmark core
+  python3 scenarios/analysis/run_all_scenarios.py --corpus stress_controls
+  python3 scenarios/analysis/run_all_scenarios.py --corpus corpus_v1 --benchmark all
+  python3 scenarios/analysis/run_all_scenarios.py --corpus corpus_v1 --benchmark core --estimate-runtime
+  python3 scenarios/analysis/run_all_scenarios.py --corpus corpus_v1 --benchmark core \\
+    --family 01_urban --tp TP01 --dry-run
 
 Requisitos: Java, el ONE compilado (one.sh en la raíz del repo). Los reportes se escriben
 en el directorio configurado en cada .settings (por defecto reports/ en la raíz).
@@ -29,24 +41,71 @@ en el directorio configurado en cada .settings (por defecto reports/ en la raíz
 from __future__ import annotations
 
 import argparse
+import json
 import subprocess
 import sys
-import re
+import time
 from concurrent.futures import ThreadPoolExecutor, as_completed
+from datetime import datetime, timezone
 from pathlib import Path
 
 BASE = Path(__file__).resolve().parent
 SCENARIOS_DIR = BASE.parent
 REPO_ROOT = SCENARIOS_DIR.parent
+DATA_DIR = BASE / "data"
 
 if str(BASE) not in sys.path:
     sys.path.insert(0, str(BASE))
 
+from lib.benchmark_select import load_endtimes, select_by_benchmark  # noqa: E402
+from lib.paths import (  # noqa: E402
+    COMBINED_MANIFEST_CSV,
+    DEFAULT_MANIFEST_V1,
+    PAPER_BENCHMARK_CORPORA,
+    build_combined_manifest_csv,
+    collect_settings_paths,
+    primary_corpus_dir,
+)
 from lib.scenario_select import (  # noqa: E402
     list_families,
     parse_select_file,
     select_scenario_paths,
 )
+
+
+# ── Reproducibility helpers ──────────────────────────────────────────────
+
+def _get_git_hash(repo_root: Path) -> str:
+    try:
+        r = subprocess.run(
+            ["git", "rev-parse", "HEAD"],
+            cwd=repo_root, capture_output=True, text=True, timeout=5,
+        )
+        return r.stdout.strip() if r.returncode == 0 else "unknown"
+    except Exception:
+        return "unknown"
+
+
+def _get_java_version() -> str:
+    try:
+        r = subprocess.run(
+            ["java", "-version"],
+            capture_output=True, text=True, timeout=5,
+        )
+        out = (r.stderr or r.stdout or "").strip()
+        return out.splitlines()[0] if out else "unknown"
+    except Exception:
+        return "unknown"
+
+
+def _get_one_version(repo_root: Path) -> str:
+    hist = repo_root / "HISTORY.txt"
+    if hist.is_file():
+        for line in hist.read_text(errors="replace").splitlines():
+            line = line.strip()
+            if line:
+                return line
+    return "unknown"
 
 
 def resolve_settings_path(settings_path: Path, repo_root: Path) -> tuple[Path, str]:
@@ -209,13 +268,49 @@ def main() -> int:
             "base:Nombre, regex:patrón (ver lib/scenario_select.py)."
         ),
     )
+    ap.add_argument(
+        "--benchmark",
+        choices=["core", "stress", "all"],
+        default=None,
+        help=(
+            "Filtrar por tier de benchmark (benchmark_definition.csv). "
+            "core=540 environmental (corpus_v1 only), stress=30 (use stress_controls paths), "
+            "all=540+30 (merges stress_controls when --corpus corpus_v1)."
+        ),
+    )
+    ap.add_argument(
+        "--exclude-deprecated",
+        action="store_true",
+        default=False,
+        help="Excluir escenarios marcados como deprecated en benchmark_definition.csv.",
+    )
+    ap.add_argument(
+        "--estimate-runtime",
+        action="store_true",
+        help="Mostrar estimación de tiempo total de simulación y salir sin ejecutar.",
+    )
+    ap.add_argument(
+        "--reproducibility-log",
+        type=str,
+        default=None,
+        metavar="PATH",
+        help="Escribir metadatos de reproducibilidad en JSON (default: reports/reproducibility_metadata.json).",
+    )
     args = ap.parse_args()
 
     repo_root = Path(args.repo_dir).resolve() if args.repo_dir else REPO_ROOT
-    corpus_dir = SCENARIOS_DIR / args.corpus
-    if not corpus_dir.exists():
-        corpus_dir = Path(args.corpus)
-    if not corpus_dir.exists():
+    if args.corpus in PAPER_BENCHMARK_CORPORA:
+        corpus_dir = primary_corpus_dir(args.corpus)
+        build_combined_manifest_csv()
+    elif args.corpus in ("stress_controls", "07_stress_controls"):
+        from lib.paths import STRESS_CONTROLS_DIR
+
+        corpus_dir = STRESS_CONTROLS_DIR
+    else:
+        corpus_dir = SCENARIOS_DIR / args.corpus
+        if not corpus_dir.exists():
+            corpus_dir = Path(args.corpus)
+    if not corpus_dir.exists() and args.corpus not in PAPER_BENCHMARK_CORPORA:
         print(f"Error: no existe el directorio del corpus: {corpus_dir}", file=sys.stderr)
         return 1
 
@@ -288,6 +383,30 @@ def main() -> int:
         print(f"Error: {e}", file=sys.stderr)
         return 1
 
+    # Merge stress_controls when simulating the full paper set from corpus_v1
+    if args.corpus in PAPER_BENCHMARK_CORPORA and args.benchmark in ("stress", "all"):
+        stress_paths = collect_settings_paths("stress_controls")
+        if args.benchmark == "stress":
+            scenario_paths = stress_paths
+        else:
+            scenario_paths = sorted(set(scenario_paths) | set(stress_paths))
+
+    # ── Benchmark-tier filtering ─────────────────────────────────────────
+    bench_csv = DATA_DIR / "benchmark_definition.csv"
+    if args.benchmark and bench_csv.is_file():
+        bench_names = select_by_benchmark(
+            bench_csv, args.benchmark,
+            exclude_deprecated=True,
+        )
+        scenario_paths = [
+            p for p in scenario_paths if p.stem in bench_names
+        ]
+    elif args.exclude_deprecated and bench_csv.is_file():
+        all_active = select_by_benchmark(bench_csv, "all", exclude_deprecated=True)
+        scenario_paths = [
+            p for p in scenario_paths if p.stem in all_active
+        ]
+
     if not scenario_paths:
         print("No hay escenarios que coincidan con los filtros.", file=sys.stderr)
         if not explicit and not families and not tps and not bases and not name_rx:
@@ -299,6 +418,10 @@ def main() -> int:
     n = len(scenario_paths)
     print(f"Corpus: {corpus_dir.relative_to(repo_root) if repo_root in corpus_dir.parents else corpus_dir}")
     filters: list[str] = []
+    if args.benchmark:
+        filters.append(f"benchmark={args.benchmark}")
+    if args.exclude_deprecated:
+        filters.append("exclude-deprecated")
     if explicit:
         filters.append(f"{len(explicit)} ruta(s) explícita(s)")
     if families:
@@ -313,6 +436,32 @@ def main() -> int:
         print(f"Filtros: {'; '.join(filters)}")
     print(f"Escenarios: {n}")
     print(f"Repositorio: {repo_root}")
+
+    # ── Estimate runtime ─────────────────────────────────────────────────
+    if args.estimate_runtime:
+        manifest = (
+            COMBINED_MANIFEST_CSV
+            if args.corpus in ("corpus_v1", "corpus_v1") and COMBINED_MANIFEST_CSV.is_file()
+            else SCENARIOS_DIR / args.corpus / "manifest.csv"
+        )
+        if not manifest.is_file() and args.corpus in ("corpus_v1", "corpus_v1"):
+            manifest = DEFAULT_MANIFEST_V1
+        if manifest.is_file():
+            endtimes = load_endtimes(manifest)
+            names = [p.stem for p in scenario_paths]
+            total_sim_s = sum(endtimes.get(name, 43200) for name in names)
+            total_sim_h = total_sim_s / 3600
+            print(f"\n--- Estimación de tiempo ---")
+            print(f"Escenarios seleccionados: {n}")
+            print(f"Tiempo simulado total: {total_sim_s:,} s ({total_sim_h:.1f} h)")
+            print(f"Wall-clock estimado (1 worker, ~1x speed): ~{total_sim_h:.1f} h")
+            jobs_est = max(1, args.jobs)
+            if jobs_est > 1:
+                print(f"Wall-clock estimado ({jobs_est} workers): ~{total_sim_h / jobs_est:.1f} h")
+        else:
+            print(f"Aviso: manifest no encontrado ({manifest}), no se puede estimar.")
+        return 0
+
     print(f"Modo: {'GUI (visual)' if args.gui else 'batch (segundo plano)'}")
     if args.gui and args.jobs > 1:
         print("Aviso: modo GUI fuerza --jobs 1 (un escenario a la vez).", file=sys.stderr)
@@ -330,6 +479,7 @@ def main() -> int:
     jobs = 1 if args.gui else max(1, args.jobs)
     ok = 0
     fail = 0
+    t_start = time.monotonic()
     if jobs == 1:
         for i, p in enumerate(scenario_paths, 1):
             try:
@@ -395,8 +545,45 @@ def main() -> int:
                             print(f"    {line}")
                     fail += 1
 
+    elapsed = time.monotonic() - t_start
     print("")
     print(f"Resumen: {ok} OK, {fail} fallos de {n} escenarios.")
+    print(f"Tiempo total: {elapsed:.1f} s ({elapsed / 3600:.2f} h)")
+
+    # ── Reproducibility metadata ─────────────────────────────────────────
+    repro_path_str = args.reproducibility_log
+    if repro_path_str is None and not args.dry_run:
+        repro_path_str = str(repo_root / "reports" / "reproducibility_metadata.json")
+    if repro_path_str and not args.dry_run:
+        metadata = {
+            "timestamp": datetime.now(timezone.utc).isoformat(),
+            "command_line": sys.argv,
+            "python_version": sys.version,
+            "java_version": _get_java_version(),
+            "one_version": _get_one_version(repo_root),
+            "git_hash": _get_git_hash(repo_root),
+            "benchmark_tier": args.benchmark or "unfiltered",
+            "scenarios_run": n,
+            "ok": ok,
+            "fail": fail,
+            "elapsed_seconds": round(elapsed, 2),
+            "jobs": jobs,
+            "filters": {
+                "benchmark": args.benchmark,
+                "exclude_deprecated": args.exclude_deprecated,
+                "families": families,
+                "traffic_profiles": tps,
+                "scenario_bases": bases,
+                "name_regex": name_rx,
+            },
+        }
+        repro_path = Path(repro_path_str)
+        if not repro_path.is_absolute():
+            repro_path = repo_root / repro_path
+        repro_path.parent.mkdir(parents=True, exist_ok=True)
+        repro_path.write_text(json.dumps(metadata, indent=2, ensure_ascii=False) + "\n")
+        print(f"Metadatos de reproducibilidad: {repro_path}")
+
     return 0 if fail == 0 else 1
 
 

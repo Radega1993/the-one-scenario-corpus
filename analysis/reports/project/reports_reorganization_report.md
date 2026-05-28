@@ -2,7 +2,7 @@
 
 **Date:** 2026-05-24 15:00 UTC  
 **Operator:** automated reorg (plan `reports_reorganization_wiki`)  
-**Corpus:** `corpus_v2` (unchanged)
+**Corpus:** `corpus_v1` (unchanged)
 
 ## 1. Backup
 
@@ -66,7 +66,7 @@ Full manifest: [../../data/reports_reorganization_manifest.csv](../../data/repor
 
 - `scenarios/README.md`, `README.es.md`, `INVENTARIO.md`
 - `analysis/README.md`, `SCRIPTS_INDEX.md`, `dashboard/README.md`
-- `corpus_v2/README.md` (legacy TP12 notes → `_archive_local/`)
+- `corpus_v1/README.md` (legacy TP12 notes → `_archive_local/`)
 - `.wiki-clone/` pages: Home, 04–14, CHANGELOG, References
 - `analysis/populate_wiki_paper.py`, `run_analysis.py` (pipeline paths + RESULTADOS links)
 - `lib/report_paths.py` — canonical path registry for scripts
@@ -84,7 +84,7 @@ Full manifest: [../../data/reports_reorganization_manifest.csv](../../data/repor
 |-------|--------|
 | Canonical report links | Updated in Home, 04, 08, 11, 12, 14 |
 | Pipeline txt links | Updated in 05, 06 |
-| corpus_v2 active / no corpus_v3 | Home |
+| corpus_v1 active / no corpus_v3 | Home |
 | Synthetic vs real traces | Home, 04 |
 | Spatial ≠ connectivity | 08 |
 | Protocol KPIs (DR, latency, overhead, drop) | 07 |
@@ -128,7 +128,7 @@ Full manifest: [../../data/reports_reorganization_manifest.csv](../../data/repor
 3. `canonical/protocol_benchmark_kpi_policy.md`  
 4. `canonical/message_analysis_window_policy.md`  
 5. `canonical/spatial_vs_performance_analysis.md`  
-6. `canonical/corpus_v2_benchmark_validation.md`  
+6. `canonical/corpus_v1_benchmark_validation.md`  
 7. `paper_freeze_checklist.md` (root)
 
 ## 12. Code changes

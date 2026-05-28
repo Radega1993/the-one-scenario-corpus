@@ -2,7 +2,7 @@
 
 **Generado:** 2026-05-24  
 **Directorio:** `scenarios/analysis/reports/` — **46 ficheros** en subcarpetas temáticas (reorg aplicada 2026-05-24).  
-**Corpus activo:** `corpus_v2` (720 simulaciones).  
+**Corpus activo:** `corpus_v1` (720 simulaciones).  
 **Propósito:** base para reorganizar informes sin perder trazabilidad paper.
 
 ---
@@ -47,7 +47,7 @@ Manifiesto CSV: [../../data/reports_reorganization_manifest.csv](../../data/repo
 | [protocol_benchmark_kpi_policy.md](protocol_benchmark_kpi_policy.md) | 72 | GENERADO · **CANÓNICO** | `build_protocol_benchmark_kpi_policy.py` |
 | [message_analysis_window_policy.md](message_analysis_window_policy.md) | 130 | GENERADO · **CANÓNICO** | `build_message_analysis_window_policy.py` |
 | [spatial_vs_performance_analysis.md](spatial_vs_performance_analysis.md) | 46 | GENERADO · **CANÓNICO** | `analyze_spatial_vs_performance.py` |
-| [corpus_v2_benchmark_validation.md](corpus_v2_benchmark_validation.md) | 135 | GENERADO · **CANÓNICO** | `validate_corpus_v2_benchmark.py` |
+| [corpus_v1_benchmark_validation.md](corpus_v1_benchmark_validation.md) | 135 | GENERADO · **CANÓNICO** | `validate_corpus_v1_benchmark.py` |
 
 ### B. Gate y readiness paper
 
@@ -102,8 +102,8 @@ Manifiesto CSV: [../../data/reports_reorganization_manifest.csv](../../data/repo
 
 | Fichero | Líneas | Etiqueta | Generador |
 |---------|-------:|----------|-----------|
-| [corpus_v2_revision_plan.md](corpus_v2_revision_plan.md) | 165 | GENERADO | `build_corpus_v2_revision_plan.py` |
-| [corpus_v2_revision_changelog.md](corpus_v2_revision_changelog.md) | 262 | GENERADO | `apply_corpus_v2_revision.py` |
+| [corpus_v1_revision_plan.md](corpus_v1_revision_plan.md) | 165 | GENERADO | `build_corpus_v1_revision_plan.py` |
+| [corpus_v1_revision_changelog.md](corpus_v1_revision_changelog.md) | 262 | GENERADO | `apply_corpus_v1_revision.py` |
 
 ### G. Wiki y documentación meta
 
@@ -143,7 +143,7 @@ Manifiesto CSV: [../../data/reports_reorganization_manifest.csv](../../data/repo
 | **Paper** | Methods — ablación; citado en `RESULTADOS_ACTUALES.md` |
 | **CSV relacionado** | `data/ablation_metrics.csv` |
 | **Reorganización** | → `pipeline/` |
-| **Acción** | Mantener; regenerar con corpus_v2 |
+| **Acción** | Mantener; regenerar con corpus_v1 |
 
 ---
 
@@ -174,26 +174,26 @@ Manifiesto CSV: [../../data/reports_reorganization_manifest.csv](../../data/repo
 
 ---
 
-### `corpus_v2_benchmark_validation.md`
+### `corpus_v1_benchmark_validation.md`
 
 | Campo | Valor |
 |-------|--------|
 | **Tipo** | GENERADO · **CANÓNICO** |
-| **Script** | `validate_corpus_v2_benchmark.py` |
+| **Script** | `validate_corpus_v1_benchmark.py` |
 | **Contenido** | Conteos validation_status, completitud 720, error_probable, recomendaciones splits |
 | **Paper** | Methods (limitaciones), Discussion |
-| **CSV** | `data/corpus_v2_benchmark_validation.csv` |
+| **CSV** | `data/corpus_v1_benchmark_validation.csv` |
 | **Reorganización** | → `canonical/` o `validation/` |
 | **Acción** | Regenerar tras re-sims / cambios output_metrics |
 
 ---
 
-### `corpus_v2_revision_changelog.md`
+### `corpus_v1_revision_changelog.md`
 
 | Campo | Valor |
 |-------|--------|
 | **Tipo** | GENERADO · histórico aplicado |
-| **Script** | `apply_corpus_v2_revision.py` |
+| **Script** | `apply_corpus_v1_revision.py` |
 | **Contenido** | Log detallado de cambios .settings (mapas Manhattan, worldSize, etc.) |
 | **Paper** | Methods — transparencia revisión corpus |
 | **Reorganización** | → `project/` |
@@ -201,14 +201,14 @@ Manifiesto CSV: [../../data/reports_reorganization_manifest.csv](../../data/repo
 
 ---
 
-### `corpus_v2_revision_plan.md`
+### `corpus_v1_revision_plan.md`
 
 | Campo | Valor |
 |-------|--------|
 | **Tipo** | GENERADO |
-| **Script** | `build_corpus_v2_revision_plan.py` |
+| **Script** | `build_corpus_v1_revision_plan.py` |
 | **Contenido** | Plan priorizado P0/P1; acciones por escenario base |
-| **CSV** | `data/corpus_v2_revision_prioritized.csv`, `manifest_revision.csv` |
+| **CSV** | `data/corpus_v1_revision_prioritized.csv`, `manifest_revision.csv` |
 | **Reorganización** | → `project/` |
 | **Acción** | Mantener como documento de diseño; puede quedar parcialmente ejecutado |
 
@@ -249,7 +249,7 @@ Manifiesto CSV: [../../data/reports_reorganization_manifest.csv](../../data/repo
 | **Script** | `build_wiki_research_reports.py` |
 | **Contenido** | Conteos delivery=0, latencia vacía, etc. sobre `output_metrics.csv` |
 | **Paper** | AUXILIAR — puede desactualizarse |
-| **Duplicado** | Solapa con `corpus_v2_benchmark_validation.md` |
+| **Duplicado** | Solapa con `corpus_v1_benchmark_validation.md` |
 | **Reorganización** | → `validation/` o fusionar en benchmark validation |
 | **Acción** | Regenerar o archivar si benchmark validation es suficiente |
 
@@ -421,7 +421,7 @@ Manifiesto CSV: [../../data/reports_reorganization_manifest.csv](../../data/repo
 |-------|--------|
 | **Tipo** | GENERADO · planificación |
 | **Script** | `build_wiki_research_reports.py` |
-| **Contenido** | Decisiones cerradas fase 1 paper (synthetic benchmark, corpus_v2) |
+| **Contenido** | Decisiones cerradas fase 1 paper (synthetic benchmark, corpus_v1) |
 | **Reorganización** | → `paper_gate/` o `project/` |
 | **Acción** | Mantener como histórico de decisiones; actualizar si cambia alcance |
 
@@ -642,7 +642,7 @@ Manifiesto CSV: [../../data/reports_reorganization_manifest.csv](../../data/repo
 | `audit_settings.py` | `settings_audit.md` |
 | `diagnose_scenarios.py` | `scenario_diagnosis.md` |
 | `validate_traffic_profiles.py` | `tp_validation_report.md` |
-| `validate_corpus_v2_benchmark.py` | `corpus_v2_benchmark_validation.md` |
+| `validate_corpus_v1_benchmark.py` | `corpus_v1_benchmark_validation.md` |
 | `analyze_traffic_profile_kpis.py` | `traffic_profile_kpi_analysis.md` |
 | `build_message_analysis_window_policy.py` | `message_analysis_window_policy.md` |
 | `analyze_message_creation_times.py` | `message_creation_time_audit.md` |
@@ -650,8 +650,8 @@ Manifiesto CSV: [../../data/reports_reorganization_manifest.csv](../../data/repo
 | `analyze_spatial_vs_performance.py` | `spatial_vs_performance_analysis.md` (+ puntero en `spatial_occupancy_analysis_summary.md`) |
 | `analyze_spatial_occupancy.py` | (antes `spatial_occupancy_analysis_summary.md`) |
 | `compute_useful_simulation_time.py` | `useful_simulation_time_report.md` |
-| `build_corpus_v2_revision_plan.py` | `corpus_v2_revision_plan.md` |
-| `apply_corpus_v2_revision.py` | `corpus_v2_revision_changelog.md` |
+| `build_corpus_v1_revision_plan.py` | `corpus_v1_revision_plan.md` |
+| `apply_corpus_v1_revision.py` | `corpus_v1_revision_changelog.md` |
 | `build_wiki_research_reports.py` | `wiki_*.md`, `current_results_review.md`, `evaluation_metrics_review.md`, `paper_phase1_action_plan.md`, `simulation_time_policy.md` |
 | `build_paper_figures_tables_index.py` | `paper_figures_tables_readiness.md`, `dashboard_readiness_report.md` |
 | `build_paper_freeze_checklist.py` | `paper_freeze_checklist.md` |
@@ -667,7 +667,7 @@ Manifiesto CSV: [../../data/reports_reorganization_manifest.csv](../../data/repo
 | Diversidad numérica | `RESULTADOS_ACTUALES.md` vs extracts en wiki | Solo editar `RESULTADOS_ACTUALES.md` |
 | Ventana mensajes | `message_analysis_window_policy.md` vs wiki 11 (ya alineada) | Policy MD canónico |
 | Métricas routing | `evaluation_metrics_review.md` vs `protocol_benchmark_kpi_policy.md` | Fusionar en protocol policy a medio plazo |
-| Resultados output | `current_results_review.md` vs `corpus_v2_benchmark_validation.md` | Benchmark validation como canónico |
+| Resultados output | `current_results_review.md` vs `corpus_v1_benchmark_validation.md` | Benchmark validation como canónico |
 | Espacial resumen | `spatial_occupancy_analysis_summary.md` vs `spatial_vs_performance_analysis.md` | Solo el segundo |
 | Features | `features_report.txt` vs `.md` | `.md` canónico |
 | TP agregados | `resumen_tp_excluyendo_no_contacto.md` vs `traffic_profile_kpi_analysis.md` | Archivar resumen |
@@ -695,13 +695,13 @@ Actualizar tras mover subcarpetas:
 cd scenarios/analysis
 
 # Pipeline núcleo + RESULTADOS
-python run_analysis.py --corpus corpus_v2 --phase all
+python run_analysis.py --corpus corpus_v1 --phase all
 
 # Validación y KPIs
-python audit_settings.py --corpus corpus_v2
+python audit_settings.py --corpus corpus_v1
 python diagnose_scenarios.py
-python validate_traffic_profiles.py --corpus corpus_v2
-python validate_corpus_v2_benchmark.py
+python validate_traffic_profiles.py --corpus corpus_v1
+python validate_corpus_v1_benchmark.py
 python analyze_traffic_profile_kpis.py
 
 # Políticas

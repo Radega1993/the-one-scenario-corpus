@@ -143,7 +143,7 @@ def _view_by_phase() -> None:
             for f in sorted(agg.glob("*.png")):
                 st.image(str(f), caption=f.name, use_container_width=True)
         else:
-            st.info("Ejecuta `python3 run_figures_aggregated.py --corpus corpus_v2`.")
+            st.info("Ejecuta `python3 run_figures_aggregated.py --corpus corpus_v1`.")
 
     elif phase == "indirects":
         df = load_csv("indirect_features_diego.csv")

@@ -20,7 +20,7 @@ if str(_ANALYSIS) not in sys.path:
 
 from lib.paths import (  # noqa: E402
     ANALYSIS_DIR,
-    DEFAULT_MANIFEST_V2,
+    DEFAULT_MANIFEST_V1,
     ROUTING_CONTACT_REPORTS_OVERLAY,
     REPO_ROOT,
     SELECTION_EXAMPLE,
@@ -35,7 +35,7 @@ SCRIPT_CATALOG: dict[str, dict[str, object]] = {
         "script": ANALYSIS_DIR / "scripts/validation/validate_traffic_profiles.py",
         "desc": [
             "Compara Events/TTL de cada .settings con las definiciones canónicas (lib/traffic_profile_generator).",
-            "Entrada: corpus_v2 + data/output_metrics.csv. Salida: data/tp_validation_*.csv, reports/validation/tp_validation_report.md.",
+            "Entrada: corpus_v1 + data/output_metrics.csv. Salida: data/tp_validation_*.csv, reports/validation/tp_validation_report.md.",
         ],
         "args": [],
     },
@@ -46,15 +46,15 @@ SCRIPT_CATALOG: dict[str, dict[str, object]] = {
             "Fase output_metrics de run_analysis: lee *MessageStatsReport.txt en reports/ y actualiza data/output_metrics.csv.",
             "Requiere simulaciones completadas. Salida principal: data/output_metrics.csv.",
         ],
-        "args": ["--corpus", "corpus_v2", "--phase", "output_metrics"],
+        "args": ["--corpus", "corpus_v1", "--phase", "output_metrics"],
         "interactive": "output_metrics",
     },
     "4c": {
-        "title": "Validación benchmark corpus_v2",
-        "script": ANALYSIS_DIR / "scripts/validation/validate_corpus_v2_benchmark.py",
+        "title": "Validación benchmark corpus_v1",
+        "script": ANALYSIS_DIR / "scripts/validation/validate_corpus_benchmark.py",
         "desc": [
             "Clasifica cada escenario (ok / extremo / error) cruzando manifiesto y CSVs de métricas.",
-            "Salida: data/corpus_v2_benchmark_validation.csv, reports/validation/corpus_v2_benchmark_validation.md.",
+            "Salida: data/corpus_benchmark_validation.csv, reports/canonical/corpus_benchmark_validation.md.",
         ],
         "args": [],
     },
@@ -116,7 +116,7 @@ SCRIPT_CATALOG: dict[str, dict[str, object]] = {
         "title": "Auditoría .settings",
         "script": ANALYSIS_DIR / "scripts/validation/audit_settings.py",
         "desc": [
-            "Recorre corpus_v2 y extrae flags/claves relevantes a settings_audit.csv.",
+            "Recorre corpus_v1 y extrae flags/claves relevantes a settings_audit.csv.",
             "Salida: data/settings_audit.csv.",
         ],
         "args": [],
@@ -424,6 +424,9 @@ def _run_simulations_cmd(
     scenario_bases: list[str] | None = None,
     name_regex: str | None = None,
     select_file: str | None = None,
+    benchmark: str | None = None,
+    exclude_deprecated: bool = False,
+    estimate_runtime: bool = False,
 ) -> list[str]:
     cmd = [
         str(ANALYSIS_DIR / "run_all_scenarios.py"),
@@ -438,6 +441,12 @@ def _run_simulations_cmd(
         cmd.append("--gui")
     if dry_run:
         cmd.append("--dry-run")
+    if benchmark:
+        cmd.extend(["--benchmark", benchmark])
+    if exclude_deprecated:
+        cmd.append("--exclude-deprecated")
+    if estimate_runtime:
+        cmd.append("--estimate-runtime")
     if name_regex:
         cmd.extend(["--name-regex", name_regex])
     if select_file:
@@ -468,7 +477,7 @@ def menu_run_selected_scenarios() -> None:
     mode = _ask("Elige modo", "1")
     gui = mode == "2"
 
-    corpus = _ask("Carpeta del corpus bajo scenarios/", "corpus_v2")
+    corpus = _ask("Carpeta del corpus bajo scenarios/", "corpus_v1")
     print(
         "\nQué ejecutar:\n"
         "  1 = un escenario (ruta .settings)\n"
@@ -517,14 +526,27 @@ def menu_run_selected_scenarios() -> None:
 
 def menu_run_all_scenarios() -> None:
     print("\n--- Ejecutar todas las simulaciones ---")
-    corpus = _ask("Carpeta del corpus bajo scenarios/", "corpus_v2")
+    corpus = _ask("Carpeta del corpus bajo scenarios/", "corpus_v1")
     corpus_dir = _corpus_dir(corpus)
     fams = list_families(corpus_dir)
     if fams:
         print(f"Familias disponibles: {', '.join(fams)}")
+
+    print(
+        "\nBenchmark tier:\n"
+        "  0 = sin filtro (todo el corpus)\n"
+        "  1 = core (540 escenarios ambientales)\n"
+        "  2 = stress (30 escenarios stress/control)\n"
+        "  3 = all activos (570 = core + stress)\n"
+    )
+    bench_choice = _ask("Benchmark tier", "0")
+    benchmark_map = {"0": None, "1": "core", "2": "stress", "3": "all"}
+    benchmark = benchmark_map.get(bench_choice)
+
     fam_filter = _ask("Limitar a familia (vacío = todo el corpus)", "") or None
     tp_filter = _ask("Limitar a TP (vacío = todos, ej. TP07)", "") or None
     dry = _ask_yes("¿Solo listar (dry-run)?", default=False)
+    estimate = _ask_yes("¿Estimar tiempo de ejecución?", default=False)
     jobs_s = _ask("Paralelismo (--jobs)", "1")
     timeout_s = _ask("Timeout por escenario (s)", "7200")
     name_rx = _ask("Filtrar además por regex (vacío = no)", "") or None
@@ -540,6 +562,9 @@ def menu_run_all_scenarios() -> None:
         families=[fam_filter] if fam_filter else None,
         traffic_profiles=[tp_filter] if tp_filter else None,
         name_regex=name_rx,
+        benchmark=benchmark,
+        exclude_deprecated=benchmark is not None,
+        estimate_runtime=estimate,
     )
     rc = _run_script(cmd)
     print(f"\n(código salida {rc})")
@@ -548,7 +573,7 @@ def menu_run_all_scenarios() -> None:
 
 def menu_run_analysis() -> None:
     print("\n--- Pipeline run_analysis.py ---")
-    corpus = _ask("Corpus", "corpus_v2")
+    corpus = _ask("Corpus", "corpus_v1")
     print(
         "Fases: features | features_report | normalize | correlation | "
         "feature_correlation | ablation | figures | figures_paper | figures_aggregated | "
@@ -587,7 +612,7 @@ def _run_catalog_entry(catalog_id: str) -> None:
     args: list[str] = [str(script)]
     default_args = list(entry.get("args", []))
     if entry.get("interactive") == "output_metrics":
-        corpus = _ask("Corpus", "corpus_v2")
+        corpus = _ask("Corpus", "corpus_v1")
         args.extend(["--corpus", corpus, "--phase", "output_metrics"])
     else:
         args.extend(str(a) for a in default_args)
@@ -612,7 +637,7 @@ def menu_paper_validation() -> None:
 
 def menu_useful_time() -> None:
     print("\n--- Tiempo útil (ConnectivityONEReport) ---")
-    corpus = _ask("Directorio corpus", _rel_repo(REPO_ROOT / "scenarios" / "corpus_v2"))
+    corpus = _ask("Directorio corpus", _rel_repo(REPO_ROOT / "scenarios" / "corpus_v1"))
     reports = _ask("Directorio de reportes ONE", "reports")
     corpus_path = Path(corpus)
     reports_path = Path(reports)
@@ -646,7 +671,7 @@ def menu_message_creation() -> None:
 
 def menu_spatial() -> None:
     print("\n--- Ocupación espacial (heatmaps / CSV agregados) ---")
-    manifest = _ask("Manifiesto CSV", _rel_repo(DEFAULT_MANIFEST_V2))
+    manifest = _ask("Manifiesto CSV", _rel_repo(DEFAULT_MANIFEST_V1))
     reports = _ask("Carpeta reportes (relativa al repo)", "reports")
     families = _ask("Familias (coma, vacío = todas)", "") or None
     manifest_path = Path(manifest)
@@ -675,7 +700,7 @@ def menu_figures_guide() -> None:
     else:
         print("Aviso: aún no existe figures/README.md\n")
     if _ask_yes("¿Regenerar figuras agregadas (run_figures_aggregated.py)?", default=True):
-        corpus = _ask("Corpus", "corpus_v2")
+        corpus = _ask("Corpus", "corpus_v1")
         block = _ask_yes("¿Incluir heatmap bloque 720×720 (--include-block-heatmap)?", default=False)
         cmd = [
             str(ANALYSIS_DIR / "run_figures_aggregated.py"),
@@ -687,7 +712,7 @@ def menu_figures_guide() -> None:
         rc = _run_script(cmd)
         print(f"\n(código salida {rc})")
     if _ask_yes("¿Regenerar paquete paper (figures_paper)?", default=False):
-        corpus = _ask("Corpus", "corpus_v2")
+        corpus = _ask("Corpus", "corpus_v1")
         rc = _run_script(
             [str(ANALYSIS_DIR / "run_analysis.py"), "--corpus", corpus, "--phase", "figures_paper"]
         )

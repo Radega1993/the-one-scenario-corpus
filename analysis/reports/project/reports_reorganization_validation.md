@@ -1,7 +1,7 @@
 # Validación de reorganización — `analysis/reports/`
 
 **Fecha:** 2026-05-24  
-**Auditor:** revisión post-reorg (plan corpus_v2)  
+**Auditor:** revisión post-reorg (plan corpus_v1)  
 **Backup de referencia:** `analysis/reports_backup_20260524_145824.tar.gz`  
 **Snapshot:** `analysis/reports/_reports_reorganization_before_20260524_145824.txt`
 
@@ -68,7 +68,7 @@ Rutas canónicas verificadas:
 | `canonical/protocol_benchmark_kpi_policy.md` | `Home.md`, `12-Benchmark-Protocol-Comparison.md` |
 | `canonical/traffic_profile_kpi_analysis.md` | `Home.md`, `04-Traffic-Profiles.md` |
 | `canonical/spatial_vs_performance_analysis.md` | `08-Spatial-Occupancy.md` |
-| `canonical/corpus_v2_benchmark_validation.md` | `Home.md` |
+| `canonical/corpus_v1_benchmark_validation.md` | `Home.md` |
 
 Raíz wiki: `RESULTADOS_ACTUALES.md`, `paper_freeze_checklist.md` — rutas correctas.
 

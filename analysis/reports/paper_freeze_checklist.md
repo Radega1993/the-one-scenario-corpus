@@ -1,24 +1,24 @@
-# Paper freeze checklist (corpus_v2)
+# Paper freeze checklist (corpus_v1)
 
-Generated: 2026-05-24 12:21 UTC
+Generated: 2026-05-27 13:55 UTC
 
-**Scope:** paper with **multi-protocol routing comparison** on corpus_v2.
-**Active corpus:** `corpus_v2` (not corpus_v3).
+**Scope:** paper with **multi-protocol routing comparison** on corpus_v1.
+**Active corpus:** `corpus_v1` (not corpus_v3).
 
 ## Executive summary
 
-- Simulations in manifest: **720** (expected 720)
-- Settings files: **720**
-- Output metrics null delivery: **1**
-- Benchmark `error_probable`: **1**
-- Benchmark `configuracion_sospechosa`: **130**
-- Main figures lista/revisar: **8/8** lista, **0** revisar
+- Simulations in manifest: **570** (expected 570)
+- Settings files: **570**
+- Output metrics null delivery: **11**
+- Benchmark `error_probable`: **168**
+- Benchmark `configuracion_sospechosa`: **106**
+- Main figures lista/revisar: **6/8** lista, **2** revisar
 
 ## Status legend
 
 | Status | Meaning |
 |--------|---------|
-| DONE | Complete, corpus_v2-aligned, traceable |
+| DONE | Complete, corpus_v1-aligned, traceable |
 | PARTIAL | Exists but incomplete, stale, or needs human review |
 | MISSING | Required artifact absent |
 | BLOCKER | Blocks central paper claims |
@@ -27,16 +27,16 @@ Generated: 2026-05-24 12:21 UTC
 
 | ID | Item | Status | Evidence | Action |
 |----|------|--------|----------|--------|
-| CORP-01 | manifest.csv 720 rows + 720 .settings | **DONE** | manifest rows=720, settings=720 | — |
-| CORP-02 | Factorial design 60 bases x 12 TP x 7 families documented | **DONE** | corpus_v2/README.md; corpus_overview_paper.png (lista) | — |
+| CORP-01 | manifest.csv 720 rows + 720 .settings | **DONE** | manifest rows=570, settings=570 | — |
+| CORP-02 | Factorial design 60 bases x 12 TP x 7 families documented | **DONE** | corpus_v1/README.md; corpus_overview_paper.png (lista) | — |
 | CORP-03 | Benchmark splits frozen in main manifest | **PARTIAL** | manifest_revision.csv exists | Freeze benchmark_split into manifest or document split CSV as canonical |
-| CORP-04 | Active docs reference corpus_v2 only (no corpus_v3 as active) | **DONE** | README.md and INVENTARIO.md declare corpus_v2 active; corpus_v3 only in _archive | — |
+| CORP-04 | Active docs reference corpus_v1 only (no corpus_v3 as active) | **DONE** | README.md and INVENTARIO.md declare corpus_v1 active; corpus_v3 only in _archive | — |
 
 ## Features
 
 | ID | Item | Status | Evidence | Action |
 |----|------|--------|----------|--------|
-| FEAT-01 | features.csv and features_core.csv 720 scenarios | **DONE** | features=720, features_core=720 | — |
+| FEAT-01 | features.csv and features_core.csv 720 scenarios | **DONE** | features=570, features_core=570 | — |
 | FEAT-02 | Diversity metrics frozen n=720 | **DONE** | RESULTADOS_ACTUALES.md | — |
 | FEAT-03 | Feature-feature redundancy acceptable | **PARTIAL** | Persistent high pair mm_WDM <-> mm_Bus = 0.9393; max |r|=1.0 between scenarios | Disclose in Methods; justify core-23 retention |
 | FEAT-04 | Ablation 17/23/46 documented | **DONE** | table_ablation_metrics_en/es lista; ablation reports | — |
@@ -46,8 +46,8 @@ Generated: 2026-05-24 12:21 UTC
 | ID | Item | Status | Evidence | Action |
 |----|------|--------|----------|--------|
 | FIG-01 | FIGURES_AND_TABLES_INDEX.md complete | **DONE** | 21 indexed items | — |
-| FIG-02 | Main paper figures ready (lista) | **DONE** | lista=8/8, revisar=0 | Regenerate 7 main figures marked revisar |
-| FIG-03 | Supplementary figures ready (lista) | **PARTIAL** | lista=4/5, revisar=1 | Regenerate supplementary figures marked revisar |
+| FIG-02 | Main paper figures ready (lista) | **PARTIAL** | lista=6/8, revisar=2 | Regenerate 7 main figures marked revisar |
+| FIG-03 | Supplementary figures ready (lista) | **PARTIAL** | lista=3/5, revisar=2 | Regenerate supplementary figures marked revisar |
 | FIG-04 | Protocol comparison figure (real data) | **MISSING** | Only protocol_comparison_placeholder.png | Run multi-protocol simulations and plot comparison |
 
 ## Kpis
@@ -63,7 +63,7 @@ Generated: 2026-05-24 12:21 UTC
 
 | ID | Item | Status | Evidence | Action |
 |----|------|--------|----------|--------|
-| LIM-01 | Limitations documented (maps WDM synthetic stress tiers) | **PARTIAL** | Dispersed in benchmark validation (130 sospechosa, 312 valido_extremo) | Consolidate into Methods/Limitations section |
+| LIM-01 | Limitations documented (maps WDM synthetic stress tiers) | **PARTIAL** | Dispersed in benchmark validation (106 sospechosa, 312 valido_extremo) | Consolidate into Methods/Limitations section |
 | LIM-02 | Threats-to-validity section frozen | **MISSING** | No single limitations.md report | Write limitations/threats section or report |
 | LIM-03 | Extreme scenarios excluded from main protocol ranking | **PARTIAL** | manifest_revision splits exist; not enforced in analysis outputs | Apply benchmark_split filter in protocol comparison tables |
 
@@ -73,14 +73,14 @@ Generated: 2026-05-24 12:21 UTC
 |----|------|--------|----------|--------|
 | MSG-01 | Canonical message window policy document | **DONE** | message_analysis_window_policy.md (full window primary; optional 10% censor) | — |
 | MSG-02 | Policy implemented in output_metrics extraction pipeline | **PARTIAL** | Wiki 11 still cites Policy B + 5% warmup (drift) | Align wiki 11 with canonical policy |
-| MSG-03 | Per-scenario policy CSV 720 rows | **DONE** | message_analysis_window_policy.csv rows=720 | — |
+| MSG-03 | Per-scenario policy CSV 720 rows | **PARTIAL** | message_analysis_window_policy.csv rows=540 | — |
 
 ## Outputs
 
 | ID | Item | Status | Evidence | Action |
 |----|------|--------|----------|--------|
-| OUT-01 | output_metrics.csv complete 720 rows | **PARTIAL** | rows=720; null delivery=1 | Fix 2 missing S1 outputs |
-| OUT-02 | ONE reports (MessageStats Connectivity spatial grid) | **PARTIAL** | Repo reports/ not versioned; 1 scenarios incomplete | Re-simulate incomplete scenarios; archive report paths in manifest |
+| OUT-01 | output_metrics.csv complete 720 rows | **PARTIAL** | rows=566; null delivery=11 | Fix 2 missing S1 outputs |
+| OUT-02 | ONE reports (MessageStats Connectivity spatial grid) | **PARTIAL** | Repo reports/ not versioned; 168 scenarios incomplete | Re-simulate incomplete scenarios; archive report paths in manifest |
 | OUT-03 | Auxiliary outputs (indirect useful time) | **DONE** | useful_simulation_time_metrics=True; indirect_features=True | — |
 
 ## Reproducibility
@@ -89,7 +89,7 @@ Generated: 2026-05-24 12:21 UTC
 |----|------|--------|----------|--------|
 | REP-01 | Official pipeline documented (SCRIPTS_INDEX) | **DONE** | analysis/SCRIPTS_INDEX.md 12-step pipeline | — |
 | REP-02 | Dashboard for paper exploration | **DONE** | dashboard_readiness_report.md | — |
-| REP-03 | One-command regeneration figures and tables | **PARTIAL** | Commands in index; 1 figures still revisar | Run build_paper_figures_tables_index.py after regen |
+| REP-03 | One-command regeneration figures and tables | **PARTIAL** | Commands in index; 4 figures still revisar | Run build_paper_figures_tables_index.py after regen |
 | REP-04 | Simulation outputs (reports/) reproducible from manifest | **PARTIAL** | reports/ at repo root not fully versioned; re-sim cost high | Document exact one.sh invocations per scenario batch |
 
 ## Settings
@@ -97,14 +97,14 @@ Generated: 2026-05-24 12:21 UTC
 | ID | Item | Status | Evidence | Action |
 |----|------|--------|----------|--------|
 | SET-01 | Settings audit for all 720 scenarios | **DONE** | settings_audit.csv present | — |
-| SET-02 | Traffic Profile settings validation (TP01-TP12) | **PARTIAL** | tp_validation_settings.csv; KPI summary: validated=8, partial=3, blocked=1 | Resolve TP03/TP11 blocked (S1 missing outputs) |
-| SET-03 | P0/P1 map worldSize WDM issues resolved or excluded | **PARTIAL** | bench validation: pendiente_revision=4, configuracion_sospechosa=130 | Formalize exclusion in benchmark_split main tier |
+| SET-02 | Traffic Profile settings validation (TP01-TP12) | **PARTIAL** | tp_validation_settings.csv; KPI summary: validated=0, partial=0, blocked=12 | Resolve TP03/TP11 blocked (S1 missing outputs) |
+| SET-03 | P0/P1 map worldSize WDM issues resolved or excluded | **PARTIAL** | bench validation: pendiente_revision=1, configuracion_sospechosa=106 | Formalize exclusion in benchmark_split main tier |
 
 ## Simulations
 
 | ID | Item | Status | Evidence | Action |
 |----|------|--------|----------|--------|
-| SIM-01 | ONE batch Epidemic complete 720/720 | **PARTIAL** | output_metrics rows=720; null delivery_ratio=1; error_probable=1 | Re-simulate S1_StrongCommunities TP03 and TP11 |
+| SIM-01 | ONE batch Epidemic complete 720/720 | **PARTIAL** | output_metrics rows=566; null delivery_ratio=11; error_probable=168 | Re-simulate S1_StrongCommunities TP03 and TP11 |
 | SIM-02 | Multi-protocol simulations (PRoPHET MaxProp etc.) | **MISSING** | Wiki 12-Benchmark-Protocol-Comparison: no runs; protocol_comparison_placeholder only | Run batch with analysis/protocol_overlays/ on main split |
 | SIM-03 | Batch reproducibility documented (commands seeds) | **PARTIAL** | SCRIPTS_INDEX covers Epidemic; no executed multi-protocol runbook | Document and run multi-protocol batch before writing Results |
 
@@ -112,8 +112,8 @@ Generated: 2026-05-24 12:21 UTC
 
 | ID | Item | Status | Evidence | Action |
 |----|------|--------|----------|--------|
-| SPAT-01 | spatial_occupancy_metrics.csv 720 rows | **DONE** | rows=720 | — |
-| SPAT-02 | Spatial heatmaps 720 scenarios | **DONE** | PNG count=720 | — |
+| SPAT-01 | spatial_occupancy_metrics.csv 720 rows | **PARTIAL** | rows=720 | — |
+| SPAT-02 | Spatial heatmaps 720 scenarios | **PARTIAL** | PNG count=720 | — |
 | SPAT-03 | Spatial vs performance analysis report | **DONE** | spatial_vs_performance_analysis.md present | Write spatial_vs_performance_analysis.md linking coverage to delivery |
 | SPAT-04 | Paper figure spatial_coverage_by_family_paper | **PARTIAL** | Indexed status revisar; summary stale=False | Regenerate figure; refresh spatial_occupancy_analysis_summary.md |
 
@@ -129,7 +129,7 @@ Generated: 2026-05-24 12:21 UTC
 
 | ID | Item | Status | Evidence | Action |
 |----|------|--------|----------|--------|
-| TP-01 | 12 Traffic Profiles defined and experimentally validated | **PARTIAL** | validated=8, partial=3, blocked=1 | Unblock TP03/TP11 after re-simulation |
+| TP-01 | 12 Traffic Profiles defined and experimentally validated | **PARTIAL** | validated=0, partial=0, blocked=12 | Unblock TP03/TP11 after re-simulation |
 | TP-02 | Traffic Profile KPI analysis report | **DONE** | traffic_profile_kpi_analysis.md | — |
 | TP-03 | Stress/directional/control tiers in protocol comparison pipeline | **PARTIAL** | Splits in manifest_revision.csv; not wired to multi-protocol runs | Integrate tiers when running protocol comparison |
 
@@ -153,15 +153,15 @@ Generated: 2026-05-24 12:21 UTC
 |-------|-----:|--------:|--------:|--------:|
 | corpus | 3 | 1 | 0 | 0 |
 | features | 3 | 1 | 0 | 0 |
-| figures | 2 | 1 | 1 | 0 |
+| figures | 1 | 2 | 1 | 0 |
 | kpis | 3 | 1 | 0 | 0 |
 | limitations | 0 | 2 | 1 | 0 |
-| message_windows | 2 | 1 | 0 | 0 |
+| message_windows | 1 | 2 | 0 | 0 |
 | outputs | 1 | 2 | 0 | 0 |
 | reproducibility | 2 | 2 | 0 | 0 |
 | settings | 1 | 2 | 0 | 0 |
 | simulations | 0 | 2 | 1 | 0 |
-| spatial_occupancy | 3 | 1 | 0 | 0 |
+| spatial_occupancy | 1 | 3 | 0 | 0 |
 | tables | 2 | 0 | 1 | 0 |
 | traffic_profiles | 1 | 2 | 0 | 0 |
 | wiki | 1 | 2 | 0 | 0 |

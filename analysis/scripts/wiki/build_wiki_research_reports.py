@@ -81,7 +81,7 @@ def audit_old_wiki() -> str:
         "No spatial occupancy / grid metrics",
         "No protocol routing benchmark plan",
         "No message analysis window policy",
-        "No corpus_v2 revision / manifest_revision",
+        "No corpus_v1 revision / manifest_revision",
     ]
 
     lines = [
@@ -103,7 +103,7 @@ def audit_old_wiki() -> str:
     for k in sorted(by_top):
         lines.append(f"| `{k}` | {len(by_top[k])} |")
 
-    lines.extend(["", "## Pages to migrate (update for corpus_v2)", ""])
+    lines.extend(["", "## Pages to migrate (update for corpus_v1)", ""])
     for m in migrate:
         lines.append(f"- `{m}` — rewrite, do not copy verbatim")
 
@@ -185,7 +185,7 @@ def data_inventory() -> str:
         if (ANALYSIS_DIR / "figures").is_dir()
         else []
     )
-    n_settings = len(list((REPO / "scenarios/corpus_v2").rglob("*.settings")))
+    n_settings = len(list((REPO / "scenarios/corpus_v1").rglob("*.settings")))
     n_reports = len(list((REPO / "reports").glob("*_MessageStatsReport.txt")))
 
     def row_count(p: Path) -> str:
@@ -213,7 +213,7 @@ def data_inventory() -> str:
         "useful_simulation_time_metrics.csv": "Useful simulation time from connectivity",
         "scenario_diagnosis.csv": "Problem flags cross-audit",
         "settings_audit.csv": "Parsed .settings features",
-        "corpus_v2_revision_summary.csv": "Per-base revision actions",
+        "corpus_v1_revision_summary.csv": "Per-base revision actions",
         "manifest_revision.csv": "benchmark_split sidecar (720)",
     }
     for p in data_files:
@@ -234,13 +234,13 @@ def data_inventory() -> str:
             "",
             "## Corpus",
             "",
-            f"- `corpus_v2` settings: **{n_settings}**",
+            f"- `corpus_v1` settings: **{n_settings}**",
             f"- ONE reports in `reports/`: **{n_reports}** MessageStats (approx)",
             "",
             "## Known gaps",
             "",
             "- Spatial occupancy: see `spatial_occupancy_metrics.csv` (720 scenarios when fully processed)",
-            "- Simulation metrics may be **pre–corpus_v2 revision** until re-run (see `corpus_v2_revision_changelog.md`)",
+            "- Simulation metrics may be **pre–corpus_v1 revision** until re-run (see `corpus_v1_revision_changelog.md`)",
             "- Wiki backup: `_archive/wiki/wiki_backup_20260520_133832/`",
             "- Repo map: `scenarios/INVENTARIO.md` (replaces this auto-inventory when archived)",
             "",
@@ -256,7 +256,7 @@ def current_results_review() -> str:
     om = om.merge(ind[["scenario", "total_encounters"]], on="scenario", how="left")
     om["tp"] = om["scenario"].str.extract(r"__(TP\d{2})_")[0]
     om["family"] = om["scenario"].str.extract(r"^([^_]+)_")[0]  # wrong - use manifest
-    mf = pd.read_csv(REPO / "scenarios/corpus_v2/manifest.csv")
+    mf = pd.read_csv(REPO / "scenarios/corpus_v1/manifest.csv")
     om = om.drop(columns=["family"], errors="ignore").merge(
         mf[["scenario_name", "family", "scenario_base"]],
         left_on="scenario",
@@ -298,7 +298,7 @@ def current_results_review() -> str:
         f"- `drop_ratio > 50`: **{len(extreme_drop)}**",
         f"- `total_encounters == 0`: **{len(zero_enc)}**",
         "",
-        "> **Caveat:** metrics may reflect settings before `apply_corpus_v2_revision.py`; re-simulation required.",
+        "> **Caveat:** metrics may reflect settings before `apply_corpus_v1_revision.py`; re-simulation required.",
         "",
         "## Top problematic scenarios (P0 from diagnosis)",
         "",
@@ -411,7 +411,7 @@ def simulation_time_policy() -> tuple[pd.DataFrame, str]:
     useful = pd.read_csv(DATA / "useful_simulation_time_metrics.csv")
     spatial = pd.read_csv(DATA / "spatial_occupancy_metrics.csv")
     om = pd.read_csv(DATA / "output_metrics.csv")
-    mf = pd.read_csv(REPO / "scenarios/corpus_v2/manifest.csv")
+    mf = pd.read_csv(REPO / "scenarios/corpus_v1/manifest.csv")
 
     sp = spatial[["scenario", "final_coverage_pct", "time_to_50pct", "time_to_80pct", "time_to_90pct"]].copy()
     sp = sp.rename(columns={"final_coverage_pct": "coverage_total_pct"})
@@ -464,7 +464,7 @@ def simulation_time_policy() -> tuple[pd.DataFrame, str]:
         "| family | note |",
         "|--------|------|",
         "| 01_urban | Low spatial % often map oversized, not short sim |",
-        "| 07_traffic | Stress lab — report separately |",
+        "| 07_stress_controls | Stress/control lab — report separately |",
         "| 04_rural | R1/R11 may need mobility fix not longer time |",
         "",
     ]
@@ -480,7 +480,7 @@ def map_realism_review() -> str:
         f"Generated: {_utc()}",
         "",
         f"- Bases using HelsinkiMedium: **{helsinki}** / {sa['scenario_base'].nunique()} unique bases in audit",
-        "- U2/U4 migrated to **Manhattan** (projected activity WKT) in corpus_v2 revision",
+        "- U2/U4 migrated to **Manhattan** (projected activity WKT) in corpus_v1 revision",
         "",
         "## What real maps add",
         "",
@@ -518,7 +518,7 @@ Generated: {_utc()}
 ## Closed decisions
 
 - Corpus benchmark = **synthetic/semi-synthetic**, not empirical traces
-- **corpus_v2**: 720 scenarios = 60 bases × 12 TP
+- **corpus_v1**: 720 scenarios = 60 bases × 12 TP
 - Traffic = Events overlay; mobility from v1 base per scenario
 - Minimum routing metrics: delivery, latency, overhead, drops
 - Wiki rebuilt paper-oriented; old wiki backed up to `_archive/wiki/wiki_backup_20260520_133832`
@@ -532,8 +532,8 @@ Generated: {_utc()}
 
 ## Priority tasks
 
-1. Re-simulate corpus_v2 with Diego17 + spatial reports
-2. Re-run `diagnose_scenarios.py` and `build_corpus_v2_revision_plan.py`
+1. Re-simulate corpus_v1 with Diego17 + spatial reports
+2. Re-run `diagnose_scenarios.py` and `build_corpus_v1_revision_plan.py`
 3. Regenerate `output_metrics.csv` from new reports
 4. Select **main** benchmark subset (~40 bases × TP01–08) from `manifest_revision.csv`
 5. First protocol comparison (Epidemic vs Prophet vs …) on main split only

@@ -1,6 +1,6 @@
 # Mapas y datos disponibles para variedad de escenarios
 
-**Objetivo:** Dar variedad estructural (world_area, aspect_ratio en core 24) usando los mapas y datos en `data/` para bajar correlación y acercar a <5% pares |r|≥0.7, manteniendo cada escenario con información única para investigadores.
+**Objetivo:** Dar variedad estructural (world_area, aspect_ratio en core 23) usando los mapas y datos en `data/` para bajar correlación y acercar a <5% pares |r|≥0.7, manteniendo cada escenario con información única para investigadores. **Scope actual:** corpus_v1, n=540.
 
 ---
 
@@ -13,7 +13,7 @@
 | **cluster/** | Algunos escenarios ClusterMovement | `origin.wkt`, `ferryroute.wkt`. |
 | **Raíz data/** | Varios | `roads.wkt`, `pedestrian_paths.wkt`, `main_roads.wkt`, `demo_bus.wkt`, `shops.wkt`, tram*.wkt, *POIs.wkt. No forman un dataset completo WDM equivalente a HelsinkiMedium. |
 
-**Conclusión:** Para escenarios Urban/Campus/Vehicle (WDM+Bus) el único mapa con ubicaciones compatibles es **HelsinkiMedium**. La variedad en core 24 se consigue con **MovementModel.worldSize** (Wx, Wy): cambia **world_area** = Wx×Wy y **aspect_ratio** = min(Wx,Wy)/max(Wx,Wy). El path del mapa no es feature; solo worldSize entra en las 24 core.
+**Conclusión:** Para escenarios Urban/Campus/Vehicle (WDM+Bus) el único mapa con ubicaciones compatibles es **HelsinkiMedium**. La variedad en core 23 se consigue con **MovementModel.worldSize** (Wx, Wy): cambia **world_area** = Wx×Wy y **aspect_ratio** = min(Wx,Wy)/max(Wx,Wy). El path del mapa no es feature; solo worldSize entra en las 23 core.
 
 ---
 
@@ -44,7 +44,7 @@ Se mantiene el mismo mapa y rutas (HelsinkiMedium) para que la simulación siga 
 | V3_BusOnlyCarriers | 8495, 7504 | 8100, 7100 | 57.51e6 | 0.877 |
 | V7_CarOwnership_100 | 8495, 7504 | 8400, 7400 | 62.16e6 | 0.881 |
 
-Así se obtienen 9 combinaciones distintas de (world_area, aspect_ratio) en el bloque que antes era idéntico. Tras aplicar estos cambios y re-ejecutar el pipeline (features → normalize → correlation), los **pares con |r|≥0.7 en core 24** se mantienen en **200 (8,3%)**; la ganancia es que ya no hay escenarios duplicados en espacio/forma (world_area, aspect_ratio), lo que refuerza que cada escenario tenga una firma distinta para investigadores.
+Así se obtienen 9 combinaciones distintas de (world_area, aspect_ratio) en el bloque que antes era idéntico. Tras el freeze actual (540 escenarios), los **pares con |r|≥0.7 en core 23** son **5029 (3,5%)** — ver `RESULTADOS_ACTUALES.md` (las cifras 200/8,3% correspondían a un corpus anterior).
 
 ---
 

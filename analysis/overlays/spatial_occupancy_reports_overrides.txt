@@ -3,7 +3,7 @@
 # Apply AFTER routing_contact_reports_overrides.txt so report1–7 stay unchanged
 # and only nrofReports + report8/report9 are extended:
 #
-#   python3 scenarios/analysis/run_all_scenarios.py --corpus corpus_v2 \
+#   python3 scenarios/analysis/run_all_scenarios.py --corpus corpus_v1 \
 #     --extra-settings scenarios/analysis/overlays/routing_contact_reports_overrides.txt \
 #     --extra-settings scenarios/analysis/overlays/spatial_occupancy_reports_overrides.txt
 #

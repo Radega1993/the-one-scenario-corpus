@@ -6,7 +6,7 @@ Este directorio contiene el pipeline de análisis de los escenarios del corpus: 
 
 **Índice de scripts (roles y pipeline paper):** [SCRIPTS_INDEX.md](SCRIPTS_INDEX.md).
 
-**Contexto:** corpus activo [../corpus_v2](../corpus_v2) (720 escenarios); referencia base [../corpus_v1](../corpus_v1). Guía ONE: [../README.es.md](../README.es.md).
+**Contexto:** benchmark activo [../corpus_v1](../corpus_v1) (540) + [../stress_controls](../stress_controls) (30); base estructural en [../base_scenarios](../base_scenarios) (45). Guía ONE: [../README.es.md](../README.es.md).
 
 ---
 
@@ -14,14 +14,14 @@ Este directorio contiene el pipeline de análisis de los escenarios del corpus: 
 
 | Elemento | Valor |
 |----------|--------|
-| **Corpus activo** | `corpus_v2` — 720 simulaciones (60 bases × 12 TP) |
+| **Corpus activo** | `corpus_v1` (540) + `stress_controls` (30) = 570 simulaciones |
 | **Estado** | Benchmark principal bajo congelación / revisión metodológica |
 | **Resultados congelados** | [reports/RESULTADOS_ACTUALES.md](reports/RESULTADOS_ACTUALES.md) |
 | **Figuras paper** | [figures/paper/main/](figures/paper/main/), [figures/paper/supplementary/](figures/paper/supplementary/) |
 | **Tablas paper** | [figures/paper/tables/](figures/paper/tables/) (Markdown ES/EN) |
 | **Catálogo de figuras** | [figures/README.md](figures/README.md) |
 
-**Diversidad (720 escenarios):** core-23 — max \|r\| = 1,0, 11 325 pares (4,4 %) con \|r\| ≥ 0,7, silhouette ablación 0,3451; full-46 — 8 356 pares (3,2 %), silhouette 0,2680; feature–feature `mm_WDM ↔ mm_Bus = 0,9393`. Detalle en `RESULTADOS_ACTUALES.md`.
+**Diversidad (570 escenarios):** ver métricas regeneradas y vigentes en [reports/RESULTADOS_ACTUALES.md](reports/RESULTADOS_ACTUALES.md).
 
 ---
 
@@ -34,7 +34,7 @@ Este directorio contiene el pipeline de análisis de los escenarios del corpus: 
 | [reports/RESULTADOS_ACTUALES.md](reports/RESULTADOS_ACTUALES.md) | Métricas congeladas |
 | [figures/README.md](figures/README.md) | Catálogo de figuras |
 | [docs/features_core_vs_extended.md](docs/features_core_vs_extended.md) | Core 23 vs extended 46 |
-| [../corpus_v2/README.md](../corpus_v2/README.md) | Perfiles de tráfico y diseño del benchmark |
+| [../corpus_v1/README.md](../corpus_v1/README.md) | Perfiles de tráfico y diseño del benchmark |
 
 ---
 
@@ -54,7 +54,7 @@ Regenerar con el [pipeline oficial](#pipeline-oficial) siguiente.
 
 Comandos completos (12 pasos): **[SCRIPTS_INDEX.md](SCRIPTS_INDEX.md)**.
 
-1. Simulación — `run_all_scenarios.py --corpus corpus_v2` + overlays routing/contacto + espacial  
+1. Simulación — `run_all_scenarios.py --corpus corpus_v1` + overlays routing/contacto + espacial  
 2. Métricas de salida — `run_analysis.py --phase output_metrics` (+ `indirects`)  
 3. Features — `--phase features` → `normalize` → `correlation` → `feature_correlation` → `ablation`  
 4. Espacial — `scripts/validation/analyze_spatial_occupancy.py`  
@@ -68,7 +68,7 @@ Comandos completos (12 pasos): **[SCRIPTS_INDEX.md](SCRIPTS_INDEX.md)**.
 
 ## Un script con fases (recomendado)
 
-**Resultados actuales (`corpus_v2`, 720 escenarios):** **46 features** extendidas; **core 23** para metodología/paper. Ver [reports/RESULTADOS_ACTUALES.md](reports/RESULTADOS_ACTUALES.md).
+**Resultados actuales (`corpus_v1`, 570 escenarios):** **46 features** extendidas; **core 23** para metodología/paper. Ver [reports/RESULTADOS_ACTUALES.md](reports/RESULTADOS_ACTUALES.md).
 
 - **Core-23:** max \|r\| = 1,0; 11 325 pares (4,4 %) con \|r\| ≥ 0,7; silhouette ablación (Ward k=7) = 0,3451  
 - **Full-46:** 8 356 pares (3,2 %) con \|r\| ≥ 0,7; silhouette = 0,2680  
@@ -92,7 +92,7 @@ analysis/
 ├── README.md / README.es.md   # Este documento: definiciones y guía del análisis
 ├── analysis_menu.py           # Menú interactivo en castellano (lanza otros scripts)
 ├── lib/                       # Utilidades: rutas, connectivity_timeline, spatial_occupancy_io
-├── dashboard.py        # Dashboard Streamlit (corpus_v2): salud, TP, explorador, espacial, auditoría
+├── dashboard.py        # Dashboard Streamlit (corpus_v1): salud, TP, explorador, espacial, auditoría
 ├── dashboard/          # Paquete: app.py, data_loaders.py, pages/
 ├── run_all_scenarios.py # Ejecuta todas las simulaciones del corpus (one.sh por cada .settings)
 ├── data/               # Datos derivados (features.csv, features_normalized.csv, matrices, output_metrics.csv)
@@ -102,13 +102,13 @@ analysis/
 └── run_analysis.py     # Script principal por fases (extracción → correlación → reporte)
 ```
 
-- **Menú interactivo:** `analysis_menu.py` — ver [MENU.md](MENU.md): simulación (1–2), pipeline (3), paper/validación (4a–4n), tiempo útil/mensajes/espacial (5–7), dashboard (8), figuras (9). Corpus_v2 congelado.
+- **Menú interactivo:** `analysis_menu.py` — ver [MENU.md](MENU.md): simulación (1–2), pipeline (3), paper/validación (4a–4n), tiempo útil/mensajes/espacial (5–7), dashboard (8), figuras (9). Corpus legacy congelado.
 
 - **data/**: Vectores de features por escenario, matrices de correlación/distancias, exports en CSV.
-- **figures/**: Figuras en PNG/PDF. **Catálogo y veredictos:** [figures/README.md](figures/README.md). Con 720 escenarios no use heatmaps N×N; use `figures/aggregated/` y `figures/paper/main/`.
+- **figures/**: Figuras en PNG/PDF. **Catálogo y veredictos:** [figures/README.md](figures/README.md). Con 570 escenarios no use heatmaps N×N; use `figures/aggregated/` y `figures/paper/main/`.
 - **reports/**: Conclusiones en texto (`correlation_report.txt`), y **observaciones para trabajo posterior** (`observaciones_correlacion.md`).
 
-El script `run_analysis.py` se ejecuta por fases y escribe siempre en esta estructura. Para explorar el **corpus_v2** (720 escenarios, perfiles TP, diagnóstico, heatmaps) usa el **dashboard** (`dashboard.py`): 8 vistas temáticas, filtros globales en la barra lateral y tablas unificadas desde `manifest.csv` + CSV en `data/`.
+El script `run_analysis.py` se ejecuta por fases y escribe siempre en esta estructura. Para explorar el **corpus_v1** (570 escenarios, perfiles TP, diagnóstico, heatmaps) usa el **dashboard** (`dashboard.py`): 8 vistas temáticas, filtros globales en la barra lateral y tablas unificadas desde `manifest.csv` + CSV en `data/`.
 
 ---
 
@@ -184,12 +184,12 @@ Con esto el vector de features permite distinguir mejor escenarios que comparten
 
 El script se organiza **por partes**:
 
-1. **Extracción de features** (`--phase features`): Lee todos los `.settings` bajo el directorio indicado (p. ej. `corpus_v2`), aplica el parser de settings y construye el vector de features definido arriba. Escribe en `data/` un CSV con una fila por escenario y una columna por feature (`features.csv`, `scenario_list.txt`).
+1. **Extracción de features** (`--phase features`): Lee todos los `.settings` bajo el directorio indicado (p. ej. `corpus_v1`), aplica el parser de settings y construye el vector de features definido arriba. Escribe en `data/` un CSV con una fila por escenario y una columna por feature (`features.csv`, `scenario_list.txt`).
 2. **Normalización** (`--phase normalize`): Lee `data/features.csv` y aplica **z-score por característica** usando solo valores no-NaN; luego **imputa NaN -> 0** en el espacio estandarizado (§4 features_core_vs_extended.md). Salida: `features_normalized.csv`, `normalization_params.csv`, `features_core.csv` (23), `features_reduced.csv` (17).
 3. **Correlación entre escenarios** (`--phase correlation`): Lee `data/features_normalized.csv` (matriz Z, n×d con n = número de escenarios). **Pearson** r(Si, Sk) = corr(Zi, Zk); **Spearman** (correlación de rangos); **métricas geométricas**: distancia coseno (1 − cos_sim) y distancia euclídea entre filas de Z. Salidas en `data/`: `correlation_pearson.csv`, `correlation_spearman.csv`, `distance_cosine.csv`, `distance_euclidean.csv`, `correlation_pearson_pvalues.csv`. Criterio: **|r| < 0.7** para todos o ≥95% de los pares (`--strict` exige 100%). **Test y corrección múltiple**: p-value por par (H0: ρ=0), **FDR (Benjamini-Hochberg)** y **Bonferroni** (`--fdr-alpha`). Objetivo: no pares con |r| alto y significativos tras corrección. Informes: `reports/correlation_report.txt` (incluye resumen Spearman y distancias), `reports/multiple_comparisons_report.txt`. Matrices de Pearson/Spearman entre vectores de escenarios, distancias coseno y euclídea; se guardan en `data/`.
 4. **Correlación feature-feature** (`--phase feature_correlation`): Matriz 23x23 entre las features del core. Salida: `data/feature_feature_correlation_core.csv`, `figures/heatmap_feature_feature_core.png`, `reports/feature_feature_correlation_report.txt`.
 5. **Ablación** (`--phase ablation`): Compara métricas (max |r|, media |r|, pares >=0.7, Silhouette) para 17, 23 y 46 features. Salida: `reports/ablation_report.txt`, `data/ablation_metrics.csv`.
-6. **Figuras** (`--phase figures`): Histogramas de correlación, scatter par con mayor |r|, heatmap feature×feature (23×23). **Heatmaps N×N entre escenarios omitidos por defecto si n>100** (corpus_v2); use `--include-full-heatmaps` solo para depuración. Comparativas en `figures/by_space/`.
+6. **Figuras** (`--phase figures`): Histogramas de correlación, scatter par con mayor |r|, heatmap feature×feature (23×23). **Heatmaps N×N entre escenarios omitidos por defecto si n>100** (corpus_v1); use `--include-full-heatmaps` solo para depuración. Comparativas en `figures/by_space/`.
 7. **Figuras paper** (`--phase figures_paper`): paquete curado en `figures/paper/{main,supplementary}` (ver [figures/README.md](figures/README.md)).
 7b. **Figuras agregadas** (`--phase figures_aggregated` o `run_figures_aggregated.py`): boxplots y heatmaps **base×TP** por familia en `figures/aggregated/`.
 8. **Tablas paper** (`--phase tables_paper`): tablas Markdown ES/EN en `figures/paper/tables/`.
@@ -208,21 +208,21 @@ Para tener todos los outputs (MessageStatsReport, ContactTimesReport, etc.) en `
 
 ```bash
 # Desde la raíz del repo (recomendado)
-python3 scenarios/analysis/run_all_scenarios.py --corpus corpus_v2
+python3 scenarios/analysis/run_all_scenarios.py --corpus corpus_v1
 
 # Solo listar, sin ejecutar
-python3 scenarios/analysis/run_all_scenarios.py --corpus corpus_v2 --dry-run
+python3 scenarios/analysis/run_all_scenarios.py --corpus corpus_v1 --dry-run
 
 # Forzar todos los reportes necesarios para Diego17 real / indirectas
-python3 scenarios/analysis/run_all_scenarios.py --corpus corpus_v2 \
+python3 scenarios/analysis/run_all_scenarios.py --corpus corpus_v1 \
   --extra-settings scenarios/analysis/overlays/routing_contact_reports_overrides.txt
 
 # Mismo comando con el venv del proyecto
-./venv/bin/python scenarios/analysis/run_all_scenarios.py --corpus corpus_v2 \
+./venv/bin/python scenarios/analysis/run_all_scenarios.py --corpus corpus_v1 \
   --extra-settings scenarios/analysis/overlays/routing_contact_reports_overrides.txt
 
-# Ejecución en paralelo (recomendado para corpus_v2)
-python3 scenarios/analysis/run_all_scenarios.py --corpus corpus_v2 \
+# Ejecución en paralelo (recomendado para corpus_v1)
+python3 scenarios/analysis/run_all_scenarios.py --corpus corpus_v1 \
   --extra-settings scenarios/analysis/overlays/routing_contact_reports_overrides.txt \
   --timeout 14400 --jobs 6
 ```
@@ -240,14 +240,14 @@ Requisitos: Java, el ONE compilado (`one.sh` en la raíz). Los reportes se escri
 
 ## Cómo ejecutar (análisis)
 
-Desde el directorio `scenarios/analysis/` (o con el path adecuado a `corpus_v2`):
+Desde el directorio `scenarios/analysis/` (o con el path adecuado a `corpus_v1`):
 
 ```bash
 # Extracción de features → data/features.csv
-python3 run_analysis.py --corpus corpus_v2 --phase features
+python3 run_analysis.py --corpus corpus_v1 --phase features
 
 # Normalización z-score → data/features_normalized.csv, data/normalization_params.csv
-python3 run_analysis.py --corpus corpus_v2 --phase normalize
+python3 run_analysis.py --corpus corpus_v1 --phase normalize
 
 # Matriz de correlación entre escenarios → data/*.csv, reports/*.txt
 python3 run_analysis.py --phase correlation
@@ -280,18 +280,18 @@ python3 run_analysis.py --phase output_metrics --reports-dir /ruta/a/reports
 python3 run_analysis.py --phase outputs
 
 # Todas las fases (features → ... → output_metrics → indirects; outputs por separado)
-python3 run_analysis.py --corpus corpus_v2 --phase all
+python3 run_analysis.py --corpus corpus_v1 --phase all
 
 # Con el venv del proyecto (si numpy/pandas están en el venv)
-../venv/bin/python run_analysis.py --corpus corpus_v2 --phase features
-../venv/bin/python run_analysis.py --corpus corpus_v2 --phase normalize
-../venv/bin/python run_analysis.py --corpus corpus_v2 --phase all
+../venv/bin/python run_analysis.py --corpus corpus_v1 --phase features
+../venv/bin/python run_analysis.py --corpus corpus_v1 --phase normalize
+../venv/bin/python run_analysis.py --corpus corpus_v1 --phase all
 ```
 
 O desde la raíz del repo:
 
 ```bash
-python3 scenarios/analysis/run_analysis.py --corpus corpus_v2 --phase features
+python3 scenarios/analysis/run_analysis.py --corpus corpus_v1 --phase features
 ```
 
 Las rutas de salida son siempre relativas a `scenarios/analysis/` (data/, figures/, reports/). Requiere `numpy` y, para CSV cómodo, `pandas`.

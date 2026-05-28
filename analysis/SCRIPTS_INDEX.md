@@ -1,7 +1,8 @@
 # Índice de scripts del pipeline (`scenarios/analysis/`)
 
-**Corpus activo:** `corpus_v2` — 720 escenarios (60 bases × 12 Traffic Profiles).  
-**No existe `corpus_v3/`** — referencias a corpus_v3 son históricas; scripts v3 están en [`../_archive/scripts/`](../_archive/scripts/).
+**Corpus activo:** `corpus_v1` — **570** escenarios (540 ambientales + 30 stress/control). Incluye `stress_controls/` cuando se usa `--corpus corpus_v1`.  
+**Capa estructural:** `base_scenarios/` — 45 escenarios sin TP (familias 01–06).  
+**No existe `corpus_v3/`** — referencias a corpus_v3 son históricas; scripts v3 están en [`../_archive/scripts/`](../_archive/scripts/). El alias CLI `corpus_v2` está obsoleto.
 
 **Documentación relacionada:** [INVENTARIO.md](../INVENTARIO.md) · [RESULTADOS_ACTUALES.md](reports/RESULTADOS_ACTUALES.md) · [README.md](README.md)
 
@@ -28,7 +29,7 @@
 
 | Script | Categoría | Entrada principal | Salida principal | Paper | Estado | Notas |
 |--------|-----------|-------------------|------------------|-------|--------|-------|
-| [run_analysis.py](run_analysis.py) | CORE_PIPELINE | `corpus_v2/*.settings`, `reports/` | `data/`, `figures/`, `reports/` | sí | activo | Fases: `features`, `normalize`, `correlation`, `ablation`, `figures`, `figures_paper`, `tables_paper`, `output_metrics`, `outputs`, `indirects` |
+| [run_analysis.py](run_analysis.py) | CORE_PIPELINE | `corpus_v1/*.settings`, `reports/` | `data/`, `figures/`, `reports/` | sí | activo | Fases: `features`, `normalize`, `correlation`, `ablation`, `figures`, `figures_paper`, `tables_paper`, `output_metrics`, `outputs`, `indirects` |
 | [run_all_scenarios.py](run_all_scenarios.py) | SIMULATION_RUNNER | corpus + `one.sh` + overlays | `../../reports/*Report*` | sí | activo | Batch; filtros `--family`, `--tp`, `--settings` |
 | [run_figures_aggregated.py](run_figures_aggregated.py) | FIGURES_TABLES | `manifest.csv`, CSVs correlación/outputs | `figures/aggregated/` | sí | activo | Por familia, TP, base×TP |
 | [analysis_menu.py](analysis_menu.py) | EXPERIMENTAL | menú interactivo | delega subprocess | no | activo | [MENU.md](MENU.md); submenú Paper/validación 4a–4n |
@@ -38,8 +39,8 @@
 
 | Script | Categoría | Entrada principal | Salida principal | Paper | Menú |
 |--------|-----------|-------------------|------------------|-------|------|
-| [scripts/validation/validate_traffic_profiles.py](scripts/validation/validate_traffic_profiles.py) | ANALYSIS | `corpus_v2`, manifest | `tp_validation_*` | sí | 4a |
-| [scripts/validation/validate_corpus_v2_benchmark.py](scripts/validation/validate_corpus_v2_benchmark.py) | ANALYSIS | manifest + CSVs | `corpus_v2_benchmark_validation.*` | sí | 4c |
+| [scripts/validation/validate_traffic_profiles.py](scripts/validation/validate_traffic_profiles.py) | ANALYSIS | `corpus_v1`, manifest | `tp_validation_*` | sí | 4a |
+| [scripts/validation/validate_corpus_benchmark.py](scripts/validation/validate_corpus_benchmark.py) | ANALYSIS | manifest + CSVs | `corpus_benchmark_validation.*` | sí | 4c |
 | [scripts/validation/audit_settings.py](scripts/validation/audit_settings.py) | ANALYSIS | corpus | `settings_audit.csv` | no | 4j |
 | [scripts/validation/diagnose_scenarios.py](scripts/validation/diagnose_scenarios.py) | ANALYSIS | settings + métricas | `scenario_diagnosis.*` | no | 4k |
 | [scripts/validation/compute_useful_simulation_time.py](scripts/validation/compute_useful_simulation_time.py) | ANALYSIS | ConnectivityONEReport | `useful_simulation_time_*` | no | 5 |
@@ -59,9 +60,9 @@
 
 | Script | Motivo |
 |--------|--------|
-| `generate_corpus_v2_traffic.py` | Corpus_v2 ya generado; lógica TP en `lib/traffic_profile_generator.py` |
+| `generate_corpus_v1_traffic.py` | Corpus_v2 ya generado; lógica TP en `lib/traffic_profile_generator.py` |
 | `validate_reports_reorganization.py` | Auditoría one-off post-reorg reports |
-| `apply_corpus_v2_revision.py`, `build_corpus_v2_revision_plan.py` | Revisión v2 ya aplicada |
+| `apply_corpus_v1_revision.py`, `build_corpus_v1_revision_plan.py` | Revisión v2 ya aplicada |
 
 ### Fases de `run_analysis.py` (referencia rápida)
 
@@ -82,6 +83,26 @@
 | `outputs` | correlaciones en espacio Y | sí |
 | `all` | secuencia completa | — |
 
+**Scope flags:** `--no-stress` (default for diversity) → 540 `corpus_v1` scenarios; `--include-stress` → 570 combined.
+
+### Validación de diversidad — script → artefacto
+
+| Script / fase | Artefactos generados |
+|---------------|---------------------|
+| `run_analysis.py --phase features --no-stress` | `data/features.csv`, `data/scenario_list.txt` |
+| `--phase normalize` | `features_normalized.csv` (46), `features_core.csv` (23), `features_reduced.csv` (17), `normalization_params.csv` |
+| `--phase correlation` | `correlation_pearson.csv`, `correlation_spearman.csv`, `distance_cosine.csv`, `distance_euclidean.csv`, `correlation_pearson_core23.csv`, `distance_cosine_core23.csv`, `cluster_assignments*.csv`, `reports/pipeline/correlation_*.txt`, `clustering_report.txt`, `scenarios_to_diversify*.txt` |
+| `--phase feature_correlation` | `feature_feature_correlation_core.csv`, `figures/heatmap_feature_feature_core.png` |
+| `--phase ablation` | `ablation_metrics.csv`, `reports/pipeline/ablation_report.txt` |
+| `--phase figures` | `figures/by_space/*`, histogramas raíz |
+| `--phase figures_paper` | `figures/paper/main/*.png`, `figures/paper/supplementary/*.png` |
+| `--phase tables_paper` | `figures/paper/tables/table_*.md` |
+| `scripts/paper/validate_diversity_readiness.py` | `reports/diversity_validation_readiness.md`, `data/diversity_validation_checklist.csv`, `data/diversity_figures_inventory.csv`, `reports/diversity_archive_candidates.md` |
+| `scripts/paper/validate_final_artifact_consistency.py` | `data/final_artifact_consistency.csv`, `reports/project/final_artifact_consistency_report.md` |
+| `scripts/paper/build_paper_figures_tables_index.py` | `figures/paper/FIGURES_AND_TABLES_INDEX.md`, `reports/paper_gate/paper_figures_tables_readiness.md` |
+
+Informe canónico único: [reports/RESULTADOS_ACTUALES.md](reports/RESULTADOS_ACTUALES.md) (n=540).
+
 ---
 
 ## Bibliotecas (`lib/`)
@@ -90,7 +111,7 @@ Módulos de soporte importados por scripts; no se ejecutan directamente.
 
 | Módulo | Categoría | Entrada principal | Salida principal | Paper | Estado | Notas |
 |--------|-----------|-------------------|------------------|-------|--------|-------|
-| [paths.py](lib/paths.py) | CORE_PIPELINE | — | constantes de ruta | sí | activo | `DATA_DIR`, `CORPUS_V2`, `overlays/` |
+| [paths.py](lib/paths.py) | CORE_PIPELINE | — | constantes de ruta | sí | activo | `DATA_DIR`, `CORPUS_V1_DIR`, `overlays/` |
 | [traffic_profile_generator.py](lib/traffic_profile_generator.py) | CORE_PIPELINE | — | TP01–TP12 canónicos | sí | activo | Sustituye generador histórico |
 | [report_paths.py](lib/report_paths.py) | CORE_PIPELINE | — | rutas MD/CSV informes | sí | activo | Subcarpetas `reports/` |
 | [settings_audit.py](lib/settings_audit.py) | ANALYSIS | `.settings` | estructuras parseadas | no | activo | Usado por `audit_settings.py` |
@@ -137,11 +158,11 @@ Exploración interactiva; no forma parte de la reproducibilidad batch del paper.
 | Script | Categoría | Entrada principal | Salida principal | Paper | Estado | Notas |
 |--------|-----------|-------------------|------------------|-------|--------|-------|
 | [recommend_corpus_v3.py](../_archive/scripts/recommend_corpus_v3.py) | LEGACY | diagnosis, audit | `corpus_v3_*` en `_archive/` | no | histórico | Propuesta v3 **no implementada**; no usar |
-| [compare_corpus_versions.py](../_archive/scripts/compare_corpus_versions.py) | LEGACY | corpus_v2 vs v3 | diff esqueleto | no | histórico | `corpus_v3/` no existe en disco |
+| [compare_corpus_versions.py](../_archive/scripts/compare_corpus_versions.py) | LEGACY | corpus_v1 vs v3 | diff esqueleto | no | histórico | `corpus_v3/` no existe en disco |
 
 **Menciones históricas en documentación:**
 
-- Scripts de revisión v2 (`build_corpus_v2_revision_plan.py`, `apply_corpus_v2_revision.py`) — eliminados; ver `reports/project/corpus_v2_revision_changelog.md`
+- Scripts de revisión v2 (`build_corpus_v1_revision_plan.py`, `apply_corpus_v1_revision.py`) — eliminados; ver `reports/project/corpus_v1_revision_changelog.md`
 - `build_wiki_research_reports.py` — comentario: `map_realism_review.md` archivado en `_archive/reports/`
 
 Ningún script activo importa ni invoca `recommend_corpus_v3.py`.
@@ -150,7 +171,7 @@ Ningún script activo importa ni invoca `recommend_corpus_v3.py`.
 
 ## Pipeline oficial para paper
 
-Orden recomendado para reproducir resultados con **corpus_v2** (desde la raíz del repo ONE). Usar `venv/bin/python` o `python3` según entorno.
+Orden recomendado para reproducir resultados con **corpus_v1** (desde la raíz del repo ONE). Usar `venv/bin/python` o `python3` según entorno.
 
 ```mermaid
 flowchart TD
@@ -168,7 +189,7 @@ flowchart TD
 ### 1. Simulación
 
 ```bash
-python3 scenarios/analysis/run_all_scenarios.py --corpus corpus_v2 \
+python3 scenarios/analysis/run_all_scenarios.py --corpus corpus_v1 \
   --extra-settings scenarios/analysis/overlays/routing_contact_reports_overrides.txt \
   --extra-settings scenarios/analysis/overlays/spatial_occupancy_reports_overrides.txt \
   --jobs 4
@@ -179,8 +200,8 @@ Salida: `reports/*MessageStatsReport.txt`, `*_spatial_occupancy_grid.csv`, etc.
 ### 2. Extracción de outputs (routing + indirectos)
 
 ```bash
-python3 scenarios/analysis/run_analysis.py --corpus corpus_v2 --phase output_metrics
-python3 scenarios/analysis/run_analysis.py --corpus corpus_v2 --phase indirects
+python3 scenarios/analysis/run_analysis.py --corpus corpus_v1 --phase output_metrics
+python3 scenarios/analysis/run_analysis.py --corpus corpus_v1 --phase indirects
 ```
 
 Salida: `data/output_metrics.csv`, `data/indirect_features_diego.csv`
@@ -188,16 +209,16 @@ Salida: `data/output_metrics.csv`, `data/indirect_features_diego.csv`
 ### 3. Features
 
 ```bash
-python3 scenarios/analysis/run_analysis.py --corpus corpus_v2 --phase features
-python3 scenarios/analysis/run_analysis.py --corpus corpus_v2 --phase features_report
+python3 scenarios/analysis/run_analysis.py --corpus corpus_v1 --phase features
+python3 scenarios/analysis/run_analysis.py --corpus corpus_v1 --phase features_report
 ```
 
-Salida: `data/features.csv`, `reports/features_report.md`
+Salida: `data/features.csv`, `reports/pipeline/features_report.md`
 
 ### 4. Normalización
 
 ```bash
-python3 scenarios/analysis/run_analysis.py --corpus corpus_v2 --phase normalize
+python3 scenarios/analysis/run_analysis.py --corpus corpus_v1 --phase normalize
 ```
 
 Salida: `data/features_normalized.csv`, `features_core.csv`, `features_reduced.csv`
@@ -205,31 +226,31 @@ Salida: `data/features_normalized.csv`, `features_core.csv`, `features_reduced.c
 ### 5. Correlaciones
 
 ```bash
-python3 scenarios/analysis/run_analysis.py --corpus corpus_v2 --phase correlation
-python3 scenarios/analysis/run_analysis.py --corpus corpus_v2 --phase feature_correlation
+python3 scenarios/analysis/run_analysis.py --corpus corpus_v1 --phase correlation
+python3 scenarios/analysis/run_analysis.py --corpus corpus_v1 --phase feature_correlation
 ```
 
-Salida: `data/correlation_pearson*.csv`, `reports/correlation_report.txt`
+Salida: `data/correlation_pearson*.csv`, `reports/pipeline/correlation_report.txt`, `reports/pipeline/correlation_core23_report.txt`, `reports/pipeline/clustering_report.txt`, `reports/pipeline/scenarios_to_diversify*.txt`
 
 ### 6. Ablación (17 vs 23 vs 46 features)
 
 ```bash
-python3 scenarios/analysis/run_analysis.py --corpus corpus_v2 --phase ablation
+python3 scenarios/analysis/run_analysis.py --corpus corpus_v1 --phase ablation
 ```
 
-Salida: `data/ablation_metrics.csv`, `reports/ablation_report.txt`
+Salida: `data/ablation_metrics.csv`, `reports/pipeline/ablation_report.txt`
 
 ### 7. Ocupación espacial
 
 ```bash
 cd scenarios/analysis
 python3 scripts/validation/analyze_spatial_occupancy.py \
-  --manifest ../corpus_v2/manifest.csv \
+  --manifest ../corpus_v1/manifest.csv \
   --reports-dir reports \
-  --corpus corpus_v2
+  --corpus corpus_v1
 ```
 
-Salida: `data/spatial_occupancy_metrics.csv`, `figures/spatial_heatmaps/*.png` (720)
+Salida: `data/spatial_occupancy_metrics.csv`, `figures/spatial_heatmaps/*.png` (target 570 combined; legacy files may still show 720 rows)
 
 ### 8. Tiempos de creación de mensajes
 
@@ -256,8 +277,8 @@ Salida: `data/tp_validation_*.csv`, `reports/tp_validation_report.md`
 ### 10. Figuras paper
 
 ```bash
-python3 scenarios/analysis/run_analysis.py --corpus corpus_v2 --phase figures_paper
-python3 scenarios/analysis/run_figures_aggregated.py --corpus corpus_v2
+python3 scenarios/analysis/run_analysis.py --corpus corpus_v1 --phase figures_paper
+python3 scenarios/analysis/run_figures_aggregated.py --corpus corpus_v1
 ```
 
 Salida: `figures/paper/`, `figures/aggregated/`
@@ -265,7 +286,7 @@ Salida: `figures/paper/`, `figures/aggregated/`
 ### 11. Tablas paper
 
 ```bash
-python3 scenarios/analysis/run_analysis.py --corpus corpus_v2 --phase tables_paper
+python3 scenarios/analysis/run_analysis.py --corpus corpus_v1 --phase tables_paper
 ```
 
 Salida: `figures/paper/tables/*.md` (ES/EN)
@@ -274,7 +295,7 @@ Salida: `figures/paper/tables/*.md` (ES/EN)
 python3 scenarios/analysis/scripts/paper/build_paper_figures_tables_index.py
 ```
 
-Salida: `figures/paper/FIGURES_AND_TABLES_INDEX.md`, `reports/paper_figures_tables_readiness.md`, figuras promovidas y `corpus_overview_paper`
+Salida: `figures/paper/FIGURES_AND_TABLES_INDEX.md`, `reports/paper_gate/paper_figures_tables_readiness.md`, figuras promovidas y `corpus_overview_paper`
 
 ```bash
 python3 scenarios/analysis/scripts/paper/build_paper_freeze_checklist.py
@@ -293,10 +314,21 @@ Salida: `scenarios/.wiki-clone/` (gitignored localmente)
 
 ---
 
+### Pipeline canónico — validación de diversidad (540, sin stress)
+
+```bash
+python3 scenarios/analysis/run_analysis.py --corpus corpus_v1 --no-stress \
+  --phase features normalize correlation feature_correlation ablation figures_paper tables_paper
+python3 scenarios/analysis/scripts/paper/validate_diversity_readiness.py
+python3 scenarios/analysis/scripts/wiki/populate_wiki_paper.py
+```
+
+Métricas congeladas: [reports/RESULTADOS_ACTUALES.md](reports/RESULTADOS_ACTUALES.md). Metodología: [docs/features_core_vs_extended.md](docs/features_core_vs_extended.md).
+
 ### Atajo: pipeline completo de análisis (sin simulación ni espacial)
 
 ```bash
-python3 scenarios/analysis/run_analysis.py --corpus corpus_v2 --phase all
+python3 scenarios/analysis/run_analysis.py --corpus corpus_v1 --phase all
 ```
 
 No incluye simulación, `analyze_spatial_occupancy`, `analyze_message_creation_times`, ni wiki. Ejecutar esos pasos por separado según la tabla anterior.

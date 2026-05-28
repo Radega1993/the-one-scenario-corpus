@@ -1,12 +1,12 @@
 # Informe de reorganización del subproyecto `scenarios/`
 
 **Fecha:** 2026-05-24  
-**Objetivo:** Organizar el repositorio sin borrar artefactos, separando material histórico/obsoleto del pipeline activo para `corpus_v2` (720 escenarios) y la redacción del paper.
+**Objetivo:** Organizar el repositorio sin borrar artefactos, separando material histórico/obsoleto del pipeline activo para `corpus_v1` (720 escenarios) y la redacción del paper.
 
 **Restricciones respetadas:**
 - No se creó `corpus_v3/`.
 - Solo `mkdir` + `mv` (sin `rm`).
-- `corpus_v1/`, `corpus_v2/`, `corpus_dropped_v1/` intactos.
+- `corpus_v1/`, `corpus_v1/`, `corpus_dropped_v1/` intactos.
 - `.wiki-clone/` activa sin cambios; `_legacy_pre_paper_rebuild/` no movido.
 
 ---
@@ -23,10 +23,10 @@ mv wiki_backup_20260520_133207 _archive/wiki/
 mv wiki_backup_20260520_133832 _archive/wiki/
 
 # Reports históricos / v3 / obsoletos
-mv analysis/reports/piloto_corpus_v2_30_resultados.md _archive/reports/
-mv analysis/reports/piloto_corpus_v2_36_resultados.md _archive/reports/
-mv analysis/reports/go_no_go_corpus_v2_12perfiles.md _archive/reports/
-mv analysis/reports/corpus_v2_720_resultados.md _archive/reports/
+mv analysis/reports/piloto_corpus_v1_30_resultados.md _archive/reports/
+mv analysis/reports/piloto_corpus_v1_36_resultados.md _archive/reports/
+mv analysis/reports/go_no_go_corpus_v1_12perfiles.md _archive/reports/
+mv analysis/reports/corpus_v1_720_resultados.md _archive/reports/
 mv analysis/reports/corpus_v3_design.md _archive/reports/
 mv analysis/reports/corpus_v3_recommendation.md _archive/reports/
 mv analysis/reports/mobility_realism_review.md _archive/reports/
@@ -57,10 +57,10 @@ mv analysis/data/map_profile_plan.csv _archive/data/
 |--------|---------|--------|
 | `wiki_backup_20260520_133207/` | `_archive/wiki/` | Snapshot duplicado pre–paper-rebuild |
 | `wiki_backup_20260520_133832/` | `_archive/wiki/` | Snapshot oficial wiki antigua (conservado) |
-| `analysis/reports/piloto_corpus_v2_30_resultados.md` | `_archive/reports/` | Piloto 30 escenarios pre-freeze |
-| `analysis/reports/piloto_corpus_v2_36_resultados.md` | `_archive/reports/` | Piloto 36 escenarios |
-| `analysis/reports/go_no_go_corpus_v2_12perfiles.md` | `_archive/reports/` | Gate piloto 12 TP |
-| `analysis/reports/corpus_v2_720_resultados.md` | `_archive/reports/` | Volcado temprano de resultados |
+| `analysis/reports/piloto_corpus_v1_30_resultados.md` | `_archive/reports/` | Piloto 30 escenarios pre-freeze |
+| `analysis/reports/piloto_corpus_v1_36_resultados.md` | `_archive/reports/` | Piloto 36 escenarios |
+| `analysis/reports/go_no_go_corpus_v1_12perfiles.md` | `_archive/reports/` | Gate piloto 12 TP |
+| `analysis/reports/corpus_v1_720_resultados.md` | `_archive/reports/` | Volcado temprano de resultados |
 | `analysis/reports/corpus_v3_design.md` | `_archive/reports/` | Propuesta corpus_v3 no implementada |
 | `analysis/reports/corpus_v3_recommendation.md` | `_archive/reports/` | Idem |
 | `analysis/reports/mobility_realism_review.md` | `_archive/reports/` | Auditoría v3 |
@@ -87,7 +87,7 @@ mv analysis/data/map_profile_plan.csv _archive/data/
 | `analysis/build_wiki_research_reports.py` | `BACKUP` → `_archive/wiki/wiki_backup_20260520_133832`; deja de regenerar `data_inventory.md` y `map_realism_review.md` |
 | `analysis/docs/README.md` | Solo docs vigentes; enlace a `_archive/docs/` |
 | `analysis/README.md` | Rutas legacy y wiki backup → `_archive/` |
-| `corpus_v2/README.md` | Enlaces pilotos → `_archive/reports/` |
+| `corpus_v1/README.md` | Enlaces pilotos → `_archive/reports/` |
 | `maps/README.md` | **Nuevo** — puntero a `map_profiles.md` archivado |
 | `analysis/reports/wiki_old_audit.md` | Ruta backup actualizada |
 | `analysis/reports/wiki_rebuild_summary.md` | Ruta backup + inventario |
@@ -102,13 +102,13 @@ mv analysis/data/map_profile_plan.csv _archive/data/
 
 | Área | Ubicación |
 |------|-----------|
-| Corpus benchmark | `corpus_v2/` (720 `.settings`, `manifest.csv`, `manifest_revision.csv`) |
+| Corpus benchmark | `corpus_v1/` (720 `.settings`, `manifest.csv`, `manifest_revision.csv`) |
 | Corpus referencia | `corpus_v1/` (60), `corpus_dropped_v1/` (10) |
 | Resultados freeze | `analysis/reports/RESULTADOS_ACTUALES.md` |
 | Pipeline principal | `run_analysis.py`, `run_all_scenarios.py`, `run_figures_aggregated.py` |
 | Análisis espacial / mensajes | `analyze_spatial_occupancy.py`, `analyze_message_creation_times.py` |
 | Auditoría / diagnóstico | `audit_settings.py`, `diagnose_scenarios.py`, `validate_traffic_profiles.py` |
-| Revisión v2 (trazabilidad) | `build_corpus_v2_revision_plan.py`, `apply_corpus_v2_revision.py` |
+| Revisión v2 (trazabilidad) | `build_corpus_v1_revision_plan.py`, `apply_corpus_v1_revision.py` |
 | Wiki paper | `.wiki-clone/` (19 páginas EN raíz) |
 | Metodología vigente | `analysis/docs/features_core_vs_extended.md`, `features_decision.md`, … |
 | Figuras paper | `analysis/figures/paper/` |
@@ -116,7 +116,7 @@ mv analysis/data/map_profile_plan.csv _archive/data/
 | Notas privadas | `internal/` (gitignored) |
 
 **Scripts oficiales en `analysis/` (16):**  
-`analysis_menu.py`, `analyze_message_creation_times.py`, `analyze_spatial_occupancy.py`, `apply_corpus_v2_revision.py`, `audit_settings.py`, `build_corpus_v2_revision_plan.py`, `build_wiki_research_reports.py`, `compute_useful_simulation_time.py`, `dashboard.py`, `diagnose_scenarios.py`, `generate_corpus_v2_traffic.py`, `populate_wiki_paper.py`, `run_all_scenarios.py`, `run_analysis.py`, `run_figures_aggregated.py`, `validate_traffic_profiles.py`
+`analysis_menu.py`, `analyze_message_creation_times.py`, `analyze_spatial_occupancy.py`, `apply_corpus_v1_revision.py`, `audit_settings.py`, `build_corpus_v1_revision_plan.py`, `build_wiki_research_reports.py`, `compute_useful_simulation_time.py`, `dashboard.py`, `diagnose_scenarios.py`, `generate_corpus_v1_traffic.py`, `populate_wiki_paper.py`, `run_all_scenarios.py`, `run_analysis.py`, `run_figures_aggregated.py`, `validate_traffic_profiles.py`
 
 ---
 
@@ -146,10 +146,10 @@ mv analysis/data/map_profile_plan.csv _archive/data/
 
 | Fichero | Motivo para mantener en `analysis/reports/` |
 |---------|-----------------------------------------------|
-| `check_tp12_d2.md` | Chequeo puntual TP12; aún referenciado desde `corpus_v2/README.md` |
+| `check_tp12_d2.md` | Chequeo puntual TP12; aún referenciado desde `corpus_v1/README.md` |
 | `resumen_tp_excluyendo_no_contacto.md` | Resumen operativo TP |
-| `build_corpus_v2_revision_plan.py` / `apply_corpus_v2_revision.py` | Trazabilidad revisión **v2 in-place** (decisión explícita) |
-| `corpus_v2_revision_plan.md`, `corpus_v2_revision_changelog.md` | Plan y log de revisión aplicada |
+| `build_corpus_v1_revision_plan.py` / `apply_corpus_v1_revision.py` | Trazabilidad revisión **v2 in-place** (decisión explícita) |
+| `corpus_v1_revision_plan.md`, `corpus_v1_revision_changelog.md` | Plan y log de revisión aplicada |
 | `wiki_old_audit.md`, `wiki_new_index.md`, `wiki_rebuild_summary.md` | Trazabilidad rebuild wiki paper |
 
 ---
@@ -158,7 +158,7 @@ mv analysis/data/map_profile_plan.csv _archive/data/
 
 | Categoría | Ubicación |
 |-----------|-----------|
-| **Corpus activo** | `corpus_v2/` — 720 escenarios |
+| **Corpus activo** | `corpus_v1/` — 720 escenarios |
 | **Wiki activa** | `.wiki-clone/` — 19 páginas EN (paper-oriented) |
 | **Scripts oficiales** | `analysis/*.py` — 16 scripts + `lib/` + `dashboard/` |
 | **Reports oficiales** | `analysis/reports/` — ~23 ficheros (incl. `RESULTADOS_ACTUALES.md`) |
@@ -169,7 +169,7 @@ mv analysis/data/map_profile_plan.csv _archive/data/
 
 ```
 test ! -f analysis/recommend_corpus_v3.py          → OK (archivado)
-test -f corpus_v2/manifest.csv                     → OK
+test -f corpus_v1/manifest.csv                     → OK
 test -f analysis/reports/RESULTADOS_ACTUALES.md    → OK
 test -d .wiki-clone                                → OK
 test -d _archive/wiki/wiki_backup_20260520_133832  → OK
@@ -193,7 +193,7 @@ test -d _archive/wiki/wiki_backup_20260520_133832  → OK
 | `corpus_dropped_v1/` | `_archive/corpus_dropped_v1/` | HISTÓRICO (10 escenarios v1 redundantes) |
 | `.wiki-clone/_legacy_pre_paper_rebuild/` | `_archive/wiki/legacy_pre_paper_rebuild/` | LEGACY (wiki pre-round2) |
 
-**Nota:** `corpus_v1/` y `corpus_v2/` permanecen en raíz; no se eliminó ningún fichero (`rm`).
+**Nota:** `corpus_v1/` y `corpus_v1/` permanecen en raíz; no se eliminó ningún fichero (`rm`).
 
 ---
 

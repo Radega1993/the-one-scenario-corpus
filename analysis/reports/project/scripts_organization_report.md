@@ -20,9 +20,9 @@ Auditoría de reorganización de `scenarios/analysis/` según plan `analysis_scr
 | Script | Motivo |
 |--------|--------|
 | `validate_reports_reorganization.py` | Auditoría one-off; entregable en `reports/project/reports_reorganization_validation.md` |
-| `generate_corpus_v2_traffic.py` | Corpus_v2 ya generado (720); lógica TP → `lib/traffic_profile_generator.py` |
-| `apply_corpus_v2_revision.py` | Revisión in-place ya aplicada |
-| `build_corpus_v2_revision_plan.py` | Plan ejecutado; changelog en `reports/project/corpus_v2_revision_changelog.md` |
+| `generate_corpus_v1_traffic.py` | Corpus_v2 ya generado (720); lógica TP → `lib/traffic_profile_generator.py` |
+| `apply_corpus_v1_revision.py` | Revisión in-place ya aplicada |
+| `build_corpus_v1_revision_plan.py` | Plan ejecutado; changelog en `reports/project/corpus_v1_revision_changelog.md` |
 
 ---
 
@@ -35,7 +35,7 @@ Auditoría de reorganización de `scenarios/analysis/` según plan `analysis_scr
 | `created_messages_report_overrides.txt` | `overlays/created_messages_report_overrides.txt` |
 | `selection_example.txt` | `examples/selection_example.txt` |
 | `validate_traffic_profiles.py` | `scripts/validation/validate_traffic_profiles.py` |
-| `validate_corpus_v2_benchmark.py` | `scripts/validation/validate_corpus_v2_benchmark.py` |
+| `validate_corpus_v1_benchmark.py` | `scripts/validation/validate_corpus_v1_benchmark.py` |
 | `audit_settings.py` | `scripts/validation/audit_settings.py` |
 | `diagnose_scenarios.py` | `scripts/validation/diagnose_scenarios.py` |
 | `compute_useful_simulation_time.py` | `scripts/validation/compute_useful_simulation_time.py` |
@@ -66,7 +66,7 @@ Auditoría de reorganización de `scenarios/analysis/` según plan `analysis_scr
 | 3 | `run_analysis.py` |
 | 4a | `scripts/validation/validate_traffic_profiles.py` |
 | 4b | `run_analysis.py --phase output_metrics` |
-| 4c | `scripts/validation/validate_corpus_v2_benchmark.py` |
+| 4c | `scripts/validation/validate_corpus_v1_benchmark.py` |
 | 4d | `scripts/paper/analyze_traffic_profile_kpis.py` |
 | 4e | `scripts/paper/build_protocol_benchmark_kpi_policy.py` |
 | 4f | `scripts/paper/build_message_analysis_window_policy.py` |
@@ -98,6 +98,6 @@ Ninguno obligatorio: todos los secundarios paper/validación/wiki están en subm
 
 - `python3 -m py_compile` en `analysis_menu.py`, `lib/traffic_profile_generator.py`, y todos los `.py` bajo `scripts/` → OK
 - `lib/paths.py`: overlays resuelven a ficheros existentes
-- Referencias planas a scripts eliminados actualizadas en SCRIPTS_INDEX, README, MENU, INVENTARIO, corpus_v2/README
+- Referencias planas a scripts eliminados actualizadas en SCRIPTS_INDEX, README, MENU, INVENTARIO, corpus_v1/README
 
 **Pendiente menor (no bloqueante):** algunos informes históricos en `reports/project/` aún citan rutas antiguas; wiki `populate_wiki_paper.py` puede mencionar el generador histórico en plantillas.

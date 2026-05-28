@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Build protocol benchmark KPI policy and definitions CSV for corpus_v2."""
+"""Build protocol benchmark KPI policy and definitions CSV for corpus_v1."""
 
 from __future__ import annotations
 
@@ -14,12 +14,12 @@ _ANALYSIS = Path(__file__).resolve().parents[2]
 if str(_ANALYSIS) not in sys.path:
     sys.path.insert(0, str(_ANALYSIS))
 
-from lib.paths import CORPUS_V2, DATA_DIR, REPORTS_ANALYSIS_DIR  # noqa: E402
+from lib.paths import CORPUS_V1_DIR, DATA_DIR, REPORTS_ANALYSIS_DIR  # noqa: E402
 from lib.report_paths import PROTOCOL_BENCHMARK_KPI_POLICY  # noqa: E402
 
 DEFAULT_DATA = DATA_DIR
 DEFAULT_REPORTS = REPORTS_ANALYSIS_DIR
-DEFAULT_MANIFEST_REVISION = CORPUS_V2 / "manifest_revision.csv"
+DEFAULT_MANIFEST_REVISION = CORPUS_V1_DIR / "manifest_revision.csv"
 
 CORE_KPIS = [
     ("delivery_ratio", "maximize", "Primary routing effectiveness"),
@@ -29,7 +29,7 @@ CORE_KPIS = [
 ]
 
 PROTOCOLS = [
-    ("Epidemic", "measured", "Current corpus_v2 router in all 720 .settings"),
+    ("Epidemic", "measured", "Current corpus_v1 router in all 720 .settings"),
     ("PRoPHET", "pending", "Overlay: protocol_overlays/router_prophet.txt"),
     ("MaxProp", "pending", "Overlay: protocol_overlays/router_maxprop.txt"),
     ("SprayAndWait", "pending", "Overlay: protocol_overlays/router_sprayandwait.txt"),
@@ -79,13 +79,13 @@ def write_report(
 ) -> None:
     ts = datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M UTC")
     lines = [
-        "# Protocol benchmark KPI policy (corpus_v2)",
+        "# Protocol benchmark KPI policy (corpus_v1)",
         "",
         f"Generated: {ts}",
         "",
         "## Executive summary",
         "",
-        "- **Corpus:** corpus_v2 — 720 simulations (Epidemic reference router).",
+        "- **Corpus:** corpus_v1 — 720 simulations (Epidemic reference router).",
         "- **Comparison scope:** same mobility, map, Traffic Profile; only `Group.router` changes via overlays.",
         "- **Primary metrics window:** full simulation (`valid_start=0`, `valid_end=endTime`) per "
         "[message_analysis_window_policy.md](message_analysis_window_policy.md).",
@@ -159,7 +159,7 @@ def write_report(
             "- Definitions: [`protocol_benchmark_kpi_definitions.csv`](../data/protocol_benchmark_kpi_definitions.csv)",
             "- Traffic profiles: [`traffic_profile_kpi_analysis.md`](traffic_profile_kpi_analysis.md)",
             "- Window policy: [`message_analysis_window_policy.md`](message_analysis_window_policy.md)",
-            "- Validation: [`corpus_v2_benchmark_validation.md`](corpus_v2_benchmark_validation.md)",
+            "- Validation: [`corpus_v1_benchmark_validation.md`](corpus_v1_benchmark_validation.md)",
             "",
             "## Regeneration",
             "",

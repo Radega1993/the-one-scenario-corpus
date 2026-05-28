@@ -15,11 +15,11 @@ _ANALYSIS = Path(__file__).resolve().parents[2]
 if str(_ANALYSIS) not in sys.path:
     sys.path.insert(0, str(_ANALYSIS))
 
-from lib.paths import CORPUS_V2, DATA_DIR, REPORTS_ANALYSIS_DIR  # noqa: E402
+from lib.paths import CORPUS_V1_DIR, DATA_DIR, REPORTS_ANALYSIS_DIR  # noqa: E402
 
 DEFAULT_DATA = DATA_DIR
 DEFAULT_REPORTS = REPORTS_ANALYSIS_DIR
-DEFAULT_MANIFEST = CORPUS_V2 / "manifest.csv"
+DEFAULT_MANIFEST = CORPUS_V1_DIR / "manifest.csv"
 
 from lib.report_paths import (  # noqa: E402
     SPATIAL_OCCUPANCY_ANALYSIS_SUMMARY,
@@ -115,7 +115,7 @@ def write_report(path: Path, df: pd.DataFrame) -> None:
     n_low = len(low_cov)
 
     lines = [
-        "# Spatial occupancy vs routing performance (corpus_v2)",
+        "# Spatial occupancy vs routing performance (corpus_v1)",
         "",
         f"Generated: {ts}",
         "",

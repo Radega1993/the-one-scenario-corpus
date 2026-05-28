@@ -49,7 +49,7 @@ def render(filtered, master) -> None:
         if n1 + n2 == 0:
             st.info(
                 "Ejecuta `python3 run_analysis.py --phase figures_paper` y "
-                "`python3 run_figures_aggregated.py --corpus corpus_v2`."
+                "`python3 run_figures_aggregated.py --corpus corpus_v1`."
             )
 
     with tab_tp:

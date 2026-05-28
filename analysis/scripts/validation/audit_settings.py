@@ -1,10 +1,10 @@
 #!/usr/bin/env python3
 """
-Audit all .settings in corpus_v2 (or manifest) and write settings_audit.csv + report.
+Audit all .settings in corpus_v1 (or manifest) and write settings_audit.csv + report.
 
 Usage:
   scenarios/analysis/.venv/bin/python scenarios/analysis/scripts/validation/audit_settings.py \\
-    --manifest scenarios/corpus_v2/manifest.csv
+    --manifest scenarios/corpus_v1/manifest.csv
 """
 
 from __future__ import annotations
@@ -52,7 +52,7 @@ def _write_report(rows: list[dict], path: Path) -> None:
     tps = Counter(r.get("tp", "") for r in rows)
 
     lines = [
-        "# Settings audit (corpus_v2)",
+        "# Settings audit (corpus_v1)",
         "",
         f"Generated: {datetime.now(timezone.utc).strftime('%Y-%m-%d %H:%M UTC')}",
         "",
@@ -120,7 +120,7 @@ def _write_report(rows: list[dict], path: Path) -> None:
 
 def main() -> int:
     ap = argparse.ArgumentParser(description="Audit corpus .settings files.")
-    ap.add_argument("--manifest", type=str, default="scenarios/corpus_v2/manifest.csv")
+    ap.add_argument("--manifest", type=str, default="scenarios/corpus_v1/manifest.csv")
     ap.add_argument("--corpus-dir", type=str, default=None)
     ap.add_argument("--output-csv", type=str, default=str(DATA_DIR / "settings_audit.csv"))
     ap.add_argument("--output-report", type=str, default=str(SETTINGS_AUDIT))

@@ -341,7 +341,7 @@ def write_diagnosis_report(df: pd.DataFrame, path: Path, thresholds_path: Path) 
                 flag_counts[f] = flag_counts.get(f, 0) + 1
 
     lines = [
-        "# Scenario diagnosis (corpus_v2)",
+        "# Scenario diagnosis (corpus_v1)",
         "",
         f"- Scenarios: **{n}**",
         f"- With any flag: **{len(flagged)}**",

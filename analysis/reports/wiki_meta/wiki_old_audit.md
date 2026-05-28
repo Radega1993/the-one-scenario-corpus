@@ -15,7 +15,7 @@ Backup location: `/home/raul/Documents/the-one/scenarios/_archive/wiki/wiki_back
 | `(root)` | 19 |
 | `_legacy_pre_paper_rebuild` | 223 |
 
-## Pages to migrate (update for corpus_v2)
+## Pages to migrate (update for corpus_v1)
 
 - `03-reference/Methodological-limitations.md` — rewrite, do not copy verbatim
 - `03-reference/Methodology.md` — rewrite, do not copy verbatim
@@ -42,7 +42,7 @@ Backup location: `/home/raul/Documents/the-one/scenarios/_archive/wiki/wiki_back
 - No spatial occupancy / grid metrics
 - No protocol routing benchmark plan
 - No message analysis window policy
-- No corpus_v2 revision / manifest_revision
+- No corpus_v1 revision / manifest_revision
 
 ## Proposed new structure
 

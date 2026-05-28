@@ -13,7 +13,7 @@ from lib.report_paths import DASHBOARD_READINESS_REPORT, RESULTADOS_ACTUALES
 
 
 def render(filtered: pd.DataFrame, master: pd.DataFrame) -> None:
-    st.header("Resumen corpus_v2")
+    st.header("Resumen corpus_v1")
 
     n = len(master)
     n_bases = master["scenario_base"].nunique() if "scenario_base" in master.columns else 0
@@ -23,10 +23,10 @@ def render(filtered: pd.DataFrame, master: pd.DataFrame) -> None:
 
     kpi_row(
         [
-            ("Simulaciones", n, "manifest 720"),
-            ("Escenarios base", n_bases, "60 diseños"),
+            ("Simulaciones", n, "manifest 570"),
+            ("Escenarios base", n_bases, "45+15 stress"),
             ("Perfiles TP", n_tp, "TP01–TP12"),
-            ("Familias", n_fam, "7 familias"),
+            ("Familias", n_fam, "6+stress"),
             ("Con métricas", n_metrics, f"{n - n_metrics} sin output"),
         ]
     )

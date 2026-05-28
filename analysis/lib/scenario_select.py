@@ -14,14 +14,12 @@ def tp_from_path(path: Path) -> str | None:
     return m.group(1).upper() if m else None
 
 
-def family_from_path(path: Path, corpus_dir: Path) -> str | None:
-    try:
-        rel = path.relative_to(corpus_dir)
-        parts = rel.parts
-        if len(parts) >= 2:
-            return parts[0]
-    except ValueError:
-        pass
+def family_from_path(path: Path, corpus_dir: Path | None = None) -> str | None:
+    """Infer family folder from path (works across corpus_v1 + stress_controls)."""
+    del corpus_dir  # unused; kept for API compatibility
+    for part in path.parts:
+        if part.startswith(("01_", "02_", "03_", "04_", "05_", "06_", "07_")):
+            return part
     return None
 
 
@@ -34,17 +32,42 @@ def scenario_base_from_path(path: Path) -> str | None:
 
 
 def list_families(corpus_dir: Path) -> list[str]:
+    from lib.paths import SCENARIOS_DIR, collect_settings_paths
+
+    try:
+        rel = corpus_dir.relative_to(SCENARIOS_DIR)
+        corpus_name = str(rel)
+    except ValueError:
+        corpus_name = corpus_dir.name
+    if corpus_name in ("corpus_v1", "corpus_v2"):
+        fams = set()
+        for p in collect_settings_paths("corpus_v1", include_stress=False):
+            f = family_from_path(p)
+            if f:
+                fams.add(f)
+        return sorted(fams)
     if not corpus_dir.is_dir():
         return []
     return sorted(
         d.name
         for d in corpus_dir.iterdir()
-        if d.is_dir() and not d.name.startswith(".")
+        if d.is_dir() and not d.name.startswith(".") and not d.name.startswith("_")
     )
 
 
 def collect_corpus_settings(corpus_dir: Path) -> list[Path]:
-    return sorted(corpus_dir.glob("**/*.settings"))
+    from lib.paths import SCENARIOS_DIR, collect_settings_paths
+
+    try:
+        rel = corpus_dir.relative_to(SCENARIOS_DIR)
+        corpus_name = str(rel)
+    except ValueError:
+        corpus_name = corpus_dir.name
+    if corpus_name in ("corpus_v1", "corpus_v2"):
+        return collect_settings_paths("corpus_v1", include_stress=False)
+    return sorted(
+        p for p in corpus_dir.rglob("*.settings") if "_backup" not in p.parts
+    )
 
 
 def normalize_tp(tp: str) -> str:

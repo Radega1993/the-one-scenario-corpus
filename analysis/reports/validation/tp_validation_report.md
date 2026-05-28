@@ -1,58 +1,67 @@
 # Traffic Profiles v1.0 — validation report
 
-Generated: 2026-05-20 12:44 UTC
+Generated: 2026-05-27 09:42 UTC
 
 ## Corpus integrity
 
-- Settings files scanned: **720**
-- Manifest rows: **720**
-- Settings vs generator spec: **720/720 OK**
-- Window table rows: **720**
+- Settings files scanned: **570**
+- Manifest rows: **570**
+- Settings vs generator spec: **568/570 OK**
+- Window table rows: **570**
 
 ## Simulation metrics coverage
 
 - Rows in `output_metrics.csv`: **720**
-- Scenarios with `total_encounters > 0`: **696**
+- Scenarios with `total_encounters > 0`: **672**
 - Disconnected control (`total_encounters = 0`): **24**
+
+## Settings mismatches (action required)
+
+**2** files differ from `lib/traffic_profile_generator.py`.
+
+| scenario | mismatches |
+|---|---|
+| `U4_CongestionHotspot_HelsinkiDowntown__TP05_CriticalTTL` | Group.msgTtl: got='15' exp='5'; Group*.msgTtl inconsistent: 15 != 5 |
+| `U6_OfficeWaitHeavyTail_HelsinkiDowntown__TP05_CriticalTTL` | Group.msgTtl: got='15' exp='5'; Group*.msgTtl inconsistent: 15 != 5 |
 
 ## Per-profile aggregates (global view)
 
 | TP | n | mean delivery | std delivery | mean latency (s) | mean drop |
 |---|---:|---:|---:|---:|---:|
-| TP01 | 60 | 0.2681 | 0.2947 | 11241.2559 | 9.1738 |
-| TP02 | 60 | 0.295 | 0.3195 | 12276.024 | 22.0115 |
-| TP03 | 60 | 0.2612 | 0.2844 | 11786.8979 | 4.6673 |
-| TP04 | 60 | 0.1407 | 0.1581 | 11779.5763 | 97.3827 |
-| TP05 | 60 | 0.0262 | 0.083 | 110.6032 | 2.127 |
-| TP06 | 60 | 0.2864 | 0.3027 | 10810.6376 | 16.6726 |
-| TP07 | 60 | 0.3418 | 0.3489 | 13576.0822 | 14.3641 |
-| TP08 | 60 | 0.2366 | 0.2619 | 11719.853 | 27.4986 |
-| TP09 | 60 | 0.2137 | 0.2349 | 11068.5046 | 64.1202 |
-| TP10 | 60 | 0.0973 | 0.1748 | 1662.1134 | 12.3885 |
-| TP11 | 60 | 0.3037 | 0.3068 | 11242.9786 | 5.4493 |
-| TP12 | 60 | 0.2576 | 0.3061 | 12052.638 | 17.5174 |
+| TP01 | 60 | 0.2929 | 0.2879 | 11645.0267 | 9.1738 |
+| TP02 | 60 | 0.3168 | 0.3121 | 12452.3599 | 22.0115 |
+| TP03 | 60 | 0.2826 | 0.275 | 11874.7824 | 4.5896 |
+| TP04 | 60 | 0.2097 | 0.2039 | 11907.7129 | 80.1263 |
+| TP05 | 60 | 0.0275 | 0.0832 | 135.7232 | 2.2089 |
+| TP06 | 60 | 0.2994 | 0.2974 | 10794.4054 | 18.7401 |
+| TP07 | 60 | 0.3815 | 0.3445 | 13979.1743 | 14.3641 |
+| TP08 | 60 | 0.2558 | 0.2584 | 11901.2166 | 28.049 |
+| TP09 | 60 | 0.2352 | 0.2295 | 11397.8154 | 69.5018 |
+| TP10 | 60 | 0.1 | 0.1738 | 1684.5441 | 12.6451 |
+| TP11 | 60 | 0.319 | 0.3018 | 11256.6657 | 5.4493 |
+| TP12 | 60 | 0.2807 | 0.3019 | 12326.3516 | 17.3613 |
 
 ## Per-profile aggregates (connected only, `total_encounters > 0`)
 
 | TP | n | mean delivery | std delivery | mean latency (s) | mean drop |
 |---|---:|---:|---:|---:|---:|
-| TP01 | 58 | 0.2773 | 0.2954 | 11241.2559 | 9.4901 |
-| TP02 | 58 | 0.3052 | 0.3201 | 12276.024 | 22.7706 |
-| TP03 | 58 | 0.2703 | 0.285 | 11786.8979 | 4.8311 |
-| TP04 | 58 | 0.1455 | 0.1586 | 11779.5763 | 100.7407 |
-| TP05 | 58 | 0.0271 | 0.0842 | 110.6032 | 2.166 |
-| TP06 | 58 | 0.2962 | 0.303 | 10810.6376 | 17.2448 |
-| TP07 | 58 | 0.3536 | 0.349 | 13576.0822 | 14.8595 |
-| TP08 | 58 | 0.2447 | 0.2626 | 11719.853 | 28.4468 |
-| TP09 | 58 | 0.2211 | 0.2355 | 11068.5046 | 66.3312 |
-| TP10 | 58 | 0.1007 | 0.1768 | 1662.1134 | 12.7841 |
-| TP11 | 58 | 0.3141 | 0.3068 | 11242.9786 | 5.6372 |
-| TP12 | 58 | 0.2665 | 0.3075 | 12052.638 | 18.1214 |
+| TP01 | 56 | 0.2898 | 0.2962 | 11238.5144 | 9.829 |
+| TP02 | 56 | 0.3148 | 0.3205 | 11968.7133 | 23.5838 |
+| TP03 | 56 | 0.2818 | 0.2833 | 11501.423 | 4.9174 |
+| TP04 | 56 | 0.2054 | 0.2098 | 11486.7372 | 82.9786 |
+| TP05 | 56 | 0.0289 | 0.086 | 129.7566 | 2.2703 |
+| TP06 | 56 | 0.2969 | 0.3032 | 10577.2201 | 19.1873 |
+| TP07 | 56 | 0.3744 | 0.3518 | 13389.6413 | 15.3901 |
+| TP08 | 56 | 0.2548 | 0.2635 | 11673.4914 | 28.7209 |
+| TP09 | 56 | 0.2335 | 0.2365 | 11031.861 | 72.8885 |
+| TP10 | 56 | 0.1045 | 0.179 | 1681.4338 | 13.2208 |
+| TP11 | 56 | 0.3121 | 0.3042 | 11012.6877 | 5.8385 |
+| TP12 | 56 | 0.2702 | 0.3075 | 12040.3331 | 18.2825 |
 
 ## Traffic-profile separation by base scenario
 
-- Mean delivery spread across 12 TPs (max−min per base): **0.3640**
-- Bases with spread < 0.05 (weak TP differentiation): **16** / 60
+- Mean delivery spread across 12 TPs (max−min per base): **0.4015**
+- Bases with spread < 0.05 (weak TP differentiation): **12** / 60
 
 Full table: `data/tp_validation_by_base.csv`.
 
@@ -60,4 +69,4 @@ Full table: `data/tp_validation_by_base.csv`.
 
 - Closure document: `scenarios/internal/17-benchmark_methodology_closure.md`
 - Profile rationale: `scenarios/internal/16-traffic_profiles_v1_justification.md`
-- Generator (source of truth): `scenarios/analysis/generate_corpus_v2_traffic.py`
+- Generator (source of truth): `scenarios/analysis/lib/traffic_profile_generator.py`

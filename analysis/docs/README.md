@@ -13,4 +13,6 @@ Este directorio contiene **guías y metodología vigentes** para quien desarroll
 
 **Mapa del repositorio:** [../../INVENTARIO.md](../../INVENTARIO.md).
 
-**Fuente canónica de resultados (freeze final):** [../reports/RESULTADOS_ACTUALES.md](../reports/RESULTADOS_ACTUALES.md), [../reports/correlation_report.txt](../reports/correlation_report.txt), [../reports/correlation_core23_report.txt](../reports/correlation_core23_report.txt), [../reports/ablation_report.txt](../reports/ablation_report.txt).
+**Fuente canónica de resultados (freeze final, n=540):** [../reports/RESULTADOS_ACTUALES.md](../reports/RESULTADOS_ACTUALES.md), [../reports/pipeline/correlation_report.txt](../reports/pipeline/correlation_report.txt), [../reports/pipeline/correlation_core23_report.txt](../reports/pipeline/correlation_core23_report.txt), [../reports/pipeline/ablation_report.txt](../reports/pipeline/ablation_report.txt).
+
+**Metodología diversidad:** [features_core_vs_extended.md](features_core_vs_extended.md) (§7–9). **Readiness gate:** [../reports/diversity_validation_readiness.md](../reports/diversity_validation_readiness.md).

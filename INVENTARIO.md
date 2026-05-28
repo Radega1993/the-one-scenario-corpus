@@ -5,14 +5,16 @@
 **Propósito:** mapa de partida para organizar, limpiar y mantener el subproyecto *the-one-scenario-corpus*.  
 **Alcance:** todo lo bajo `scenarios/` excepto `.git/`, `.venv/`, `__pycache__/` y entornos locales.
 
+> **Nota 2026-05-27 (canónico):** benchmark activo = `base_scenarios/` (45) + `corpus_v1/` (540) + `stress_controls/` (30) = **570** simulaciones con TP. **Validación de diversidad (paper):** solo **540** (`corpus_v1`, `--no-stress`); métricas en `analysis/reports/RESULTADOS_ACTUALES.md`. Las secciones que citan **720** o matrices 720×720 son **histórico** (pre-reorg); no usar como resultados finales.
+
 Para refrescar conteos:
 
 ```bash
 cd scenarios
 find . -type f ! -path './.git/*' ! -path './analysis/.venv/*' ! -path '*/__pycache__/*' ! -path './.wiki-clone/.git/*' | wc -l
-find corpus_v2 -name '*.settings' | wc -l
+find corpus_v1 -name '*.settings' | wc -l
 find analysis/figures/spatial_heatmaps -name '*.png' | wc -l
-wc -l corpus_v2/manifest.csv analysis/data/spatial_occupancy_metrics.csv analysis/data/output_metrics.csv
+wc -l corpus_v1/manifest.csv analysis/data/spatial_occupancy_metrics.csv analysis/data/output_metrics.csv
 ```
 
 ---
@@ -29,9 +31,12 @@ El directorio `scenarios/` es un **subproyecto autónomo** (repo Git anidado) pa
 
 | Corpus | Escenarios | Rol |
 |--------|------------|-----|
-| **`corpus_v2/`** | **720** (60 bases × 12 perfiles TP) | **Benchmark principal** — simulaciones, análisis, dashboard |
-| `corpus_v1/` | 60 | Referencia de movilidad base (sin perfiles de tráfico) |
-| `_archive/corpus_dropped_v1/` | 10 | HISTÓRICO — escenarios v1 retirados (movido desde raíz 2026-05-24) |
+| **`base_scenarios/`** | **45** | Bases estructurales sin TP (familias 01–06) |
+| **`corpus_v1/`** | **540** | Benchmark ambiental con Traffic Profiles |
+| **`stress_controls/`** | **30** | Laboratorio stress/control (familia 07, TP01+TP10) |
+| **Paper (`--corpus corpus_v1`)** | **570** | Manifest combinado en `analysis/data/corpus_v1_combined_manifest.csv` |
+| `_archive/legacy_corpus_v1_pre_rename/` | 60 | HISTÓRICO — corpus movilidad pre-rename |
+| `_archive/corpus_dropped_v1/` | 10 | HISTÓRICO — escenarios v1 retirados |
 
 ### Entradas y salidas externas
 
@@ -64,12 +69,13 @@ El directorio `scenarios/` es un **subproyecto autónomo** (repo Git anidado) pa
 
 ## 2. Árbol de directorios (top-level)
 
-**Total tracked:** 2 714 ficheros (excl. `.git`, `.venv`, `__pycache__`, `.wiki-clone/.git`).
+**Total tracked:** variable (recalcular con los comandos de la cabecera).
 
 | Ruta | Ficheros | Extensiones principales | Rol |
 |------|---------:|-------------------------|-----|
-| [corpus_v1/](corpus_v1/) | 61 | 60 `.settings`, 1 `.txt` | Corpus base movilidad |
-| [corpus_v2/](corpus_v2/) | 723 | 720 `.settings`, 2 `.csv`, 1 `.md` | **Corpus activo** benchmark TP |
+| [base_scenarios/](base_scenarios/) | 47 | 45 `.settings`, `manifest.csv`, `README.md` | Corpus estructural sin TP (familias 01–06) |
+| [corpus_v1/](corpus_v1/) | 543 | 540 `.settings`, 2 `.csv`, 1 `.md` | **Corpus ambiental activo** (TP) |
+| [stress_controls/](stress_controls/) | 32 | 30 `.settings`, `manifest.csv`, `manifest_revision.csv` | Stress/control separado (familia 07) |
 | [_archive/corpus_dropped_v1/](_archive/corpus_dropped_v1/) | 10 | 10 `.settings` | Escenarios v1 archivados |
 | [analysis/](analysis/) | 937 | Pipeline, datos, figuras |
 | [_archive/](_archive/) | 708 | Wiki backups, pilotos, propuesta corpus_v3, docs pre-freeze |
@@ -82,10 +88,12 @@ El directorio `scenarios/` es un **subproyecto autónomo** (repo Git anidado) pa
 
 ```mermaid
 flowchart LR
-  v1[corpus_v1_60] --> dropped[corpus_dropped_v1_10]
-  v1 -->|histórico: generate_corpus_v2| v2[corpus_v2_720]
-  v2 -->|revision_in_place| v2
-  v2 -.->|propuesta_no_implementada| v3plan[corpus_v3_CSV_y_reports]
+  legacy[legacy_corpus_v1_60] --> base[base_scenarios_45]
+  tp[corpus_v2_historico] --> env[corpus_v1_540]
+  tp --> stress[stress_controls_30]
+  legacy --> dropped[corpus_dropped_v1_10]
+  env -->|paper benchmark| combo[570_total]
+  combo -.->|propuesta_no_implementada| v3plan[corpus_v3_CSV_y_reports]
 ```
 
 ---
@@ -94,7 +102,7 @@ flowchart LR
 
 ### 3.1 Corpora
 
-#### `corpus_v1/` — **FUENTE** (60 escenarios)
+#### `base_scenarios/` — **FUENTE** (45 escenarios)
 
 Estructura por familia:
 
@@ -106,31 +114,28 @@ Estructura por familia:
 | `04_rural/` | 12 | Rural, bajo rango, baja velocidad… |
 | `05_disaster/` | 9 | Evacuación, backbone, eventos… |
 | `06_social/` | 6 | Comunidades, clusters… |
-| `07_traffic/` | 15 | Tráfico uniforme, burst, TTL… |
-
-**Patrón de nombre:** `{Base}_{MapDataset}.settings`  
-Ejemplo: `U1_CBD_Commuting_HelsinkiMedium.settings`
+**Patrón de nombre:** `{Base}_{MapDataset}.settings` (sin `__TP`)  
+Ejemplo: `U1_CBD_Commuting_HelsinkiDowntown.settings`
 
 **Otros ficheros:**
 - `05_disaster/D8_backbone_events.txt` — **FUENTE** — eventos para escenario D8
 
-**Sin** `manifest.csv` (lista implícita por árbol de carpetas).
+**Con** `manifest.csv` (índice estructural) y `README.md`.
 
 ---
 
-#### `corpus_v2/` — **FUENTE** (720 escenarios)
+#### `corpus_v1/` — **FUENTE** (540 escenarios ambientales)
 
-Misma taxonomía × **12 perfiles de tráfico** (TP01–TP12):
+Taxonomía ambiental (familias 01–06) × perfiles TP activos:
 
 | Carpeta | `.settings` | (= v1 × 12) |
 |---------|------------:|-------------|
-| `01_urban/` | 84 | 7 × 12 |
-| `02_campus/` | 72 | 6 × 12 |
-| `03_vehicles/` | 60 | 5 × 12 |
-| `04_rural/` | 144 | 12 × 12 |
-| `05_disaster/` | 108 | 9 × 12 |
-| `06_social/` | 72 | 6 × 12 |
-| `07_traffic/` | 180 | 15 × 12 |
+| `01_urban/` | variable | escenarios TP ambientales |
+| `02_campus/` | variable | escenarios TP ambientales |
+| `03_vehicles/` | variable | escenarios TP ambientales |
+| `04_rural/` | variable | escenarios TP ambientales |
+| `05_disaster/` | variable | escenarios TP ambientales |
+| `06_social/` | variable | escenarios TP ambientales |
 
 **Patrón de nombre:** `{Base}__TP{nn}_{ProfileName}.settings`  
 Ejemplo: `C1_Campus_ClassChange__TP01_Baseline.settings`
@@ -139,13 +144,24 @@ Ejemplo: `C1_Campus_ClassChange__TP01_Baseline.settings`
 
 | Fichero | Etiqueta | Contenido |
 |---------|----------|-----------|
-| [manifest.csv](corpus_v2/manifest.csv) | **FUENTE** | 720 filas: `family`, `scenario_base`, `scenario_name`, `traffic_profile_id`, `settings_file`, `n_hosts`, `Scenario.endTime`, … |
-| [manifest_revision.csv](corpus_v2/manifest_revision.csv) | **FUENTE** | Mismo índice + `benchmark_split`, `revision_action`, flags de cambio aplicados |
-| [README.md](corpus_v2/README.md) | **FUENTE** | Documentación TP01–TP12 y uso del benchmark |
+| [manifest.csv](corpus_v1/manifest.csv) | **FUENTE** | 540 filas ambientales: `family`, `scenario_base`, `scenario_name`, `traffic_profile_id`, `settings_file`, `n_hosts`, `Scenario.endTime`, … |
+| [manifest_revision.csv](corpus_v1/manifest_revision.csv) | **FUENTE** | Mismo índice + `benchmark_split`, `revision_action`, flags de cambio aplicados |
+| [README.md](corpus_v1/README.md) | **FUENTE** | Documentación TP01–TP12 y uso del benchmark |
 
-**Bulk:** los 720 `.settings` no se listan uno a uno; usar `manifest.csv` como índice maestro.
+**Bulk:** los 540 `.settings` no se listan uno a uno; usar `manifest.csv` como índice maestro.
 
-**Generador (histórico):** `generate_corpus_v2_traffic.py` (eliminado); definiciones TP en [lib/traffic_profile_generator.py](analysis/lib/traffic_profile_generator.py).
+---
+
+#### `stress_controls/` — **FUENTE** (30 escenarios)
+
+Directorio plano (sin subcarpeta `07_stress_controls/`), con escenarios `TP01` y `TP10` del laboratorio de stress/control.
+
+| Fichero | Etiqueta | Contenido |
+|---------|----------|-----------|
+| [manifest.csv](stress_controls/manifest.csv) | **FUENTE** | 30 filas (`family=07_stress_controls`) |
+| `manifest_revision.csv` | **OBSOLETO** | Eliminado en `stress_controls/` (se usa solo `manifest.csv`) |
+
+**Generador (histórico):** `generate_corpus_v1_traffic.py` (eliminado); definiciones TP en [lib/traffic_profile_generator.py](analysis/lib/traffic_profile_generator.py).
 
 ---
 
@@ -190,7 +206,7 @@ Directorio plano (sin subcarpetas). Escenarios retirados del v1 por alta correla
 | `scripts/paper/` | `analyze_traffic_profile_kpis.py`, `build_paper_freeze_checklist.py`, `build_inventory_update_report.py` |
 | `scripts/wiki/` | `populate_wiki_paper.py`, `build_wiki_research_reports.py` |
 
-Definiciones TP canónicas: [lib/traffic_profile_generator.py](analysis/lib/traffic_profile_generator.py) (sustituye `generate_corpus_v2_traffic.py`, eliminado).
+Definiciones TP canónicas: [lib/traffic_profile_generator.py](analysis/lib/traffic_profile_generator.py) (sustituye `generate_corpus_v1_traffic.py`, eliminado).
 
 #### Overlays y ejemplos — **FUENTE**
 
@@ -215,7 +231,7 @@ Definiciones TP canónicas: [lib/traffic_profile_generator.py](analysis/lib/traf
 
 | Módulo | Función |
 |--------|---------|
-| `paths.py` | Rutas canónicas (`DATA_DIR`, `CORPUS_V2`, overlays) |
+| `paths.py` | Rutas canónicas (`DATA_DIR`, `CORPUS_V1_DIR`, overlays) |
 | `settings_audit.py` | Parsing y auditoría de `.settings` |
 | `scenario_select.py` | Filtrado por familia, TP, regex, select-file |
 | `scenario_diagnosis.py` | Lógica de diagnóstico + escritura de informe |
@@ -345,8 +361,8 @@ Definiciones TP canónicas: [lib/traffic_profile_generator.py](analysis/lib/traf
 
 | CSV | Contenido |
 |-----|-----------|
-| `corpus_v2_revision_prioritized.csv` | Tabla priorizada de revisiones |
-| `corpus_v2_revision_summary.csv` | Resumen por familia/acción |
+| `corpus_v1_revision_prioritized.csv` | Tabla priorizada de revisiones |
+| `corpus_v1_revision_summary.csv` | Resumen por familia/acción |
 
 #### Propuesta corpus v3 — **HISTÓRICO** (movido a `_archive/data/`)
 
@@ -372,7 +388,7 @@ Definiciones TP canónicas: [lib/traffic_profile_generator.py](analysis/lib/traf
 
 | Fichero | Contenido |
 |---------|-----------|
-| `RESULTADOS_ACTUALES.md` | **Referencia principal** — freeze corpus_v2 720, métricas core-23/46 |
+| `RESULTADOS_ACTUALES.md` | **Referencia principal** — freeze corpus_v1 720, métricas core-23/46 |
 | `correlation_report.txt` | Pearson/Spearman, pares \|r\|≥0.7, silhouette (46 feat.) |
 | `correlation_core23_report.txt` | Igual en subespacio core-23 |
 | `clustering_report.txt` | Ward k=7, distribución por cluster |
@@ -404,8 +420,8 @@ Definiciones TP canónicas: [lib/traffic_profile_generator.py](analysis/lib/traf
 | `settings_audit.md` | Informe legible de auditoría settings |
 | `useful_simulation_time_report.md` | Informe tiempo útil |
 | `indirect_features_report.md` / `.txt` | Features indirectas Diego17 |
-| `corpus_v2_revision_plan.md` | Plan de revisiones priorizadas |
-| `corpus_v2_revision_changelog.md` | Log de cambios aplicados |
+| `corpus_v1_revision_plan.md` | Plan de revisiones priorizadas |
+| `corpus_v1_revision_changelog.md` | Log de cambios aplicados |
 | `project_reorganization_report.md` | Informe reorganización `_archive/` |
 
 #### Wiki / paper ops — **GENERADO** (auxiliar)
@@ -429,7 +445,7 @@ Definiciones TP canónicas: [lib/traffic_profile_generator.py](analysis/lib/traf
 
 #### Archivados en `_archive/reports/` — **HISTÓRICO**
 
-Pilotos (`piloto_corpus_v2_*`), `go_no_go_*`, `corpus_v2_720_resultados.md`, `corpus_v3_design.md`, `corpus_v3_recommendation.md`, `data_inventory.md`, realism reviews (`mobility_realism_review.md`, `map_realism_review.md`, …). Ver [project_reorganization_report.md](analysis/reports/project/project_reorganization_report.md).
+Pilotos (`piloto_corpus_v1_*`), `go_no_go_*`, `corpus_v1_720_resultados.md`, `corpus_v3_design.md`, `corpus_v3_recommendation.md`, `data_inventory.md`, realism reviews (`mobility_realism_review.md`, `map_realism_review.md`, …). Ver [project_reorganization_report.md](analysis/reports/project/project_reorganization_report.md).
 
 ---
 
@@ -520,7 +536,7 @@ Productor: [scripts/validation/analyze_spatial_occupancy.py](analysis/scripts/va
 | Benchmark y repro | `12-Benchmark-Protocol-Comparison`, `13-Dashboard-and-Reproducibility`, `14-Paper-Freeze-Checklist` |
 | Referencia | `Glossary.md`, `References.md`, `CHANGELOG.md` |
 
-Corpus de referencia: **corpus_v2 (720 escenarios)**. Rebuild documentado en [wiki_paper_rebuild_report.md](analysis/reports/wiki_meta/wiki_paper_rebuild_report.md).
+Corpus de referencia: **corpus_v1 (720 escenarios)**. Rebuild documentado en [wiki_paper_rebuild_report.md](analysis/reports/wiki_meta/wiki_paper_rebuild_report.md).
 
 **Legacy embebido:** `_legacy_pre_paper_rebuild/` — **HISTÓRICO** — wiki v1 bilingüe (`01-home` … `05-corpus`, páginas por escenario EN+ES).
 
@@ -558,7 +574,7 @@ Solo presente en copias locales; no se versiona en Git.
 | `11-results_analisis.md` | Análisis de resultados |
 | `12-references.bib` | Bibliografía BibTeX |
 | `14-diego17_vs_core23.md` | Comparativa Diego17 vs core-23 |
-| `15-corpus_v2_traffic_benchmark.md` | Benchmark tráfico corpus_v2 |
+| `15-corpus_v1_traffic_benchmark.md` | Benchmark tráfico corpus_v1 |
 | `16-traffic_profiles_v1_justification.md` / `.es.md` | Justificación TP01–TP12 |
 | `17-benchmark_methodology_closure.md` / `.es.md` | Cierre metodológico benchmark |
 
@@ -591,7 +607,7 @@ Solo presente en copias locales; no se versiona en Git.
 
 Comandos completos y clasificación de scripts: **[analysis/SCRIPTS_INDEX.md](analysis/SCRIPTS_INDEX.md)**.
 
-1. Simulación — `run_all_scenarios.py --corpus corpus_v2` + overlays routing/contacto + espacial  
+1. Simulación — `run_all_scenarios.py --corpus corpus_v1` + overlays routing/contacto + espacial  
 2. Métricas salida — `run_analysis.py --phase output_metrics` (+ `indirects`)  
 3. Features — `features` → `normalize` → `correlation` → `feature_correlation` → `ablation`  
 4. Espacial — `analyze_spatial_occupancy.py`  
@@ -601,10 +617,10 @@ Comandos completos y clasificación de scripts: **[analysis/SCRIPTS_INDEX.md](an
 8. Tablas — `tables_paper`  
 9. Wiki — `build_wiki_research_reports.py` → `populate_wiki_paper.py`
 
-### Flujo canónico (corpus_v2)
+### Flujo canónico (corpus_v1)
 
 ```
-corpus_v2/*.settings
+corpus_v1/*.settings
     │
     ├─► run_all_scenarios.py + overlays routing/contacto + espacial
     │       └─► ../../reports/*Report*  (simulación The ONE)
@@ -655,19 +671,19 @@ corpus_v2/*.settings
 ### Comandos típicos (desde raíz del repo ONE)
 
 ```bash
-# Simular corpus_v2 con reportes completos
-python3 scenarios/analysis/run_all_scenarios.py --corpus corpus_v2 \
+# Simular corpus_v1 con reportes completos
+python3 scenarios/analysis/run_all_scenarios.py --corpus corpus_v1 \
   --extra-settings scenarios/analysis/overlays/diego17_reports_overrides.txt \
   --extra-settings scenarios/analysis/overlays/spatial_occupancy_reports_overrides.txt
 
 # Pipeline análisis
-python3 scenarios/analysis/run_analysis.py --corpus corpus_v2 --phase correlation
-python3 scenarios/analysis/run_analysis.py --corpus corpus_v2 --phase figures
-python3 scenarios/analysis/run_figures_aggregated.py --corpus corpus_v2
+python3 scenarios/analysis/run_analysis.py --corpus corpus_v1 --phase correlation
+python3 scenarios/analysis/run_analysis.py --corpus corpus_v1 --phase figures
+python3 scenarios/analysis/run_figures_aggregated.py --corpus corpus_v1
 
 # Espacial (usar --reports-dir reports, no ../../reports)
 cd scenarios/analysis && python3 scripts/validation/analyze_spatial_occupancy.py \
-  --manifest ../corpus_v2/manifest.csv --reports-dir reports --corpus corpus_v2
+  --manifest ../corpus_v1/manifest.csv --reports-dir reports --corpus corpus_v1
 
 # Dashboard
 streamlit run scenarios/analysis/dashboard.py
@@ -682,7 +698,7 @@ streamlit run scenarios/analysis/dashboard.py
 
 ### 5.1 Propuestas históricas no implementadas
 
-**No existe `corpus_v3/`** como directorio de corpus activo. La revisión metodológica se aplica **in-place** sobre `corpus_v2/`. Los artefactos de la propuesta v3 son solo trazabilidad:
+**No existe `corpus_v3/`** como directorio de corpus activo. La revisión metodológica se aplica **in-place** sobre `corpus_v1/`. Los artefactos de la propuesta v3 son solo trazabilidad:
 
 | Artefacto | Ubicación | Rol |
 |-----------|-----------|-----|
@@ -692,20 +708,20 @@ streamlit run scenarios/analysis/dashboard.py
 | `map_profiles.md` | `_archive/docs/` | Especificación mapas v3 |
 | `recommend_corpus_v3.py`, `compare_corpus_versions.py` | `_archive/scripts/` | Scripts legacy |
 
-El corpus activo para simulaciones, análisis y paper es **`corpus_v2/` (720 escenarios)**.
+El corpus activo para simulaciones y análisis es **`corpus_v1/` (540) + `stress_controls/` (30) = 570**.
 
 ### Matriz de limpieza (estado actual)
 
 | Artefacto | Estado |
 |-----------|--------|
 | `wiki_backup_*` | Movido a `_archive/wiki/` |
-| `reports/piloto_*`, `go_no_go_*`, `corpus_v2_720_resultados.md`, `corpus_v3_*`, realism reviews, `data_inventory.md` | Movido a `_archive/reports/` |
+| `reports/piloto_*`, `go_no_go_*`, `corpus_v1_720_resultados.md`, `corpus_v3_*`, realism reviews, `data_inventory.md` | Movido a `_archive/reports/` |
 | `docs/PLAN_CONTINUIDAD_*`, `GUIA_ESTADO_*`, `maps/map_profiles.md` | Movido a `_archive/docs/` |
 | `recommend_corpus_v3.py`, `compare_corpus_versions.py` | Movido a `_archive/scripts/` |
 | `corpus_v3_plan.csv`, `map_profile_plan.csv` | Movido a `_archive/data/` |
 | `.wiki-clone/_legacy_pre_paper_rebuild/` | Sin mover (gitignored) |
 | `.wiki-clone/_legacy_pre_paper_rebuild/round2_20260523/` | 9 páginas superseded (round2) |
-| [README.md](README.md) raíz | **Actualizado** — paper-ready, corpus_v2, wiki plana |
+| [README.md](README.md) raíz | **Actualizado** — paper-ready, corpus_v1, wiki plana |
 | [INVENTARIO.md](INVENTARIO.md) | **Actualizado** — este documento (2026-05-24) |
 | `analysis/.venv/` | — | Entorno local | Verificar `.gitignore` (ya ignorado) |
 | `figures/paper/main/heatmap_feature_feature_core.*` | DUPLICADO | Copia curada de raíz | Intencional — mantener |
@@ -715,7 +731,7 @@ El corpus activo para simulaciones, análisis y paper es **`corpus_v2/` (720 esc
 
 | Regenerable (`GENERADO`) | Irreemplazable (`FUENTE`) |
 |--------------------------|---------------------------|
-| Todo `analysis/data/*.csv` | `corpus_v1/`, `corpus_v2/`, `corpus_dropped_v1/` |
+| Todo `analysis/data/*.csv` | `corpus_v1/`, `corpus_v1/`, `corpus_dropped_v1/` |
 | Todo `analysis/reports/` | Scripts `.py`, `lib/`, `dashboard/` |
 | Todo `analysis/figures/` (excepto READMEs) | Overlays `*.txt`, `protocol_overlays/` |
 | | `analysis/docs/`, `internal/`, `.wiki-clone/` activa |
@@ -762,10 +778,10 @@ Estructura `_archive/` creada. Detalle de movimientos: [analysis/reports/project
 | Reports `analysis/reports/` | 36/36 |
 | Docs `analysis/docs/` | 7/7 |
 | Figuras `analysis/figures/` | 806 (758 PNG + 36 PDF + 12 MD) |
-| Manifest corpus_v2 | 720 filas datos (+ header) |
-| Spatial heatmaps | 720 PNG |
-| Spatial metrics CSV | 720 filas datos |
-| Output metrics CSV | 720 filas datos (corpus_v2 `__TP*`) |
+| Manifest corpus_v1 | 540 filas datos (+ header) |
+| Spatial heatmaps | regenerable (scope depende del último run) |
+| Spatial metrics CSV | verificar scope (570 esperado o 720 legacy) |
+| Output metrics CSV | objetivo 570 filas (según reportes disponibles) |
 | Wiki `.md` total | 251 |
 | Wiki raíz activa | 19 (README + 18 páginas) |
 | Módulos `lib/` | 8/8 |

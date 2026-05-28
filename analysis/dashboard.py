@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Dashboard interactivo del análisis de escenarios (corpus_v2).
+Dashboard interactivo del análisis de escenarios (corpus_v1).
 
 Uso (desde la raíz del repo):
   streamlit run scenarios/analysis/dashboard.py
