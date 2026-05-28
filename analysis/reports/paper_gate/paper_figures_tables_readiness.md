@@ -1,11 +1,11 @@
 # Paper figures and tables readiness (corpus_v1)
 
-Generated: 2026-05-27 18:12 UTC
+Generated: 2026-05-28 07:46 UTC
 
 ## Executive summary
 
 - **Corpus:** corpus_v1, N=540 simulations.
-- **Data validation:** correlation_pearson=540, output_metrics=566.
+- **Data validation:** correlation_pearson=540, output_metrics=540.
 - **Policy:** Diversity figures trace to `analysis/data/*.csv` with n=540 (corpus_v1 only). Combined benchmark (570) is separate.
 
 ## Figures ready (main)
@@ -15,12 +15,12 @@ Generated: 2026-05-27 18:12 UTC
 - `corpus_overview_paper.png` — Methods / Benchmark design
 - `heatmap_feature_feature_core.png` — Supplementary / Feature redundancy
 - `histogram_correlations_pearson_paper.png` — Methods / Corpus diversity
+- `outputs_boxplot_by_tp_paper.png` — Results / Output metrics by TP
 - `pca_by_cluster.png` — Results / Clustering
 - `pca_by_family.png` — Results / Feature space structure
 
 ## Figures to review or regenerate (main)
 
-- `outputs_boxplot_by_tp_paper.png` — **revisar**
 
 ## Figures ready (supplementary)
 

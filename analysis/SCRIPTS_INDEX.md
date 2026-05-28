@@ -32,7 +32,7 @@
 | [run_analysis.py](run_analysis.py) | CORE_PIPELINE | `corpus_v1/*.settings`, `reports/` | `data/`, `figures/`, `reports/` | sí | activo | Fases: `features`, `normalize`, `correlation`, `ablation`, `figures`, `figures_paper`, `tables_paper`, `output_metrics`, `outputs`, `indirects` |
 | [run_all_scenarios.py](run_all_scenarios.py) | SIMULATION_RUNNER | corpus + `one.sh` + overlays | `../../reports/*Report*` | sí | activo | Batch; filtros `--family`, `--tp`, `--settings` |
 | [run_figures_aggregated.py](run_figures_aggregated.py) | FIGURES_TABLES | `manifest.csv`, CSVs correlación/outputs | `figures/aggregated/` | sí | activo | Por familia, TP, base×TP |
-| [analysis_menu.py](analysis_menu.py) | EXPERIMENTAL | menú interactivo | delega subprocess | no | activo | [MENU.md](MENU.md); submenú Paper/validación 4a–4n |
+| [analysis_menu.py](analysis_menu.py) | EXPERIMENTAL | menú interactivo | delega subprocess | no | activo | [MENU.md](MENU.md); submenú Paper/validación 4a–4n, ruta paper-ready (10), protocolos por overlay (11) |
 | [dashboard.py](dashboard.py) | DASHBOARD | CSVs, figuras, reports | UI Streamlit | no | activo | Entrada: `streamlit run dashboard.py` |
 
 ## Scripts secundarios (`scripts/`)

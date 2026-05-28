@@ -44,7 +44,7 @@ SCRIPT_CATALOG: dict[str, dict[str, object]] = {
         "script": ANALYSIS_DIR / "run_analysis.py",
         "desc": [
             "Fase output_metrics de run_analysis: lee *MessageStatsReport.txt en reports/ y actualiza data/output_metrics.csv.",
-            "Requiere simulaciones completadas. Salida principal: data/output_metrics.csv.",
+            "Requiere simulaciones completadas. Salida principal: data/output_metrics.csv (benchmark/routing; no cierra diversidad por sí solo).",
         ],
         "args": ["--corpus", "corpus_v1", "--phase", "output_metrics"],
         "interactive": "output_metrics",
@@ -176,6 +176,10 @@ def _ask_yes(prompt: str, default: bool = False) -> bool:
     return raw in ("s", "si", "sí", "y", "yes", "1", "true")
 
 
+def _is_back_choice(choice: str) -> bool:
+    return choice.strip().lower() in ("0", "", "q", "b", "back", "m", "menu")
+
+
 def _rel_repo(p: Path) -> str:
     try:
         return str(p.relative_to(REPO_ROOT))
@@ -205,6 +209,8 @@ def _print_main_menu() -> None:
         "7) Ocupación espacial / heatmaps",
         "8) Dashboard (Streamlit)",
         "9) Figuras agregadas / paper",
+        "10) Ruta paper-ready guiada (540/570)",
+        "11) Simular con protocolo (overlay)",
         "0) Salir",
     ]
     bar = "═" * _MENU_WIDTH
@@ -587,13 +593,173 @@ def menu_run_analysis() -> None:
     input("Enter para volver al menú…")
 
 
+def _paper_ready_steps() -> list[tuple[str, list[str]]]:
+    return [
+        ("output_metrics (benchmark/routing)", [str(ANALYSIS_DIR / "run_analysis.py"), "--corpus", "corpus_v1", "--phase", "output_metrics"]),
+        ("features (diversidad 540)", [str(ANALYSIS_DIR / "run_analysis.py"), "--corpus", "corpus_v1", "--no-stress", "--phase", "features"]),
+        ("normalize", [str(ANALYSIS_DIR / "run_analysis.py"), "--corpus", "corpus_v1", "--no-stress", "--phase", "normalize"]),
+        ("correlation", [str(ANALYSIS_DIR / "run_analysis.py"), "--corpus", "corpus_v1", "--no-stress", "--phase", "correlation"]),
+        ("feature_correlation", [str(ANALYSIS_DIR / "run_analysis.py"), "--corpus", "corpus_v1", "--no-stress", "--phase", "feature_correlation"]),
+        ("ablation", [str(ANALYSIS_DIR / "run_analysis.py"), "--corpus", "corpus_v1", "--no-stress", "--phase", "ablation"]),
+        ("figures_paper", [str(ANALYSIS_DIR / "run_analysis.py"), "--corpus", "corpus_v1", "--no-stress", "--phase", "figures_paper"]),
+        ("tables_paper", [str(ANALYSIS_DIR / "run_analysis.py"), "--corpus", "corpus_v1", "--no-stress", "--phase", "tables_paper"]),
+        ("build_paper_figures_tables_index", [str(ANALYSIS_DIR / "scripts/paper/build_paper_figures_tables_index.py")]),
+        ("build_paper_freeze_checklist", [str(ANALYSIS_DIR / "scripts/paper/build_paper_freeze_checklist.py")]),
+        ("validate_diversity_readiness", [str(ANALYSIS_DIR / "scripts/paper/validate_diversity_readiness.py")]),
+        ("populate_wiki_paper", [str(ANALYSIS_DIR / "scripts/wiki/populate_wiki_paper.py")]),
+    ]
+
+
+def menu_paper_ready_flow() -> None:
+    print("\n--- Ruta paper-ready (orden recomendado) ---")
+    print("Scope diversidad: 540 (corpus_v1 + --no-stress). Scope benchmark combinado: 570 (540 + stress_controls).")
+    steps = _paper_ready_steps()
+    for i, (label, cmd) in enumerate(steps, start=1):
+        print(f"{i:2d}. {label}")
+        print(f"    {sys.executable} {' '.join(cmd)}")
+
+    if _ask_yes("¿Solo mostrar comandos (sin ejecutar)?", default=True):
+        input("Enter para volver al menú…")
+        return
+
+    ask_each = _ask_yes("¿Pedir confirmación en cada paso?", default=True)
+    for i, (label, cmd) in enumerate(steps, start=1):
+        if ask_each and not _ask_yes(f"[{i}/{len(steps)}] Ejecutar {label}?", default=True):
+            print("Saltado.")
+            continue
+        rc = _run_script(cmd)
+        if rc != 0:
+            if not _ask_yes("Este paso falló. ¿Continuar con el siguiente?", default=False):
+                break
+    input("Enter para volver al menú…")
+
+
+def _router_overlay_options() -> dict[str, Path]:
+    base = ANALYSIS_DIR / "protocol_overlays"
+    options: dict[str, Path] = {}
+    for name in ("router_epidemic.txt", "router_prophet.txt", "router_maxprop.txt", "router_sprayandwait.txt"):
+        p = base / name
+        if p.is_file():
+            key = name.replace("router_", "").replace(".txt", "")
+            options[key] = p
+    return options
+
+
+def _write_report_dir_overlay(report_dir: str) -> Path:
+    gen = ANALYSIS_DIR / "overlays" / "_generated"
+    gen.mkdir(parents=True, exist_ok=True)
+    safe = re.sub(r"[^a-zA-Z0-9_.-]+", "_", report_dir.strip())
+    overlay_path = gen / f"report_dir_{safe}.txt"
+    overlay_path.write_text(f"Report.reportDir = {report_dir}\n", encoding="utf-8")
+    return overlay_path
+
+
+def menu_protocol_overlay_runs() -> None:
+    print("\n--- Simular con protocolo (overlay, sin editar .settings) ---")
+    options = _router_overlay_options()
+    if not options:
+        print("No hay overlays en scenarios/analysis/protocol_overlays/")
+        input("Enter para volver…")
+        return
+
+    keys = list(options.keys())
+    for i, k in enumerate(keys, start=1):
+        print(f"  {i}) {k}")
+    raw = _ask("Elige protocolo", "1")
+    try:
+        selected = keys[int(raw) - 1]
+    except Exception:
+        print("Selección inválida.")
+        input("Enter para volver…")
+        return
+
+    print(
+        "\nScope de simulación:\n"
+        "  1 = core (540, corpus_v1)\n"
+        "  2 = stress (30, stress_controls)\n"
+        "  3 = all activos (570, core + stress)\n"
+        "  4 = selección manual (familia/TP/regex/lista)\n"
+    )
+    scope = _ask("Scope", "1").strip()
+    dry = _ask_yes("¿Solo listar (dry-run)?", default=True)
+    jobs_s = _ask("Paralelismo (--jobs)", "4")
+    timeout_s = _ask("Timeout por escenario (s)", "43200")
+
+    print("\nAviso de reproducibilidad: no mezclar protocolos en el mismo reportDir.")
+    separate = _ask_yes("¿Añadir overlay temporal para Report.reportDir por protocolo?", default=True)
+
+    extra = [
+        "--extra-settings", _rel_repo(ROUTING_CONTACT_REPORTS_OVERLAY),
+        "--extra-settings", _rel_repo(options[selected]),
+    ]
+    if separate:
+        default_report_dir = f"reports_{selected}/"
+        report_dir = _ask("Report.reportDir para este protocolo", default_report_dir).strip() or default_report_dir
+        report_overlay = _write_report_dir_overlay(report_dir)
+        extra.extend(["--extra-settings", _rel_repo(report_overlay)])
+
+    if scope == "1":
+        cmd = _run_simulations_cmd(
+            corpus="corpus_v1",
+            gui=False,
+            dry_run=dry,
+            jobs=jobs_s,
+            timeout=timeout_s,
+            extra=extra,
+            benchmark="core",
+            exclude_deprecated=True,
+        )
+    elif scope == "2":
+        cmd = _run_simulations_cmd(
+            corpus="stress_controls",
+            gui=False,
+            dry_run=dry,
+            jobs=jobs_s,
+            timeout=timeout_s,
+            extra=extra,
+        )
+    elif scope == "3":
+        cmd = _run_simulations_cmd(
+            corpus="corpus_v1",
+            gui=False,
+            dry_run=dry,
+            jobs=jobs_s,
+            timeout=timeout_s,
+            extra=extra,
+            benchmark="all",
+            exclude_deprecated=True,
+        )
+    elif scope == "4":
+        corpus = _ask("Corpus para selección manual", "corpus_v1")
+        print("Selección manual: 1=.settings, 2=familia, 3=TP, 4=familia+TP, 5=lista, 6=archivo, 7=regex, 8=numerado")
+        sel_mode = _ask("Modo de selección", "2")
+        sel = _resolve_selection(corpus, sel_mode)
+        cmd = _run_simulations_cmd(
+            corpus=corpus,
+            gui=False,
+            dry_run=dry,
+            jobs=jobs_s,
+            timeout=timeout_s,
+            extra=extra,
+            **sel,
+        )
+    else:
+        print("Scope no válido.")
+        input("Enter para volver…")
+        return
+
+    rc = _run_script(cmd)
+    print(f"\n(código salida {rc})")
+    input("Enter para volver al menú…")
+
+
 def _print_paper_submenu() -> None:
     print("\n--- Paper y validación ---")
-    print("Corpus_v2 está congelado (720 escenarios); no se regenera desde el menú.\n")
+    print("Estado actual: diversidad 540 (corpus_v1, --no-stress) + benchmark combinado 570 (core + stress).\n")
     for key in sorted(SCRIPT_CATALOG.keys()):
         entry = SCRIPT_CATALOG[key]
         print(f"  {key}) {entry['title']}")
-    print("  0) Volver al menú principal")
+    print("  0|b|back|m|menu|q) Volver al menú principal")
 
 
 def _run_catalog_entry(catalog_id: str) -> None:
@@ -627,12 +793,12 @@ def menu_paper_validation() -> None:
     while True:
         _print_paper_submenu()
         choice = _ask("Opción", "0").strip().lower()
-        if choice in ("0", "", "q"):
+        if _is_back_choice(choice):
             return
         if choice in SCRIPT_CATALOG:
             _run_catalog_entry(choice)
         else:
-            print("Opción no reconocida.")
+            print("Opción no reconocida. Usa 4a..4n o 0/back/menu.")
 
 
 def menu_useful_time() -> None:
@@ -772,6 +938,10 @@ def main() -> int:
             menu_dashboard()
         elif choice == "9":
             menu_figures_guide()
+        elif choice == "10":
+            menu_paper_ready_flow()
+        elif choice == "11":
+            menu_protocol_overlay_runs()
         else:
             print("Opción no reconocida.")
     return 0

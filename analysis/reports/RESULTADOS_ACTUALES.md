@@ -7,7 +7,7 @@
 ---
 ## Resumen comparativo (17 / 23 / 46 features)
 
-| Espacio | n features | max \|r\| | Pares \|r\| ≥ 0.7 | % pares | Silhouette (Ward k=7) |
+| Espacio | n features | max |r| | Pares |r| ≥ 0.7 | % pares | Silhouette (Ward k=7) |
 |---------|----------:|----------|-------------------:|--------:|----------------------:|
 | **Reduced** | 17 | 1.0 | 7425 | 5.1% | 0.3355 |
 | **Core** | 23 | 1.0 | 5029 | 3.5% | 0.3045 |
@@ -17,54 +17,48 @@
 
 ---
 ## Métricas en espacio REDUCED (17 features)
-
 | Métrica | Valor |
 |---|---|
-| max \|r\| | 1.0 |
-| Pares con \|r\| ≥ 0.7 | 7425 (5.1%) |
+| max |r| | 1.0 |
+| Pares con |r| ≥ 0.7 | 7425 (5.1%) |
 | Silhouette (Ward k=7) | 0.3355 |
 
-Versión compacta para ablación; mayor silhouette que core/full, pero más pares con \|r\| alto (menor parsimonia en redundancia).
+Versión compacta para ablación; mayor silhouette que core/full, pero más pares con |r| alto.
 
 ---
 ## Métricas en espacio CORE (23 features)
-
 | Métrica | Valor |
 |---|---|
-| max \|r\| | 1.0 |
-| Pares con \|r\| ≥ 0.7 | 5029 (3.5%) |
+| max |r| | 1.0 |
+| Pares con |r| ≥ 0.7 | 5029 (3.5%) |
 | Silhouette (Ward k=7) | 0.3045 |
 
-Espacio **principal** para diversidad y narrativa del paper (ver `features_core_vs_extended.md`).
+Espacio **principal** para diversidad y narrativa del paper.
 
 ---
 ## Métricas en espacio completo (46 features)
-
 | Métrica | Valor |
 |---|---|
-| max \|r\| | 1.0 |
-| Pares con \|r\| ≥ 0.7 | 3378 (2.3%) |
+| max |r| | 1.0 |
+| Pares con |r| ≥ 0.7 | 3378 (2.3%) |
 | Silhouette (Ward k=7) | 0.2354 |
-
-Distancia coseno mínima (geom, full-46): ≈ 0.0
 
 ---
 ## Ablación y validación de correlación
 
-Detalle numérico idéntico al resumen (fuente: `data/ablation_metrics.csv`):
+Detalle numérico (fuente: `data/ablation_metrics.csv`):
 
-- **reduced_17:** max\|r\|=1.0000, pares≥0.7=7425 (5.1%), silhouette=0.3355
-- **core_23:** max\|r\|=1.0000, pares≥0.7=5029 (3.5%), silhouette=0.3045
-- **full_46:** max\|r\|=1.0000, pares≥0.7=3378 (2.3%), silhouette=0.2354
+- **reduced_17:** max|r|=1.0000, pares≥=0.7=7425 (5.1%), silhouette=0.3355
+- **core_23:** max|r|=1.0000, pares≥=0.7=5029 (3.5%), silhouette=0.3045
+- **full_46:** max|r|=1.0000, pares≥=0.7=3378 (2.3%), silhouette=0.2354
 
-**Interpretación:** core-23 equilibra interpretabilidad y separación (silhouette > full-46, menos pares \|r\|≥0.7 que reduced-17).
+**Interpretación:** core-23 equilibra interpretabilidad y separación (silhouette > full-46, menos pares |r|≥0.7 que reduced-17).
 
----
 ## Informes en este directorio (`reports/`)
 
 | Informe | Contenido |
 |---|---|
-| [correlation_core23_report.txt](pipeline/correlation_core23_report.txt) | Pares con \|r\|≥umbral en core 23 |
+| [correlation_core23_report.txt](pipeline/correlation_core23_report.txt) | Pares con |r|≥umbral en core 23 |
 | [correlation_report.txt](pipeline/correlation_report.txt) | Correlación en espacio completo (46 features) |
 | [ablation_report.txt](pipeline/ablation_report.txt) | Ablación 17 vs 23 vs 46 |
 | [multiple_comparisons_report.txt](pipeline/multiple_comparisons_report.txt) | FDR y Bonferroni |

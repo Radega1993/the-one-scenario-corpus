@@ -1,10 +1,10 @@
 # Paper figures and tables index (corpus_v1)
 
-Generated: 2026-05-27 18:12 UTC
+Generated: 2026-05-28 07:46 UTC
 
 **Corpus:** corpus_v1 — 540 simulations (diversity scope 540).
 **Diversity validation:** PASS
-**Benchmark outputs (570):** output_metrics=566 (OK)
+**Benchmark outputs (570):** output_metrics=540 (OK)
 
 | filename | type | data_source | generator_script | description | scientific_message | paper_section | status |
 |----------|------|-------------|------------------|-------------|--------------------|---------------|--------|
@@ -13,7 +13,7 @@ Generated: 2026-05-27 18:12 UTC
 | corpus_overview_paper.png | main | corpus_v1/manifest.csv | build_paper_figures_tables_index.py | Stacked bar: 540 simulations = 45 bases × 12 TPs across 6 environmental families. | Benchmark scale and family×TP factorial design of corpus_v1. | Methods / Benchmark design | lista |
 | heatmap_feature_feature_core.png | main | feature_feature_correlation_core.csv | run_analysis.py --phase figures_paper | 23×23 heatmap of correlations between core features. | Within-feature redundancy is localized; core set is not orthogonal but manageable. | Supplementary / Feature redundancy | lista |
 | histogram_correlations_pearson_paper.png | main | correlation_pearson.csv | run_analysis.py --phase figures_paper | Histogram of off-diagonal Pearson r between scenario Z-vectors (core feature space). | Most scenario pairs are weakly correlated; diversity criterion (few pairs \|r\|≥0.7) is met. | Methods / Corpus diversity | lista |
-| outputs_boxplot_by_tp_paper.png | main | output_metrics.csv, manifest.csv | run_figures_aggregated.py (promoted) | Boxplots of delivery, latency, overhead, drop by Traffic Profile (12 TPs). | Traffic profiles induce distinct output regimes (stress vs baseline vs burst). | Results / Output metrics by TP | revisar |
+| outputs_boxplot_by_tp_paper.png | main | output_metrics.csv, manifest.csv | run_figures_aggregated.py (promoted) | Boxplots of delivery, latency, overhead, drop by Traffic Profile (12 TPs). | Traffic profiles induce distinct output regimes (stress vs baseline vs burst). | Results / Output metrics by TP | lista |
 | pca_by_cluster.png | main | features_normalized.csv, cluster_assignments.csv | run_analysis.py --phase figures_paper | PCA 2D colored by Ward clustering (k=7). | Unsupervised clusters align partially with families, supporting benchmark stratification. | Results / Clustering | lista |
 | pca_by_family.png | main | features_normalized.csv, manifest family | run_analysis.py --phase figures_paper | PCA 2D of normalized features colored by scenario family. | Seven families occupy distinct regions of the input feature space. | Results / Feature space structure | lista |
 | histogram_correlations_outputs_paper.png | supplementary | output_metrics.csv | run_analysis.py --phase figures_paper | Histogram of Pearson r between output metric vectors across scenarios. | Outputs are not trivially collinear across the benchmark scenarios. | Supplementary / Output diversity | lista |

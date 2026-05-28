@@ -6,7 +6,7 @@ Guía rápida en español. Lanza scripts con `subprocess` desde la raíz del rep
 python3 scenarios/analysis/analysis_menu.py
 ```
 
-**Corpus activo:** `corpus_v1` (720 escenarios, congelado). No se regenera desde el menú.
+**Scope actual:** diversidad `corpus_v1` **540** (`--no-stress`) + benchmark combinado **570** (core + `stress_controls`).
 
 ---
 
@@ -23,6 +23,8 @@ python3 scenarios/analysis/analysis_menu.py
 | 7 | Ocupación espacial / heatmaps | `scripts/validation/analyze_spatial_occupancy.py` |
 | 8 | Dashboard Streamlit | `dashboard.py` |
 | 9 | Figuras agregadas / paper | `run_figures_aggregated.py` + opcional `figures_paper` |
+| 10 | Ruta paper-ready guiada | Orden recomendado (output_metrics → features → ... → wiki) |
+| 11 | Simular con protocolo (overlay) | `run_all_scenarios.py` + `protocol_overlays/router_*.txt` |
 | 0 | Salir | — |
 
 Presets de reportes en simulación (opciones 1–2): overlays en `overlays/routing_contact_reports_overrides.txt` y `overlays/spatial_occupancy_reports_overrides.txt`.
@@ -49,6 +51,8 @@ Presets de reportes en simulación (opciones 1–2): overlays en `overlays/routi
 | 4n | `scripts/paper/build_inventory_update_report.py` | `reports/project/inventory_update_report.md` |
 
 Cada opción muestra 2–3 líneas de propósito antes de ejecutar.
+
+En submenús, puedes volver con: `0`, `b`, `back`, `m`, `menu` o `q`.
 
 ---
 

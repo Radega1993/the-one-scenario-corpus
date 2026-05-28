@@ -4,7 +4,7 @@ Generated: automated from `build_paper_figures_tables_index.py` / dashboard load
 
 ## Executive summary
 
-- **Corpus:** corpus_v1 — **720** simulations in master table.
+- **Corpus:** corpus_v1 — **570** simulations in master table.
 - **Launch:** `streamlit run scenarios/analysis/dashboard.py`
 - **Reference:** [`RESULTADOS_ACTUALES.md`](RESULTADOS_ACTUALES.md)
 
@@ -47,8 +47,8 @@ Generated: automated from `build_paper_figures_tables_index.py` / dashboard load
 
 ## Issues found
 
-- **1** scenarios without `output_metrics` (e.g. S1 TP03/TP11 re-simulate).
-- **1** scenarios with `error_probable` benchmark validation.
+- **30** scenarios without `output_metrics` (e.g. S1 TP03/TP11 re-simulate).
+- **168** scenarios with `error_probable` benchmark validation.
 - `protocol_benchmark_kpi_definitions.csv` not present — protocols page uses placeholder.
 - Feature matrices (720×720) intentionally excluded from UI.
 

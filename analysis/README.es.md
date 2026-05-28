@@ -102,7 +102,7 @@ analysis/
 └── run_analysis.py     # Script principal por fases (extracción → correlación → reporte)
 ```
 
-- **Menú interactivo:** `analysis_menu.py` — ver [MENU.md](MENU.md): simulación (1–2), pipeline (3), paper/validación (4a–4n), tiempo útil/mensajes/espacial (5–7), dashboard (8), figuras (9). Corpus legacy congelado.
+- **Menú interactivo:** `analysis_menu.py` — ver [MENU.md](MENU.md): simulación (1–2), pipeline (3), paper/validación (4a–4n), tiempo útil/mensajes/espacial (5–7), dashboard (8), figuras (9), ruta paper-ready guiada (10), protocolos por overlay sin tocar `.settings` (11). Scope actual: diversidad 540 (`--no-stress`) y benchmark combinado 570.
 
 - **data/**: Vectores de features por escenario, matrices de correlación/distancias, exports en CSV.
 - **figures/**: Figuras en PNG/PDF. **Catálogo y veredictos:** [figures/README.md](figures/README.md). Con 570 escenarios no use heatmaps N×N; use `figures/aggregated/` y `figures/paper/main/`.

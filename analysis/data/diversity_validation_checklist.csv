@@ -50,4 +50,4 @@ DOC004,wiki,wiki 07-Diversity-Validation,.wiki-clone/07-Diversity-Validation.md,
 DOC005,wiki,wiki Resultados-Actuales,.wiki-clone/Resultados-Actuales.md,yes,PASS,INFO,,update documentation to scope 540
 C001,consistency,root_README_diversity_scope,README.md,yes,PASS,INFO,OK,none
 C002,consistency,FIGURES_AND_TABLES_INDEX,analysis/figures/paper/FIGURES_AND_TABLES_INDEX.md,yes,PASS,INFO,diversity validation PASS in index,none
-C003,consistency,output_metrics_benchmark_scope,analysis/data/output_metrics.csv,yes,WARN,MINOR,rows=566 expected 570 for combined benchmark (not diversity scope),complete simulations and rerun output_metrics
+C003,consistency,output_metrics_benchmark_scope,analysis/data/output_metrics.csv,yes,WARN,MINOR,rows=540 expected 570 for combined benchmark (not diversity scope),complete simulations and rerun output_metrics

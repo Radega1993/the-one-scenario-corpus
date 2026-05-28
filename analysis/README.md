@@ -107,7 +107,7 @@ From the **repository root**, run:
 python3 scenarios/analysis/analysis_menu.py
 ```
 
-Full option map: **[MENU.md](MENU.md)**. The menu delegates to scripts via `subprocess` (Diego17/spatial overlays under `overlays/`). **corpus_v1 is frozen** — generation scripts were removed; TP definitions live in `lib/traffic_profile_generator.py`.
+Full option map: **[MENU.md](MENU.md)**. The menu delegates to scripts via `subprocess` (Diego17/spatial overlays under `overlays/`). Canonical scopes: diversity freeze **540** (`--no-stress`) and combined benchmark **570** (core + stress). TP definitions live in `lib/traffic_profile_generator.py`.
 
 | Menu | Action |
 |------|--------|
@@ -117,6 +117,8 @@ Full option map: **[MENU.md](MENU.md)**. The menu delegates to scripts via `subp
 | **5–7** | Useful time, message creation, spatial |
 | **8** | Streamlit dashboard |
 | **9** | Aggregated / paper figures |
+| **10** | Guided paper-ready route (ordered commands) |
+| **11** | Simulation with router overlays (Epidemic/PRoPHET/MaxProp/SprayAndWait) |
 
 ---
 

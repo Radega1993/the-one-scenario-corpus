@@ -1,6 +1,6 @@
 # Diversity validation readiness report
 
-Generated: 2026-05-27 18:13 UTC
+Generated: 2026-05-28 07:47 UTC
 
 **Corpus scope:** `corpus_v1` only — **540** scenarios (stress_controls excluded)
 
@@ -8,7 +8,7 @@ Generated: 2026-05-27 18:13 UTC
 
 **Decision (diversity scope):** `READY_FOR_PAPER`
 
-**Combined benchmark (570 routing/outputs):** `READY_WITH_MINOR_FIXES` (output_metrics=566/570; not part of diversity freeze)
+**Combined benchmark (570 routing/outputs):** `READY_WITH_MINOR_FIXES` (output_metrics=540/570; not part of diversity freeze)
 
 ## Project structure (active)
 
@@ -93,11 +93,11 @@ Generated: 2026-05-27 18:13 UTC
 | DOC005 | wiki | wiki Resultados-Actuales | PASS | INFO |  |
 | C001 | consistency | root_README_diversity_scope | PASS | INFO | OK |
 | C002 | consistency | FIGURES_AND_TABLES_INDEX | PASS | INFO | diversity validation PASS in index |
-| C003 | consistency | output_metrics_benchmark_scope | WARN | MINOR | rows=566 expected 570 for combined benchmark (not diversity scope) |
+| C003 | consistency | output_metrics_benchmark_scope | WARN | MINOR | rows=540 expected 570 for combined benchmark (not diversity scope) |
 
 ## Warnings
 
-- **C003** output_metrics_benchmark_scope: rows=566 expected 570 for combined benchmark (not diversity scope) → complete simulations and rerun output_metrics
+- **C003** output_metrics_benchmark_scope: rows=540 expected 570 for combined benchmark (not diversity scope) → complete simulations and rerun output_metrics
 
 ## Recommended actions (non-diversity)
 

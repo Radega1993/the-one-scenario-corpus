@@ -1,6 +1,6 @@
 # Paper freeze checklist (corpus_v1)
 
-Generated: 2026-05-27 13:55 UTC
+Generated: 2026-05-28 07:46 UTC
 
 **Scope:** paper with **multi-protocol routing comparison** on corpus_v1.
 **Active corpus:** `corpus_v1` (not corpus_v3).
@@ -9,10 +9,10 @@ Generated: 2026-05-27 13:55 UTC
 
 - Simulations in manifest: **570** (expected 570)
 - Settings files: **570**
-- Output metrics null delivery: **11**
+- Output metrics null delivery: **0**
 - Benchmark `error_probable`: **168**
 - Benchmark `configuracion_sospechosa`: **106**
-- Main figures lista/revisar: **6/8** lista, **2** revisar
+- Main figures lista/revisar: **8/8** lista, **0** revisar
 
 ## Status legend
 
@@ -36,7 +36,7 @@ Generated: 2026-05-27 13:55 UTC
 
 | ID | Item | Status | Evidence | Action |
 |----|------|--------|----------|--------|
-| FEAT-01 | features.csv and features_core.csv 720 scenarios | **DONE** | features=570, features_core=570 | — |
+| FEAT-01 | features.csv and features_core.csv 720 scenarios | **PARTIAL** | features=540, features_core=540 | — |
 | FEAT-02 | Diversity metrics frozen n=720 | **DONE** | RESULTADOS_ACTUALES.md | — |
 | FEAT-03 | Feature-feature redundancy acceptable | **PARTIAL** | Persistent high pair mm_WDM <-> mm_Bus = 0.9393; max |r|=1.0 between scenarios | Disclose in Methods; justify core-23 retention |
 | FEAT-04 | Ablation 17/23/46 documented | **DONE** | table_ablation_metrics_en/es lista; ablation reports | — |
@@ -45,9 +45,9 @@ Generated: 2026-05-27 13:55 UTC
 
 | ID | Item | Status | Evidence | Action |
 |----|------|--------|----------|--------|
-| FIG-01 | FIGURES_AND_TABLES_INDEX.md complete | **DONE** | 21 indexed items | — |
-| FIG-02 | Main paper figures ready (lista) | **PARTIAL** | lista=6/8, revisar=2 | Regenerate 7 main figures marked revisar |
-| FIG-03 | Supplementary figures ready (lista) | **PARTIAL** | lista=3/5, revisar=2 | Regenerate supplementary figures marked revisar |
+| FIG-01 | FIGURES_AND_TABLES_INDEX.md complete | **DONE** | 22 indexed items | — |
+| FIG-02 | Main paper figures ready (lista) | **DONE** | lista=8/8, revisar=0 | Regenerate 7 main figures marked revisar |
+| FIG-03 | Supplementary figures ready (lista) | **PARTIAL** | lista=4/5, revisar=1 | Regenerate supplementary figures marked revisar |
 | FIG-04 | Protocol comparison figure (real data) | **MISSING** | Only protocol_comparison_placeholder.png | Run multi-protocol simulations and plot comparison |
 
 ## Kpis
@@ -72,14 +72,14 @@ Generated: 2026-05-27 13:55 UTC
 | ID | Item | Status | Evidence | Action |
 |----|------|--------|----------|--------|
 | MSG-01 | Canonical message window policy document | **DONE** | message_analysis_window_policy.md (full window primary; optional 10% censor) | — |
-| MSG-02 | Policy implemented in output_metrics extraction pipeline | **PARTIAL** | Wiki 11 still cites Policy B + 5% warmup (drift) | Align wiki 11 with canonical policy |
+| MSG-02 | Policy implemented in output_metrics extraction pipeline | **PARTIAL** | Canonical policy documented; output_metrics uses full MessageStatsReport aggregates | Optional: implement explicit window filter in extraction code for appendix |
 | MSG-03 | Per-scenario policy CSV 720 rows | **PARTIAL** | message_analysis_window_policy.csv rows=540 | — |
 
 ## Outputs
 
 | ID | Item | Status | Evidence | Action |
 |----|------|--------|----------|--------|
-| OUT-01 | output_metrics.csv complete 720 rows | **PARTIAL** | rows=566; null delivery=11 | Fix 2 missing S1 outputs |
+| OUT-01 | output_metrics.csv complete 720 rows | **PARTIAL** | rows=540; null delivery=0 | — |
 | OUT-02 | ONE reports (MessageStats Connectivity spatial grid) | **PARTIAL** | Repo reports/ not versioned; 168 scenarios incomplete | Re-simulate incomplete scenarios; archive report paths in manifest |
 | OUT-03 | Auxiliary outputs (indirect useful time) | **DONE** | useful_simulation_time_metrics=True; indirect_features=True | — |
 
@@ -89,7 +89,7 @@ Generated: 2026-05-27 13:55 UTC
 |----|------|--------|----------|--------|
 | REP-01 | Official pipeline documented (SCRIPTS_INDEX) | **DONE** | analysis/SCRIPTS_INDEX.md 12-step pipeline | — |
 | REP-02 | Dashboard for paper exploration | **DONE** | dashboard_readiness_report.md | — |
-| REP-03 | One-command regeneration figures and tables | **PARTIAL** | Commands in index; 4 figures still revisar | Run build_paper_figures_tables_index.py after regen |
+| REP-03 | One-command regeneration figures and tables | **PARTIAL** | Commands in index; 1 figures still revisar | Run build_paper_figures_tables_index.py after regen |
 | REP-04 | Simulation outputs (reports/) reproducible from manifest | **PARTIAL** | reports/ at repo root not fully versioned; re-sim cost high | Document exact one.sh invocations per scenario batch |
 
 ## Settings
@@ -104,7 +104,7 @@ Generated: 2026-05-27 13:55 UTC
 
 | ID | Item | Status | Evidence | Action |
 |----|------|--------|----------|--------|
-| SIM-01 | ONE batch Epidemic complete 720/720 | **PARTIAL** | output_metrics rows=566; null delivery_ratio=11; error_probable=168 | Re-simulate S1_StrongCommunities TP03 and TP11 |
+| SIM-01 | ONE batch Epidemic complete 720/720 | **PARTIAL** | output_metrics rows=540; null delivery_ratio=0; error_probable=168 | Re-simulate S1_StrongCommunities TP03 and TP11 |
 | SIM-02 | Multi-protocol simulations (PRoPHET MaxProp etc.) | **MISSING** | Wiki 12-Benchmark-Protocol-Comparison: no runs; protocol_comparison_placeholder only | Run batch with analysis/protocol_overlays/ on main split |
 | SIM-03 | Batch reproducibility documented (commands seeds) | **PARTIAL** | SCRIPTS_INDEX covers Epidemic; no executed multi-protocol runbook | Document and run multi-protocol batch before writing Results |
 
@@ -121,7 +121,7 @@ Generated: 2026-05-27 13:55 UTC
 
 | ID | Item | Status | Evidence | Action |
 |----|------|--------|----------|--------|
-| TAB-01 | English paper tables (diversity ablation families features) | **DONE** | tables lista=8/8 | — |
+| TAB-01 | English paper tables (diversity ablation families features) | **DONE** | tables lista=9/9 | — |
 | TAB-02 | Spanish draft tables | **DONE** | ES tables marked lista in index | — |
 | TAB-03 | Multi-protocol results tables | **MISSING** | No protocol comparison result tables | Generate after multi-protocol batch |
 
@@ -138,7 +138,7 @@ Generated: 2026-05-27 13:55 UTC
 | ID | Item | Status | Evidence | Action |
 |----|------|--------|----------|--------|
 | WIKI-01 | Paper wiki rebuild pages 01-14 | **PARTIAL** | .wiki-clone present; key pages draft status | — |
-| WIKI-02 | Wiki aligned with canonical analysis reports | **PARTIAL** | Wiki 11 contradicts message_analysis_window_policy.md | Update 11-Message-Analysis-Window.md to match canonical policy |
+| WIKI-02 | Wiki aligned with canonical analysis reports | **DONE** | No drift detected on message window | Update 11-Message-Analysis-Window.md to match canonical policy |
 | WIKI-03 | Formal freeze checklist in analysis/reports | **DONE** | This report (paper_freeze_checklist.md) supersedes informal wiki checklist | — |
 
 ## Critical blockers (writing gate)
@@ -152,8 +152,8 @@ Generated: 2026-05-27 13:55 UTC
 | Block | DONE | PARTIAL | MISSING | BLOCKER |
 |-------|-----:|--------:|--------:|--------:|
 | corpus | 3 | 1 | 0 | 0 |
-| features | 3 | 1 | 0 | 0 |
-| figures | 1 | 2 | 1 | 0 |
+| features | 2 | 2 | 0 | 0 |
+| figures | 2 | 1 | 1 | 0 |
 | kpis | 3 | 1 | 0 | 0 |
 | limitations | 0 | 2 | 1 | 0 |
 | message_windows | 1 | 2 | 0 | 0 |
@@ -164,7 +164,7 @@ Generated: 2026-05-27 13:55 UTC
 | spatial_occupancy | 1 | 3 | 0 | 0 |
 | tables | 2 | 0 | 1 | 0 |
 | traffic_profiles | 1 | 2 | 0 | 0 |
-| wiki | 1 | 2 | 0 | 0 |
+| wiki | 2 | 1 | 0 | 0 |
 
 ## Minimum path to READY_FOR_WRITING
 
