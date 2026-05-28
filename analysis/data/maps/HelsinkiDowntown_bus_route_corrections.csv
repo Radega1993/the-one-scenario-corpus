@@ -1,0 +1,4 @@
+route_file,action,n_stops,semantic_role
+A_bus.wkt,would_regenerate,12,CBD / north-south main axis
+B_bus.wkt,would_regenerate,11,East-west cross axis
+C_bus.wkt,would_regenerate,8,Peripheral loop / edge coverage

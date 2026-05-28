@@ -1,5 +1,8 @@
 # Informe de migración de mapas — corpus_v1
 
+> **2026-05 update:** Geometric validation and bus-route repair:
+> [`analysis/reports/maps/map_assets_final_validation.md`](maps/map_assets_final_validation.md).
+
 ## 1. Resumen ejecutivo
 
 Se han migrado los **720 ficheros `.settings`** del corpus v2 para que cada una de las 7 familias ambientales use un mapa fijo, reproducible y metodológicamente coherente. Esto elimina la heterogeneidad arbitraria donde escenarios de la misma familia usaban mapas distintos (Helsinki y Manhattan mezclados), o directamente no usaban mapa (free-space).

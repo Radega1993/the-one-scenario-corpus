@@ -1,0 +1,4 @@
+route_file,semantic_role,n_stops,resolved_path_length_m,graph_stop_path_length_m,n_unresolved_segments,within_world_size,max_stop_dist_to_road_m,pct_stops_over_50m,spatial_coverage_pct,status,notes
+A_bus.wkt,CBD / north-south main axis,12,6474.7,6474.8,0,True,64.01,8.33,52.05,WARNING,some stops >50m from road
+B_bus.wkt,East-west cross axis,11,4761.9,4761.9,0,True,64.42,9.09,51.79,WARNING,some stops >50m from road
+C_bus.wkt,Peripheral loop / edge coverage,8,5052.2,5052.2,0,True,64.42,12.5,51.73,WARNING,some stops >50m from road

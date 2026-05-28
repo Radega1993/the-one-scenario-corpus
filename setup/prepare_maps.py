@@ -261,13 +261,27 @@ def _reproject_and_snap_pois(
 
 
 def _generate_bus_route(
-    node_coords: list[tuple[float, float]], rng: random.Random, n_stops: int = 15
+    roads_path: Path,
+    rng: random.Random,
+    *,
+    family: str = "01_urban",
+    n_stops: int = 12,
 ) -> list[tuple[float, float]]:
-    if len(node_coords) < n_stops:
-        return list(node_coords)
-    sample = rng.sample(node_coords, min(n_stops, len(node_coords)))
-    sample.sort(key=lambda p: p[0] + p[1])
-    return sample
+    """Graph-coherent bus waypoints in map CRS (via map_geometry)."""
+    _setup = Path(__file__).resolve().parent
+    if str(_setup) not in sys.path:
+        sys.path.insert(0, str(_setup))
+    from map_geometry import (  # noqa: WPS433
+        RoadGraph,
+        generate_bus_route_on_graph,
+        parse_linestrings,
+        sim_waypoints_to_raw,
+    )
+
+    raw_roads = parse_linestrings(roads_path)
+    rg = RoadGraph.from_roads_wkt(roads_path)
+    sim_stops = generate_bus_route_on_graph(rg, rng, n_stops=n_stops, family=family)
+    return sim_waypoints_to_raw(sim_stops, raw_roads, rg)
 
 
 # ── Main processing ─────────────────────────────────────────────────────────
@@ -327,8 +341,11 @@ def process_all(install: bool = False) -> None:
             print(f"  A_{cat}.wkt: {len(pts)} points (snapped to road nodes)")
 
         n_bus = density.get("bus_routes", 1)
+        roads_path = out_dir / "roads.wkt"
         for i in range(n_bus):
-            route = _generate_bus_route(info["node_coords"], rng)
+            route = _generate_bus_route(
+                roads_path, rng, family=cfg.get("family", ""), n_stops=12
+            )
             suffix = f"A_bus.wkt" if i == 0 else f"{'ABCDEFGH'[min(i,7)]}_bus.wkt"
             write_bus_route_wkt(route, out_dir / suffix)
             print(f"  {suffix}: {len(route)} stops")

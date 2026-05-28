@@ -175,3 +175,14 @@ scenarios/
     │   └── ControlCompactGrid/
     └── validation/               # JSONs de validación por mapa
 ```
+
+## Validación geométrica extendida (2026-05)
+
+Informes detallados de rutas bus, POIs y uso en escenarios:
+
+- `analysis/reports/maps/bus_route_validation_report.md`
+- `analysis/reports/maps/map_poi_validation_report.md`
+- `analysis/reports/maps/route_usage_by_scenario_report.md`
+- `analysis/reports/maps/map_assets_final_validation.md`
+
+Scripts: `scenarios/setup/validate_bus_routes.py`, `validate_map_pois.py`, `repair_bus_routes.py`.

@@ -3,7 +3,7 @@
 # V5 - Car ownership 100%
 # All pedestrians use car for transfers (ownCarProb = 1).
 # Levers: ownCarProb = 1 (car only; bus still needed for WDM internals).
-# Dataset: HelsinkiMedium
+# Dataset: ManhattanMidtownGrid
 # =========================================================
 
 Scenario.name = V5_CarOwnership_100_ManhattanMidtownGrid__TP12_GroupToGroup
@@ -19,7 +19,7 @@ MapBasedMovement.mapFile1 = data/ManhattanMidtownGrid/roads.wkt
 
 Group.bufferSize = 50M
 Group.busControlSystemNr = -1
-Group1.routeFile = data/ManhattanMidtownGrid/A_bus.wkt
+Group1.routeFile = data/ManhattanMidtownGrid/A_vehicle_route.wkt
 Group1.busControlSystemNr = -1
 
 Group.nrofInterfaces = 1
@@ -30,7 +30,7 @@ bt0.transmitSpeed = 2M
 bt0.transmitRange = 14
 
 Group.movementModel = WorkingDayMovement
-Group.routeFile = data/ManhattanMidtownGrid/A_bus.wkt
+Group.routeFile = data/ManhattanMidtownGrid/A_vehicle_route.wkt
 Group.speed = 0.5, 1.5
 Group.waitTime = 0, 120
 
@@ -70,7 +70,7 @@ Scenario.nrofHostGroups = 2
 Group1.groupID = b
 Group1.nrofHosts = 2
 Group1.movementModel = BusMovement
-Group1.routeFile = data/ManhattanMidtownGrid/A_bus.wkt
+Group1.routeFile = data/ManhattanMidtownGrid/A_vehicle_route.wkt
 Group1.routeType = 1
 Group1.busControlSystemNr = -1
 Group1.bufferSize = 50M
@@ -84,7 +84,7 @@ Group2.groupID = p
 Group2.nrofHosts = 80
 Group2.bufferSize = 50M
 Group2.movementModel = WorkingDayMovement
-Group2.routeFile = data/ManhattanMidtownGrid/A_bus.wkt
+Group2.routeFile = data/ManhattanMidtownGrid/A_vehicle_route.wkt
 Group2.busControlSystemNr = -1
 Group2.homeLocationsFile = data/ManhattanMidtownGrid/A_homes.wkt
 Group2.officeLocationsFile = data/ManhattanMidtownGrid/A_offices.wkt

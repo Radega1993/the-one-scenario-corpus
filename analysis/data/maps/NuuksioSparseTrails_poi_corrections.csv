@@ -1,0 +1,11 @@
+map_name,poi_file,point_index,old_raw_x,old_raw_y,new_raw_x,new_raw_y,old_dist_m,new_dist_m,reason
+NuuksioSparseTrails,A_homes.wkt,0,361366.662,6688894.807,361366.662,6688894.807,13.35,0.0,border_artifact; snap_to_road_node
+NuuksioSparseTrails,A_homes.wkt,9,361795.174,6691138.419,361795.174,6691138.419,3.1,0.0,border_artifact; snap_to_road_node
+NuuksioSparseTrails,A_offices.wkt,0,361598.575,6690986.097,361507.151,6690857.16,201.69,0.0,border_artifact; snap_to_road_node
+NuuksioSparseTrails,A_offices.wkt,1,362332.504,6689707.627,362080.409,6689828.56,121.06,0.0,snap_to_road_node
+NuuksioSparseTrails,A_offices.wkt,3,362666.013,6690283.521,362513.267,6690154.734,159.31,0.0,snap_to_road_node
+NuuksioSparseTrails,A_offices.wkt,4,361795.174,6691138.419,361619.453,6691015.202,142.11,0.0,border_artifact; snap_to_road_node
+NuuksioSparseTrails,A_meetingspots.wkt,0,361520.214,6690869.26,361507.151,6690857.16,226.03,0.0,border_artifact; snap_to_road_node
+NuuksioSparseTrails,A_meetingspots.wkt,3,361598.575,6690986.097,361614.036,6691009.388,224.42,0.0,border_artifact; snap_to_road_node
+NuuksioSparseTrails,A_meetingspots.wkt,6,361598.575,6690986.097,361614.036,6691009.388,224.42,0.0,border_artifact; snap_to_road_node
+NuuksioSparseTrails,A_meetingspots.wkt,7,361552.346,6690107.409,361551.21,6690283.891,168.76,0.0,snap_to_road_node

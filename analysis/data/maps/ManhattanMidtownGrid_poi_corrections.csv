@@ -1,0 +1,9 @@
+map_name,poi_file,point_index,old_raw_x,old_raw_y,new_raw_x,new_raw_y,old_dist_m,new_dist_m,reason
+ManhattanMidtownGrid,A_homes.wkt,8,585029.244,4512429.386,585029.244,4512429.386,20.76,0.0,border_artifact; snap_to_road_node
+ManhattanMidtownGrid,A_homes.wkt,28,585485.531,4513274.089,585482.241,4513268.0,18.29,0.0,border_artifact; snap_to_road_node
+ManhattanMidtownGrid,A_offices.wkt,0,585194.313,4512155.504,585191.189,4512149.706,130.16,0.0,snap_to_road_node
+ManhattanMidtownGrid,A_offices.wkt,3,585131.774,4511461.719,585127.442,4511453.731,130.09,0.0,border_artifact; snap_to_road_node
+ManhattanMidtownGrid,A_offices.wkt,30,585170.176,4511532.793,585163.083,4511519.6,130.15,0.0,snap_to_road_node
+ManhattanMidtownGrid,A_offices.wkt,40,586084.488,4513228.547,585918.481,4513244.716,51.84,0.0,border_artifact; snap_to_road_node
+ManhattanMidtownGrid,A_meetingspots.wkt,2,585249.909,4511679.881,585047.467,4511789.22,74.66,0.0,border_artifact; snap_to_road_node
+ManhattanMidtownGrid,A_meetingspots.wkt,15,586084.488,4513228.547,585918.481,4513244.716,80.94,0.0,border_artifact; snap_to_road_node

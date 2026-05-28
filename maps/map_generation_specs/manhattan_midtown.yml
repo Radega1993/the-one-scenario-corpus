@@ -1,0 +1,38 @@
+# Manhattan Midtown — map generation spec (reference only; not auto-executed)
+name: ManhattanMidtownGrid
+family: 03_vehicles
+description: Midtown Manhattan vehicle grid benchmark
+
+crs: EPSG:32618
+bbox:
+  south: 40.748
+  north: 40.766
+  west: -73.993
+  east: -73.968
+
+osm:
+  network_type: drive
+  simplify: true
+  largest_component_only: true
+
+export:
+  roads_file: roads.wkt
+  coordinate_precision: 6
+  sim_transform: mirror_y_then_translate_min
+
+routes:
+  - file: A_vehicle_route.wkt
+    criteria: dominant_north_south_axis
+    n_stops: 12-14
+  - file: B_vehicle_route.wkt
+    criteria: dominant_east_west_axis
+    n_stops: 10-12
+
+poi_density:
+  homes: 60
+  offices: 50
+  meetingspots: 30
+
+notes: |
+  Regenerate OSM only if bbox or filters change.
+  Route regeneration via scenarios/setup/regenerate_family_routes.py --family 03_vehicles

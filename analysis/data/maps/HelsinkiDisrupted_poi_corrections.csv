@@ -1,0 +1,10 @@
+map_name,poi_file,point_index,old_raw_x,old_raw_y,new_raw_x,new_raw_y,old_dist_m,new_dist_m,reason
+HelsinkiDisrupted,A_homes.wkt,25,387316.816,6674969.446,387272.859,6674959.422,49.39,0.0,border_artifact; snap_to_road_node
+HelsinkiDisrupted,A_homes.wkt,26,387166.558,6674099.396,387150.867,6674123.059,36.07,0.0,border_artifact; snap_to_road_node
+HelsinkiDisrupted,A_homes.wkt,28,387166.873,6674134.824,387153.26,6674193.483,39.75,0.0,border_artifact; snap_to_road_node
+HelsinkiDisrupted,A_homes.wkt,29,387166.551,6673837.921,387168.939,6673870.924,50.49,0.0,border_artifact; snap_to_road_node
+HelsinkiDisrupted,A_offices.wkt,12,387714.066,6674930.489,387690.255,6674958.756,50.53,0.0,border_artifact; snap_to_road_node
+HelsinkiDisrupted,A_offices.wkt,18,387150.267,6674090.292,387153.26,6674193.483,43.02,0.0,border_artifact; snap_to_road_node
+HelsinkiDisrupted,A_meetingspots.wkt,0,388666.484,6673852.81,388288.541,6674235.374,306.02,0.0,snap_to_road_node
+HelsinkiDisrupted,A_meetingspots.wkt,1,387196.072,6674023.074,387202.555,6674483.75,86.28,0.0,border_artifact; snap_to_road_node
+HelsinkiDisrupted,A_meetingspots.wkt,4,387834.026,6674566.489,387771.166,6674952.652,57.92,0.0,border_artifact; snap_to_road_node

@@ -1,0 +1,2 @@
+route_file,semantic_role,n_stops,resolved_path_length_m,graph_stop_path_length_m,n_unresolved_segments,stops_near_origin,stops_near_border,within_world_size,max_stop_dist_to_road_m,pct_stops_over_50m,spatial_coverage_pct,status,notes
+A_campus_shuttle.wkt,campus shuttle (optional figure asset),10,3908.6,3909.3,0,1,1,True,90.5,20.0,44.64,WARNING,one stop at sim origin (SW bbox corner / campus entrance frame); 1 stop(s) near worldSize border; some stops >50m from path

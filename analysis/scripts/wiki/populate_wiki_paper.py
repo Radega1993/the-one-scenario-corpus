@@ -309,42 +309,118 @@ def _add(name: str, **kwargs) -> None:
 def build_pages() -> None:
     _add(
         "Home.md",
-        title="The ONE Scenario Corpus — Wiki",
-        purpose=(
-            "Entry point for reviewers and thesis readers. Documents the **combined paper benchmark** "
-            f"(**{COMBINED_N}** scenarios: {DIVERSITY_N} `corpus_v1` + 30 `stress_controls`) and the "
-            f"**diversity-validation freeze** ({DIVERSITY_N} scenarios, `corpus_v1` only, sin stress) "
-            "for DTN/opportunistic routing research."
-        ),
-        data_paths="""| Resource | Path |
-|----------|------|
-| Paper benchmark (TP) | `scenarios/corpus_v1/` (540 `.settings`) + `scenarios/stress_controls/` (30) |
-| Structural bases (no TP) | `scenarios/base_scenarios/` (45 `.settings`) |
-| Combined manifest | `scenarios/analysis/data/corpus_v1_combined_manifest.csv` (570 rows) |
-| Canonical diversity metrics | [Resultados actuales (wiki)](Resultados-Actuales) |
-| Paper figures and interpretation | [Figuras-y-Tablas](Figuras-y-Tablas) |
-| Paper tables | [Figuras-y-Tablas](Figuras-y-Tablas) |
-| Repo map | [Repo-Map](Repo-Map) |
-| Pipeline | [Pipeline](Pipeline) |""",
-        interpretation="""This project provides a **controlled synthetic / semi-synthetic benchmark** — **not an empirical mobility trace**.
+        title="The ONE Scenario Corpus",
+        purpose="""A reproducible benchmark corpus of synthetic DTN/OppNet scenarios and traffic profiles for routing research.
 
-| Component | Type |
-|-----------|------|
-| Map geometry (HelsinkiMedium, Manhattan WKT) | Real / map-constrained |
-| Mobility (WDM, RWP, ClusterMovement, …) | Synthetic / semi-synthetic |
-| Traffic (MessageEventGenerator, TP01–TP12) | Synthetic — **experimental factors** |
-| Contacts and deliveries | Simulated (The ONE) |
+This project provides a curated and reproducible corpus of synthetic scenarios for The ONE simulator, designed to evaluate routing protocols in Delay-Tolerant and Opportunistic Networks.
 
-Routing outputs serve **protocol benchmarking**, not claims of real-world deployment realism.
+The corpus separates base mobility scenarios, traffic profiles, stress scenarios, protocol overlays, analysis scripts, and generated metrics/figures/reports.
 
-**Wiki maintenance:** páginas generadas por `scenarios/analysis/scripts/wiki/populate_wiki_paper.py` a partir de plantillas + conteos/métricas en `scenarios/analysis/data/` (regenerar tras cambios en el pipeline).""",
-        current_status=_home_current_status_block(),
-        pending="""- Finalize **message analysis window** policy in the analysis pipeline before protocol comparison.
-- Run protocol comparison experiments on `benchmark_split=main`.
-- Freeze `manifest_revision.csv` into the main manifest for paper submission.""",
+The goal is to support controlled comparison of DTN routing protocols and to provide a foundation for future dynamic routing protocol selection based on scenario features and simulation outcomes.
+
+This is a **synthetic benchmark corpus**, not a collection of real-world traces.""",
+        data_paths="""## Current corpus status
+
+| Component | Description | Status |
+|---|---|---|
+| Base scenarios | Mobility-only scenarios without traffic profiles | Available |
+| Main corpus | Base scenarios combined with Traffic Profiles | Available |
+| Stress set | Extreme scenarios for protocol stress testing | Available |
+| Traffic Profiles | 12 controlled message-generation profiles | Available |
+| Protocol overlays | Epidemic, Prophet, Spray-and-Wait, MaxProp, etc. | Available |
+| Analysis pipeline | Features, correlation, clustering, figures and reports | Available |
+
+## Repository structure
+
+| Path | Purpose |
+|---|---|
+| `base_scenarios/` | Base mobility scenarios without Traffic Profiles |
+| `corpus_v1/` | Main benchmark corpus with Traffic Profiles |
+| `stress_controls/` | Stress scenarios for extreme protocol evaluation |
+| `analysis/` | Scripts for feature extraction, validation, figures and reports |
+| `analysis/data/` | Generated CSV files |
+| `analysis/reports/` | Generated methodological and validation reports |
+| `analysis/figures/` | Generated figures |
+| `analysis/protocol_overlays/` | Routing protocol configurations |""",
+        interpretation="""## Why this corpus exists
+
+Evaluating DTN routing protocols is difficult because results depend strongly on mobility, contact opportunities, message generation, TTL, buffer pressure, and traffic directionality.
+
+This project addresses that problem by providing:
+- a controlled set of scenario families;
+- explicit traffic profiles;
+- reproducible simulation commands;
+- measurable diversity validation;
+- documented benchmark metrics.
+
+## Benchmark structure
+
+```
+Base scenario
+    + Traffic Profile
+    + Routing Protocol Overlay
+    + Report Configuration
+    = Simulation Run
+
+Simulation Run
+    -> MessageStatsReport
+    -> Connectivity reports
+    -> Spatial occupancy reports
+    -> Analysis pipeline
+    -> Figures, tables and benchmark KPIs
+```
+
+Mobility, traffic, protocol, and outcome are separate layers by design.""",
+        current_status="""## Wiki navigation
+
+| Section | Description |
+|---|---|
+| [Installation](Installation) | How to configure The ONE and prepare the environment |
+| [Maps](Maps) | Maps used by each scenario family and how to generate them |
+| [Usage](Usage) | How to run simulations, protocols, reports and analysis scripts |
+| [Scenario Families](Scenario-Families) | Overview of all families and their methodological role |
+| [Traffic Profiles](Traffic-Profiles) | Definition and justification of TP01–TP12 |
+| [Protocol Benchmarking](Protocol-Benchmarking) | How to compare routing protocols using the corpus |
+| [Diversity Validation](Diversity-Validation) | Pearson, Spearman, cosine distance, clustering, silhouette and ablation |
+| [Figures and Tables](Figures-and-Tables) | Final figures and tables used for the paper |
+| [Reproducibility](Reproducibility) | Exact commands, expected outputs and regeneration workflow |
+| [References](References) | Main bibliography and simulator references |
+
+## What you can do
+
+With this repository you can:
+- run a single The ONE scenario;
+- run a complete scenario family;
+- run all scenarios using the same Traffic Profile;
+- compare routing protocols under identical conditions;
+- regenerate all benchmark metrics;
+- reproduce figures and tables used in the paper;
+- inspect scenario diversity using correlation, distance and clustering analyses.""",
+        pending="""## Scientific status
+
+The current benchmark is considered ready for paper writing as a curated synthetic benchmark corpus.
+
+The corpus is not intended to be a collection of real-world traces. Instead, it is a controlled synthetic benchmark designed to cover relevant DTN/OppNet conditions.
+
+Known limitations are documented explicitly, including:
+- synthetic mobility;
+- map-dependent spatial coverage;
+- finite simulation windows;
+- traffic-profile sensitivity;
+- routing-protocol-dependent performance.
+
+## Main references
+
+This project builds on:
+- The ONE simulator for DTN protocol evaluation;
+- Delay-Tolerant and Opportunistic Network evaluation literature;
+- routing protocol evaluation studies;
+- clustering, correlation, and silhouette analysis for corpus validation.
+
+Detailed bibliography: [References](References).""",
         status="draft",
-        links="All numbered pages (01–15); [Resultados-Actuales](Resultados-Actuales); [Figuras-y-Tablas](Figuras-y-Tablas); [Repo-Map](Repo-Map); [Pipeline](Pipeline); [Glossary](Glossary); [References](References)",
-        paper="Abstract, Introduction, Methods overview.",
+        links="This Home page is intentionally compact; we will expand each linked section progressively.",
+        paper="Project landing page for reviewers and new contributors.",
     )
 
     _add(

@@ -3,7 +3,7 @@
 # V1 - Taxi low
 # Few taxis, high mobility (MapRouteMovement as taxi-like).
 # Levers: small group, MapRouteMovement, high speed.
-# Dataset: HelsinkiMedium (map + route)
+# Dataset: ManhattanMidtownGrid (map + route)
 # =========================================================
 
 Scenario.name = V1_TaxiLow_ManhattanMidtownGrid__TP08_HubTarget
@@ -31,7 +31,7 @@ bt0.transmitRange = 8
 # V1 lever: few "taxis" (MapRouteMovement), high speed
 # Diversificar vs V2: velocidad y espera distintas (pocos taxis = más espera)
 Group.movementModel = MapRouteMovement
-Group.routeFile = data/ManhattanMidtownGrid/A_bus.wkt
+Group.routeFile = data/ManhattanMidtownGrid/A_vehicle_route.wkt
 Group.routeType = 1
 Group.speed = 8, 14
 Group.waitTime = 8, 25
@@ -40,7 +40,7 @@ Scenario.nrofHostGroups = 1
 Group1.groupID = t
 Group1.nrofHosts = 5
 Group1.movementModel = MapRouteMovement
-Group1.routeFile = data/ManhattanMidtownGrid/A_bus.wkt
+Group1.routeFile = data/ManhattanMidtownGrid/A_vehicle_route.wkt
 Group1.routeType = 1
 Group1.speed = 8, 14
 Group1.waitTime = 8, 25

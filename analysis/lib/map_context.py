@@ -62,6 +62,7 @@ def infer_map_dataset(kv: dict[str, str]) -> str | None:
     """Return 'HelsinkiMedium', 'Manhattan', or None."""
     needles = (
         ("HelsinkiMedium", "HelsinkiMedium"),
+        ("HelsinkiDowntown", "HelsinkiMedium"),
         ("Manhattan", "Manhattan"),
     )
     path_keys = (
@@ -96,15 +97,34 @@ def roads_wkt_path(dataset: str | None, repo_root: Path = REPO_ROOT) -> Path | N
     return None
 
 
-def underlay_from_settings(kv: dict[str, str], repo_root: Path = REPO_ROOT) -> UnderlaySpec | None:
-    fn = kv.get("GUI.UnderlayImage.fileName")
-    if not fn:
+def roads_wkt_from_settings(kv: dict[str, str], repo_root: Path = REPO_ROOT) -> Path | None:
+    """Prefer explicit MapBasedMovement.mapFile1 when available."""
+    raw = kv.get("MapBasedMovement.mapFile1")
+    if not raw:
         return None
-    p = Path(fn)
+    p = Path(raw)
     if not p.is_absolute():
         p = repo_root / p
-    if not p.is_file():
-        return None
+    return p if p.is_file() else None
+
+
+def underlay_from_settings(kv: dict[str, str], repo_root: Path = REPO_ROOT) -> UnderlaySpec | None:
+    fn = kv.get("GUI.UnderlayImage.fileName")
+    if fn:
+        p = Path(fn)
+        if not p.is_absolute():
+            p = repo_root / p
+        if not p.is_file():
+            return None
+    else:
+        # Fallback for corpora that do not declare GUI.UnderlayImage.* in scenario settings.
+        dataset = infer_map_dataset(kv)
+        if dataset == "HelsinkiMedium":
+            p = repo_root / "data" / "helsinki_underlay.png"
+            if not p.is_file():
+                return None
+        else:
+            return None
     off = _parse_csv_floats(kv.get("GUI.UnderlayImage.offset", "0, 0"))
     ox = off[0] if len(off) > 0 else 0.0
     oy = off[1] if len(off) > 1 else 0.0
@@ -190,7 +210,9 @@ def build_map_context(
     wx, wy = world_size_from_settings(kv) if kv else None
     if world_x is not None and world_y is not None:
         wx, wy = world_x, world_y
-    roads_path = roads_wkt_path(dataset, repo_root)
+    roads_path = roads_wkt_from_settings(kv, repo_root) if kv else None
+    if roads_path is None:
+        roads_path = roads_wkt_path(dataset, repo_root)
     roads_sim = None
     if load_roads and roads_path and roads_path.is_file():
         key = str(roads_path.resolve())

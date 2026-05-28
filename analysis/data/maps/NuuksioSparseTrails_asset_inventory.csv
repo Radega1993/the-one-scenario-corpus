@@ -1,0 +1,6 @@
+asset,wkt_exists,data_exists,legacy_bus_or_vehicle_wkt_on_disk,wkt_size_bytes,parseable,n_vertices_or_points
+roads.wkt,True,True,False,74378,yes,2338
+A_homes.wkt,True,True,False,380,yes,10
+A_offices.wkt,True,True,False,190,yes,5
+A_meetingspots.wkt,True,True,False,304,yes,8
+A_ranger_patrol.wkt,True,True,False,163,yes,5

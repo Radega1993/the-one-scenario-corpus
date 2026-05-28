@@ -3,7 +3,7 @@
 # R4 - Park rangers
 # 2–3 mules on long routes (MapRouteMovement).
 # Levers: few hosts MapRouteMovement, long route (WKT).
-# Dataset: HelsinkiMedium (use bus route as "trail")
+# Dataset: NuuksioSparseTrails (ranger patrol route on trails)
 # =========================================================
 
 Scenario.name = R4_ParkRangers_NuuksioSparseTrails__TP03_ManySmall
@@ -11,7 +11,7 @@ Scenario.simulateConnections = true
 Scenario.updateInterval = 0.1
 Scenario.endTime = 43200
 MovementModel.rngSeed = 32
-# Diversificación estructural vs D5 (mantener grupo Rural, mismo mapa Helsinki)
+# Diversificación estructural vs D5 (mantener grupo Rural, mapa NuuksioSparseTrails)
 MovementModel.worldSize = 2848, 2945
 
 MapBasedMovement.nrofMapFiles = 1
@@ -26,7 +26,7 @@ bt0.transmitRange = 10
 
 # R4 lever: 3 mules (rangers) on long route
 Group.movementModel = MapRouteMovement
-Group.routeFile = data/NuuksioSparseTrails/A_bus.wkt
+Group.routeFile = data/NuuksioSparseTrails/A_ranger_patrol.wkt
 Group.routeType = 1
 Group.speed = 1.2, 2.0
 Group.waitTime = 60, 300
@@ -35,7 +35,7 @@ Scenario.nrofHostGroups = 1
 Group1.groupID = g
 Group1.nrofHosts = 3
 Group1.movementModel = MapRouteMovement
-Group1.routeFile = data/NuuksioSparseTrails/A_bus.wkt
+Group1.routeFile = data/NuuksioSparseTrails/A_ranger_patrol.wkt
 Group1.routeType = 1
 Group1.speed = 1.2, 2.0
 Group1.waitTime = 60, 300

@@ -1,0 +1,3 @@
+route_file,semantic_role,n_stops,resolved_path_length_m,graph_stop_path_length_m,n_unresolved_segments,stops_near_origin,stops_near_border,within_world_size,max_stop_dist_to_road_m,pct_stops_over_40m,spatial_coverage_pct,mean_separation_from_other_route_m,min_dist_to_any_poi_m,status,notes
+A_community_route.wkt,primary community axis (residential–commercial),7,2145.5,2145.5,0,0,0,True,0.0,0.0,13.23,298.5,15.2,PASS,
+B_community_route.wkt,secondary axis (meeting / civic loop),7,184.5,184.5,0,0,0,True,0.0,0.0,0.24,34.8,15.2,PASS,low separation from other community route

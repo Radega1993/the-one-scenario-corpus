@@ -1,0 +1,3 @@
+route_file,action,n_stops,semantic_role
+A_community_route.wkt,regenerated,7,primary community axis (residential–commercial)
+B_community_route.wkt,regenerated,7,secondary axis (meeting / civic loop)

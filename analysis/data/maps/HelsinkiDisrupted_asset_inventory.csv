@@ -1,0 +1,7 @@
+asset,wkt_exists,data_exists,legacy_bus_or_vehicle_wkt_on_disk,wkt_size_bytes,parseable,n_vertices_or_points
+roads.wkt,True,True,False,849484,yes,24677
+A_homes.wkt,True,True,False,1520,yes,40
+A_offices.wkt,True,True,False,950,yes,25
+A_meetingspots.wkt,True,True,False,570,yes,15
+A_emergency_route.wkt,True,True,False,253,yes,8
+B_mule_route.wkt,True,True,False,253,yes,8

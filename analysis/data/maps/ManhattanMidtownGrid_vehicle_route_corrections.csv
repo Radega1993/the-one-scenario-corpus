@@ -1,0 +1,3 @@
+route_file,action,n_stops,semantic_role
+A_vehicle_route.wkt,regenerated,14,longitudinal (N-S dominant)
+B_vehicle_route.wkt,regenerated,12,transversal (E-W dominant)

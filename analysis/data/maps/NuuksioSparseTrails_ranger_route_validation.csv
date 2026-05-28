@@ -1,0 +1,2 @@
+route_file,semantic_role,n_stops,resolved_path_length_m,graph_stop_path_length_m,n_unresolved_segments,stops_near_origin,stops_near_border,within_world_size,max_stop_dist_to_trail_m,pct_stops_over_50m,spatial_coverage_pct,min_dist_to_any_poi_m,status,notes
+A_ranger_patrol.wkt,ranger patrol on sparse trails,5,6010.3,6010.3,0,0,1,True,0.0,0.0,57.05,14.6,WARNING,1 stop(s) near border

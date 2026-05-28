@@ -1,0 +1,21 @@
+map_name,poi_file,point_index,old_raw_x,old_raw_y,new_raw_x,new_raw_y,old_dist_m,new_dist_m,reason
+HelsinkiDowntown,A_homes.wkt,16,384858.842,6671693.963,384860.438,6671699.519,3.78,0.0,border_artifact; snap_to_road_node
+HelsinkiDowntown,A_homes.wkt,38,385064.278,6673007.505,385064.278,6673007.505,13.49,0.0,border_artifact; snap_to_road_node
+HelsinkiDowntown,A_offices.wkt,11,386120.691,6672347.035,386117.961,6672453.158,81.14,0.0,snap_to_road_node
+HelsinkiDowntown,A_offices.wkt,17,386181.52,6672418.964,386134.549,6672458.125,109.79,0.0,snap_to_road_node
+HelsinkiDowntown,A_offices.wkt,23,385399.286,6671969.857,385352.628,6672021.421,97.89,0.0,snap_to_road_node
+HelsinkiDowntown,A_offices.wkt,26,384932.411,6672131.776,384979.363,6672291.727,121.36,0.0,border_artifact; snap_to_road_node
+HelsinkiDowntown,A_offices.wkt,30,385593.043,6672359.456,385630.662,6672514.368,111.44,0.0,snap_to_road_node
+HelsinkiDowntown,A_offices.wkt,31,385597.649,6672359.891,385630.662,6672514.368,106.82,0.0,snap_to_road_node
+HelsinkiDowntown,A_offices.wkt,33,386289.974,6672875.55,386200.797,6672911.207,108.19,0.0,border_artifact; snap_to_road_node
+HelsinkiDowntown,A_offices.wkt,35,385401.87,6671965.652,385352.628,6672021.421,93.14,0.0,snap_to_road_node
+HelsinkiDowntown,A_offices.wkt,36,384981.15,6671808.541,385003.768,6671911.139,105.39,0.0,snap_to_road_node
+HelsinkiDowntown,A_meetingspots.wkt,0,385981.759,6672341.473,385925.196,6672839.81,115.92,0.0,snap_to_road_node
+HelsinkiDowntown,A_meetingspots.wkt,2,385604.549,6672113.621,385391.724,6672494.633,91.74,0.0,snap_to_road_node
+HelsinkiDowntown,A_meetingspots.wkt,3,385233.292,6672618.683,385101.1,6673014.385,4.6,0.0,border_artifact; snap_to_road_node
+HelsinkiDowntown,A_meetingspots.wkt,8,384980.743,6672105.807,384906.908,6672431.514,90.64,0.0,border_artifact; snap_to_road_node
+HelsinkiDowntown,A_meetingspots.wkt,11,385995.705,6672343.401,385932.738,6672834.393,106.28,0.0,snap_to_road_node
+HelsinkiDowntown,A_meetingspots.wkt,17,385986.86,6672318.947,385932.738,6672834.393,131.68,0.0,snap_to_road_node
+HelsinkiDowntown,A_meetingspots.wkt,20,385629.611,6672115.301,385513.096,6672635.156,115.28,0.0,snap_to_road_node
+HelsinkiDowntown,A_meetingspots.wkt,22,385857.624,6671991.832,385649.691,6672378.382,87.34,0.0,snap_to_road_node
+HelsinkiDowntown,A_meetingspots.wkt,24,385855.849,6672160.489,385643.414,6672549.174,90.85,0.0,snap_to_road_node

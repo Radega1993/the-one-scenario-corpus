@@ -1,0 +1,13 @@
+map_name,route_file,family,n_vertices,euclidean_length_m,graph_path_length_m,chord_vs_graph_ratio,mean_vertex_dist_m,p95_vertex_dist_m,max_vertex_dist_m,pct_vertices_over_threshold,threshold_m,max_chord_segment_m,crossing_suspect,within_world_size,world_size_x,world_size_y,status,notes
+HelsinkiDowntown,A_bus.wkt,01_urban,12,4405.3,5577.3,0.79,24.99,64.42,64.42,16.67,50.0,1107.8,False,True,2093,1838,WARNING,
+HelsinkiDowntown,B_bus.wkt,01_urban,11,3675.5,4993.3,0.736,18.92,48.86,64.42,9.09,50.0,835.9,False,True,2093,1838,WARNING,
+HelsinkiDowntown,C_bus.wkt,01_urban,8,3853.7,4866.4,0.792,24.48,55.29,64.42,12.5,50.0,1114.1,False,True,2093,1838,WARNING,
+KumpulaCampus,A_campus_shuttle.wkt,02_campus,10,1952.9,2474.9,0.789,13.92,56.93,90.5,10.0,50.0,529.3,False,True,1524,1416,WARNING,
+ManhattanMidtownGrid,A_vehicle_route.wkt,03_vehicles,12,6121.1,8235.4,0.743,22.43,75.68,146.45,8.33,50.0,1170.2,False,True,2500,2366,WARNING,
+ManhattanMidtownGrid,B_vehicle_route.wkt,03_vehicles,12,6964.3,7985.4,0.872,17.96,46.65,46.66,0.0,50.0,1710.4,False,True,2500,2366,PASS,
+NuuksioSparseTrails,A_ranger_patrol.wkt,04_rural,8,5310.5,9101.8,0.583,53.49,98.74,116.71,0.0,150.0,1518.0,False,True,2848,2945,PASS,
+HelsinkiDisrupted,A_emergency_route.wkt,05_disaster,8,4132.9,5946.7,0.695,20.88,70.26,97.53,12.5,50.0,1427.2,False,True,2067,2206,WARNING,
+HelsinkiDisrupted,B_mule_route.wkt,05_disaster,8,3995.4,6321.8,0.632,21.97,71.97,97.53,12.5,50.0,1062.3,False,True,2067,2206,WARNING,
+KallioCommunityCompact,A_community_route.wkt,06_social,12,3594.4,4875.3,0.737,16.0,49.08,61.81,8.33,50.0,1075.6,False,True,1458,1529,WARNING,
+KallioCommunityCompact,B_community_route.wkt,06_social,8,2875.1,3554.9,0.809,17.66,47.76,55.22,12.5,50.0,681.2,False,True,1458,1529,WARNING,
+ControlCompactGrid,A_control_route.wkt,07_stress_controls,10,1350.0,1350.0,1.0,0.0,0.0,0.0,0.0,100.0,150.0,False,True,2000,1700,PASS,

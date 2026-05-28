@@ -1,0 +1,19 @@
+{
+  "name": "ControlCompactGrid",
+  "family": "07_stress_controls",
+  "description": "Synthetic rectangular grid (12x10 blocks, 150 m spacing).",
+  "crs": "local",
+  "source": "synthetic",
+  "world_size": [
+    2000,
+    1700
+  ],
+  "bbox_m": [
+    100,
+    100,
+    1900,
+    1600
+  ],
+  "n_road_segments": 24,
+  "n_nodes": 143
+}

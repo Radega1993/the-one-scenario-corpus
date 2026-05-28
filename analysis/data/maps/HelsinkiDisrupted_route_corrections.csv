@@ -1,0 +1,3 @@
+route_file,action,n_stops,semantic_role
+A_emergency_route.wkt,regenerated,8,emergency response / evacuation
+B_mule_route.wkt,regenerated,6,mule / backbone bridge route

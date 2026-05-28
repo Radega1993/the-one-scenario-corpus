@@ -1,0 +1,9 @@
+map_name,poi_file,point_index,old_raw_x,old_raw_y,new_raw_x,new_raw_y,old_dist_m,new_dist_m,reason
+KallioCommunityCompact,A_homes.wkt,43,386452.256,6674212.254,386402.704,6674214.75,15.79,0.0,border_artifact; snap_to_road_node
+KallioCommunityCompact,A_homes.wkt,44,386409.336,6674211.88,386347.319,6674223.278,10.64,0.0,border_artifact; snap_to_road_node
+KallioCommunityCompact,A_homes.wkt,60,385669.008,6673628.368,385669.008,6673628.368,55.84,0.0,border_artifact; snap_to_road_node
+KallioCommunityCompact,A_offices.wkt,1,385950.422,6674115.811,385952.543,6674147.885,117.24,0.0,snap_to_road_node
+KallioCommunityCompact,A_offices.wkt,7,386122.018,6674149.529,386013.84,6674218.514,11.46,0.0,border_artifact; snap_to_road_node
+KallioCommunityCompact,A_offices.wkt,16,385720.712,6673773.691,385648.417,6673833.632,37.96,0.0,border_artifact; snap_to_road_node
+KallioCommunityCompact,A_meetingspots.wkt,14,385853.231,6673820.564,385674.896,6673857.612,73.41,0.0,border_artifact; snap_to_road_node
+KallioCommunityCompact,A_meetingspots.wkt,29,386137.151,6674149.148,385952.543,6674147.885,97.62,0.0,border_artifact; snap_to_road_node

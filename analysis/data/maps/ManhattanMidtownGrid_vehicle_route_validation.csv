@@ -1,0 +1,3 @@
+route_file,semantic_role,n_stops,resolved_path_length_m,graph_stop_path_length_m,n_unresolved_segments,stops_near_origin,stops_near_border,within_world_size,max_stop_dist_to_road_m,pct_stops_over_50m,spatial_coverage_pct,mean_separation_from_other_route_m,status,notes
+A_vehicle_route.wkt,longitudinal (N-S dominant),14,8947.1,8947.1,0,1,1,True,146.45,14.29,58.49,149.6,WARNING,one stop at sim origin (bbox SW corner frame); 1 stop(s) near border; some stops >50m from road
+B_vehicle_route.wkt,transversal (E-W dominant),12,7371.4,7371.4,0,1,1,True,146.45,8.33,60.56,110.4,WARNING,one stop at sim origin (bbox SW corner frame); 1 stop(s) near border; some stops >50m from road

@@ -1,0 +1,7 @@
+map_name,poi_file,point_index,old_raw_x,old_raw_y,new_raw_x,new_raw_y,old_dist_m,new_dist_m,reason
+KumpulaCampus,A_homes.wkt,20,387609.039,6676688.284,387609.039,6676688.284,19.75,0.0,border_artifact; snap_to_road_node
+KumpulaCampus,A_homes.wkt,29,386822.97,6676093.066,386822.97,6676093.066,19.75,0.0,border_artifact; snap_to_road_node
+KumpulaCampus,A_offices.wkt,5,386950.087,6676701.686,386950.087,6676701.686,32.15,0.0,border_artifact; snap_to_road_node
+KumpulaCampus,A_offices.wkt,9,386849.406,6676344.452,386849.406,6676344.452,32.13,0.0,border_artifact; snap_to_road_node
+KumpulaCampus,A_meetingspots.wkt,2,387609.039,6676688.284,387609.039,6676688.284,19.75,0.0,border_artifact; snap_to_road_node
+KumpulaCampus,A_meetingspots.wkt,7,386822.97,6676093.066,386822.97,6676093.066,19.75,0.0,border_artifact; snap_to_road_node

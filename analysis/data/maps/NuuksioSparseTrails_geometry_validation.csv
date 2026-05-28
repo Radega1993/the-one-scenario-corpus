@@ -1,0 +1,6 @@
+asset,asset_type,n_elements,empty,within_world_size,status
+A_homes.wkt,poi,10,False,True,PASS
+A_offices.wkt,poi,5,False,True,PASS
+A_meetingspots.wkt,poi,8,False,True,PASS
+A_ranger_patrol.wkt,route,5,False,True,PASS
+roads.wkt,roads,2338,False,True,PASS

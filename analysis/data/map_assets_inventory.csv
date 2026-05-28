@@ -1,0 +1,8 @@
+map_name,family,map_source,roads_file,n_road_lines,n_road_vertices,road_bbox_min_x,road_bbox_min_y,road_bbox_max_x,road_bbox_max_y,world_size_x,world_size_y,bus_route_files,n_bus_routes,poi_files,n_homes,n_offices,n_meetingspots,status,notes
+HelsinkiDowntown,01_urban,osm,scenarios/maps/wkt/HelsinkiDowntown/roads.wkt,575,4367,0.0,0.0,1692.7,1438.2,2093,1838,A_bus.wkt;B_bus.wkt;C_bus.wkt,3,A_homes.wkt;A_offices.wkt;A_meetingspots.wkt,80,40,25,PASS,
+KumpulaCampus,02_campus,osm,scenarios/maps/wkt/KumpulaCampus/roads.wkt,4059,12364,0.0,0.0,1127.3,1016.0,1524,1416,A_campus_shuttle.wkt,1,A_homes.wkt;A_offices.wkt;A_meetingspots.wkt,30,20,15,PASS,
+ManhattanMidtownGrid,03_vehicles,osm,scenarios/maps/wkt/ManhattanMidtownGrid/roads.wkt,568,3077,0.0,0.0,2099.4,1966.0,2500,2366,A_vehicle_route.wkt;B_vehicle_route.wkt,2,A_homes.wkt;A_offices.wkt;A_meetingspots.wkt,60,50,30,PASS,
+NuuksioSparseTrails,04_rural,osm,scenarios/maps/wkt/NuuksioSparseTrails/roads.wkt,326,2338,0.0,0.0,2449.9,2544.1,2848,2945,A_ranger_patrol.wkt,1,A_homes.wkt;A_offices.wkt;A_meetingspots.wkt,10,5,8,PASS,
+HelsinkiDisrupted,05_disaster,osm,scenarios/maps/wkt/HelsinkiDisrupted/roads.wkt,8398,24677,0.0,0.0,1690.0,1853.3,2067,2206,A_emergency_route.wkt;B_mule_route.wkt,2,A_homes.wkt;A_offices.wkt;A_meetingspots.wkt,40,25,15,PASS,
+KallioCommunityCompact,06_social,osm,scenarios/maps/wkt/KallioCommunityCompact/roads.wkt,7204,19540,0.0,0.0,1103.2,1128.1,1458,1529,A_community_route.wkt;B_community_route.wkt,2,A_homes.wkt;A_offices.wkt;A_meetingspots.wkt,70,20,30,PASS,
+ControlCompactGrid,07_stress_controls,synthetic,scenarios/maps/wkt/ControlCompactGrid/roads.wkt,24,286,0.0,0.0,1800.0,1500.0,2000,1700,A_control_route.wkt,1,A_homes.wkt;A_offices.wkt;A_meetingspots.wkt,50,30,20,PASS,

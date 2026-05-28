@@ -1,0 +1,13 @@
+map_name,family,current_file,recommended_file,semantic_label,on_disk,in_settings,action_required
+HelsinkiDowntown,01_urban,A_bus.wkt,A_bus.wkt,urban_bus,yes,182,regenerate_only
+HelsinkiDowntown,01_urban,B_bus.wkt,B_bus.wkt,urban_bus,yes,0,optional_asset
+HelsinkiDowntown,01_urban,C_bus.wkt,C_bus.wkt,urban_bus,yes,0,optional_asset
+KumpulaCampus,02_campus,A_bus.wkt,A_campus_shuttle.wkt,campus_shuttle,yes,0,optional_asset
+ManhattanMidtownGrid,03_vehicles,A_bus.wkt,A_vehicle_route.wkt,vehicle_route,yes,91,rename_and_regenerate
+ManhattanMidtownGrid,03_vehicles,B_bus.wkt,B_vehicle_route.wkt,vehicle_route,yes,13,rename_and_regenerate
+NuuksioSparseTrails,04_rural,A_bus.wkt,A_ranger_patrol.wkt,ranger_patrol,yes,13,rename_and_regenerate
+HelsinkiDisrupted,05_disaster,A_bus.wkt,A_emergency_route.wkt,emergency_route,yes,13,rename_and_regenerate
+HelsinkiDisrupted,05_disaster,B_bus.wkt,B_mule_route.wkt,mule_route,yes,0,optional_asset
+KallioCommunityCompact,06_social,A_bus.wkt,A_community_route.wkt,community_route,yes,0,optional_asset
+KallioCommunityCompact,06_social,B_bus.wkt,B_community_route.wkt,community_route,yes,0,optional_asset
+ControlCompactGrid,07_stress_controls,A_bus.wkt,A_control_route.wkt,control_route,yes,0,optional_asset

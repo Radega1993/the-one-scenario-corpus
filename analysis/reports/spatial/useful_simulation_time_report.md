@@ -1,6 +1,6 @@
 # Tiempo útil de simulación — informe metodológico
 
-Generado: 2026-05-20 12:41 UTC
+Generado: 2026-05-28 07:55 UTC
 
 ## 1. Fuentes de datos auditadas
 
@@ -47,45 +47,36 @@ Interpretación:
 
 | Clase | Criterio | Escenarios base (n) |
 |-------|----------|---------------------|
-| `disconnected` | `total_encounters = 0` | 4 |
-| `marginal_connectivity` | `<15%` nodos contactados | 2 |
-| `sufficient_activity` | ≥100 encuentros y ≥30% nodos | 29 |
-| `late_exploration` | `t_90` > 90% `end_time` | 2 |
-| `early_saturation_long_tail` | `t_90` < 40% `end_time` y cola >50% | 1 |
-| `moderate_activity` | resto | 22 |
-
-Bases `late_exploration`: `T2_FewHugeMsgs_LowRate`, `T6_UniformSources_RandomFromTo`.
-
-### Escenarios desconectados o casi desconectados
-
-- `R11_SpeedExtremeLow`
-- `R1_Rural_RandomWaypoint`
-- `U2_SparseSuburb_Manhattan`
-- `U4_CongestionHotspot_Manhattan`
+| `disconnected` | `total_encounters = 0` | 0 |
+| `marginal_connectivity` | `<15%` nodos contactados | 0 |
+| `sufficient_activity` | ≥100 encuentros y ≥30% nodos | 43 |
+| `late_exploration` | `t_90` > 90% `end_time` | 0 |
+| `early_saturation_long_tail` | `t_90` < 40% `end_time` y cola >50% | 0 |
+| `moderate_activity` | resto | 2 |
 
 ### Escenarios con actividad suficiente (muestra)
 
-- `C1_Campus_ClassChange`: encounters=4219, pct_nodes=100.0%, useful_ratio=1.00
-- `C2_ExamDay_LongStays`: encounters=842, pct_nodes=100.0%, useful_ratio=1.00
-- `C3_Hackathon_24h`: encounters=550, pct_nodes=100.0%, useful_ratio=1.00
-- `C4_Stadium_IngressEgress`: encounters=932, pct_nodes=100.0%, useful_ratio=1.00
-- `C5_Library_Quiet`: encounters=229, pct_nodes=100.0%, useful_ratio=1.00
-- `D1_ShelterHotspots_Clusters`: encounters=12476, pct_nodes=100.0%, useful_ratio=1.00
-- `D2_PartitionedCity_MuleBridge`: encounters=1778, pct_nodes=100.0%, useful_ratio=1.00
-- `D8_InfrastructureReturns_BackboneLinks`: encounters=3683, pct_nodes=100.0%, useful_ratio=1.00
-- `R12_SpeedExtremeHigh`: encounters=1844, pct_nodes=100.0%, useful_ratio=1.00
-- `R2_VillagesTrails_ThreeClusters`: encounters=271, pct_nodes=100.0%, useful_ratio=1.00
-- `R9_ExtremeRange_200m`: encounters=594, pct_nodes=100.0%, useful_ratio=1.00
-- `S1_StrongCommunities_SeparateClusters`: encounters=8089, pct_nodes=100.0%, useful_ratio=1.00
-- `S2_WeakCommunities_HighMixing`: encounters=625, pct_nodes=100.0%, useful_ratio=1.00
-- `S3_PeriodicMeetings_RegularRhythm`: encounters=112, pct_nodes=96.0%, useful_ratio=1.00
-- `S5_TwoLayer_StudentsStaff`: encounters=308, pct_nodes=100.0%, useful_ratio=1.00
-- … (+14 más en CSV)
+- `C1_Campus_ClassChange`: encounters=6037, pct_nodes=100.0%, useful_ratio=1.00
+- `C2_ExamDay_LongStays`: encounters=1002, pct_nodes=100.0%, useful_ratio=1.00
+- `C3_Hackathon_24h`: encounters=717, pct_nodes=100.0%, useful_ratio=1.00
+- `C4_Stadium_IngressEgress`: encounters=2280, pct_nodes=100.0%, useful_ratio=1.00
+- `C5_Library_Quiet`: encounters=279, pct_nodes=100.0%, useful_ratio=0.99
+- `C6_EmergencyDrill_Evacuation`: encounters=5813, pct_nodes=100.0%, useful_ratio=1.00
+- `D1_ShelterHotspots_Clusters`: encounters=49583, pct_nodes=100.0%, useful_ratio=1.00
+- `D2_PartitionedCity_MuleBridge`: encounters=9553, pct_nodes=100.0%, useful_ratio=1.00
+- `D3_Aftershock_ErraticMobility`: encounters=2693, pct_nodes=100.0%, useful_ratio=1.00
+- `D4_MedicalTriage_TwoClasses`: encounters=2416, pct_nodes=100.0%, useful_ratio=1.00
+- `D5_UAVMule_FastRoute_HelsinkiDisrupted`: encounters=49561, pct_nodes=100.0%, useful_ratio=1.00
+- `D6_ShortTtlCritical_5to10min`: encounters=3665, pct_nodes=100.0%, useful_ratio=1.00
+- `D7_HighLoad_TrafficStorm`: encounters=6397, pct_nodes=100.0%, useful_ratio=1.00
+- `D8_InfrastructureReturns_BackboneLinks`: encounters=18822, pct_nodes=100.0%, useful_ratio=1.00
+- `D9_Critical_1minTTL`: encounters=1870, pct_nodes=100.0%, useful_ratio=1.00
+- … (+28 más en CSV)
 
 ## 4. Agregados (60 bases, deduplicado por movilidad)
 
-- Media `useful_time_ratio`: **0.882** (mediana 0.994)
-- Media `tail_time_ratio` (con contacto): **0.055**
+- Media `useful_time_ratio`: **0.996** (mediana 1.000)
+- Media `tail_time_ratio` (con contacto): **0.004**
 
 **Nota:** la conectividad depende del escenario base (movilidad), no del perfil TP. En el CSV hay 720 filas (una por simulación); las métricas de contacto son **idénticas por base** salvo variación numérica entre corridas. Para el paper, reportar por **escenario base**.
 
@@ -114,63 +105,48 @@ Bases `late_exploration`: `T2_FewHugeMsgs_LowRate`, `T6_UniformSources_RandomFro
 
 | Base | end_time | encounters | % nodos | t_90 (s) | useful_ratio | class |
 |------|----------|------------|--------:|---------:|-------------:|-------|
-| `C1_Campus_ClassChange` | 43200 | 4219 | 100.0 | 746 | 1.00 | sufficient_activity |
-| `C2_ExamDay_LongStays` | 43200 | 842 | 100.0 | 2096 | 1.00 | sufficient_activity |
-| `C3_Hackathon_24h` | 86400 | 550 | 100.0 | 9169 | 1.00 | sufficient_activity |
-| `C4_Stadium_IngressEgress` | 10800 | 932 | 100.0 | 1307 | 1.00 | sufficient_activity |
-| `C5_Library_Quiet` | 43200 | 229 | 100.0 | 7352 | 1.00 | sufficient_activity |
-| `C6_EmergencyDrill_Evacuation` | 7200 | 3570 | 100.0 | 0 | 0.02 | early_saturation_long_tail |
-| `D1_ShelterHotspots_Clusters` | 43200 | 12476 | 100.0 | 498 | 1.00 | sufficient_activity |
-| `D2_PartitionedCity_MuleBridge` | 43200 | 1778 | 100.0 | 2296 | 1.00 | sufficient_activity |
-| `D3_Aftershock_ErraticMobility` | 43200 | 46 | 79.6 | — | 1.00 | moderate_activity |
-| `D4_MedicalTriage_TwoClasses` | 43200 | 66 | 86.0 | — | 0.99 | moderate_activity |
-| `D5_UAVMule_FastRoute_HelsinkiMedium` | 43200 | 424 | 9.7 | — | 1.00 | marginal_connectivity |
-| `D6_ShortTtlCritical_5to10min` | 14400 | 24 | 55.6 | — | 1.00 | moderate_activity |
-| `D7_HighLoad_TrafficStorm` | 14400 | 37 | 67.1 | — | 0.98 | moderate_activity |
-| `D8_InfrastructureReturns_BackboneLinks` | 43200 | 3683 | 100.0 | 1179 | 1.00 | sufficient_activity |
-| `D9_Critical_1minTTL` | 43200 | 36 | 75.0 | — | 0.99 | moderate_activity |
-| `R10_TinyRange_5m` | 43200 | 5 | 28.1 | — | 0.87 | moderate_activity |
-| `R11_SpeedExtremeLow` | 43200 | 0 | 0.0 | — | 0.00 | disconnected |
-| `R12_SpeedExtremeHigh` | 43200 | 1844 | 100.0 | 942 | 1.00 | sufficient_activity |
-| `R1_Rural_RandomWaypoint` | 43200 | 0 | 0.0 | — | 0.00 | disconnected |
-| `R2_VillagesTrails_ThreeClusters` | 43200 | 271 | 100.0 | 8344 | 1.00 | sufficient_activity |
-| `R3_WildlifeTracking` | 43200 | 1 | 10.0 | — | 0.87 | marginal_connectivity |
-| `R4_ParkRangers_HelsinkiMedium` | 43200 | 43 | 100.0 | 22628 | 0.95 | moderate_activity |
-| `R5_MountainRescue` | 14400 | 3 | 19.2 | — | 0.79 | moderate_activity |
-| `R6_SparseLongRange` | 43200 | 18 | 94.4 | 37343 | 0.87 | moderate_activity |
-| `R7_SparseTinyBuffer` | 43200 | 14 | 47.4 | — | 0.96 | moderate_activity |
-| `R8_IntermittentPower` | 43200 | 14 | 48.6 | — | 0.72 | moderate_activity |
-| `R9_ExtremeRange_200m` | 43200 | 594 | 100.0 | 4070 | 1.00 | sufficient_activity |
-| `S1_StrongCommunities_SeparateClusters` | 43200 | 8089 | 100.0 | 567 | 1.00 | sufficient_activity |
-| `S2_WeakCommunities_HighMixing` | 43200 | 625 | 100.0 | 6389 | 1.00 | sufficient_activity |
-| `S3_PeriodicMeetings_RegularRhythm` | 43200 | 112 | 96.0 | 20378 | 1.00 | sufficient_activity |
-| `S4_RandomMixing_NoHotspots` | 43200 | 69 | 91.7 | 30042 | 0.99 | moderate_activity |
-| `S5_TwoLayer_StudentsStaff` | 43200 | 308 | 100.0 | 11847 | 1.00 | sufficient_activity |
-| `S6_FamilyGroups_SmallPersistent` | 43200 | 4120 | 100.0 | 1567 | 1.00 | sufficient_activity |
-| `T10_HighRateLowSpeed_Congestion` | 43200 | 39 | 87.5 | — | 0.93 | moderate_activity |
-| `T11_TTL_1min` | 43200 | 305 | 100.0 | 3770 | 0.99 | sufficient_activity |
-| `T12_TTL_Infinite_Buffer200M` | 43200 | 35 | 83.3 | — | 0.97 | moderate_activity |
-| `T13_Buffer_256k` | 43200 | 9 | 43.3 | — | 0.90 | moderate_activity |
-| `T14_Buffer_200M` | 43200 | 110 | 100.0 | 16091 | 1.00 | sufficient_activity |
-| `T15_TransmitSpeed_256k` | 43200 | 210 | 100.0 | 9043 | 1.00 | sufficient_activity |
-| `T1_ManySmallMsgs_HighRate` | 43200 | 48 | 94.4 | 35799 | 0.87 | moderate_activity |
-| `T2_FewHugeMsgs_LowRate` | 43200 | 50 | 93.3 | 40368 | 0.98 | late_exploration |
-| `T3_MixedBimodal_SmallAndLarge` | 43200 | 41 | 88.9 | — | 0.98 | moderate_activity |
-| `T4_VeryShortTtl_5to10min` | 28800 | 11 | 40.5 | — | 0.60 | moderate_activity |
-| `T5_VeryLongTtl_6to24h` | 43200 | 60 | 92.5 | 36306 | 0.97 | moderate_activity |
-| `T6_UniformSources_RandomFromTo` | 43200 | 33 | 90.5 | 40588 | 0.94 | late_exploration |
-| `T7_TargetedToHubs_FewDestinations` | 43200 | 43 | 86.7 | — | 0.99 | moderate_activity |
-| `T8_BurstTraffic_TimeWindows` | 43200 | 45 | 84.4 | — | 0.98 | moderate_activity |
-| `T9_BufferStress_SmallBufferHighTraffic` | 43200 | 32 | 70.8 | — | 0.94 | moderate_activity |
-| `U1_CBD_Commuting_HelsinkiMedium` | 43200 | 2116 | 85.2 | — | 0.88 | sufficient_activity |
-| `U2_SparseSuburb_Manhattan` | 43200 | 0 | 0.0 | — | 0.00 | disconnected |
-| `U3_MicroMobility_HelsinkiMedium` | 43200 | 7058 | 78.8 | — | 0.99 | sufficient_activity |
-| `U4_CongestionHotspot_Manhattan` | 43200 | 0 | 0.0 | — | 0.00 | disconnected |
-| `U5_WorkdayShort_HelsinkiMedium` | 43200 | 1218 | 80.2 | — | 1.00 | sufficient_activity |
-| `U6_OfficeWaitHeavyTail_HelsinkiMedium` | 43200 | 1291 | 70.4 | — | 1.00 | sufficient_activity |
-| `U7_HighTimeVariance_HelsinkiMedium` | 43200 | 2371 | 76.5 | — | 1.00 | sufficient_activity |
-| `V1_TaxiLow_HelsinkiMedium` | 43200 | 449 | 100.0 | 770 | 1.00 | sufficient_activity |
-| `V2_TaxiHigh_HelsinkiMedium` | 43200 | 19748 | 100.0 | 73 | 1.00 | sufficient_activity |
-| `V3_BusOnlyCarriers_HelsinkiMedium` | 43200 | 562 | 88.9 | — | 1.00 | sufficient_activity |
-| `V4_CarOwnership_0_HelsinkiMedium` | 43200 | 3200 | 86.4 | — | 1.00 | sufficient_activity |
-| `V5_CarOwnership_100_HelsinkiMedium` | 43200 | 2084 | 79.3 | — | 1.00 | sufficient_activity |
+| `C1_Campus_ClassChange` | 43200 | 6037 | 100.0 | 916 | 1.00 | sufficient_activity |
+| `C2_ExamDay_LongStays` | 43200 | 1002 | 100.0 | 2512 | 1.00 | sufficient_activity |
+| `C3_Hackathon_24h` | 86400 | 717 | 100.0 | 5388 | 1.00 | sufficient_activity |
+| `C4_Stadium_IngressEgress` | 10800 | 2280 | 100.0 | 613 | 1.00 | sufficient_activity |
+| `C5_Library_Quiet` | 43200 | 279 | 100.0 | 11901 | 0.99 | sufficient_activity |
+| `C6_EmergencyDrill_Evacuation` | 7200 | 5813 | 100.0 | 156 | 1.00 | sufficient_activity |
+| `D1_ShelterHotspots_Clusters` | 43200 | 49583 | 100.0 | 123 | 1.00 | sufficient_activity |
+| `D2_PartitionedCity_MuleBridge` | 43200 | 9553 | 100.0 | 457 | 1.00 | sufficient_activity |
+| `D3_Aftershock_ErraticMobility` | 43200 | 2693 | 100.0 | 1299 | 1.00 | sufficient_activity |
+| `D4_MedicalTriage_TwoClasses` | 43200 | 2416 | 100.0 | 1360 | 1.00 | sufficient_activity |
+| `D5_UAVMule_FastRoute_HelsinkiDisrupted` | 43200 | 49561 | 100.0 | 135 | 1.00 | sufficient_activity |
+| `D6_ShortTtlCritical_5to10min` | 14400 | 3665 | 100.0 | 412 | 1.00 | sufficient_activity |
+| `D7_HighLoad_TrafficStorm` | 14400 | 6397 | 100.0 | 309 | 1.00 | sufficient_activity |
+| `D8_InfrastructureReturns_BackboneLinks` | 43200 | 18822 | 100.0 | 145 | 1.00 | sufficient_activity |
+| `D9_Critical_1minTTL` | 43200 | 1870 | 100.0 | 1144 | 1.00 | sufficient_activity |
+| `R10_TinyRange_5m` | 43200 | 678 | 100.0 | 2891 | 1.00 | sufficient_activity |
+| `R11_SpeedExtremeLow` | 43200 | 1441 | 100.0 | 816 | 1.00 | sufficient_activity |
+| `R12_SpeedExtremeHigh` | 43200 | 35026 | 100.0 | 120 | 1.00 | sufficient_activity |
+| `R1_Rural_RandomWaypoint` | 43200 | 2037 | 100.0 | 648 | 1.00 | sufficient_activity |
+| `R2_VillagesTrails_ThreeClusters` | 43200 | 697 | 100.0 | 2702 | 1.00 | sufficient_activity |
+| `R3_WildlifeTracking` | 43200 | 92 | 100.0 | 10898 | 1.00 | moderate_activity |
+| `R4_ParkRangers_NuuksioSparseTrails` | 43200 | 30 | 100.0 | 13381 | 0.98 | moderate_activity |
+| `R5_MountainRescue` | 14400 | 314 | 100.0 | 1263 | 0.98 | sufficient_activity |
+| `R6_SparseLongRange` | 43200 | 435 | 100.0 | 1283 | 1.00 | sufficient_activity |
+| `R7_SparseTinyBuffer` | 43200 | 1835 | 100.0 | 1214 | 1.00 | sufficient_activity |
+| `R8_IntermittentPower` | 43200 | 808 | 100.0 | 1261 | 0.92 | sufficient_activity |
+| `R9_ExtremeRange_200m` | 43200 | 4118 | 100.0 | 357 | 1.00 | sufficient_activity |
+| `S1_StrongCommunities_SeparateClusters` | 43200 | 111833 | 100.0 | 0 | 1.00 | sufficient_activity |
+| `S2_WeakCommunities_HighMixing` | 43200 | 13234 | 100.0 | 319 | 1.00 | sufficient_activity |
+| `S3_PeriodicMeetings_RegularRhythm` | 43200 | 2816 | 100.0 | 1109 | 1.00 | sufficient_activity |
+| `S4_RandomMixing_NoHotspots` | 43200 | 3674 | 100.0 | 917 | 1.00 | sufficient_activity |
+| `S5_TwoLayer_StudentsStaff` | 43200 | 18285 | 100.0 | 401 | 1.00 | sufficient_activity |
+| `S6_FamilyGroups_SmallPersistent` | 43200 | 13700 | 100.0 | 338 | 1.00 | sufficient_activity |
+| `U1_CBD_Commuting_HelsinkiDowntown` | 43200 | 5269 | 88.9 | — | 1.00 | sufficient_activity |
+| `U2_SparseSuburb_HelsinkiDowntown` | 43200 | 870 | 75.0 | — | 1.00 | sufficient_activity |
+| `U3_MicroMobility_HelsinkiDowntown` | 43200 | 12380 | 84.1 | — | 1.00 | sufficient_activity |
+| `U4_CongestionHotspot_HelsinkiDowntown` | 43200 | 3442 | 79.0 | — | 0.99 | sufficient_activity |
+| `U5_WorkdayShort_HelsinkiDowntown` | 43200 | 2144 | 74.1 | — | 1.00 | sufficient_activity |
+| `U6_OfficeWaitHeavyTail_HelsinkiDowntown` | 43200 | 2474 | 75.3 | — | 1.00 | sufficient_activity |
+| `U7_HighTimeVariance_HelsinkiDowntown` | 43200 | 3877 | 82.7 | — | 1.00 | sufficient_activity |
+| `V1_TaxiLow_ManhattanMidtownGrid` | 43200 | 494 | 100.0 | 780 | 1.00 | sufficient_activity |
+| `V2_TaxiHigh_ManhattanMidtownGrid` | 43200 | 25968 | 100.0 | 134 | 1.00 | sufficient_activity |
+| `V3_BusOnlyCarriers_ManhattanMidtownGrid` | 43200 | 1034 | 100.0 | 1190 | 1.00 | sufficient_activity |
+| `V4_CarOwnership_0_ManhattanMidtownGrid` | 43200 | 3753 | 86.4 | — | 0.99 | sufficient_activity |
+| `V5_CarOwnership_100_ManhattanMidtownGrid` | 43200 | 2722 | 87.8 | — | 1.00 | sufficient_activity |

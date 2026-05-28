@@ -867,7 +867,10 @@ def menu_figures_guide() -> None:
         print("Aviso: aún no existe figures/README.md\n")
     if _ask_yes("¿Regenerar figuras agregadas (run_figures_aggregated.py)?", default=True):
         corpus = _ask("Corpus", "corpus_v1")
-        block = _ask_yes("¿Incluir heatmap bloque 720×720 (--include-block-heatmap)?", default=False)
+        block = _ask_yes(
+            "¿Incluir heatmap de bloques N×N (--include-block-heatmap, puede ser pesado)?",
+            default=False,
+        )
         cmd = [
             str(ANALYSIS_DIR / "run_figures_aggregated.py"),
             "--corpus",

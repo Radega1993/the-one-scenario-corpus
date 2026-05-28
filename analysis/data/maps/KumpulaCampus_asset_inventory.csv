@@ -1,0 +1,6 @@
+asset,wkt_exists,data_exists,wkt_size_bytes,parseable,n_vertices_or_points
+roads.wkt,True,True,423687,yes,12364
+A_homes.wkt,True,True,1140,yes,30
+A_offices.wkt,True,True,760,yes,20
+A_meetingspots.wkt,True,True,570,yes,15
+A_campus_shuttle.wkt,True,True,313,yes,10

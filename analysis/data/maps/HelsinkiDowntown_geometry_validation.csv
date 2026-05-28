@@ -1,0 +1,8 @@
+asset,asset_type,n_elements,empty,within_world_size,status
+A_homes.wkt,poi,80,False,True,PASS
+A_offices.wkt,poi,40,False,True,PASS
+A_meetingspots.wkt,poi,25,False,True,PASS
+A_bus.wkt,route,12,False,True,PASS
+B_bus.wkt,route,11,False,True,PASS
+C_bus.wkt,route,8,False,True,PASS
+roads.wkt,roads,4367,False,True,PASS
