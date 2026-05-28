@@ -63,10 +63,6 @@ Features utilizados para correlación y diversidad, y settings no utilizados con
 | `Events2.class` | DESCARTADO: Tipo/identificador; no comparable. |
 | `Events2.hosts` | DESCARTADO: Redundante con N. |
 | `Events2.prefix` | DESCARTADO: Identificador. |
-| `Group.LinearMovement.endLocation` | DESCARTADO: Coordenadas; dependen del mapa. |
-| `Group.LinearMovement.initLocType` | DESCARTADO: Solo 1 escenario; sin variabilidad. |
-| `Group.LinearMovement.startLocation` | DESCARTADO: Coordenadas; dependen del mapa. |
-| `Group.LinearMovement.targetType` | DESCARTADO: Solo 1 escenario; sin variabilidad. |
 | `Group.busControlSystemNr` | DESCARTADO: Referencia interna al sistema de buses. |
 | `Group.eveningActivityControlSystemNr` | DESCARTADO: Referencia interna. |
 | `Group.homeLocationsFile` | DESCARTADO: Ruta de fichero; no comparable entre mapas. |
@@ -80,10 +76,6 @@ Features utilizados para correlación y diversidad, y settings no utilizados con
 | `Group.router` | DESCARTADO: Mismo en todo el corpus (EpidemicRouter). |
 | `Group.shoppingControlSystemNr` | DESCARTADO: Referencia interna. |
 | `Group.shoppingWaitTimeParetoCoeff` | DESCARTADO: Ya usamos shoppingWaitTime_mean. |
-| `Group1.LinearMovement.endLocation` | DESCARTADO: Ver ../docs/features_decision.md (variante de grupo o misma categoría que Group/Group1). |
-| `Group1.LinearMovement.initLocType` | DESCARTADO: Ver ../docs/features_decision.md (variante de grupo o misma categoría que Group/Group1). |
-| `Group1.LinearMovement.startLocation` | DESCARTADO: Ver ../docs/features_decision.md (variante de grupo o misma categoría que Group/Group1). |
-| `Group1.LinearMovement.targetType` | DESCARTADO: Ver ../docs/features_decision.md (variante de grupo o misma categoría que Group/Group1). |
 | `Group1.busControlSystemNr` | DESCARTADO: Referencia interna. |
 | `Group1.clusterCenter` | DESCARTADO: Ver ../docs/features_decision.md (variante de grupo o misma categoría que Group/Group1). |
 | `Group1.groupID` | DESCARTADO: Identificador de grupo. |

@@ -1,0 +1,27 @@
+section_number,section_title,path,exists,complete,migrated_from,has_required_sections,has_internal_links,has_assets,legacy_terms_count,broken_links_count,notes
+1,Research goal and scope,01-research-goal-and-scope/README.md,yes,yes,,yes,yes,no,2,0,brief
+2,Benchmark methodology,02-benchmark-methodology/README.md,yes,yes,,yes,yes,no,0,0,brief
+3,Installation,03-installation/README.md,yes,yes,03-Installation.md,yes,yes,yes,2,2,migrated
+4,Repository structure,04-repository-structure/README.md,yes,yes,,yes,yes,no,0,0,brief
+5,Maps and map generation,05-maps-and-map-generation/README.md,yes,yes,02-Maps-and-Map-Generation.md,yes,yes,yes,6,11,migrated
+6,Scenario families,06-scenario-families/README.md,yes,yes,05-Scenario-Families.md,yes,yes,no,0,0,migrated
+7,Traffic profiles,07-traffic-profiles/README.md,yes,yes,,yes,yes,no,1,0,full
+8,Running simulations,08-running-simulations/README.md,yes,yes,,yes,yes,no,1,0,full
+9,Protocol benchmarking,09-protocol-benchmarking/README.md,yes,yes,,yes,yes,no,0,0,index
+10,Output metrics and KPIs,10-output-metrics-and-kpis/README.md,yes,yes,,yes,yes,no,0,0,index
+11,Message analysis window policy,11-message-analysis-window-policy/README.md,yes,yes,,yes,yes,no,0,0,index
+12,Spatial occupancy and useful sim time,12-spatial-occupancy-and-useful-simulation-time/README.md,yes,yes,,yes,yes,no,0,0,index
+13,Corpus diversity validation,13-corpus-diversity-validation/README.md,yes,yes,,yes,yes,no,0,0,index
+14,Figures and tables,14-figures-and-tables/README.md,yes,yes,,yes,yes,yes,0,0,index
+15,Reproducibility checklist,15-reproducibility-checklist/README.md,yes,yes,,yes,yes,no,0,0,index
+16,Known limitations,16-known-limitations/README.md,yes,yes,,yes,yes,no,2,0,index
+17,References,17-references/README.md,yes,yes,References.md,yes,yes,no,0,0,migrated
+18,Changelog and freeze status,18-changelog-freeze-status/README.md,yes,yes,,yes,yes,no,2,0,index
+6,Family: 01-urban,06-scenario-families/01-urban.md,yes,yes,01 urban legacy,yes,yes,yes,0,1,family page
+6,Family: 02-campus,06-scenario-families/02-campus.md,yes,yes,02 campus legacy,yes,yes,yes,0,1,family page
+6,Family: 03-vehicles,06-scenario-families/03-vehicles.md,yes,yes,03 vehicles legacy,yes,yes,yes,0,1,family page
+6,Family: 04-rural,06-scenario-families/04-rural.md,yes,yes,04 rural legacy,yes,yes,yes,0,1,family page
+6,Family: 05-disaster,06-scenario-families/05-disaster.md,yes,yes,05 disaster legacy,yes,yes,yes,0,1,family page
+6,Family: 06-social,06-scenario-families/06-social.md,yes,yes,06 social legacy,yes,yes,yes,0,1,family page
+6,Family: 07-stress-scenarios,06-scenario-families/07-stress-scenarios.md,yes,yes,07 stress scenarios legacy,yes,yes,yes,0,1,family page
+SUMMARY,Totals,,yes,yes,,yes,yes,yes (7/7 PNG),16,13,backup: _backup_before_final_wiki_structure_*; legacy folder: _legacy_pre_final_structure

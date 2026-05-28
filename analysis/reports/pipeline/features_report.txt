@@ -211,18 +211,6 @@ Justificación metodológica completa: docs/features_decision.md
   Events2.prefix
     Motivo: DESCARTADO: Identificador.
 
-  Group.LinearMovement.endLocation
-    Motivo: DESCARTADO: Coordenadas; dependen del mapa.
-
-  Group.LinearMovement.initLocType
-    Motivo: DESCARTADO: Solo 1 escenario; sin variabilidad.
-
-  Group.LinearMovement.startLocation
-    Motivo: DESCARTADO: Coordenadas; dependen del mapa.
-
-  Group.LinearMovement.targetType
-    Motivo: DESCARTADO: Solo 1 escenario; sin variabilidad.
-
   Group.busControlSystemNr
     Motivo: DESCARTADO: Referencia interna al sistema de buses.
 
@@ -261,18 +249,6 @@ Justificación metodológica completa: docs/features_decision.md
 
   Group.shoppingWaitTimeParetoCoeff
     Motivo: DESCARTADO: Ya usamos shoppingWaitTime_mean.
-
-  Group1.LinearMovement.endLocation
-    Motivo: DESCARTADO: Ver ../docs/features_decision.md (variante de grupo o misma categoría que Group/Group1).
-
-  Group1.LinearMovement.initLocType
-    Motivo: DESCARTADO: Ver ../docs/features_decision.md (variante de grupo o misma categoría que Group/Group1).
-
-  Group1.LinearMovement.startLocation
-    Motivo: DESCARTADO: Ver ../docs/features_decision.md (variante de grupo o misma categoría que Group/Group1).
-
-  Group1.LinearMovement.targetType
-    Motivo: DESCARTADO: Ver ../docs/features_decision.md (variante de grupo o misma categoría que Group/Group1).
 
   Group1.busControlSystemNr
     Motivo: DESCARTADO: Referencia interna.

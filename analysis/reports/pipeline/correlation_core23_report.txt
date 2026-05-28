@@ -13,7 +13,7 @@ Objetivo investigación: diversidad y resultados se evalúan con las 23 core. Pr
 
 Pares con |r| >= 0.7 (máximo 30):
   U1_CBD_Commuting_HelsinkiDowntown__TP06_OneToMany <-> U1_CBD_Commuting_HelsinkiDowntown__TP11_ManyToOne  r = 1.0000
-  U2_SparseSuburb_HelsinkiDowntown__TP06_OneToMany <-> U2_SparseSuburb_HelsinkiDowntown__TP11_ManyToOne  r = 1.0000
+  U2_SparseUrban_HelsinkiDowntown__TP06_OneToMany <-> U2_SparseUrban_HelsinkiDowntown__TP11_ManyToOne  r = 1.0000
   U3_MicroMobility_HelsinkiDowntown__TP06_OneToMany <-> U3_MicroMobility_HelsinkiDowntown__TP11_ManyToOne  r = 1.0000
   U4_CongestionHotspot_HelsinkiDowntown__TP06_OneToMany <-> U4_CongestionHotspot_HelsinkiDowntown__TP11_ManyToOne  r = 1.0000
   U5_WorkdayShort_HelsinkiDowntown__TP06_OneToMany <-> U5_WorkdayShort_HelsinkiDowntown__TP11_ManyToOne  r = 1.0000
@@ -22,7 +22,7 @@ Pares con |r| >= 0.7 (máximo 30):
   C1_Campus_ClassChange__TP06_OneToMany <-> C1_Campus_ClassChange__TP11_ManyToOne  r = 1.0000
   C2_ExamDay_LongStays__TP06_OneToMany <-> C2_ExamDay_LongStays__TP11_ManyToOne  r = 1.0000
   C3_Hackathon_24h__TP06_OneToMany <-> C3_Hackathon_24h__TP11_ManyToOne  r = 1.0000
-  C4_Stadium_IngressEgress__TP06_OneToMany <-> C4_Stadium_IngressEgress__TP11_ManyToOne  r = 1.0000
+  C4_CampusEvent_IngressEgress__TP06_OneToMany <-> C4_CampusEvent_IngressEgress__TP11_ManyToOne  r = 1.0000
   C5_Library_Quiet__TP06_OneToMany <-> C5_Library_Quiet__TP11_ManyToOne  r = 1.0000
   C6_EmergencyDrill_Evacuation__TP06_OneToMany <-> C6_EmergencyDrill_Evacuation__TP11_ManyToOne  r = 1.0000
   V1_TaxiLow_ManhattanMidtownGrid__TP06_OneToMany <-> V1_TaxiLow_ManhattanMidtownGrid__TP11_ManyToOne  r = 1.0000
@@ -33,7 +33,7 @@ Pares con |r| >= 0.7 (máximo 30):
   R10_TinyRange_5m__TP06_OneToMany <-> R10_TinyRange_5m__TP11_ManyToOne  r = 1.0000
   R11_SpeedExtremeLow__TP06_OneToMany <-> R11_SpeedExtremeLow__TP11_ManyToOne  r = 1.0000
   R12_SpeedExtremeHigh__TP06_OneToMany <-> R12_SpeedExtremeHigh__TP11_ManyToOne  r = 1.0000
-  R1_Rural_RandomWaypoint__TP06_OneToMany <-> R1_Rural_RandomWaypoint__TP11_ManyToOne  r = 1.0000
+  R1_Rural_SparseSPMM__TP06_OneToMany <-> R1_Rural_SparseSPMM__TP11_ManyToOne  r = 1.0000
   R2_VillagesTrails_ThreeClusters__TP06_OneToMany <-> R2_VillagesTrails_ThreeClusters__TP11_ManyToOne  r = 1.0000
   R3_WildlifeTracking__TP06_OneToMany <-> R3_WildlifeTracking__TP11_ManyToOne  r = 1.0000
   R4_ParkRangers_NuuksioSparseTrails__TP06_OneToMany <-> R4_ParkRangers_NuuksioSparseTrails__TP11_ManyToOne  r = 1.0000

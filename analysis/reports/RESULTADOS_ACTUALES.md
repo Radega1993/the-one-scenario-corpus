@@ -11,7 +11,7 @@
 |---------|----------:|----------|-------------------:|--------:|----------------------:|
 | **Reduced** | 17 | 1.0 | 7425 | 5.1% | 0.3355 |
 | **Core** | 23 | 1.0 | 5029 | 3.5% | 0.3045 |
-| **Extended (full)** | 46 | 1.0 | 3378 | 2.3% | 0.2354 |
+| **Extended (full)** | 46 | 1.0 | 3346 | 2.3% | 0.2375 |
 
 **Feature–feature (core 23):** `mm_WDM ↔ mm_Bus = 0.9354` (dependencia residual documentada).
 
@@ -40,8 +40,8 @@ Espacio **principal** para diversidad y narrativa del paper.
 | Métrica | Valor |
 |---|---|
 | max |r| | 1.0 |
-| Pares con |r| ≥ 0.7 | 3378 (2.3%) |
-| Silhouette (Ward k=7) | 0.2354 |
+| Pares con |r| ≥ 0.7 | 3346 (2.3%) |
+| Silhouette (Ward k=7) | 0.2375 |
 
 ---
 ## Ablación y validación de correlación
@@ -50,7 +50,7 @@ Detalle numérico (fuente: `data/ablation_metrics.csv`):
 
 - **reduced_17:** max|r|=1.0000, pares≥=0.7=7425 (5.1%), silhouette=0.3355
 - **core_23:** max|r|=1.0000, pares≥=0.7=5029 (3.5%), silhouette=0.3045
-- **full_46:** max|r|=1.0000, pares≥=0.7=3378 (2.3%), silhouette=0.2354
+- **full_46:** max|r|=1.0000, pares≥=0.7=3346 (2.3%), silhouette=0.2375
 
 **Interpretación:** core-23 equilibra interpretabilidad y separación (silhouette > full-46, menos pares |r|≥0.7 que reduced-17).
 

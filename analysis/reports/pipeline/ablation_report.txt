@@ -4,6 +4,6 @@ Escenarios: n = 540. Umbral |r| = 0.7. Clusters Ward k = 7.
 Métricas por conjunto:
   reduced_17 (d=17): max|r|=1.0000, mean|r|=0.2765, pares |r|>=0.7=7425 (5.1%), silhouette=0.3355
   core_23 (d=23): max|r|=1.0000, mean|r|=0.2341, pares |r|>=0.7=5029 (3.5%), silhouette=0.3045
-  full_46 (d=46): max|r|=1.0000, mean|r|=0.2210, pares |r|>=0.7=3378 (2.3%), silhouette=0.2354
+  full_46 (d=46): max|r|=1.0000, mean|r|=0.2208, pares |r|>=0.7=3346 (2.3%), silhouette=0.2375
 
 Objetivo: el core 23 ofrece mejor compromiso expresividad / redundancia / interpretabilidad.

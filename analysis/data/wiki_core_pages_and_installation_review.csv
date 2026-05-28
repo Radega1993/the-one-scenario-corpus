@@ -1,0 +1,12 @@
+page,exists,complete,updated,has_required_sections,has_map_image,broken_links_count,legacy_terms_found,notes
+Home.md,yes,yes,yes,yes,n/a,0,corpus_v2 (retired note only),Counts 45/540/30/615; link 03-Installation fixed
+02-Maps-and-Map-Generation.md,yes,yes,yes,yes,n/a,0,HelsinkiMedium (legacy section),4-col summary table; red-marker legend; Installation link
+03-Installation.md,yes,yes,yes,yes,n/a,0,HelsinkiMedium corpus_v2 (legacy notes),Created; smoke test and run_all_scenarios flags verified
+05-Scenario-Families.md,yes,yes,yes,yes,n/a,0,none,Main purpose and corpus role columns; constant vs varies
+06-Urban-Family.md,yes,yes,yes,yes,yes,0,none,Role; Assigned map; TP expansion; paper notes
+07-Campus-Family.md,yes,yes,yes,yes,yes,0,none,Full template
+08-Vehicles-Family.md,yes,yes,yes,yes,yes,0,A_bus retired (documented),Full template
+09-Rural-Family.md,yes,yes,yes,yes,yes,0,RandomWaypoint retired (documented),Full template
+10-Disaster-Family.md,yes,yes,yes,yes,yes,0,none,Full template
+11-Social-Family.md,yes,yes,yes,yes,yes,0,none,Full template
+SUMMARY,yes,yes,yes,yes,7/7 PNGs,0,all legacy labelled,Backup _backup_before_installation_page_20260528_192425

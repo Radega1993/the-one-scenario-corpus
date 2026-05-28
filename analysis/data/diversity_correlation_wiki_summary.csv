@@ -1,0 +1,53 @@
+metric_group,metric_name,feature_space,value,source_file,notes
+corpus,n_scenarios,all,540,corpus_v1/,6 environmental families x 12 TPs; stress_controls excluded
+corpus,n_environmental_families,all,6,corpus_v1/,01_urban .. 06_social
+corpus,stress_controls_excluded,all,yes,run_analysis.py --no-stress,30 stress/control scenarios analyzed separately
+corpus,total_pairs,all,145530,"C(540,2)",
+ablation,n_features,Reduced-17,17,ablation_metrics.csv,
+ablation,max_abs_r,Reduced-17,1.0,ablation_metrics.csv,
+ablation,mean_abs_r,Reduced-17,0.2765,ablation_metrics.csv,
+ablation,pairs_r_ge_0.7,Reduced-17,7425,ablation_metrics.csv,
+ablation,pct_pairs_r_ge_0.7,Reduced-17,5.1,ablation_metrics.csv,%
+ablation,silhouette_ward_k7,Reduced-17,0.3355,ablation_metrics.csv,
+ablation,n_features,Core-23,23,ablation_metrics.csv,
+ablation,max_abs_r,Core-23,1.0,ablation_metrics.csv,
+ablation,mean_abs_r,Core-23,0.2341,ablation_metrics.csv,
+ablation,pairs_r_ge_0.7,Core-23,5029,ablation_metrics.csv,
+ablation,pct_pairs_r_ge_0.7,Core-23,3.46,ablation_metrics.csv,%
+ablation,silhouette_ward_k7,Core-23,0.3045,ablation_metrics.csv,
+ablation,n_features,Extended-46,46,ablation_metrics.csv,
+ablation,max_abs_r,Extended-46,1.0,ablation_metrics.csv,
+ablation,mean_abs_r,Extended-46,0.2208,ablation_metrics.csv,
+ablation,pairs_r_ge_0.7,Extended-46,3346,ablation_metrics.csv,
+ablation,pct_pairs_r_ge_0.7,Extended-46,2.3,ablation_metrics.csv,%
+ablation,silhouette_ward_k7,Extended-46,0.2375,ablation_metrics.csv,
+pearson,max_abs_r,Extended-46,1.0000,pipeline/correlation_report.txt,
+pearson,mean_abs_r,Extended-46,0.2208,pipeline/correlation_report.txt,Pearson block
+pearson,pairs_r_ge_0.7,Extended-46,3346,pipeline/correlation_report.txt,
+spearman,max_abs_r,Extended-46,1.0000,pipeline/correlation_report.txt,
+spearman,mean_abs_r,Extended-46,0.2906,pipeline/correlation_report.txt,
+spearman,pairs_r_ge_0.7,Extended-46,7452,pipeline/correlation_report.txt,
+distance,cosine_min,Extended-46,-0.0000,pipeline/correlation_report.txt,
+distance,cosine_mean,Extended-46,0.9974,pipeline/correlation_report.txt,
+distance,euclidean_min,Extended-46,0.0000,pipeline/correlation_report.txt,
+distance,euclidean_mean,Extended-46,7.2440,pipeline/correlation_report.txt,
+clustering,silhouette_ward_k7,Extended-46,0.2375,pipeline/correlation_report.txt,
+clustering,n_clusters,Extended-46,7,pipeline/clustering_report.txt,Ward hierarchical
+clustering,pairs_cos_dist_lt_0.05,Extended-46,477,pipeline/correlation_report.txt,near-duplicate pairs
+pearson,max_abs_r,Core-23,1.0000,pipeline/correlation_core23_report.txt,
+pearson,mean_abs_r,Core-23,0.2341,pipeline/correlation_core23_report.txt,
+pearson,pairs_r_ge_0.7,Core-23,5029,pipeline/correlation_core23_report.txt,
+distance,cosine_min,Core-23,-0.0000,pipeline/correlation_core23_report.txt,
+clustering,silhouette_ward_k7,Core-23,0.3045,pipeline/correlation_core23_report.txt,
+feature_feature,pairs_r_ge_0.7,Core-23,4,feature_feature_correlation_core.csv,off-diagonal pairs
+feature_feature,pairs_r_ge_0.9,Core-23,1,feature_feature_correlation_core.csv,
+feature_feature,max_correlated_pair,Core-23,mm_WDM <-> mm_Bus r=0.9354,feature_feature_correlation_core.csv,documented residual dependency
+clustering,cluster_1_count,Extended-46,101,cluster_assignments.csv,Ward k=7 cluster 1
+clustering,cluster_2_count,Extended-46,24,cluster_assignments.csv,Ward k=7 cluster 2
+clustering,cluster_3_count,Extended-46,55,cluster_assignments.csv,Ward k=7 cluster 3
+clustering,cluster_4_count,Extended-46,56,cluster_assignments.csv,Ward k=7 cluster 4
+clustering,cluster_5_count,Extended-46,52,cluster_assignments.csv,Ward k=7 cluster 5
+clustering,cluster_6_count,Extended-46,12,cluster_assignments.csv,Ward k=7 cluster 6
+clustering,cluster_7_count,Extended-46,240,cluster_assignments.csv,Ward k=7 cluster 7
+interpretation,pearson_spearman_story,Extended-46,Spearman flags more high-similarity pairs than Pearson,pipeline/correlation_report.txt,Pearson mean 0.22 vs Spearman 0.29; pairs |r|>=0.7: 3346 vs 7452
+interpretation,criterion_95pct_below_0.7,Extended-46,True (97.7%),pipeline/correlation_report.txt,Pearson threshold criterion met

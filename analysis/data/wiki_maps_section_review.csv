@@ -1,0 +1,10 @@
+page,status,map_image_present,family_consistency,legacy_terms_found,broken_links,notes
+02-Maps-and-Map-Generation.md,updated,yes,yes,"corpus_v2 (retired label only); HelsinkiMedium (legacy section)",none,Added Benchmark map policy and Map assignment by family table; gallery intro; fixed R1 smoke path
+05-Scenario-Families.md,rewritten,n/a,yes,none (fixed seven families),none,Six environmental + one stress index with base/TP counts
+06-Urban-Family.md,updated,yes,yes,none,none,Full template; A_bus valid for urban
+07-Campus-Family.md,updated,yes,yes,none,none,Full template; shuttle optional asset only
+08-Vehicles-Family.md,updated,yes,yes,A_bus retired (documented),none,Full template; vehicle_route semantic names
+09-Rural-Family.md,updated,yes,yes,RandomWaypoint retired (documented),none,Full template; R1 SparseSPMM
+10-Disaster-Family.md,updated,yes,yes,none,none,Full template; methodological note retained
+11-Social-Family.md,updated,yes,yes,none,none,Full template; ClusterMovement note under Movement models
+SUMMARY,complete,7/7 PNGs present,yes,all legacy labelled or removed,0 broken image links,Backup: _backup_before_maps_doc_update_20260528_183217

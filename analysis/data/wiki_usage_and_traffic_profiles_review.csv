@@ -1,0 +1,7 @@
+page,exists,updated,complete,broken_links_count,missing_images_count,legacy_corpus_v2_mentions,legacy_helsinki_medium_mentions,unchecked_commands_count,notes
+04-Usage.md,yes,yes,yes,12,0,0,0,0,new page
+06-Traffic-Profiles.md,yes,yes,yes,4,0,0,0,0,new page
+Home.md,yes,yes,yes,26,0,1,0,0,links updated
+03-Installation.md,yes,yes,yes,5,0,1,1,0,links updated
+05-Scenario-Families.md,yes,yes,yes,4,0,0,0,0,links updated
+SUMMARY,yes,yes,yes,51,0,2,1,0,backup: _backup_before_usage_tp_pages_*; validated 2026-05-28

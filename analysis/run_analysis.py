@@ -3174,9 +3174,9 @@ def run_phase_results_actuales(
             return {
                 "n_features": int(m.group(1)),
                 "max_abs_r": float(m.group(2)),
-                "pairs_ge": int(m.group(5)),
-                "pct": float(m.group(6)),
-                "silhouette": float(m.group(7)),
+                "pairs_ge": int(m.group(4)),
+                "pct": float(m.group(5)),
+                "silhouette": float(m.group(6)),
             }
 
         for set_name in ("reduced_17", "core_23", "full_46"):
