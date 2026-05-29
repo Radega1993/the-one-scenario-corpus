@@ -209,9 +209,10 @@ def render_map(
         PAPER_FIG_OUT.mkdir(parents=True, exist_ok=True)
         paper_path = PAPER_FIG_OUT / f"{map_name}_paper_ready.png"
         fig.savefig(paper_path, bbox_inches="tight")
-        WIKI_OUT.mkdir(parents=True, exist_ok=True)
-        fig.savefig(WIKI_OUT / f"{map_name}.png", bbox_inches="tight")
-        print(f"Wrote {paper_path} and wiki asset")
+        for out_dir in (WIKI_OUT, FIG_OUT):
+            out_dir.mkdir(parents=True, exist_ok=True)
+            fig.savefig(out_dir / f"{map_name}.png", bbox_inches="tight")
+        print(f"Wrote {paper_path}, wiki asset, and {FIG_OUT / f'{map_name}.png'}")
     else:
         for out_dir in (WIKI_OUT, FIG_OUT):
             out_dir.mkdir(parents=True, exist_ok=True)

@@ -55,6 +55,9 @@ _OPTIONAL_CSV: dict[str, tuple[str, list[str] | None]] = {
     "spatial": (
         "spatial_occupancy_metrics.csv",
         [
+            "coverage_road_cells_pct",
+            "coverage_world_pct",
+            "coverage_map_bbox_pct",
             "final_coverage_pct",
             "cells_visited_pct",
             "time_to_50pct",
@@ -285,6 +288,14 @@ def pipeline_status() -> dict[str, bool]:
     }
 
 
+def _primary_coverage_column(df: pd.DataFrame) -> str | None:
+    """Prefer road-cell coverage; fall back to world / legacy columns."""
+    for col in ("coverage_road_cells_pct", "coverage_world_pct", "final_coverage_pct"):
+        if col in df.columns:
+            return col
+    return None
+
+
 def _num_range(
     series: pd.Series,
     lo: float | None,
@@ -336,8 +347,9 @@ def apply_global_filters(
         out = out[_num_range(out["delivery_ratio"], delivery_min, delivery_max)]
     if "drop_ratio" in out.columns and (drop_min is not None or drop_max is not None):
         out = out[_num_range(out["drop_ratio"], drop_min, drop_max)]
-    if "final_coverage_pct" in out.columns and (coverage_min is not None or coverage_max is not None):
-        out = out[_num_range(out["final_coverage_pct"], coverage_min, coverage_max)]
+    cov_col = _primary_coverage_column(out)
+    if cov_col and (coverage_min is not None or coverage_max is not None):
+        out = out[_num_range(out[cov_col], coverage_min, coverage_max)]
     if bench_statuses and "bench_validation_status" in out.columns:
         out = out[out["bench_validation_status"].astype(str).isin(bench_statuses)]
     if policy_statuses and "policy_status" in out.columns:
@@ -425,10 +437,11 @@ def render_sidebar_filters(master: pd.DataFrame) -> pd.DataFrame:
                 500.0,
                 max_hi=500.0,
             )
-        if "final_coverage_pct" in master.columns:
+        cov_col = _primary_coverage_column(master)
+        if cov_col:
             cov_min, cov_max = _slider_range(
-                "Cobertura espacial %",
-                master["final_coverage_pct"],
+                "Cobertura road cells %",
+                master[cov_col],
                 0.0,
                 100.0,
             )

@@ -28,14 +28,27 @@ The ONE resuelve claves de informes como **`NombreClaseSimple.setting`** (y secu
 
 No uses `Report.report8.gridSize`; no se resuelve en el `Settings` del informe.
 
+## Métricas de cobertura (denominadores)
+
+| Columna CSV | Denominador | Uso |
+|-------------|-------------|-----|
+| `coverage_world_pct` / `final_coverage_pct` | `gridSize²` sobre `worldSize` (Java) | Transparencia / comparación con informe |
+| `coverage_map_bbox_pct` | Celdas con centro dentro del bbox de `roads.wkt` | Sin márgenes blancos del panel |
+| **`coverage_road_cells_pct`** | Celdas que intersectan la red rasterizada | **Métrica principal (paper)** |
+| `coverage_road_buffer_{10,15,25}m_pct` | Red + buffer morfológico | Sensibilidad (material suplementario) |
+
+Definición de celda visitada: `visit_count > 0` en la rejilla final. Implementación: `lib/spatial_coverage.py`. Validación campus: [spatial_occupancy_denominator_validation.md](spatial_occupancy_denominator_validation.md).
+
 ## Interpretar cobertura baja (mapa “casi vacío”)
 
-`final_coverage_pct` es la fracción de celdas del rectángulo **`MovementModel.worldSize`** visitadas al menos una vez. En escenarios **WorkingDayMovement** sobre `data/HelsinkiMedium` o `data/Manhattan`, los nodos siguen rutas y POIs: **no recorren todo el rectángulo** del mundo. Valores del orden de **5–15%** pueden ser normales; no indican por sí solos un fallo de simulación.
+`coverage_world_pct` es la fracción de celdas del rectángulo **`MovementModel.worldSize`** visitadas al menos una vez. En escenarios **WorkingDayMovement**, los nodos siguen rutas y POIs: **no recorren todo el rectángulo**. Valores del orden de **5–15%** pueden ser normales; no indican por sí solos un fallo.
 
-Los heatmaps muestran dos paneles (por defecto):
+**Importante:** un **world % bajo no implica un mapa mal usado**. En campus, `coverage_world_pct` ~40% puede coexistir con **`coverage_road_cells_pct` ~90%** (C1). Usa la métrica de red para comparar familias; reserva world % para transparencia.
 
-1. **Mundo completo** — `worldSize` con calles WKT y, si existe, PNG de fondo.
-2. **Zoom** — solo el bbox de celdas con `visit_count > 0` (escala log para ver detalle).
+Los heatmaps (por defecto, `--zoom-mode roads`):
+
+1. **Mundo completo** — `worldSize` + calles WKT (+ underlay opcional). Título multi-métrica: `world X% · map bbox Y% · road cells Z% · buffer25 …`.
+2. **Zoom** — bbox de celdas `road_cell` (o `visited` / `map_bbox` según flag).
 
 ## Capas de mapa en los heatmaps (`analyze_spatial_occupancy.py`)
 
@@ -47,7 +60,7 @@ Los heatmaps muestran dos paneles (por defecto):
 
 El dataset se infiere del `.settings` (`MapBasedMovement.mapFile1`, rutas `Group.*LocationsFile`, o nombre `*HelsinkiMedium*` / `*Manhattan*`).
 
-Opciones CLI: `--heatmap-layout dual|full|zoom`, `--heatmap-linear`, `--heatmap-no-roads`, `--heatmap-no-underlay`.
+Opciones CLI: `--zoom-mode visited|map_bbox|roads` (default `roads`), `--heatmap-layout dual|full|zoom`, `--heatmap-linear`, `--heatmap-no-roads`, `--heatmap-no-underlay`, `--primary-metric coverage_road_cells_pct`.
 
 ## Limitaciones
 

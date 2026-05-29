@@ -186,16 +186,18 @@ python3 scenarios/analysis/scripts/validation/analyze_spatial_occupancy.py \
   --manifest scenarios/corpus_v1/manifest.csv
 ```
 
-Requires `numpy`, `pandas`, and `matplotlib` (e.g. `scenarios/analysis/.venv`). Heatmaps use **road geometry** from [`data/HelsinkiMedium/`](../data/HelsinkiMedium/) or [`data/Manhattan/`](../data/Manhattan/) (sim-aligned WKT) plus optional **GUI underlay** PNG (`GUI.UnderlayImage.fileName`, e.g. `data/helsinki_underlay.png` if present locally). Default figure layout: full world + zoom on visited cells, log color scale.
+Requires `numpy`, `pandas`, `matplotlib`, and `scipy` (e.g. `scenarios/analysis/.venv`). Heatmaps overlay sim-aligned `roads.wkt` (via `lib/map_context.py`) plus optional GUI underlay PNG. Default layout: full world + zoom on **road cells** (`--zoom-mode roads`), log color scale.
+
+**Primary metric for papers:** `coverage_road_cells_pct` (visited / road-network cells). `coverage_world_pct` matches Java `final_coverage_pct` and is for transparency only. See [spatial_occupancy_denominator_validation.md](reports/spatial/spatial_occupancy_denominator_validation.md).
 
 ```bash
 # Optional flags
 scenarios/analysis/.venv/bin/python scenarios/analysis/scripts/validation/analyze_spatial_occupancy.py \
   --reports-dir reports --manifest scenarios/corpus_v1/manifest.csv \
-  --heatmap-layout dual --families 01_urban
+  --zoom-mode roads --heatmap-layout dual --families 01_urban
 ```
 
-Writes `data/spatial_occupancy_metrics.csv` (includes `map_dataset`, `cells_visited_pct`), `figures/spatial_heatmaps/`, etc.
+Writes `data/spatial_occupancy_metrics.csv` (multi-denominator columns + legacy `final_coverage_pct` alias), `data/spatial_coverage_timeseries.csv`, `figures/spatial_heatmaps/`, etc.
 
 You can also run the same flow from the Spanish interactive menu: [analysis_menu.py](analysis_menu.py) → option **6**.
 

@@ -44,6 +44,14 @@ if str(_ANALYSIS) not in sys.path:
 
 from lib.map_context import MapContext, build_map_context  # noqa: E402
 from lib.paths import ANALYSIS_DIR, REPO_ROOT  # noqa: E402
+from lib.spatial_coverage import (  # noqa: E402
+    coverage_title_parts,
+    enrich_timeseries_from_positions,
+    masks_for_scenario,
+    metrics_for_scenario,
+    visited_mask_from_grid,
+    zoom_extent_from_masks,
+)
 
 
 def _load_spatial_io():
@@ -208,13 +216,34 @@ def draw_occupancy(
     plt.colorbar(im, ax=ax, label=cbar_label, shrink=0.85)
 
 
+def _coverage_title_note(
+    metrics: dict[str, float | int | str | None] | None,
+    summary_csv: Path | None = None,
+) -> str:
+    parts = coverage_title_parts(metrics) if metrics else []
+    if not parts and summary_csv and summary_csv.is_file():
+        try:
+            with summary_csv.open(newline="", encoding="utf-8") as f:
+                sr = next(csv.DictReader(f), None)
+            if sr and sr.get("final_coverage_pct"):
+                parts = [f"world {float(sr['final_coverage_pct']):.1f}%"]
+        except (OSError, ValueError, TypeError):
+            pass
+    if not parts:
+        return ""
+    return " | " + " · ".join(parts)
+
+
 def heatmap_for_scenario(
     grid_csv: Path,
     out_png: Path,
     *,
     summary_csv: Path | None = None,
     settings_path: Path | None = None,
+    metrics: dict[str, float | int | str | None] | None = None,
+    masks=None,
     layout: str = "dual",
+    zoom_mode: str = "roads",
     log_scale: bool = True,
     show_roads: bool = True,
     show_underlay: bool = True,
@@ -242,8 +271,9 @@ def heatmap_for_scenario(
     title = grid_csv.stem.replace("_spatial_occupancy_grid", "")
     out_png.parent.mkdir(parents=True, exist_ok=True)
 
-    visited = np.argwhere(mat > 0)
-    if visited.size == 0:
+    visited_arr = visited_mask_from_grid(df, ni)
+    visited_idx = np.argwhere(visited_arr)
+    if visited_idx.size == 0:
         fig, ax = plt.subplots(figsize=(7, 5))
         draw_map_layers(ax, extent, ctx, show_roads=show_roads, show_underlay=show_underlay)
         ax.text(
@@ -260,23 +290,24 @@ def heatmap_for_scenario(
         plt.close(fig)
         return
 
-    pad = 2
-    j0 = max(int(visited[:, 0].min()) - pad, 0)
-    j1 = min(int(visited[:, 0].max()) + pad + 1, nj)
-    i0 = max(int(visited[:, 1].min()) - pad, 0)
-    i1 = min(int(visited[:, 1].max()) + pad + 1, ni)
+    if masks is not None:
+        i0, i1, j0, j1 = zoom_extent_from_masks(masks, visited_arr, zoom_mode)
+    else:
+        pad = 2
+        i0 = max(int(visited_idx[:, 0].min()) - pad, 0)
+        i1 = min(int(visited_idx[:, 0].max()) + pad + 1, ni)
+        j0 = max(int(visited_idx[:, 1].min()) - pad, 0)
+        j1 = min(int(visited_idx[:, 1].max()) + pad + 1, nj)
     mat_zoom = mat[j0:j1, i0:i1]
     ext_zoom = _extent_crop(extent, ni, nj, i0, i1, j0, j1)
 
-    cov_note = ""
-    if summary_csv and summary_csv.is_file():
-        try:
-            with summary_csv.open(newline="", encoding="utf-8") as f:
-                sr = next(csv.DictReader(f), None)
-            if sr:
-                cov_note = f" | cobertura {sr.get('final_coverage_pct', '?')}%"
-        except OSError:
-            pass
+    cov_note = _coverage_title_note(metrics, summary_csv)
+    zoom_labels = {
+        "visited": "Zoom — celdas visitadas",
+        "map_bbox": "Zoom — bbox mapa (roads.wkt)",
+        "roads": "Zoom — celdas road network",
+    }
+    zoom_title = zoom_labels.get(zoom_mode, zoom_labels["visited"])
 
     if layout == "full":
         fig, ax = plt.subplots(figsize=(8, 7))
@@ -301,7 +332,7 @@ def heatmap_for_scenario(
             axes[1],
             mat_zoom,
             ext_zoom,
-            "Zoom — celdas visitadas",
+            zoom_title,
             log_scale=log_scale,
         )
         fig.suptitle(title, fontsize=10)
@@ -372,6 +403,19 @@ def main() -> int:
         action="store_true",
         help="Only update metrics CSV; do not render PNG heatmaps",
     )
+    ap.add_argument(
+        "--zoom-mode",
+        type=str,
+        default="roads",
+        choices=("visited", "map_bbox", "roads"),
+        help="Right panel zoom: visited cells, map bbox, or road-network cells (default: roads)",
+    )
+    ap.add_argument(
+        "--primary-metric",
+        type=str,
+        default="coverage_road_cells_pct",
+        help="Primary coverage metric for documentation (default: coverage_road_cells_pct)",
+    )
     args = ap.parse_args()
 
     reports_dir = (REPO_ROOT / args.reports_dir).resolve()
@@ -427,6 +471,8 @@ def main() -> int:
     ts_parts: list[pd.DataFrame] = []
     processed = 0
     skipped = 0
+    ts_replay_ok = 0
+    ts_replay_missing = 0
 
     meta_by_name: dict[str, dict] = {}
     if meta is not None:
@@ -448,13 +494,45 @@ def main() -> int:
         settings_path = resolve_settings_path(scenario, mrow, corpus_dir)
         summary = paths["summary"]
 
+        wx = wy = gs = None
+        time_bin_size = 300.0
+        if summary is not None and summary.is_file():
+            try:
+                with summary.open(newline="", encoding="utf-8") as f:
+                    sr0 = next(csv.DictReader(f), None)
+                if sr0:
+                    wx = float(sr0.get("world_x", "nan"))
+                    wy = float(sr0.get("world_y", "nan"))
+                    gs = int(float(sr0.get("grid_size", "50")))
+                    time_bin_size = float(sr0.get("time_bin_size", "300"))
+            except (OSError, ValueError, TypeError):
+                pass
+
+        metrics: dict[str, float | int | str | None] = {}
+        masks = None
+        if wx and wy and gs:
+            masks, _map_name = masks_for_scenario(
+                settings_path, world_x=wx, world_y=wy, grid_size=gs
+            )
+            metrics = metrics_for_scenario(
+                g,
+                settings_path,
+                scenario_name=scenario,
+                world_x=wx,
+                world_y=wy,
+                grid_size=gs,
+            )
+
         if not args.skip_heatmaps:
             heatmap_for_scenario(
                 g,
                 heat_dir / f"{scenario}.png",
                 summary_csv=summary,
                 settings_path=settings_path,
+                metrics=metrics,
+                masks=masks,
                 layout=args.heatmap_layout,
+                zoom_mode=args.zoom_mode,
                 log_scale=not args.heatmap_linear,
                 show_roads=not args.heatmap_no_roads,
                 show_underlay=not args.heatmap_no_underlay,
@@ -469,7 +547,7 @@ def main() -> int:
             row_m["Scenario.endTime"] = m.get("Scenario.endTime", "")
 
         ctx = build_map_context(settings_path, load_roads=False)
-        row_m["map_dataset"] = ctx.dataset or ""
+        row_m["map_dataset"] = ctx.dataset or metrics.get("map_name", "")
 
         if summary is not None and summary.is_file():
             with summary.open(newline="", encoding="utf-8") as f:
@@ -482,16 +560,45 @@ def main() -> int:
                             "time_to_50pct": sr.get("time_to_50pct", ""),
                             "time_to_80pct": sr.get("time_to_80pct", ""),
                             "time_to_90pct": sr.get("time_to_90pct", ""),
-                            "grid_size": sr.get("grid_size", ""),
-                            "world_x": sr.get("world_x", ""),
-                            "world_y": sr.get("world_y", ""),
                         }
                     )
+        for key, val in metrics.items():
+            if key != "scenario_name":
+                row_m[key] = val
+        if metrics.get("coverage_world_pct") is not None:
+            row_m["final_coverage_pct"] = metrics["coverage_world_pct"]
+            row_m["cells_visited_pct"] = metrics["coverage_world_pct"]
+        if metrics.get("grid_size") is not None:
+            row_m["grid_size"] = metrics["grid_size"]
+        if metrics.get("world_width") is not None:
+            row_m["world_x"] = metrics["world_width"]
+        if metrics.get("world_height") is not None:
+            row_m["world_y"] = metrics["world_height"]
         metrics_rows.append(row_m)
 
         ts = paths["coverage_timeseries"]
+        node_pos = paths.get("node_positions")
         if ts is not None and ts.is_file():
             df_ts = pd.read_csv(ts)
+            if "coverage_pct" in df_ts.columns and "coverage_world_pct" not in df_ts.columns:
+                df_ts = df_ts.rename(columns={"coverage_pct": "coverage_world_pct"})
+            if masks is not None and node_pos is not None and node_pos.is_file():
+                et = None
+                if meta is not None and scenario in meta_by_name:
+                    try:
+                        et = float(meta_by_name[scenario].get("Scenario.endTime", "") or 0)
+                    except (TypeError, ValueError):
+                        et = None
+                df_ts = enrich_timeseries_from_positions(
+                    df_ts,
+                    node_pos,
+                    masks,
+                    time_bin_size=time_bin_size,
+                    end_time=et if et and et > 0 else None,
+                )
+                ts_replay_ok += 1
+            else:
+                ts_replay_missing += 1
             df_ts.insert(0, "scenario", scenario)
             ts_parts.append(df_ts)
         processed += 1
@@ -545,7 +652,14 @@ def main() -> int:
             if not (et > 0):
                 continue
             tn = gdf["time_bin_end"].to_numpy(dtype=float) / et
-            cov = gdf["coverage_pct"].to_numpy(dtype=float)
+            cov_col = (
+                "coverage_road_cells_pct"
+                if "coverage_road_cells_pct" in gdf.columns
+                else "coverage_world_pct"
+                if "coverage_world_pct" in gdf.columns
+                else "coverage_pct"
+            )
+            cov = gdf[cov_col].to_numpy(dtype=float)
             if len(tn) < 2:
                 continue
             yi = np.interp(grid, tn, cov, left=cov[0], right=cov[-1])
@@ -564,7 +678,7 @@ def main() -> int:
                 ax.plot(grid, mean, label=fam)
                 ax.fill_between(grid, p25, p75, alpha=0.2)
             ax.set_xlabel("time / Scenario.endTime")
-            ax.set_ylabel("coverage_pct")
+            ax.set_ylabel("coverage_road_cells_pct (or world fallback)")
             ax.set_title("Spatial coverage by family (mean ± p25–p75)")
             ax.legend(fontsize=8, ncol=2)
             ax.set_xlim(0, 1)
@@ -584,6 +698,9 @@ def main() -> int:
                 f"- Reports directory: `{reports_dir}`",
                 f"- Scenarios processed: {processed}",
                 f"- Skipped (missing grid CSV): {skipped}",
+                f"- Timeseries replay (NodePositionReport): {ts_replay_ok} ok, {ts_replay_missing} world-only",
+                f"- Primary metric: `{args.primary_metric}`",
+                f"- Zoom mode: `{args.zoom_mode}`",
                 f"- Metrics: `{out_data / 'spatial_occupancy_metrics.csv'}`",
                 f"- Long timeseries: `{out_data / 'spatial_coverage_timeseries.csv'}`",
                 f"- Heatmaps: `{heat_dir}` (WKT roads + optional underlay PNG, log scale, dual layout)",

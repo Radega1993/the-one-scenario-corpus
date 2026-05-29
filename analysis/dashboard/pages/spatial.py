@@ -24,25 +24,34 @@ def render(filtered: pd.DataFrame, master: pd.DataFrame) -> None:
 
     if spatial is not None and not spatial.empty:
         st.subheader("Métricas de cobertura")
+        cov_col = (
+            "coverage_road_cells_pct"
+            if "coverage_road_cells_pct" in spatial.columns
+            else "coverage_world_pct"
+            if "coverage_world_pct" in spatial.columns
+            else "final_coverage_pct"
+        )
         cols = [
             "scenario",
             "traffic_profile_id",
             "map_dataset",
-            "final_coverage_pct",
-            "cells_visited_pct",
+            cov_col,
+            "coverage_world_pct",
+            "coverage_map_bbox_pct",
             "time_to_50pct",
         ]
+        cols = [c for c in cols if c in spatial.columns]
         dataframe_scenarios(spatial, columns=cols, height=300)
 
-        if "final_coverage_pct" in spatial.columns:
-            sp = spatial.dropna(subset=["final_coverage_pct"])
+        if cov_col in spatial.columns:
+            sp = spatial.dropna(subset=[cov_col])
             if "traffic_profile_id" in sp.columns and not sp.empty:
                 chart = (
                     alt.Chart(sp)
                     .mark_bar(opacity=0.7)
                     .encode(
                         x=alt.X("traffic_profile_id:N", title="TP"),
-                        y=alt.Y("mean(final_coverage_pct):Q", title="Cobertura media %"),
+                        y=alt.Y(f"mean({cov_col}):Q", title="Cobertura road cells %"),
                         color="map_dataset:N",
                     )
                 )
