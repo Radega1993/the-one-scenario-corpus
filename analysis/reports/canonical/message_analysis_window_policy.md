@@ -1,6 +1,6 @@
 # Message analysis window policy (corpus_v1)
 
-Generated: 2026-05-27 13:53 UTC
+Generated: 2026-06-04 10:26 UTC
 
 Canonical policy for message-level metric aggregation. **Replaces** the earlier draft recommending 5% warmup + TTL cutoff (policy B+warmup).
 
@@ -30,8 +30,8 @@ Messages created after `0.9×endTime` have at most 10% of remaining simulation t
 ## Evidence in corpus_v1
 
 - Scenarios with `pct_messages_last_10 > 12%`: **2** (`late_message_bias`).
-- Scenarios with `pct_messages_last_10` in [10%, 12%]: **253** (`sensitivity_required`).
-- Pearson correlation `pct_messages_last_10` vs `delivery_ratio` (connected scenarios, n=501): **r = -0.18**.
+- Scenarios with `pct_messages_last_10` in [10%, 12%]: **231** (`sensitivity_required`).
+- Pearson correlation `pct_messages_last_10` vs `delivery_ratio` (connected scenarios, n=456): **r = -0.205**.
 
 **Conclusion:** Late-message censoring is a **moderate structural effect** (~10% of messages in the last decile for full-window TPs), not a simulation bug. It is predictable from MessageEventGenerator semantics and should be disclosed, not silently corrected in primary results.
 
@@ -39,18 +39,18 @@ Messages created after `0.9×endTime` have at most 10% of remaining simulation t
 
 | TP | window | med norm | % first 10 (mean) | % last 10 (mean) | decision |
 |----|--------|----------|-------------------|------------------|----------|
-| TP01 | full_simulation | 0.500 | 10.15 | 10.02 | complete_window |
-| TP02 | full_simulation | 0.496 | 10.42 | 9.99 | sensitivity_required |
-| TP03 | full_simulation | 0.500 | 9.97 | 9.99 | complete_window |
-| TP04 | full_simulation | 0.504 | 9.64 | 9.77 | complete_window |
-| TP05 | full_simulation | 0.500 | 10.15 | 10.02 | complete_window |
-| TP06 | directional | 0.498 | 10.01 | 10.20 | sensitivity_required |
+| TP01 | full_simulation | 0.500 | 10.12 | 10.07 | complete_window |
+| TP02 | full_simulation | 0.497 | 10.37 | 9.97 | sensitivity_required |
+| TP03 | full_simulation | 0.500 | 9.95 | 9.99 | complete_window |
+| TP04 | full_simulation | 0.504 | 9.67 | 9.81 | complete_window |
+| TP05 | full_simulation | 0.500 | 10.12 | 10.07 | complete_window |
+| TP06 | directional | 0.498 | 10.01 | 10.19 | sensitivity_required |
 | TP07 | burst_only | 0.240 | 0.00 | 0.00 | burst_exception |
-| TP08 | directional | 0.498 | 10.01 | 10.20 | sensitivity_required |
-| TP09 | full_simulation | 0.501 | 9.82 | 10.00 | complete_window |
-| TP10 | full_simulation | 0.500 | 10.08 | 9.93 | stress_profile |
-| TP11 | directional | 0.498 | 10.01 | 10.20 | sensitivity_required |
-| TP12 | directional | 0.504 | 9.86 | 9.60 | complete_window |
+| TP08 | directional | 0.498 | 10.01 | 10.18 | sensitivity_required |
+| TP09 | full_simulation | 0.501 | 9.80 | 10.03 | complete_window |
+| TP10 | full_simulation | 0.500 | 10.07 | 9.93 | stress_profile |
+| TP11 | directional | 0.498 | 10.01 | 10.19 | sensitivity_required |
+| TP12 | directional | 0.504 | 9.84 | 9.59 | complete_window |
 
 ### Outlier scenarios (highest % last 10%)
 
@@ -59,11 +59,11 @@ Messages created after `0.9×endTime` have at most 10% of remaining simulation t
 | `R5_MountainRescue__TP02_LowLoad` | TP02 | 12.1 | 0.7879 |
 | `D7_HighLoad_TrafficStorm__TP02_LowLoad` | TP02 | 12.1 | 0.9697 |
 | `C6_EmergencyDrill_Evacuation__TP02_LowLoad` | TP02 | 11.8 | 0.9412 |
-| `R4_ParkRangers_NuuksioSparseTrails__TP02_LowLoad` | TP02 | 11.5 | 0.9479 |
+| `R4_ParkRangers_NuuksioSparseTrails__TP02_LowLoad` | TP02 | 11.5 | 0.8958 |
 | `R6_SparseLongRange__TP02_LowLoad` | TP02 | 11.5 | 0.9063 |
-| `U2_SparseSuburb_HelsinkiDowntown__TP02_LowLoad` | TP02 | 11.3 | 0.3608 |
-| `R2_VillagesTrails_ThreeClusters__TP02_LowLoad` | TP02 | 11.3 | 0.2474 |
 | `R7_SparseTinyBuffer__TP02_LowLoad` | TP02 | 11.3 | 0.3711 |
+| `D7_HighLoad_TrafficStorm__TP01_Baseline` | TP01 | 10.6 | 0.9565 |
+| `D7_HighLoad_TrafficStorm__TP05_CriticalTTL` | TP05 | 10.6 | 0.1242 |
 
 ## TP07 — burst exception
 

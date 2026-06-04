@@ -12,7 +12,7 @@
 
 | Elemento | Valor |
 |----------|--------|
-| **Benchmark paper** | [`corpus_v1/`](corpus_v1/) (540) + [``]() (30) = **540** |
+| **Benchmark paper** | [`corpus_v1/`](corpus_v1/) — **540** simulaciones |
 | **Bases estructurales** | [`base_scenarios/`](base_scenarios/) — 45 escenarios sin TP |
 | **Corpus ambiental** | [`corpus_v1/`](corpus_v1/) — 540 escenarios con TP |
 | **Perfiles de tráfico** | 12 (TP01 Baseline … TP12 GroupToGroup) |
@@ -24,7 +24,7 @@
 | **Política KPI protocolos** | [analysis/reports/canonical/protocol_benchmark_kpi_policy.md](analysis/reports/canonical/protocol_benchmark_kpi_policy.md) |
 | **v1 archivado** | [`_archive/corpus_dropped_v1/`](_archive/corpus_dropped_v1/) |
 
-**Congelación diversidad (540 escenarios, solo `corpus_v1`, sin stress):**
+**Congelación diversidad (540 escenarios, `corpus_v1`):**
 
 | Espacio | Pares \|r\| ≥ 0,7 | % | Silhouette |
 |---------|------------------:|--:|-----------:|
@@ -42,12 +42,12 @@ Detalle: [RESULTADOS_ACTUALES.md](analysis/reports/RESULTADOS_ACTUALES.md). Gate
 
 | Ruta | Rol |
 |------|-----|
-| [`corpus_v1/`](corpus_v1/) | **Benchmark activo** — 720 `.settings`, [`manifest.csv`](corpus_v1/manifest.csv) |
-| [`corpus_v1/`](corpus_v1/) | Base histórica de movilidad — 60 `.settings` |
+| [`corpus_v1/`](corpus_v1/) | **Benchmark activo** — 540 `.settings`, [`manifest.csv`](corpus_v1/manifest.csv) |
+| [`base_scenarios/`](base_scenarios/) | Bases estructurales — 45 `.settings` (sin TP) |
 | [`corpus_dropped_v1/`](corpus_dropped_v1/) | Escenarios v1 archivados por redundancia (10) |
 | [`analysis/`](analysis/) | Pipeline, `data/`, `figures/`, `reports/`, dashboard |
 | [`_archive/`](_archive/) | Artefactos históricos (backups wiki, pilotos, scripts v3) |
-| [`.wiki-clone/`](.wiki-clone/) | **Wiki paper activa** (EN, páginas numeradas `01-` … `14-`) |
+| [`.wiki-clone/`](.wiki-clone/) | **Wiki paper activa** (EN, páginas numeradas `02-` … `14-`) |
 | [`INVENTARIO.md`](INVENTARIO.md) | Mapa completo del repositorio |
 | [`internal/`](internal/) | Notas metodológicas privadas (gitignored) |
 
@@ -62,7 +62,7 @@ Los directorios de corpus están **versionados** (`corpus_v1`, `corpus_v1`, …)
 | [INVENTARIO.md](INVENTARIO.md) | Mapa de ficheros y archivo `_archive/` |
 | [analysis/SCRIPTS_INDEX.md](analysis/SCRIPTS_INDEX.md) | Roles de scripts y **pipeline oficial paper** |
 | [analysis/reports/RESULTADOS_ACTUALES.md](analysis/reports/RESULTADOS_ACTUALES.md) | Métricas congeladas de diversidad y ablación |
-| [analysis/figures/README.md](analysis/figures/README.md) | Catálogo de figuras (720 escenarios) |
+| [analysis/figures/README.md](analysis/figures/README.md) | Catálogo de figuras (540 escenarios) |
 | [analysis/docs/features_core_vs_extended.md](analysis/docs/features_core_vs_extended.md) | Core 23 vs extended 46 |
 | [corpus_v1/README.md](corpus_v1/README.md) | Perfiles TP y diseño del benchmark |
 
@@ -74,7 +74,7 @@ Detalle del pipeline: [analysis/README.es.md](analysis/README.es.md). Referencia
 
 | Tipo | Rutas |
 |------|--------|
-| **Fuente (versionar)** | `corpus_v1/`, `corpus_v1/`, `corpus_dropped_v1/`, scripts `analysis/`, `analysis/docs/`, overlays, `.wiki-clone/` |
+| **Fuente (versionar)** | `corpus_v1/`, `base_scenarios/`, `corpus_dropped_v1/`, scripts `analysis/`, `analysis/docs/`, overlays, `.wiki-clone/` |
 | **Generado (regenerable)** | `analysis/data/*.csv`, la mayoría de `analysis/reports/`, `analysis/figures/` (PNG/PDF) |
 | **Salidas simulación (costosas)** | `reports/` en la raíz del repo (`*MessageStatsReport.txt`, CSVs espaciales, etc.) |
 

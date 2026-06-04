@@ -5,7 +5,7 @@
 **Propósito:** mapa de partida para organizar, limpiar y mantener el subproyecto *the-one-scenario-corpus*.  
 **Alcance:** todo lo bajo `scenarios/` excepto `.git/`, `.venv/`, `__pycache__/` y entornos locales.
 
-> **Nota 2026-05-27 (canónico):** benchmark activo = `base_scenarios/` (45) + `corpus_v1/` (540) + `` (30) = **540** simulaciones con TP. **Validación de diversidad (paper):** solo **540** (`corpus_v1`, ``); métricas en `analysis/reports/RESULTADOS_ACTUALES.md`. Las secciones que citan **720** o matrices 720×720 son **histórico** (pre-reorg); no usar como resultados finales.
+> **Nota 2026-05-27 (canónico):** benchmark activo = `corpus_v1/` (**540** simulaciones con TP). Bases estructurales: `base_scenarios/` (45). **Validación de diversidad (paper):** **540** en `corpus_v1`; métricas en `analysis/reports/RESULTADOS_ACTUALES.md`. Las secciones que citan **720** o matrices 720×720 son **histórico** (pre-reorg); no usar como resultados finales.
 
 Para refrescar conteos:
 
@@ -33,8 +33,7 @@ El directorio `scenarios/` es un **subproyecto autónomo** (repo Git anidado) pa
 |--------|------------|-----|
 | **`base_scenarios/`** | **45** | Bases estructurales sin TP (familias 01–06) |
 | **`corpus_v1/`** | **540** | Benchmark ambiental con Traffic Profiles |
-| **``** | **30** | Laboratorio stress/control (familia 07, TP01+TP10) |
-| **Paper (`--corpus corpus_v1`)** | **540** | Manifest combinado en `analysis/data/corpus_v1_combined_manifest.csv` |
+| **Paper (`--corpus corpus_v1`)** | **540** | Manifest en `corpus_v1/manifest.csv` (alias en `analysis/data/corpus_v1_combined_manifest.csv`) |
 | `_archive/legacy_corpus_v1_pre_rename/` | 60 | HISTÓRICO — corpus movilidad pre-rename |
 | `_archive/corpus_dropped_v1/` | 10 | HISTÓRICO — escenarios v1 retirados |
 
@@ -75,7 +74,6 @@ El directorio `scenarios/` es un **subproyecto autónomo** (repo Git anidado) pa
 |------|---------:|-------------------------|-----|
 | [base_scenarios/](base_scenarios/) | 47 | 45 `.settings`, `manifest.csv`, `README.md` | Corpus estructural sin TP (familias 01–06) |
 | [corpus_v1/](corpus_v1/) | 543 | 540 `.settings`, 2 `.csv`, 1 `.md` | **Corpus ambiental activo** (TP) |
-| []() | 32 | 30 `.settings`, `manifest.csv`, `manifest_revision.csv` | Stress/control separado (familia 07) |
 | [_archive/corpus_dropped_v1/](_archive/corpus_dropped_v1/) | 10 | 10 `.settings` | Escenarios v1 archivados |
 | [analysis/](analysis/) | 937 | Pipeline, datos, figuras |
 | [_archive/](_archive/) | 708 | Wiki backups, pilotos, propuesta corpus_v3, docs pre-freeze |
@@ -90,9 +88,8 @@ El directorio `scenarios/` es un **subproyecto autónomo** (repo Git anidado) pa
 flowchart LR
   legacy[legacy_corpus_v1_60] --> base[base_scenarios_45]
   tp[corpus_v2_historico] --> env[corpus_v1_540]
-  tp --> stress[_30]
   legacy --> dropped[corpus_dropped_v1_10]
-  env -->|paper benchmark| combo[570_total]
+  env -->|paper benchmark| combo[540_total]
   combo -.->|propuesta_no_implementada| v3plan[corpus_v3_CSV_y_reports]
 ```
 
@@ -149,19 +146,6 @@ Ejemplo: `C1_Campus_ClassChange__TP01_Baseline.settings`
 | [README.md](corpus_v1/README.md) | **FUENTE** | Documentación TP01–TP12 y uso del benchmark |
 
 **Bulk:** los 540 `.settings` no se listan uno a uno; usar `manifest.csv` como índice maestro.
-
----
-
-#### `` — **FUENTE** (30 escenarios)
-
-Directorio plano (sin subcarpeta `07_`), con escenarios `TP01` y `TP10` del laboratorio de stress/control.
-
-| Fichero | Etiqueta | Contenido |
-|---------|----------|-----------|
-| [manifest.csv](manifest.csv) | **FUENTE** | 30 filas (`family=07_`) |
-| `manifest_revision.csv` | **OBSOLETO** | Eliminado en `` (se usa solo `manifest.csv`) |
-
-**Generador (histórico):** `generate_corpus_v1_traffic.py` (eliminado); definiciones TP en [lib/traffic_profile_generator.py](analysis/lib/traffic_profile_generator.py).
 
 ---
 

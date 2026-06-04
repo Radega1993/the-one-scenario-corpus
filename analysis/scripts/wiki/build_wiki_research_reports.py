@@ -456,7 +456,6 @@ def simulation_time_policy() -> tuple[pd.DataFrame, str]:
         "| family | note |",
         "|--------|------|",
         "| 01_urban | Low spatial % often map oversized, not short sim |",
-        "| 07_ | Stress/control lab — report separately |",
         "| 04_rural | R1/R11 may need mobility fix not longer time |",
         "",
     ]

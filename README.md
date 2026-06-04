@@ -12,7 +12,7 @@
 
 | Item | Value |
 |------|--------|
-| **Paper benchmark (`--corpus corpus_v1`)** | [`corpus_v1/`](corpus_v1/) (540) + [``]() (30) = **540** simulations |
+| **Paper benchmark (`--corpus corpus_v1`)** | [`corpus_v1/`](corpus_v1/) — **540** simulations |
 | **Structural bases (no TP)** | [`base_scenarios/`](base_scenarios/) — 45 scenarios, families `01_urban` … `06_social` |
 | **Traffic profiles** | 12 definitions (TP01–TP12); active assignments per `benchmark_definition.csv` |
 | **Status** | Main benchmark under **methodological freeze / review** |
@@ -24,7 +24,7 @@
 | **Legacy mobility archive** | [`_archive/legacy_corpus_v1_pre_rename/`](_archive/legacy_corpus_v1_pre_rename/) |
 | **Historical v1 dropped** | [`_archive/corpus_dropped_v1/`](_archive/corpus_dropped_v1/) |
 
-**Diversity validation freeze (540 scenarios, `corpus_v1` only, no stress — canonical):**
+**Diversity validation freeze (540 scenarios, `corpus_v1` — canonical):**
 
 | Space | Pairs \|r\| ≥ 0.7 | % | Silhouette (Ward k=7) |
 |-------|------------------:|--:|----------------------:|
@@ -34,9 +34,7 @@
 
 Feature–feature (core): `mm_WDM ↔ mm_Bus = 0.9354`. Full tables: [RESULTADOS_ACTUALES.md](analysis/reports/RESULTADOS_ACTUALES.md). Readiness gate: [diversity_validation_readiness.md](analysis/reports/diversity_validation_readiness.md).
 
-The **540** combined benchmark (540 + 30 stress) is separate from this diversity freeze; see routing/output metrics when comparing protocols.
-
-See [CHANGELOG.md](CHANGELOG.md) for the 2026-05-27 nomenclature reorganization (`corpus_v2` → `corpus_v1` + `` + `base_scenarios/`).
+See [CHANGELOG.md](CHANGELOG.md) for the 2026-05-27 nomenclature reorganization (`corpus_v2` → `corpus_v1` + `base_scenarios/`).
 
 **2026-05-31:** Map-aware mobility repair for S1, S6, D1, R2 (renamed bases; 48 TP variants regenerated). Details: [analysis/reports/project/corpus_v1_mobility_repair_changelog.md](analysis/reports/project/corpus_v1_mobility_repair_changelog.md).
 
@@ -48,18 +46,17 @@ See [CHANGELOG.md](CHANGELOG.md) for the 2026-05-27 nomenclature reorganization 
 |------|------|
 | [`base_scenarios/`](base_scenarios/) | Structural mobility bases (45 `.settings`, no `__TP`) |
 | [`corpus_v1/`](corpus_v1/) | Environmental benchmark with Traffic Profiles (540 `.settings`) |
-| [``]() | Stress/control laboratory separated from main corpus (30 `.settings`) |
 | [`corpus_dropped_v1/`](corpus_dropped_v1/) | Archived v1 scenarios removed for redundancy (10) |
 | [`analysis/`](analysis/) | Pipeline, `data/`, `figures/`, `reports/`, dashboard |
 | [`_archive/`](_archive/) | Backups, legacy corpora, historical artifacts |
-| [`.wiki-clone/`](.wiki-clone/) | Active **paper wiki** (EN, flat numbered pages `01-` … `15-`) |
+| [`.wiki-clone/`](.wiki-clone/) | Active **paper wiki** (EN, flat numbered pages `02-` … `14-`) |
 | [`INVENTARIO.md`](INVENTARIO.md) | Full repository map (source vs generated) |
 | [`REPRODUCIBILITY.md`](REPRODUCIBILITY.md) | Commands to regenerate corpora, manifests, analysis |
 | [`internal/`](internal/) | Private thesis notes (gitignored) |
 
-**Simulation:** `--corpus corpus_v1` → 540 environmental runs; use `--corpus ` for the 30 stress/control runs (or `--benchmark all` to merge both in one batch).
+**Simulation:** `--corpus corpus_v1` → 540 environmental runs.
 
-**Analysis:** `--corpus corpus_v1` in `run_analysis.py` includes stress for the full paper set (540). The CLI alias `corpus_v2` is deprecated.
+**Analysis:** `--corpus corpus_v1` in `run_analysis.py` (540 scenarios). The CLI alias `corpus_v2` is deprecated.
 
 ---
 
@@ -82,7 +79,7 @@ Pipeline details: [analysis/README.md](analysis/README.md). Full **.settings ref
 
 | Type | Paths |
 |------|--------|
-| **Source (keep in git)** | `corpus_v1/`, `corpus_v1/`, `corpus_dropped_v1/`, `analysis/*.py`, `analysis/lib/`, `analysis/dashboard/`, `analysis/docs/`, overlay `*.txt`, `protocol_overlays/`, wiki in `.wiki-clone/` |
+| **Source (keep in git)** | `corpus_v1/`, `base_scenarios/`, `corpus_dropped_v1/`, `analysis/*.py`, `analysis/lib/`, `analysis/dashboard/`, `analysis/docs/`, overlay `*.txt`, `protocol_overlays/`, wiki in `.wiki-clone/` |
 | **Generated (regenerable)** | `analysis/data/*.csv`, most of `analysis/reports/`, `analysis/figures/` (PNG/PDF) |
 | **Simulation outputs (expensive)** | Repo-root `reports/` (`*MessageStatsReport.txt`, spatial CSVs, etc.) |
 

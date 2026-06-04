@@ -1,22 +1,20 @@
 # Diversity validation readiness report
 
-Generated: 2026-05-28 07:47 UTC
+Generated: 2026-06-04 10:26 UTC
 
-**Corpus scope:** `corpus_v1` only — **540** scenarios ( excluded)
+**Corpus scope:** `corpus_v1` only — **540** scenarios 
 
 **Expected pairs:** C(540,2) = 145530
 
-**Decision (diversity scope):** `READY_FOR_PAPER`
+**Decision (diversity scope):** `NOT_READY`
 
-**Combined benchmark (540 routing/outputs):** `READY_WITH_MINOR_FIXES` (output_metrics=540/540; not part of diversity freeze)
+**Benchmark routing/outputs:** `READY` (output_metrics=540/540)
 
 ## Project structure (active)
 
 - **base_scenarios/**: 45 structural bases (no TP)
-- **corpus_v1/**: 540 environmental scenarios with TP (diversity scope)
-- ****: 30 stress/control lab (excluded from diversity freeze)
-- **Combined paper benchmark:** 540 (540 + 30)
-- **Diversity validation scope:** 540 (`corpus_v1` only, ``)
+- **corpus_v1/**: 540 environmental scenarios with TP (benchmark scope)
+- **Paper benchmark:** 540 scenarios in `corpus_v1/`
 - **Legacy archive:** `_archive/diversity_legacy_20260527/` (720-era CSVs; not canonical)
 - Legacy CSV count in archive: 3
 
@@ -24,9 +22,9 @@ Generated: 2026-05-28 07:47 UTC
 
 ## Summary
 
-- PASS: 51
-- WARN: 1
-- FAIL: 0
+- PASS: 47
+- WARN: 3
+- FAIL: 2
 
 ## Canonical artifacts (diversity freeze)
 
@@ -67,9 +65,9 @@ Generated: 2026-05-28 07:47 UTC
 | S006 | consistency | RESULTADOS_vs_ablation | PASS | INFO | numeric fields match ablation_metrics.csv |
 | S002 | consistency | features_scope_no_stress | PASS | INFO | rows=540 stress_like=0 |
 | R001 | report | RESULTADOS_ACTUALES.md | PASS | INFO | pipeline path OK |
-| R002 | report | correlation_report.txt | PASS | INFO | pipeline path OK |
-| R003 | report | correlation_core23_report.txt | PASS | INFO | pipeline path OK |
-| R004 | report | ablation_report.txt | PASS | INFO | pipeline path OK |
+| R002 | report | correlation_report.txt | WARN | MAJOR | contains n=540 without stress context |
+| R003 | report | correlation_core23_report.txt | WARN | MAJOR | contains n=540 without stress context |
+| R004 | report | ablation_report.txt | WARN | MAJOR | contains n=540 without stress context |
 | R005 | report | feature_feature_correlation_report.txt | PASS | INFO | pipeline path OK |
 | R006 | report | multiple_comparisons_report.txt | PASS | INFO | pipeline path OK |
 | R007 | report | clustering_report.txt | PASS | INFO | pipeline path OK |
@@ -89,18 +87,25 @@ Generated: 2026-05-28 07:47 UTC
 | DOC001 | readme | features_core_vs_extended.md | PASS | INFO |  |
 | DOC002 | readme | analysis README.md | PASS | INFO |  |
 | DOC003 | readme | SCRIPTS_INDEX.md | PASS | INFO |  |
-| DOC004 | wiki | wiki 07-Diversity-Validation | PASS | INFO |  |
-| DOC005 | wiki | wiki Resultados-Actuales | PASS | INFO |  |
+| DOC004 | wiki | wiki 07-Diversity-Validation | FAIL | BLOCKER |  |
+| DOC005 | wiki | wiki Resultados-Actuales | FAIL | BLOCKER |  |
 | C001 | consistency | root_README_diversity_scope | PASS | INFO | OK |
 | C002 | consistency | FIGURES_AND_TABLES_INDEX | PASS | INFO | diversity validation PASS in index |
-| C003 | consistency | output_metrics_benchmark_scope | WARN | MINOR | rows=540 expected 540 for combined benchmark (not diversity scope) |
+| C003 | consistency | output_metrics_benchmark_scope | PASS | INFO | rows=540 expected 540 for combined benchmark (not diversity scope) |
+
+## Blockers
+
+- **DOC004** wiki 07-Diversity-Validation:  → update documentation to scope 540
+- **DOC005** wiki Resultados-Actuales:  → update documentation to scope 540
 
 ## Warnings
 
-- **C003** output_metrics_benchmark_scope: rows=540 expected 540 for combined benchmark (not diversity scope) → complete simulations and rerun output_metrics
+- **R002** correlation_report.txt: contains n=540 without stress context → none
+- **R003** correlation_core23_report.txt: contains n=540 without stress context → none
+- **R004** ablation_report.txt: contains n=540 without stress context → none
 
 ## Recommended actions (non-diversity)
 
-- Complete combined benchmark simulations (540) and regenerate `output_metrics.csv` if routing results are needed.
-- Regenerate `spatial_occupancy_metrics.csv` for 540/540 scope (current file may still be 720 legacy).
+- Complete benchmark simulations (540) and regenerate `output_metrics.csv` if routing results are needed.
+- Regenerate `spatial_occupancy_metrics.csv` for 540 scope (current file may still be 720 legacy).
 - Archive candidates: see [diversity_archive_candidates.md](diversity_archive_candidates.md)

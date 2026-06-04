@@ -123,13 +123,12 @@ def main() -> int:
             "",
             "## Paper-ready statement",
             "",
-            "The benchmark assigns **one fixed map per scenario family** (six OSM extracts in Helsinki and Midtown Manhattan, "
-            "plus a synthetic grid for protocol stress controls). Street geometry is imported from OpenStreetMap, "
-            "reprojected to metric coordinates, reduced to the largest connected component, and exported as WKT for The ONE. "
-            "Auxiliary route files use **semantic names** per family (urban bus, vehicle route, ranger patrol, etc.). "
-            "Waypoints sit on the road network; carriers follow shortest paths on the graph between stops. POI and route assets are checked against `worldSize` and road "
-            "proximity before inclusion. The `` family uses ****, a synthetic topology "
-            "isolated from geographic bias, only for extreme protocol stress experiments outside the 540-scenario environmental core.",
+            "The benchmark assigns **one fixed map per environmental scenario family** (six OSM extracts in Helsinki "
+            "and Midtown Manhattan). Street geometry is imported from OpenStreetMap, reprojected to metric coordinates, "
+            "reduced to the largest connected component, and exported as WKT for The ONE. Auxiliary route files use "
+            "**semantic names** per family (urban bus, vehicle route, ranger patrol, etc.). Waypoints sit on the road "
+            "network; carriers follow shortest paths on the graph between stops. POI and route assets are checked against "
+            "`worldSize` and road proximity before inclusion.",
             "",
         ]
     )

@@ -1,6 +1,6 @@
 # Protocol benchmark KPI policy (corpus_v1)
 
-Generated: 2026-05-27 13:53 UTC
+Generated: 2026-06-04 10:26 UTC
 
 ## Executive summary
 
@@ -38,7 +38,7 @@ Generated: 2026-05-27 13:53 UTC
 - `validation_status == configuracion_sospechosa` unless explicitly included in sensitivity appendix.
 - Zero-contact disconnected bases (document as `valido_extremo`, exclude from latency rankings).
 
-- Traffic profiles blocked in KPI summary: **1** (re-check after re-simulation).
+- Traffic profiles blocked in KPI summary: **12** (re-check after re-simulation).
 
 ## Protocols and overlays
 

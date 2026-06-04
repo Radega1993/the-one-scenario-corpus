@@ -66,8 +66,8 @@ Reports: `reports/base_scenarios_validation.md`, `reports/validation/tp_validati
 
 ## Pipeline updates
 
-- `lib/paths.py`: `CORPUS_V1_DIR`, `STRESS_CONTROLS_DIR`, `BASE_SCENARIOS_DIR`, `collect_settings_paths()`, `build_combined_manifest_csv()`
-- `--corpus corpus_v1` resolves **both** `corpus_v1/` and ``
+- `lib/paths.py`: `CORPUS_V1_DIR`, `BASE_SCENARIOS_DIR`, `collect_settings_paths()`, `build_combined_manifest_csv()`
+- `--corpus corpus_v1` resolves `corpus_v1/` (540 scenarios)
 - Dashboard loaders use combined manifest (540 rows)
 - `validate_corpus_v2_benchmark.py` removed; menu → `validate_corpus_benchmark.py`
 - `run_analysis.py`: fixed pandas read-only array bugs for correlation phases (540 scenarios)

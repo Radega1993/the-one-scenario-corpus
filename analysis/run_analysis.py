@@ -2590,25 +2590,11 @@ def run_phase_tables_paper(out_dir: Path, threshold: float = 0.7) -> bool:
     df_ab["set"] = pd.Categorical(df_ab["set"], categories=order, ordered=True)
     df_ab = df_ab.sort_values("set")
 
-    # Families
-    # ES file: Scenario-families-es.md, EN file: Scenario-families.md
-    wiki_corpus = out_dir.parent / ".wiki-clone" / "05-corpus"
-    archive_wiki = (
-        out_dir.parent
-        / "_archive/wiki/wiki_backup_20260523_20260524_101911/_legacy_pre_paper_rebuild/05-corpus"
-    )
-    families_es_path = wiki_corpus / "Scenario-families-es.md"
-    families_en_path = wiki_corpus / "Scenario-families.md"
-    if not families_es_path.exists() and archive_wiki.is_dir():
-        families_es_path = archive_wiki / "Scenario-families-es.md"
-    if not families_en_path.exists() and archive_wiki.is_dir():
-        families_en_path = archive_wiki / "Scenario-families.md"
+    # Families (six environmental families only; no stress-control tier)
     scenario_list_path = data_dir / "scenario_list.txt"
-    if not families_es_path.exists() or not families_en_path.exists() or not scenario_list_path.exists():
+    if not scenario_list_path.exists():
         print("Missing families inputs for tables_paper:")
-        for p in [families_es_path, families_en_path, scenario_list_path]:
-            if not p.exists():
-                print(f"  - {p}")
+        print(f"  - {scenario_list_path}")
         return False
 
     scenario_list = scenario_list_path.read_text(encoding="utf-8", errors="replace").splitlines()
@@ -2621,54 +2607,47 @@ def run_phase_tables_paper(out_dir: Path, threshold: float = 0.7) -> bool:
         "R": "Rural",
         "D": "Disaster",
         "S": "Social",
-        "T": "Traffic",
     }
 
     fam_examples: dict[str, list[str]] = {k: [] for k in prefix_to_family.values()}
     for s in scenario_list:
-        pref = s[:1]
+        stem = Path(s).stem
+        pref = stem[:1] if stem else ""
         fam = prefix_to_family.get(pref)
         if fam is None:
             continue
-        fam_examples[fam].append(s)
+        fam_examples[fam].append(stem)
 
     for k in fam_examples:
         fam_examples[k] = fam_examples[k][:3]
 
-    def _parse_families_md(path: Path) -> dict[str, dict[str, str]]:
-        # Parse markdown table rows: | Urban | ... | 7 |
-        out: dict[str, dict[str, str]] = {}
-        txt = path.read_text(encoding="utf-8", errors="replace")
-        for line in txt.splitlines():
-            line = line.strip()
-            if not line.startswith("|"):
-                continue
-            cells = [c.strip() for c in line.strip("|").split("|")]
-            if len(cells) != 3:
-                continue
-            family, goal, n_sc = cells
-            family = family.strip()
-            goal = goal.strip()
-            out[family] = {"goal": goal, "n_scenarios": n_sc}
-        return out
-
-    fam_es = _parse_families_md(families_es_path)
-    fam_en = _parse_families_md(families_en_path)
+    _FAMILIES_PAPER: dict[str, list[tuple[str, str, str, str]]] = {
+        "en": [
+            ("Urban", "7", "Workday map-based urban regimes (WDM-related variability)", "Workday map-based urban regimes (WDM-related variability)"),
+            ("Campus", "6", "Dense/medium local interactions with temporal patterns", "Dense/medium local interactions with temporal patterns"),
+            ("Vehicles", "5", "Taxi/bus/car ownership mobility variants", "Taxi/bus/car ownership mobility variants"),
+            ("Rural", "12", "Sparse and range-constrained connectivity regimes", "Sparse and range-constrained connectivity regimes"),
+            ("Disaster", "9", "Partitioned/high-stress emergency communication regimes", "Partitioned/high-stress emergency communication regimes"),
+            ("Social", "6", "Community/mixing regimes and social structure diversity", "Community/mixing regimes and social structure diversity"),
+        ],
+        "es": [
+            ("Urban", "7", "Regímenes urbanos map-based (variabilidad WDM)", "Regímenes urbanos map-based (variabilidad WDM)"),
+            ("Campus", "6", "Interacciones locales densas/medias con patrones temporales", "Interacciones locales densas/medias con patrones temporales"),
+            ("Vehicles", "5", "Variantes de movilidad taxi/bus/propiedad de vehículo", "Variantes de movilidad taxi/bus/propiedad de vehículo"),
+            ("Rural", "12", "Regímenes de conectividad dispersa y limitada por alcance", "Regímenes de conectividad dispersa y limitada por alcance"),
+            ("Disaster", "9", "Regímenes de comunicación de emergencia particionados/alta carga", "Regímenes de comunicación de emergencia particionados/alta carga"),
+            ("Social", "6", "Regímenes de comunidad/mezcla y diversidad estructural social", "Regímenes de comunidad/mezcla y diversidad estructural social"),
+        ],
+    }
 
     def _families_table_rows(lang: str) -> list[dict[str, str]]:
-        fam_map = fam_es if lang == "es" else fam_en
-        # Ensure consistent family order
-        fam_order = ["Urban", "Campus", "Vehicles", "Rural", "Disaster", "Social", "Traffic"]
         rows: list[dict[str, str]] = []
-        for fam in fam_order:
-            item = fam_map.get(fam)
-            if not item:
-                continue
+        for fam, n_sc, purpose, traits in _FAMILIES_PAPER[lang]:
             rows.append({
                 "family": fam,
-                "n_scenarios": item["n_scenarios"],
-                "purpose": item["goal"],
-                "dominant_traits": item["goal"],
+                "n_scenarios": n_sc,
+                "purpose": purpose,
+                "dominant_traits": traits,
                 "example_scenarios": ", ".join(fam_examples.get(fam, [])),
             })
         return rows

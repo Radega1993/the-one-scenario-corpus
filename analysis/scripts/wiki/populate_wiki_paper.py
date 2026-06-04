@@ -21,7 +21,7 @@ REPO = REPO_ROOT
 WIKI = SCENARIOS_DIR / ".wiki-clone"
 DATA = ANALYSIS_DIR / "data"
 DIVERSITY_N = 540  # canonical diversity scope: corpus_v1 only
-COMBINED_N = 540  # corpus_v1 (540) +  (30)
+COMBINED_N = 540  # paper benchmark: corpus_v1 only
 WIKI_DIV_ASSETS = WIKI / "assets" / "diversity"
 PAPER_MAIN = ANALYSIS_DIR / "figures" / "paper" / "main"
 ARCHIVE_ROUND2 = WIKI / "_legacy_pre_paper_rebuild" / "round2_20260523"
@@ -118,14 +118,14 @@ def _home_current_status_block() -> str:
     elif n_feat >= 0:
         div_val = (
             f"**{n_feat}** rows en `features.csv` (esperado {DIVERSITY_N}) — "
-            "revisar pipeline ``"
+            "revisar pipeline de diversidad"
         )
     else:
         div_val = f"**{DIVERSITY_N}** (sin `features.csv`)"
 
     return f"""| Item | Value |
 |------|-------|
-| Combined paper benchmark | **{COMBINED_N}** = {DIVERSITY_N} `corpus_v1` + 30 `` |
+| Paper benchmark | **{COMBINED_N}** escenarios en `corpus_v1/` |
 | Structural bases | 45 en `base_scenarios/` (sin TP) |
 | Combined manifest | {n_manifest if n_manifest >= 0 else '—'} rows en `corpus_v1_combined_manifest.csv` |
 | Diversity validation | {div_val} |
@@ -300,7 +300,7 @@ def build_pages() -> None:
 
 This project provides a curated and reproducible corpus of synthetic scenarios for The ONE simulator, designed to evaluate routing protocols in Delay-Tolerant and Opportunistic Networks.
 
-The corpus separates base mobility scenarios, traffic profiles, stress scenarios, protocol overlays, analysis scripts, and generated metrics/figures/reports.
+The corpus separates base mobility scenarios, traffic profiles, protocol overlays, analysis scripts, and generated metrics/figures/reports.
 
 The goal is to support controlled comparison of DTN routing protocols and to provide a foundation for future dynamic routing protocol selection based on scenario features and simulation outcomes.
 
@@ -310,8 +310,7 @@ This is a **synthetic benchmark corpus**, not a collection of real-world traces.
 | Component | Description | Status |
 |---|---|---|
 | Base scenarios | Mobility-only scenarios without traffic profiles | Available |
-| Main corpus | Base scenarios combined with Traffic Profiles | Available |
-| Stress set | Extreme scenarios for protocol stress testing | Available |
+| Main corpus | Base scenarios combined with Traffic Profiles (540) | Available |
 | Traffic Profiles | 12 controlled message-generation profiles | Available |
 | Protocol overlays | Epidemic, Prophet, Spray-and-Wait, MaxProp, etc. | Available |
 | Analysis pipeline | Features, correlation, clustering, figures and reports | Available |
@@ -321,8 +320,7 @@ This is a **synthetic benchmark corpus**, not a collection of real-world traces.
 | Path | Purpose |
 |---|---|
 | `base_scenarios/` | Base mobility scenarios without Traffic Profiles |
-| `corpus_v1/` | Main benchmark corpus with Traffic Profiles |
-| `` | Stress scenarios for extreme protocol evaluation |
+| `corpus_v1/` | Main benchmark corpus with Traffic Profiles (540) |
 | `analysis/` | Scripts for feature extraction, validation, figures and reports |
 | `analysis/data/` | Generated CSV files |
 | `analysis/reports/` | Generated methodological and validation reports |
@@ -437,7 +435,6 @@ Detailed bibliography: [References](References).""",
 |-------|----------:|------|------|
 | **base_scenarios** | 45 | `scenarios/base_scenarios/` | Structural mobility bases (no `__TP`); families 01–06 |
 | **corpus_v1** | 540 | `scenarios/corpus_v1/` | Environmental benchmark with Traffic Profiles |
-| **** | 30 | `scenarios/` | Stress/control laboratory (TP01 + TP10 only) |
 | legacy archive | 60 | `scenarios/_archive/legacy_corpus_v1_pre_rename/` | Pre-rename mobility corpus |
 | dropped | 10 | `scenarios/corpus_dropped_v1/` | Archived v1 scenarios |
 
@@ -446,8 +443,8 @@ Detailed bibliography: [References](References).""",
 **TP definitions:** `lib/traffic_profile_generator.py`  
 **Changelog:** [corpus_reorganization_final_report.md](../analysis/reports/corpus_reorganization_final_report.md)
 
-The retired legacy benchmark name is now split into `corpus_v1` + ``.""",
-        interpretation="""Each structural base in `base_scenarios/` is crossed with an **active subset** of traffic profiles (TP01–TP12) per `benchmark_definition.csv`, yielding **540** environmental simulations plus **30** stress/control runs.
+The retired name `corpus_v2` was renamed to `corpus_v1` (see CHANGELOG).""",
+        interpretation="""Each structural base in `base_scenarios/` is crossed with traffic profiles (TP01–TP12) per `benchmark_definition.csv`, yielding **540** environmental simulations in `corpus_v1/`.
 
 Mobility and map settings originate from the legacy mobility corpus (migrated maps/worldSize); traffic overlays replace `Events*` blocks and adjust `Group*.msgTtl`.
 
@@ -470,10 +467,10 @@ Traces are **synthetic/semi-synthetic**: real map geometry constrains movement, 
 | Validation | [base_scenarios_validation.md](../analysis/reports/base_scenarios_validation.md) |
 | Generator | `scenarios/setup/migrate_base_scenarios_maps.py` |
 
-**Scope:** families `01_urban` … `06_social` only — **no** `07_`, **no** `__TP` suffix in filenames.""",
+**Scope:** families `01_urban` … `06_social` only — **no** `__TP` suffix in filenames.""",
         interpretation="""Base scenarios hold **mobility, map, and default traffic blocks** before Traffic Profile overlays. They are the structural reference layer for the paper: same map migration (`HelsinkiMedium`/`Manhattan` → final maps) as the active benchmark, but without TP experimental factors.
 
-Use `base_scenarios/` to inspect mobility design; use `corpus_v1/` + `` for routing benchmark runs.""",
+Use `base_scenarios/` to inspect mobility design; use `corpus_v1/` for routing benchmark runs.""",
         current_status="45/45 bases pass automated validation (`validate_base_scenarios.py`).",
         pending="None for structural layer; TP assignments tracked in `benchmark_definition.csv`.",
         status="stable",
@@ -484,7 +481,7 @@ Use `base_scenarios/` to inspect mobility design; use `corpus_v1/` + `` for rout
     _add(
         "04-Scenario-Families.md",
         title="Scenario families",
-        purpose="Taxonomy of scenario bases: 45 environmental + 15 stress/control.",
+        purpose="Taxonomy of scenario bases: six environmental families (45 bases).",
         data_paths="""| Family | Bases | Role |
 |--------|------:|------|
 | 01_urban | 7 | WDM / Helsinki (U2/U4 Manhattan) |
@@ -493,14 +490,13 @@ Use `base_scenarios/` to inspect mobility design; use `corpus_v1/` + `` for rout
 | 04_rural | 12 | Sparse RWP, clusters, extremes |
 | 05_disaster | 9 | Post-disaster mobility patterns |
 | 06_social | 6 | Communities, mixing |
-| 07_ | 15 | Stress/control laboratory — lives under `` (not in `corpus_v1/`) |
 
 **Benchmark splits** (`manifest_revision.csv`):
 - **main:** TP01–TP08 on viable bases
-- **stress:** TP09–TP11, TP04–TP06 on load, all 07_
+- **stress:** TP09–TP11, TP04–TP06 on load (within `corpus_v1/`)
 - **control:** TP12 partition, R1/R11 extremes""",
-        interpretation="Families cover distinct mobility regimes. Environmental families (01–06) contribute **45** bases × active TP assignments → **540** runs in `corpus_v1/`. Family **07_** contributes **15** bases × {TP01, TP10} → **30** runs in ``.",
-        current_status="60 unique scenario bases in the combined paper benchmark (45 + 15 stress).",
+        interpretation="Families cover distinct mobility regimes. Six environmental families contribute **45** bases × 12 traffic profiles → **540** runs in `corpus_v1/`.",
+        current_status="45 unique scenario bases in the paper benchmark.",
         pending="Finalize main benchmark base list (~40–45) for protocol comparison subset.",
         status="draft",
         links="[05-Traffic-Profiles](05-Traffic-Profiles), [06-Feature-Space](06-Feature-Space)",
@@ -531,7 +527,7 @@ Use `base_scenarios/` to inspect mobility design; use `corpus_v1/` + `` for rout
         interpretation="""Traffic profiles are **designed experimental factors**, not empirical traffic traces. Each TP modifies message generation (`Events*`) and TTL (`Group*.msgTtl`) while holding mobility constant.
 
 TP12 serves as a **partition control** (cross-group messaging); TP04/TP10 are **stress** tiers. Protocol comparisons should hold TP fixed when comparing routers.""",
-        current_status="Active TP assignments per `benchmark_definition.csv` (540 + 30 stress); validation report available.",
+        current_status="Active TP assignments per `benchmark_definition.csv` (540 scenarios); validation report available.",
         pending="TP04 message sizes (500k–2M) sufficient after revision? TP05 msgTtl mismatches on U4/U6 documented as intentional.",
         status="stable",
         links="[10-Message-Creation-Time](10-Message-Creation-Time), [12-Message-Analysis-Window](12-Message-Analysis-Window)",
@@ -583,7 +579,7 @@ Space uses **world_area** (Wx×Wy) and **aspect_ratio** = min(Wx,Wy)/max(Wx,Wy).
 | Full-46 | 1.0 | 3 378 (2.3%) | 0.2354 |
 | Reduced-17 | 1.0 | 7 425 (5.1%) | 0.3355 |
 
-Feature–feature (core): `mm_WDM ↔ mm_Bus = 0.9354`. Stress controls (30) excluded.""",
+Feature–feature (core): `mm_WDM ↔ mm_Bus = 0.9354`.""",
         interpretation="""Diversity validation ensures scenarios are **not redundant** in configuration space. High |r| pairs indicate similar settings; the corpus aims for broad coverage without claiming uniform low correlation.
 
 Ablation shows **core-23** offers the best interpretability trade-off: lower redundancy than reduced-17 on high-|r| pairs while keeping silhouette above full-46 (0.3045 vs 0.2354).""",
@@ -611,7 +607,7 @@ Ablation shows **core-23** offers the best interpretability trade-off: lower red
 **Nota:** esta pagina es el punto de entrada de lectura para resultados; los `.txt` quedan como anexos tecnicos.""",
         interpretation="""## Freeze activo (diversidad)
 
-- Scope: **540** escenarios en `corpus_v1/` (sin ``).
+- Scope: **540** escenarios en `corpus_v1/`.
 - Umbral de diversidad: **|r| >= 0.7**.
 - Pares totales: C(540,2) = **145 530**.
 
@@ -625,7 +621,7 @@ Ablation shows **core-23** offers the best interpretability trade-off: lower red
 
 **Feature-feature (core):** `mm_WDM ↔ mm_Bus = 0.9354`
 
-Interpretacion: **core-23** es el compromiso metodologico recomendado (interpretable y silhouette > full-46). Los 30 escenarios de stress se documentan aparte.""",
+Interpretacion: **core-23** es el compromiso metodologico recomendado (interpretable y silhouette > full-46).""",
         current_status="""- [x] Metricas de diversidad congeladas para el benchmark activo.
 - [x] Punto de entrada wiki habilitado (sin redireccion a `.txt`).
 - [x] Enlaces a reportes tecnicos mantenidos como soporte.""",
@@ -689,7 +685,6 @@ Interpretacion: el corpus cumple el criterio operativo (>=95% pares con |r|<0.7 
 |------|-----|
 | `scenarios/base_scenarios/` | 45 bases estructurales (sin TP) |
 | `scenarios/corpus_v1/` | 540 escenarios ambientales |
-| `scenarios/` | 30 escenarios stress/control |
 | `scenarios/analysis/data/` | CSV de análisis y manifiestos |
 | `scenarios/analysis/reports/` | reportes canónicos y validaciones |
 | `scenarios/analysis/figures/` | tablas/figuras generadas |
@@ -697,11 +692,11 @@ Interpretacion: el corpus cumple el criterio operativo (>=95% pares con |r|<0.7 
         interpretation="""Esta página resume la topología operativa del benchmark:
 
 1. Capa estructural: `base_scenarios`
-2. Capa benchmark: `corpus_v1` + ``
+2. Capa benchmark: `corpus_v1/`
 3. Capa analítica: `analysis/data`, `analysis/reports`, `analysis/figures`
 
 Objetivo: trazabilidad rápida de artefactos para redacción de paper.""",
-        current_status="""- [x] Mapa funcional para scope 45/540/30/540
+        current_status="""- [x] Mapa funcional para scope 45/540
 - [x] Sin dependencia de enlaces externos a GitHub
 - [x] Navegable desde Home""",
         pending="- Mantener sincronizado con `02-Corpus-Overview` ante futuros cambios de estructura.",
@@ -894,7 +889,7 @@ Late messages in last 10%: label **censored_late**, exclude from latency compari
 4. **Window:** TTL-aware message filter (policy B).
 5. **Runs:** N seeds or confidence intervals if time permits.
 
-**Stress tier** (TP10, TP04, 07_): report separately. **Control tier** (TP12): validate partition behavior, not delivery ranking.""",
+**High-load TPs** (TP10, TP04): report separately when comparing protocols. **Control tier** (TP12): validate partition behavior, not delivery ranking.""",
         current_status="Plan documented; **no protocol comparison runs yet**.",
         pending="Select protocol set; run on main split after analysis window implemented.",
         status="draft",

@@ -1,6 +1,6 @@
 # Diversity archive candidates
 
-Generated: 2026-05-28 07:47 UTC
+Generated: 2026-06-04 10:26 UTC
 
 **Policy:** do not delete; move to `_archive/` only after explicit approval.
 

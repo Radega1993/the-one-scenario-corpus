@@ -14,7 +14,7 @@ This directory contains the analysis pipeline for the scenario corpus: extractio
 
 | Item | Value |
 |------|--------|
-| **Active corpus** | `corpus_v1` + `` — 540 simulations (540 + 30) |
+| **Active corpus** | `corpus_v1` — 540 simulations |
 | **Status** | Main benchmark under methodological freeze / review |
 | **Frozen results (diversity)** | [reports/RESULTADOS_ACTUALES.md](reports/RESULTADOS_ACTUALES.md) (n=540) |
 | **Diversity readiness** | [reports/diversity_validation_readiness.md](reports/diversity_validation_readiness.md) |

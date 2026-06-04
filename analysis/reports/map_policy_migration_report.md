@@ -27,7 +27,6 @@ Se han migrado los **720 ficheros `.settings`** del corpus v2 para que cada una 
 | 04_rural | NuuksioSparseTrails | 2848 x 2945 | OSM (Parque Nuuksio) | 12 | 144 |
 | 05_disaster | HelsinkiDisrupted | 2067 x 2206 | OSM (Kalasatama industrial) | 9 | 108 |
 | 06_social | KallioCommunityCompact | 1458 x 1529 | OSM (Barrio Kallio) | 6 | 72 |
-| 07_ |  | 2000 x 1700 | Sintético (grid 12x10) | 15 | 180 |
 
 ## 3. Justificación: por qué cada familia usa un mapa distinto
 

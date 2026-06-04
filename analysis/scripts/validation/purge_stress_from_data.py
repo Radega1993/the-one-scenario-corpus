@@ -70,7 +70,50 @@ def purge_benchmark_definition() -> int:
         w.writerows(rows)
     return before - len(rows)
 
+SCAN_MD_PATTERNS = re.compile(
+    r"stress_controls|07_stress_controls|ControlCompactGrid|Stress/control laboratory|15-Stress",
+    re.IGNORECASE,
+)
+
+def scan_md(scenarios_root: Path) -> int:
+    """List markdown lines matching stress-family remnants (does not modify files)."""
+    hits: list[tuple[str, int, str]] = []
+    for path in sorted(scenarios_root.rglob("*.md")):
+        rel = path.relative_to(scenarios_root)
+        parts = rel.parts
+        if parts and parts[0] == "_archive":
+            continue
+        if "internal" in parts:
+            continue
+        try:
+            text = path.read_text(encoding="utf-8", errors="replace")
+        except OSError:
+            continue
+        for i, line in enumerate(text.splitlines(), 1):
+            if SCAN_MD_PATTERNS.search(line):
+                hits.append((str(rel), i, line.strip()[:120]))
+    if not hits:
+        print("scan-md: no matches")
+        return 0
+    print(f"scan-md: {len(hits)} line(s)")
+    for rel, lineno, snippet in hits:
+        print(f"  {rel}:{lineno}: {snippet}")
+    return 1
+
+
 def main() -> int:
+    import argparse
+
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument(
+        "--scan-md",
+        action="store_true",
+        help="List stress-family remnants in scenarios/**/*.md (excludes _archive/, internal/)",
+    )
+    args = parser.parse_args()
+    if args.scan_md:
+        return scan_md(REPO_ROOT / "scenarios")
+
     import shutil
 
     n_bench = purge_benchmark_definition()

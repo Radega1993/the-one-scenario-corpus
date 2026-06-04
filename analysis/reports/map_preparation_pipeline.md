@@ -14,7 +14,6 @@ Estandarizar los mapas del benchmark `corpus_v1` asignando **un mapa fijo y repr
 | 04_rural | NuuksioSparseTrails | OSM | Parque Nacional Nuuksio, Espoo | 2848 × 2945 | Red dispersa de senderos — entorno rural/wildlife |
 | 05_disaster | HelsinkiDisrupted | OSM | Kalasatama / Sörnäinen (zona industrial) | 2067 × 2206 | Infraestructura portuaria e industrial — escenarios de desastre |
 | 06_social | KallioCommunityCompact | OSM | Barrio Kallio, Helsinki | 1458 × 1529 | Barrio residencial denso — dinámica de comunidad |
-| 07_ |  | Sintético | Grid rectangular 12×10, 150 m/bloque | 2000 × 1700 | Baseline controlada sin sesgo geográfico |
 
 ## 3. Por qué cada familia usa un mapa distinto
 

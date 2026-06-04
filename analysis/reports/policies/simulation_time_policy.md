@@ -20,5 +20,4 @@ Where `coverage_total < 12%`, prefer **worldSize crop** before extending endTime
 | family | note |
 |--------|------|
 | 01_urban | Low spatial % often map oversized, not short sim |
-| 07_ | Stress lab — report separately |
 | 04_rural | R1/R11 may need mobility fix not longer time |

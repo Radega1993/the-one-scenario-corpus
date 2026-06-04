@@ -24,9 +24,9 @@ S005,consistency,ablation_feature_dims,analysis/data/ablation_metrics.csv,yes,PA
 S006,consistency,RESULTADOS_vs_ablation,analysis/reports/RESULTADOS_ACTUALES.md,yes,PASS,INFO,numeric fields match ablation_metrics.csv,none
 S002,consistency,features_scope_no_stress,analysis/data/features.csv,yes,PASS,INFO,rows=540 stress_like=0,rerun features with 
 R001,report,RESULTADOS_ACTUALES.md,analysis/reports/RESULTADOS_ACTUALES.md,yes,PASS,INFO,pipeline path OK,none
-R002,report,correlation_report.txt,reports/pipeline/correlation_report.txt,yes,PASS,INFO,pipeline path OK,none
-R003,report,correlation_core23_report.txt,reports/pipeline/correlation_core23_report.txt,yes,PASS,INFO,pipeline path OK,none
-R004,report,ablation_report.txt,reports/pipeline/ablation_report.txt,yes,PASS,INFO,pipeline path OK,none
+R002,report,correlation_report.txt,reports/pipeline/correlation_report.txt,yes,WARN,MAJOR,contains n=540 without stress context,none
+R003,report,correlation_core23_report.txt,reports/pipeline/correlation_core23_report.txt,yes,WARN,MAJOR,contains n=540 without stress context,none
+R004,report,ablation_report.txt,reports/pipeline/ablation_report.txt,yes,WARN,MAJOR,contains n=540 without stress context,none
 R005,report,feature_feature_correlation_report.txt,reports/pipeline/feature_feature_correlation_report.txt,yes,PASS,INFO,pipeline path OK,none
 R006,report,multiple_comparisons_report.txt,reports/pipeline/multiple_comparisons_report.txt,yes,PASS,INFO,pipeline path OK,none
 R007,report,clustering_report.txt,reports/pipeline/clustering_report.txt,yes,PASS,INFO,pipeline path OK,none
@@ -46,8 +46,8 @@ T005,table,table_diversity_criteria_en.md,analysis/figures/paper/tables/table_di
 DOC001,readme,features_core_vs_extended.md,analysis/docs/features_core_vs_extended.md,yes,PASS,INFO,,update documentation to scope 540
 DOC002,readme,analysis README.md,analysis/README.md,yes,PASS,INFO,,update documentation to scope 540
 DOC003,readme,SCRIPTS_INDEX.md,analysis/SCRIPTS_INDEX.md,yes,PASS,INFO,,update documentation to scope 540
-DOC004,wiki,wiki 07-Diversity-Validation,.wiki-clone/07-Diversity-Validation.md,yes,PASS,INFO,,update documentation to scope 540
-DOC005,wiki,wiki Resultados-Actuales,.wiki-clone/Resultados-Actuales.md,yes,PASS,INFO,,update documentation to scope 540
+DOC004,wiki,wiki 07-Diversity-Validation,.wiki-clone/07-Diversity-Validation.md,no,FAIL,BLOCKER,,update documentation to scope 540
+DOC005,wiki,wiki Resultados-Actuales,.wiki-clone/Resultados-Actuales.md,no,FAIL,BLOCKER,,update documentation to scope 540
 C001,consistency,root_README_diversity_scope,README.md,yes,PASS,INFO,OK,none
 C002,consistency,FIGURES_AND_TABLES_INDEX,analysis/figures/paper/FIGURES_AND_TABLES_INDEX.md,yes,PASS,INFO,diversity validation PASS in index,none
-C003,consistency,output_metrics_benchmark_scope,analysis/data/output_metrics.csv,yes,WARN,MINOR,rows=540 expected 540 for combined benchmark (not diversity scope),complete simulations and rerun output_metrics
+C003,consistency,output_metrics_benchmark_scope,analysis/data/output_metrics.csv,yes,PASS,INFO,rows=540 expected 540 for combined benchmark (not diversity scope),none
