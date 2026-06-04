@@ -46,9 +46,7 @@ See [CHANGELOG.md](CHANGELOG.md) for the 2026-05-27 nomenclature reorganization 
 |------|------|
 | [`base_scenarios/`](base_scenarios/) | Structural mobility bases (45 `.settings`, no `__TP`) |
 | [`corpus_v1/`](corpus_v1/) | Environmental benchmark with Traffic Profiles (540 `.settings`) |
-| [`corpus_dropped_v1/`](corpus_dropped_v1/) | Archived v1 scenarios removed for redundancy (10) |
 | [`analysis/`](analysis/) | Pipeline, `data/`, `figures/`, `reports/`, dashboard |
-| [`_archive/`](_archive/) | Backups, legacy corpora, historical artifacts |
 | [`.wiki-clone/`](.wiki-clone/) | Active **paper wiki** (EN, flat numbered pages `02-` … `14-`) |
 | [`INVENTARIO.md`](INVENTARIO.md) | Full repository map (source vs generated) |
 | [`REPRODUCIBILITY.md`](REPRODUCIBILITY.md) | Commands to regenerate corpora, manifests, analysis |

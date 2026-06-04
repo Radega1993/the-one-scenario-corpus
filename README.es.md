@@ -44,9 +44,7 @@ Detalle: [RESULTADOS_ACTUALES.md](analysis/reports/RESULTADOS_ACTUALES.md). Gate
 |------|-----|
 | [`corpus_v1/`](corpus_v1/) | **Benchmark activo** — 540 `.settings`, [`manifest.csv`](corpus_v1/manifest.csv) |
 | [`base_scenarios/`](base_scenarios/) | Bases estructurales — 45 `.settings` (sin TP) |
-| [`corpus_dropped_v1/`](corpus_dropped_v1/) | Escenarios v1 archivados por redundancia (10) |
 | [`analysis/`](analysis/) | Pipeline, `data/`, `figures/`, `reports/`, dashboard |
-| [`_archive/`](_archive/) | Artefactos históricos (backups wiki, pilotos, scripts v3) |
 | [`.wiki-clone/`](.wiki-clone/) | **Wiki paper activa** (EN, páginas numeradas `02-` … `14-`) |
 | [`INVENTARIO.md`](INVENTARIO.md) | Mapa completo del repositorio |
 | [`internal/`](internal/) | Notas metodológicas privadas (gitignored) |
