@@ -68,5 +68,5 @@ Backup before refactor: `scenarios/analysis/_backup_before_spatial_coverage_refa
 ## Related docs
 
 - Methodology: [spatial_occupancy_report.md](spatial_occupancy_report.md)
-- Wiki: [13-Spatial-Occupancy](../../../.wiki-clone/13-Spatial-Occupancy.md)
+- Wiki: [08-Spatial-Occupancy](../../../.wiki-clone/08-Spatial-Occupancy.md)
 - Implementation: `scenarios/analysis/lib/spatial_coverage.py`

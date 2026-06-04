@@ -35,7 +35,7 @@ python3 scenarios/analysis/run_all_scenarios.py \
   --extra-settings scenarios/analysis/overlays/routing_contact_reports_overrides.txt
 ```
 
-## 3. Run All Active Scenarios (570 = core + stress)
+## 3. Run All Active Scenarios (540 = core + stress)
 
 ```bash
 python3 scenarios/analysis/run_all_scenarios.py \

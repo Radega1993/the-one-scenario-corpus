@@ -29,7 +29,6 @@ DEFAULT_COLUMNS = [
     "has_metrics",
 ]
 
-
 def render(filtered: pd.DataFrame, _master: pd.DataFrame) -> None:
     st.header("Explorador de escenarios")
     if filtered.empty:

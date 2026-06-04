@@ -24,15 +24,12 @@ CHANGELOG = REPORTS_DIR / "route_file_renaming_changelog.md"
 TREES = (
     SCENARIOS_DIR / "base_scenarios",
     SCENARIOS_DIR / "corpus_v1",
-    SCENARIOS_DIR / "stress_controls",
 )
 
 ROUTE_FILE_RE = re.compile(r"^Group\d+\.routeFile$")
 
-
 def load_settings_flat(path: Path) -> list[str]:
     return path.read_text(encoding="utf-8", errors="replace").splitlines()
-
 
 def count_settings_renames() -> dict[str, int]:
     counts: dict[str, int] = defaultdict(int)
@@ -45,7 +42,6 @@ def count_settings_renames() -> dict[str, int]:
                 if old in text:
                     counts[old] += text.count(old)
     return counts
-
 
 def rename_on_disk(map_name: str, old: str, new: str, apply: bool) -> bool:
     changed = False
@@ -61,7 +57,6 @@ def rename_on_disk(map_name: str, old: str, new: str, apply: bool) -> bool:
             src.unlink()
             changed = True
     return changed
-
 
 def patch_settings(apply: bool) -> list[tuple[Path, str, str]]:
     edits: list[tuple[Path, str, str]] = []
@@ -88,7 +83,6 @@ def patch_settings(apply: bool) -> list[tuple[Path, str, str]]:
             if file_changed and apply:
                 sp.write_text("\n".join(new_lines) + "\n", encoding="utf-8")
     return edits
-
 
 def main() -> int:
     ap = argparse.ArgumentParser()
@@ -150,7 +144,6 @@ def main() -> int:
     print(f"Wrote {CHANGELOG}")
     print(f"Settings substitutions: {len(edits)} in {unique_settings} files")
     return 0
-
 
 if __name__ == "__main__":
     raise SystemExit(main())

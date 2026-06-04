@@ -9,7 +9,6 @@ import streamlit as st
 from dashboard.components import dataframe_scenarios, scenario_picker, show_heatmap
 from dashboard.data_loaders import SPATIAL_HEATMAP_DIR, load_csv
 
-
 def render(filtered: pd.DataFrame, master: pd.DataFrame) -> None:
     st.header("Ocupación espacial")
 

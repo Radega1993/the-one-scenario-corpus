@@ -41,7 +41,6 @@ TIERS = [
     ("control", "TP12 partition controls; validate isolation not delivery ranking"),
 ]
 
-
 def _split_counts(path: Path) -> dict[str, int]:
     if not path.is_file():
         return {}
@@ -50,7 +49,6 @@ def _split_counts(path: Path) -> dict[str, int]:
     if not col:
         return {}
     return df[col].astype(str).value_counts().to_dict()
-
 
 def build_definitions() -> pd.DataFrame:
     rows: list[dict] = []
@@ -68,7 +66,6 @@ def build_definitions() -> pd.DataFrame:
                     }
                 )
     return pd.DataFrame(rows)
-
 
 def write_report(
     path: Path,
@@ -172,7 +169,6 @@ def write_report(
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text("\n".join(lines), encoding="utf-8")
 
-
 def main() -> int:
     ap = argparse.ArgumentParser(description="Build protocol benchmark KPI policy.")
     ap.add_argument("--data-dir", type=Path, default=DEFAULT_DATA)
@@ -202,7 +198,6 @@ def main() -> int:
     print(f"Wrote {csv_path} ({len(defs)} rows)")
     print(f"Wrote {report_path}")
     return 0
-
 
 if __name__ == "__main__":
     raise SystemExit(main())

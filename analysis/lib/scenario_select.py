@@ -8,20 +8,17 @@ from pathlib import Path
 # Scenario file names: BaseName__TP07_BurstWindow.settings
 _TP_IN_NAME = re.compile(r"__(TP\d{2})_", re.I)
 
-
 def tp_from_path(path: Path) -> str | None:
     m = _TP_IN_NAME.search(path.stem)
     return m.group(1).upper() if m else None
 
-
 def family_from_path(path: Path, corpus_dir: Path | None = None) -> str | None:
-    """Infer family folder from path (works across corpus_v1 + stress_controls)."""
+    """Infer environmental family folder from path."""
     del corpus_dir  # unused; kept for API compatibility
     for part in path.parts:
-        if part.startswith(("01_", "02_", "03_", "04_", "05_", "06_", "07_")):
+        if part.startswith(("01_", "02_", "03_", "04_", "05_", "06_")):
             return part
     return None
-
 
 def scenario_base_from_path(path: Path) -> str | None:
     stem = path.stem
@@ -29,7 +26,6 @@ def scenario_base_from_path(path: Path) -> str | None:
     if m:
         return stem[: m.start()].rstrip("_")
     return stem
-
 
 def list_families(corpus_dir: Path) -> list[str]:
     from lib.paths import SCENARIOS_DIR, collect_settings_paths
@@ -41,7 +37,7 @@ def list_families(corpus_dir: Path) -> list[str]:
         corpus_name = corpus_dir.name
     if corpus_name in ("corpus_v1", "corpus_v2"):
         fams = set()
-        for p in collect_settings_paths("corpus_v1", include_stress=False):
+        for p in collect_settings_paths("corpus_v1"):
             f = family_from_path(p)
             if f:
                 fams.add(f)
@@ -54,7 +50,6 @@ def list_families(corpus_dir: Path) -> list[str]:
         if d.is_dir() and not d.name.startswith(".") and not d.name.startswith("_")
     )
 
-
 def collect_corpus_settings(corpus_dir: Path) -> list[Path]:
     from lib.paths import SCENARIOS_DIR, collect_settings_paths
 
@@ -64,11 +59,10 @@ def collect_corpus_settings(corpus_dir: Path) -> list[Path]:
     except ValueError:
         corpus_name = corpus_dir.name
     if corpus_name in ("corpus_v1", "corpus_v2"):
-        return collect_settings_paths("corpus_v1", include_stress=False)
+        return collect_settings_paths("corpus_v1")
     return sorted(
         p for p in corpus_dir.rglob("*.settings") if "_backup" not in p.parts
     )
-
 
 def normalize_tp(tp: str) -> str:
     tp = tp.strip().upper()
@@ -77,7 +71,6 @@ def normalize_tp(tp: str) -> str:
     if tp.isdigit():
         return f"TP{int(tp):02d}"
     return tp
-
 
 def select_scenario_paths(
     corpus_dir: Path,
@@ -126,7 +119,6 @@ def select_scenario_paths(
         paths = [p for p in paths if rx.search(p.as_posix())]
 
     return sorted(paths)
-
 
 def parse_select_file(path: Path, repo_root: Path) -> dict[str, list[str]]:
     """

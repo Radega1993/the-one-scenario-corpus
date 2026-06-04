@@ -1,5 +1,5 @@
 page,exists,complete,updated,has_required_sections,has_map_image,broken_links_count,legacy_terms_found,notes
-Home.md,yes,yes,yes,yes,n/a,0,corpus_v2 (retired note only),Counts 45/540/30/615; link 03-Installation fixed
+Home.md,yes,yes,yes,yes,n/a,0,corpus_v2 (retired note only),Counts 45/540/30/540; link 03-Installation fixed
 02-Maps-and-Map-Generation.md,yes,yes,yes,yes,n/a,0,HelsinkiMedium (legacy section),4-col summary table; red-marker legend; Installation link
 03-Installation.md,yes,yes,yes,yes,n/a,0,HelsinkiMedium corpus_v2 (legacy notes),Created; smoke test and run_all_scenarios flags verified
 05-Scenario-Families.md,yes,yes,yes,yes,n/a,0,none,Main purpose and corpus role columns; constant vs varies

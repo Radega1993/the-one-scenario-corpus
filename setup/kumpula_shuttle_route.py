@@ -26,7 +26,6 @@ BORDER_EPS = 2.0
 ORIGIN_EPS = 15.0
 MIN_DIST_FROM_ORIGIN = 80.0
 
-
 def generate_kumpula_shuttle_route(rg: RoadGraph, rng: random.Random) -> list[tuple[float, float]]:
     """Campus shuttle: hub nodes + angular spread, avoid origin artifact."""
     nodes = rg.node_list
@@ -60,7 +59,6 @@ def generate_kumpula_shuttle_route(rg: RoadGraph, rng: random.Random) -> list[tu
     if len(tour) < 4:
         tour = [p for p in nodes if math.hypot(p[0], p[1]) >= MIN_DIST_FROM_ORIGIN][:10]
     return dedupe_consecutive(tour) if tour else nodes[: min(8, len(nodes))]
-
 
 def validate_shuttle_route(
     rg: RoadGraph,
@@ -137,7 +135,6 @@ def validate_shuttle_route(
         "status": status,
         "notes": "; ".join(notes),
     }
-
 
 def regenerate_shuttle(
     map_dir: Path,

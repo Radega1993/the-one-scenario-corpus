@@ -271,22 +271,40 @@ Justificación metodológica completa: docs/features_decision.md
   Group1.router
     Motivo: DESCARTADO: Ver ../docs/features_decision.md (variante de grupo o misma categoría que Group/Group1).
 
-  Group10.clusterCenter
-    Motivo: DESCARTADO: Ver ../docs/features_decision.md (variante de grupo o misma categoría que Group/Group1).
-
   Group10.groupID
     Motivo: DESCARTADO: Ver ../docs/features_decision.md (variante de grupo o misma categoría que Group/Group1).
 
-  Group11.clusterCenter
+  Group10.routeFile
+    Motivo: DESCARTADO: Ver ../docs/features_decision.md (variante de grupo o misma categoría que Group/Group1).
+
+  Group10.routeType
     Motivo: DESCARTADO: Ver ../docs/features_decision.md (variante de grupo o misma categoría que Group/Group1).
 
   Group11.groupID
     Motivo: DESCARTADO: Ver ../docs/features_decision.md (variante de grupo o misma categoría que Group/Group1).
 
-  Group12.clusterCenter
+  Group11.routeFile
+    Motivo: DESCARTADO: Ver ../docs/features_decision.md (variante de grupo o misma categoría que Group/Group1).
+
+  Group11.routeType
     Motivo: DESCARTADO: Ver ../docs/features_decision.md (variante de grupo o misma categoría que Group/Group1).
 
   Group12.groupID
+    Motivo: DESCARTADO: Ver ../docs/features_decision.md (variante de grupo o misma categoría que Group/Group1).
+
+  Group12.routeFile
+    Motivo: DESCARTADO: Ver ../docs/features_decision.md (variante de grupo o misma categoría que Group/Group1).
+
+  Group12.routeType
+    Motivo: DESCARTADO: Ver ../docs/features_decision.md (variante de grupo o misma categoría que Group/Group1).
+
+  Group13.groupID
+    Motivo: DESCARTADO: Ver ../docs/features_decision.md (variante de grupo o misma categoría que Group/Group1).
+
+  Group13.routeFile
+    Motivo: DESCARTADO: Ver ../docs/features_decision.md (variante de grupo o misma categoría que Group/Group1).
+
+  Group13.routeType
     Motivo: DESCARTADO: Ver ../docs/features_decision.md (variante de grupo o misma categoría que Group/Group1).
 
   Group2.busControlSystemNr
@@ -334,52 +352,67 @@ Justificación metodológica completa: docs/features_decision.md
   Group2.shoppingWaitTimeParetoCoeff
     Motivo: DESCARTADO: Ver ../docs/features_decision.md (variante de grupo o misma categoría que Group/Group1).
 
-  Group3.clusterCenter
-    Motivo: DESCARTADO: Ver ../docs/features_decision.md (variante de grupo o misma categoría que Group/Group1).
-
   Group3.groupID
     Motivo: DESCARTADO: Ver ../docs/features_decision.md (variante de grupo o misma categoría que Group/Group1).
 
-  Group3.nrofInterfaces
+  Group3.routeFile
     Motivo: DESCARTADO: Ver ../docs/features_decision.md (variante de grupo o misma categoría que Group/Group1).
 
-  Group3.router
-    Motivo: DESCARTADO: Ver ../docs/features_decision.md (variante de grupo o misma categoría que Group/Group1).
-
-  Group4.clusterCenter
+  Group3.routeType
     Motivo: DESCARTADO: Ver ../docs/features_decision.md (variante de grupo o misma categoría que Group/Group1).
 
   Group4.groupID
     Motivo: DESCARTADO: Ver ../docs/features_decision.md (variante de grupo o misma categoría que Group/Group1).
 
-  Group5.clusterCenter
+  Group4.routeFile
+    Motivo: DESCARTADO: Ver ../docs/features_decision.md (variante de grupo o misma categoría que Group/Group1).
+
+  Group4.routeType
     Motivo: DESCARTADO: Ver ../docs/features_decision.md (variante de grupo o misma categoría que Group/Group1).
 
   Group5.groupID
     Motivo: DESCARTADO: Ver ../docs/features_decision.md (variante de grupo o misma categoría que Group/Group1).
 
-  Group6.clusterCenter
+  Group5.routeFile
+    Motivo: DESCARTADO: Ver ../docs/features_decision.md (variante de grupo o misma categoría que Group/Group1).
+
+  Group5.routeType
     Motivo: DESCARTADO: Ver ../docs/features_decision.md (variante de grupo o misma categoría que Group/Group1).
 
   Group6.groupID
     Motivo: DESCARTADO: Ver ../docs/features_decision.md (variante de grupo o misma categoría que Group/Group1).
 
-  Group7.clusterCenter
+  Group6.routeFile
+    Motivo: DESCARTADO: Ver ../docs/features_decision.md (variante de grupo o misma categoría que Group/Group1).
+
+  Group6.routeType
     Motivo: DESCARTADO: Ver ../docs/features_decision.md (variante de grupo o misma categoría que Group/Group1).
 
   Group7.groupID
     Motivo: DESCARTADO: Ver ../docs/features_decision.md (variante de grupo o misma categoría que Group/Group1).
 
-  Group8.clusterCenter
+  Group7.routeFile
+    Motivo: DESCARTADO: Ver ../docs/features_decision.md (variante de grupo o misma categoría que Group/Group1).
+
+  Group7.routeType
     Motivo: DESCARTADO: Ver ../docs/features_decision.md (variante de grupo o misma categoría que Group/Group1).
 
   Group8.groupID
     Motivo: DESCARTADO: Ver ../docs/features_decision.md (variante de grupo o misma categoría que Group/Group1).
 
-  Group9.clusterCenter
+  Group8.routeFile
+    Motivo: DESCARTADO: Ver ../docs/features_decision.md (variante de grupo o misma categoría que Group/Group1).
+
+  Group8.routeType
     Motivo: DESCARTADO: Ver ../docs/features_decision.md (variante de grupo o misma categoría que Group/Group1).
 
   Group9.groupID
+    Motivo: DESCARTADO: Ver ../docs/features_decision.md (variante de grupo o misma categoría que Group/Group1).
+
+  Group9.routeFile
+    Motivo: DESCARTADO: Ver ../docs/features_decision.md (variante de grupo o misma categoría que Group/Group1).
+
+  Group9.routeType
     Motivo: DESCARTADO: Ver ../docs/features_decision.md (variante de grupo o misma categoría que Group/Group1).
 
   MapBasedMovement.mapFile1

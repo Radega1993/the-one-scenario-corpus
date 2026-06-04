@@ -2,7 +2,7 @@
 
 Guía de **todas las figuras** generadas bajo `scenarios/analysis/figures/`: qué preguntan, de dónde salen y si conviene usarlas en el estudio o en el paper.
 
-**Corpus de referencia:** `corpus_v1` — 570 escenarios oficiales: 540 environmental (6 familias × 12 TP) + 30 stress/control (`07_stress_controls`, 15 bases × TP01 + TP10).
+**Corpus de referencia:** `corpus_v1` — **540** escenarios (6 familias × 12 TP).
 
 **Objetivo del estudio (dos ejes):**
 

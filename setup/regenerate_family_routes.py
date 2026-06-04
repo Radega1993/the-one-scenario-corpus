@@ -42,14 +42,12 @@ FAMILY_MAPS = {
     "04_rural": ["NuuksioSparseTrails"],
     "05_disaster": ["HelsinkiDisrupted"],
     "06_social": ["KallioCommunityCompact"],
-    "07_stress_controls": ["ControlCompactGrid"],
 }
 
 LEGACY_BY_MAP: dict[str, set[str]] = {}
 for m, cur, rec, _ in ROUTE_SEMANTIC_ROWS:
     if cur != rec:
         LEGACY_BY_MAP.setdefault(m, set()).add(cur)
-
 
 def backup_map_dir(map_name: str, stamp: str) -> Path:
     dest = WKT_DIR / f"_backup_semantic_regen_{stamp}" / map_name
@@ -59,14 +57,12 @@ def backup_map_dir(map_name: str, stamp: str) -> Path:
         shutil.copytree(src, dest, dirs_exist_ok=True)
     return dest
 
-
 def install_to_data(map_name: str) -> None:
     src = WKT_DIR / map_name
     dst = DATA_DIR / map_name
     dst.mkdir(parents=True, exist_ok=True)
     for p in list_route_wkt_files(src):
         shutil.copy2(p, dst / p.name)
-
 
 def process_map(map_name: str, rng: random.Random, apply: bool) -> list[dict]:
     family = MAP_FAMILY[map_name]
@@ -101,7 +97,6 @@ def process_map(map_name: str, rng: random.Random, apply: bool) -> list[dict]:
             if lp.is_file():
                 lp.unlink()
     return rows
-
 
 def main() -> int:
     ap = argparse.ArgumentParser()
@@ -171,7 +166,6 @@ def main() -> int:
     REPORT_MD.write_text("\n".join(lines) + "\n", encoding="utf-8")
     print(f"Wrote {SUMMARY_CSV} and {REPORT_MD}")
     return 0
-
 
 if __name__ == "__main__":
     raise SystemExit(main())

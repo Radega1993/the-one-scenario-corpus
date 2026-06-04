@@ -6,4 +6,3 @@
 - **Fail:** 0
 
 Detail: `scenarios/analysis/data/base_scenarios_validation.csv`
-

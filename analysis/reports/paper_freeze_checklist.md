@@ -7,8 +7,8 @@ Generated: 2026-05-28 07:46 UTC
 
 ## Executive summary
 
-- Simulations in manifest: **570** (expected 570)
-- Settings files: **570**
+- Simulations in manifest: **540** (expected 540)
+- Settings files: **540**
 - Output metrics null delivery: **0**
 - Benchmark `error_probable`: **168**
 - Benchmark `configuracion_sospechosa`: **106**
@@ -27,7 +27,7 @@ Generated: 2026-05-28 07:46 UTC
 
 | ID | Item | Status | Evidence | Action |
 |----|------|--------|----------|--------|
-| CORP-01 | manifest.csv 720 rows + 720 .settings | **DONE** | manifest rows=570, settings=570 | — |
+| CORP-01 | manifest.csv 720 rows + 720 .settings | **DONE** | manifest rows=540, settings=540 | — |
 | CORP-02 | Factorial design 60 bases x 12 TP x 7 families documented | **DONE** | corpus_v1/README.md; corpus_overview_paper.png (lista) | — |
 | CORP-03 | Benchmark splits frozen in main manifest | **PARTIAL** | manifest_revision.csv exists | Freeze benchmark_split into manifest or document split CSV as canonical |
 | CORP-04 | Active docs reference corpus_v1 only (no corpus_v3 as active) | **DONE** | README.md and INVENTARIO.md declare corpus_v1 active; corpus_v3 only in _archive | — |
@@ -179,7 +179,6 @@ Generated: 2026-05-28 07:46 UTC
 
 Core corpus documentation and Epidemic baseline are in place.
 Address remaining PARTIAL items and complete multi-protocol runs before Results claims.
-
 
 ## Regeneration
 

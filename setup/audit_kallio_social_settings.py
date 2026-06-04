@@ -34,7 +34,6 @@ WRONG_MAPS = (
 
 ROUTE_FILE_RE = re.compile(r"^Group\d*\.routeFile$")
 
-
 def load_kv(path: Path) -> dict[str, str]:
     out: dict[str, str] = {}
     for raw in path.read_text(encoding="utf-8", errors="replace").splitlines():
@@ -44,7 +43,6 @@ def load_kv(path: Path) -> dict[str, str]:
         k, v = line.split("=", 1)
         out[k.strip()] = v.strip()
     return out
-
 
 def audit_file(path: Path) -> dict:
     kv = load_kv(path)
@@ -98,7 +96,6 @@ def audit_file(path: Path) -> dict:
         "status": status,
     }
 
-
 def write_report(rows: list[dict]) -> None:
     fails = [r for r in rows if r["status"] == "FAIL"]
     path = REPORTS / "KallioCommunityCompact_social_settings_report.md"
@@ -129,7 +126,6 @@ def write_report(rows: list[dict]) -> None:
             lines.append(f"- `{r['settings_path']}`: {r['issues']}")
     path.write_text("\n".join(lines) + "\n", encoding="utf-8")
 
-
 def main() -> int:
     ap = argparse.ArgumentParser()
     ap.parse_args()
@@ -149,7 +145,6 @@ def main() -> int:
     write_report(rows)
     print(f"Wrote {out_csv} ({len(rows)} files)")
     return 1 if any(r["status"] == "FAIL" for r in rows) else 0
-
 
 if __name__ == "__main__":
     raise SystemExit(main())

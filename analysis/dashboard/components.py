@@ -10,7 +10,6 @@ import streamlit as st
 
 from lib.paths import REPO_ROOT
 
-
 def tp_bar_chart(
     df: pd.DataFrame,
     metric: str,
@@ -39,14 +38,12 @@ def tp_bar_chart(
         .properties(title=title)
     )
 
-
 def kpi_row(items: list[tuple[str, str | int | float, str | None]]) -> None:
     """items: (label, value, delta_or_help)"""
     cols = st.columns(len(items))
     for col, (label, value, help_text) in zip(cols, items):
         with col:
             st.metric(label, value, help=help_text)
-
 
 def render_markdown_file(path: Path, *, max_chars: int | None = None) -> None:
     if not path.is_file():
@@ -57,7 +54,6 @@ def render_markdown_file(path: Path, *, max_chars: int | None = None) -> None:
         st.markdown(text[:max_chars] + "\n\n… *(truncado)*")
     else:
         st.markdown(text)
-
 
 def scenario_picker(
     df: pd.DataFrame,
@@ -77,12 +73,10 @@ def scenario_picker(
     st.session_state["selected_scenario"] = choice
     return choice
 
-
 def go_to_detail_button(scenario: str) -> None:
     st.session_state["selected_scenario"] = scenario
     st.session_state["nav_page"] = "Detalle escenario"
     st.rerun()
-
 
 def show_heatmap(scenario: str, heatmap_path: Path) -> None:
     p = heatmap_path / f"{scenario}.png"
@@ -93,7 +87,6 @@ def show_heatmap(scenario: str, heatmap_path: Path) -> None:
             "Sin heatmap. Genera con:\n"
             "`python3 scenarios/analysis/scripts/validation/analyze_spatial_occupancy.py`"
         )
-
 
 def settings_link(settings_file: str | None) -> None:
     if not settings_file:
@@ -106,7 +99,6 @@ def settings_link(settings_file: str | None) -> None:
         st.code(str(p.relative_to(REPO_ROOT) if REPO_ROOT in p.parents else p), language=None)
     else:
         st.caption(f"No encontrado: {settings_file}")
-
 
 def dataframe_scenarios(
     df: pd.DataFrame,
@@ -123,7 +115,6 @@ def dataframe_scenarios(
         if cols:
             show = show[cols]
     st.dataframe(show, use_container_width=True, height=height)
-
 
 def preview_text_file(path: Path, *, max_lines: int = 300) -> None:
     if not path.is_file():

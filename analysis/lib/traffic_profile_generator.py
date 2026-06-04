@@ -9,7 +9,6 @@ from __future__ import annotations
 import re
 from pathlib import Path
 
-
 def parse_simple_settings(text: str) -> dict:
     """Minimal line-based parser: key -> last value (strings)."""
     out: dict[str, str] = {}
@@ -22,7 +21,6 @@ def parse_simple_settings(text: str) -> dict:
         key, val = line.split("=", 1)
         out[key.strip()] = val.strip()
     return out
-
 
 def infer_total_hosts(kv: dict[str, str]) -> int | None:
     ng_raw = kv.get("Scenario.nrofHostGroups")
@@ -49,14 +47,12 @@ def infer_total_hosts(kv: dict[str, str]) -> int | None:
         return int(kv["Group.nrofHosts"].replace(",", "").split()[0])
     return None
 
-
 def infer_end_time(kv: dict[str, str]) -> float:
     raw = kv.get("Scenario.endTime", "43200")
     try:
         return float(raw.replace(",", "").split()[0])
     except ValueError:
         return 43200.0
-
 
 def hub_exclusive_upper(n: int) -> int | None:
     """Upper bound for hub receivers [0,h); senders use [h,N). None -> use plain random traffic."""
@@ -70,7 +66,6 @@ def hub_exclusive_upper(n: int) -> int | None:
     if h >= n:
         return None
     return h
-
 
 def replace_events_block(content: str, new_block: str) -> str:
     lines = content.splitlines(keepends=True)
@@ -94,7 +89,6 @@ def replace_events_block(content: str, new_block: str) -> str:
     new_lines = lines[:start] + [new_block.rstrip() + "\n\n"] + lines[end:]
     return "".join(new_lines)
 
-
 def replace_msg_ttl_lines(content: str, ttl_minutes: int) -> str:
     """Set Group.msgTtl and GroupN.msgTtl to the same profile TTL."""
 
@@ -103,7 +97,6 @@ def replace_msg_ttl_lines(content: str, ttl_minutes: int) -> str:
 
     out = re.sub(r"^(Group\d*\.msgTtl)\s*=\s*\S+", repl, content, flags=re.MULTILINE)
     return out
-
 
 def ensure_msg_ttl(content: str, ttl_minutes: int) -> str:
     """Ensure TTL is set: rewrite any Group*.msgTtl; insert Group.msgTtl if missing."""
@@ -116,7 +109,6 @@ def ensure_msg_ttl(content: str, ttl_minutes: int) -> str:
         return text[:pos] + ins + text[pos:]
     return text.rstrip() + "\n\n" + ins
 
-
 def set_scenario_name(content: str, new_scenario_name: str) -> str:
     """Replace Scenario.name line to keep generated scenarios unique in reports."""
 
@@ -125,7 +117,6 @@ def set_scenario_name(content: str, new_scenario_name: str) -> str:
 
     # Preserve key formatting (Scenario.name vs Scenario.name =)
     return re.sub(r"^(Scenario\.name)\s*=\s*.*$", lambda m: repl(m), content, flags=re.MULTILINE)
-
 
 def build_events_block(
     tp_id: str,
@@ -335,7 +326,6 @@ Events1.prefix = M"""
 
     raise ValueError(tp_id)
 
-
 # TP05 default 5 min; U4/U6 use 15 min after corpus_v1 revision (still stress, less extreme).
 TP05_RELAXED_TTL_BASES = frozenset(
     {
@@ -343,7 +333,6 @@ TP05_RELAXED_TTL_BASES = frozenset(
         "U6_OfficeWaitHeavyTail_HelsinkiMedium",
     }
 )
-
 
 def profile_ttl_minutes(tp_id: str, scenario_base: str = "") -> int:
     """TTL in minutes for Group.msgTtl (The ONE convention)."""
@@ -364,7 +353,6 @@ def profile_ttl_minutes(tp_id: str, scenario_base: str = "") -> int:
         "TP11": 7200,
         "TP12": 7200,
     }[tp_id]
-
 
 PROFILE_ORDER = [
     ("TP01", "Baseline"),

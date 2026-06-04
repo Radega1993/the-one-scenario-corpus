@@ -15,4 +15,3 @@ Generated: 2026-05-28T17:49:24
 - ≤30.0 m: OK
 - 30.0–75.0 m: WARNING (documented, not auto-corrected)
 - >75.0 m or outside worldSize: snap to nearest road node
-

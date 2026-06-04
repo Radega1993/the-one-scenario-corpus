@@ -19,4 +19,3 @@ Generated: 2026-05-28T18:06:11
 | V3 | BusMovement | A + B vehicle | No |
 | V4 | WDM + bus | A_vehicle | Yes |
 | V5 | WDM + bus | A_vehicle | Yes |
-

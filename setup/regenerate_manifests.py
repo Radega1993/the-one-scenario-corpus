@@ -28,7 +28,6 @@ TP_NAMES = {
     "TP12": "GroupToGroup",
 }
 
-
 def parse_settings(text: str) -> dict[str, str]:
     out: dict[str, str] = {}
     for raw in text.splitlines():
@@ -38,7 +37,6 @@ def parse_settings(text: str) -> dict[str, str]:
         k, v = line.split("=", 1)
         out[k.strip()] = v.strip()
     return out
-
 
 def infer_hosts(kv: dict[str, str]) -> int:
     try:
@@ -62,7 +60,6 @@ def infer_hosts(kv: dict[str, str]) -> int:
             pass
     return 0
 
-
 def parse_scenario(stem: str) -> tuple[str, str, str]:
     m = TP_RE.search(stem)
     if not m:
@@ -72,14 +69,12 @@ def parse_scenario(stem: str) -> tuple[str, str, str]:
     tp_name = m.group(2)
     return base, tp_id, tp_name
 
-
 def corpus_prefix(corpus_dir: Path) -> str:
     try:
         rel = corpus_dir.relative_to(REPO_ROOT)
         return str(rel).replace("\\", "/")
     except ValueError:
         return str(corpus_dir)
-
 
 def build_manifest_rows(
     corpus_dir: Path,
@@ -90,7 +85,7 @@ def build_manifest_rows(
     prefix = corpus_prefix(corpus_dir)
     rows: list[dict] = []
 
-    # Flat layout: *.settings directly under corpus_dir (e.g. stress_controls/07_stress_controls)
+    # Flat layout: *.settings directly under corpus_dir (e.g. 07_)
     root_settings = sorted(corpus_dir.glob("*.settings"))
     if root_settings:
         fam_name = flat_family or corpus_dir.name
@@ -155,7 +150,6 @@ def build_manifest_rows(
             )
     return rows
 
-
 def write_manifest(path: Path, rows: list[dict]) -> None:
     cols = [
         "family",
@@ -178,7 +172,6 @@ def write_manifest(path: Path, rows: list[dict]) -> None:
         w.writeheader()
         w.writerows(rows)
 
-
 def patch_revision_paths(rev_path: Path, rows: list[dict]) -> None:
     if not rev_path.is_file():
         return
@@ -199,7 +192,6 @@ def patch_revision_paths(rev_path: Path, rows: list[dict]) -> None:
         w = csv.DictWriter(f, fieldnames=fieldnames)
         w.writeheader()
         w.writerows(old_rows)
-
 
 def main() -> int:
     ap = argparse.ArgumentParser(description="Regenerate corpus manifest from disk.")
@@ -252,7 +244,6 @@ def main() -> int:
             w.writerows(kept)
         print(f"Patched {rev_path} ({len(kept)} rows)")
     return 0
-
 
 if __name__ == "__main__":
     raise SystemExit(main())

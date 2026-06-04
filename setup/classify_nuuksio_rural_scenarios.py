@@ -75,7 +75,6 @@ CLASSIFICATION: dict[str, tuple[str, str]] = {
     ),
 }
 
-
 def load_kv(path: Path) -> dict[str, str]:
     out: dict[str, str] = {}
     for raw in path.read_text(encoding="utf-8", errors="replace").splitlines():
@@ -85,7 +84,6 @@ def load_kv(path: Path) -> dict[str, str]:
         k, v = line.split("=", 1)
         out[k.strip()] = v.strip()
     return out
-
 
 def classify_base(path: Path) -> dict:
     kv = load_kv(path)
@@ -118,7 +116,6 @@ def classify_base(path: Path) -> dict:
         "uses_ranger_patrol": uses_patrol,
         "route_file": route,
     }
-
 
 def write_md(rows: list[dict]) -> None:
     path = REPORTS / "NuuksioSparseTrails_rural_scenario_classification.md"
@@ -162,7 +159,6 @@ def write_md(rows: list[dict]) -> None:
         lines.append(f"| {r['scenario_stem']} | range/buffer/speed | {r['role_notes']} |")
     path.write_text("\n".join(lines) + "\n", encoding="utf-8")
 
-
 def main() -> int:
     ap = argparse.ArgumentParser()
     ap.parse_args()
@@ -181,7 +177,6 @@ def main() -> int:
     write_md(rows)
     print(f"Wrote {out_csv} ({len(rows)} scenarios)")
     return 0
-
 
 if __name__ == "__main__":
     raise SystemExit(main())

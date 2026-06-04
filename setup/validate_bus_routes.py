@@ -33,7 +33,6 @@ from map_geometry import (  # noqa: E402
 
 REPORTS_DIR = SCENARIOS_DIR / "analysis" / "reports" / "maps"
 
-
 def classify_route(
     *,
     within_ws: bool,
@@ -49,7 +48,6 @@ def classify_route(
         return "WARNING"
     return "PASS"
 
-
 def validate_one(
     map_name: str,
     bus_path: Path,
@@ -63,8 +61,6 @@ def validate_one(
     family = meta.get("family", "")
     if family == "04_rural":
         thresh = max_vertex_rural
-    elif family == "07_stress_controls":
-        thresh = max_vertex_stress
     else:
         thresh = max_vertex_urban
 
@@ -134,7 +130,6 @@ def validate_one(
         "notes": "; ".join(notes),
     }
 
-
 def write_report(rows: list[dict], path: Path) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
     ts = datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M UTC")
@@ -161,7 +156,6 @@ def write_report(rows: list[dict], path: Path) -> None:
             f"{r.get('chord_vs_graph_ratio','')} | {r.get('max_vertex_dist_m','')} | {r.get('notes','')} |"
         )
     path.write_text("\n".join(lines) + "\n", encoding="utf-8")
-
 
 def main() -> int:
     ap = argparse.ArgumentParser()
@@ -202,7 +196,6 @@ def main() -> int:
     print(f"Wrote {args.output_report}")
     fails = [r for r in rows if r.get("status") == "FAIL"]
     return 1 if fails else 0
-
 
 if __name__ == "__main__":
     raise SystemExit(main())

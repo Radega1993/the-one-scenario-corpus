@@ -29,7 +29,6 @@ U2_NEW = "U2_SparseUrban_HelsinkiDowntown"
 ROUTE_FILE_RE = re.compile(r"^Group\d*\.routeFile$")
 POI_KEYS = ("homeLocationsFile", "officeLocationsFile", "meetingSpotsFile")
 
-
 def load_kv(path: Path) -> dict[str, str]:
     out: dict[str, str] = {}
     for raw in path.read_text(encoding="utf-8", errors="replace").splitlines():
@@ -39,7 +38,6 @@ def load_kv(path: Path) -> dict[str, str]:
         k, v = line.split("=", 1)
         out[k.strip()] = v.strip()
     return out
-
 
 def audit_file(path: Path) -> dict:
     kv = load_kv(path)
@@ -86,7 +84,6 @@ def audit_file(path: Path) -> dict:
         "status": status,
     }
 
-
 def rename_u2_settings(apply: bool) -> list[str]:
     changed: list[str] = []
     patterns = [
@@ -112,7 +109,6 @@ def rename_u2_settings(apply: bool) -> list[str]:
         changed.append(str(new.relative_to(SCENARIOS_DIR.parent)))
     return changed
 
-
 def update_manifests(apply: bool) -> None:
     for manifest in (
         SCENARIOS_DIR / "base_scenarios" / "manifest.csv",
@@ -124,7 +120,6 @@ def update_manifests(apply: bool) -> None:
         new_text = text.replace(U2_OLD, U2_NEW)
         if apply and new_text != text:
             manifest.write_text(new_text, encoding="utf-8")
-
 
 def write_settings_report(rows: list[dict], u2_renamed: list[str], path: Path) -> None:
     fails = [r for r in rows if r["status"] == "FAIL"]
@@ -154,7 +149,6 @@ def write_settings_report(rows: list[dict], u2_renamed: list[str], path: Path) -
         for r in fails[:20]:
             lines.append(f"- `{r['settings_path']}`: {r['issues']}")
     path.write_text("\n".join(lines) + "\n", encoding="utf-8")
-
 
 def main() -> int:
     ap = argparse.ArgumentParser()
@@ -186,7 +180,6 @@ def main() -> int:
     if u2_renamed:
         print(f"U2 renamed: {len(u2_renamed)} files")
     return 1 if any(r["status"] == "FAIL" for r in rows) else 0
-
 
 if __name__ == "__main__":
     raise SystemExit(main())

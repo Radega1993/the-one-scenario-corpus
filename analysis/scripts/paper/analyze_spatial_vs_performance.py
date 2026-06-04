@@ -26,7 +26,6 @@ from lib.report_paths import (  # noqa: E402
     SPATIAL_VS_PERFORMANCE_ANALYSIS,
 )
 
-
 def _scenario_col(df: pd.DataFrame) -> str:
     if "scenario" in df.columns:
         return "scenario"
@@ -34,13 +33,11 @@ def _scenario_col(df: pd.DataFrame) -> str:
         return "scenario_name"
     return df.columns[0]
 
-
 def _pearson(x: pd.Series, y: pd.Series) -> tuple[float, int]:
     mask = x.notna() & y.notna()
     if mask.sum() < 3:
         return float("nan"), int(mask.sum())
     return float(x[mask].corr(y[mask])), int(mask.sum())
-
 
 def build_merged(data_dir: Path, manifest: Path) -> pd.DataFrame:
     m = pd.read_csv(manifest)
@@ -75,7 +72,6 @@ def build_merged(data_dir: Path, manifest: Path) -> pd.DataFrame:
     if ut is not None:
         out = out.merge(ut, on="scenario", how="left")
     return out
-
 
 def write_report(path: Path, df: pd.DataFrame) -> None:
     ts = datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M UTC")
@@ -175,7 +171,6 @@ def write_report(path: Path, df: pd.DataFrame) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text("\n".join(lines), encoding="utf-8")
 
-
 def main() -> int:
     ap = argparse.ArgumentParser(description="Spatial vs performance analysis.")
     ap.add_argument("--data-dir", type=Path, default=DEFAULT_DATA)
@@ -203,7 +198,6 @@ def main() -> int:
     )
     print(f"Wrote {out} (n={len(df)})")
     return 0
-
 
 if __name__ == "__main__":
     raise SystemExit(main())

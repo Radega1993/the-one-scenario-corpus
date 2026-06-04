@@ -10,4 +10,3 @@ HelsinkiDisrupted,05_disaster,A_bus.wkt,A_emergency_route.wkt,emergency_route,ye
 HelsinkiDisrupted,05_disaster,B_bus.wkt,B_mule_route.wkt,mule_route,yes,0,optional_asset
 KallioCommunityCompact,06_social,A_bus.wkt,A_community_route.wkt,community_route,yes,0,optional_asset
 KallioCommunityCompact,06_social,B_bus.wkt,B_community_route.wkt,community_route,yes,0,optional_asset
-ControlCompactGrid,07_stress_controls,A_bus.wkt,A_control_route.wkt,control_route,yes,0,optional_asset

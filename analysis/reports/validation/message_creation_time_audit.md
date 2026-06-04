@@ -8,7 +8,6 @@
 
 ### Validación empírica
 
-
 ---
 
 ## Respuestas explícitas

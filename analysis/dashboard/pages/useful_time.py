@@ -11,7 +11,6 @@ from lib.report_paths import USEFUL_SIMULATION_TIME_REPORT
 
 from dashboard.data_loaders import load_csv
 
-
 def render(filtered: pd.DataFrame, master: pd.DataFrame) -> None:
     st.header("Tiempo útil de simulación")
     st.caption(

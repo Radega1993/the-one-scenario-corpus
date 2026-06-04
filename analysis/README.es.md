@@ -6,7 +6,7 @@ Este directorio contiene el pipeline de análisis de los escenarios del corpus: 
 
 **Índice de scripts (roles y pipeline paper):** [SCRIPTS_INDEX.md](SCRIPTS_INDEX.md).
 
-**Contexto:** benchmark activo [../corpus_v1](../corpus_v1) (540) + [../stress_controls](../stress_controls) (30); base estructural en [../base_scenarios](../base_scenarios) (45). Guía ONE: [../README.es.md](../README.es.md).
+**Contexto:** benchmark activo [../corpus_v1](../corpus_v1) (540) + [../](../) (30); base estructural en [../base_scenarios](../base_scenarios) (45). Guía ONE: [../README.es.md](../README.es.md).
 
 ---
 
@@ -14,14 +14,14 @@ Este directorio contiene el pipeline de análisis de los escenarios del corpus: 
 
 | Elemento | Valor |
 |----------|--------|
-| **Corpus activo** | `corpus_v1` (540) + `stress_controls` (30) = 570 simulaciones |
+| **Corpus activo** | `corpus_v1` (540) + `` (30) = 540 simulaciones |
 | **Estado** | Benchmark principal bajo congelación / revisión metodológica |
 | **Resultados congelados** | [reports/RESULTADOS_ACTUALES.md](reports/RESULTADOS_ACTUALES.md) |
 | **Figuras paper** | [figures/paper/main/](figures/paper/main/), [figures/paper/supplementary/](figures/paper/supplementary/) |
 | **Tablas paper** | [figures/paper/tables/](figures/paper/tables/) (Markdown ES/EN) |
 | **Catálogo de figuras** | [figures/README.md](figures/README.md) |
 
-**Diversidad (570 escenarios):** ver métricas regeneradas y vigentes en [reports/RESULTADOS_ACTUALES.md](reports/RESULTADOS_ACTUALES.md).
+**Diversidad (540 escenarios):** ver métricas regeneradas y vigentes en [reports/RESULTADOS_ACTUALES.md](reports/RESULTADOS_ACTUALES.md).
 
 ---
 
@@ -68,7 +68,7 @@ Comandos completos (12 pasos): **[SCRIPTS_INDEX.md](SCRIPTS_INDEX.md)**.
 
 ## Un script con fases (recomendado)
 
-**Resultados actuales (`corpus_v1`, 570 escenarios):** **46 features** extendidas; **core 23** para metodología/paper. Ver [reports/RESULTADOS_ACTUALES.md](reports/RESULTADOS_ACTUALES.md).
+**Resultados actuales (`corpus_v1`, 540 escenarios):** **46 features** extendidas; **core 23** para metodología/paper. Ver [reports/RESULTADOS_ACTUALES.md](reports/RESULTADOS_ACTUALES.md).
 
 - **Core-23:** max \|r\| = 1,0; 11 325 pares (4,4 %) con \|r\| ≥ 0,7; silhouette ablación (Ward k=7) = 0,3451  
 - **Full-46:** 8 356 pares (3,2 %) con \|r\| ≥ 0,7; silhouette = 0,2680  
@@ -102,13 +102,13 @@ analysis/
 └── run_analysis.py     # Script principal por fases (extracción → correlación → reporte)
 ```
 
-- **Menú interactivo:** `analysis_menu.py` — ver [MENU.md](MENU.md): simulación (1–2), pipeline (3), paper/validación (4a–4n), tiempo útil/mensajes/espacial (5–7), dashboard (8), figuras (9), ruta paper-ready guiada (10), protocolos por overlay sin tocar `.settings` (11). Scope actual: diversidad 540 (`--no-stress`) y benchmark combinado 570.
+- **Menú interactivo:** `analysis_menu.py` — ver [MENU.md](MENU.md): simulación (1–2), pipeline (3), paper/validación (4a–4n), tiempo útil/mensajes/espacial (5–7), dashboard (8), figuras (9), ruta paper-ready guiada (10), protocolos por overlay sin tocar `.settings` (11). Scope actual: diversidad 540 (``) y benchmark combinado 540.
 
 - **data/**: Vectores de features por escenario, matrices de correlación/distancias, exports en CSV.
-- **figures/**: Figuras en PNG/PDF. **Catálogo y veredictos:** [figures/README.md](figures/README.md). Con 570 escenarios no use heatmaps N×N; use `figures/aggregated/` y `figures/paper/main/`.
+- **figures/**: Figuras en PNG/PDF. **Catálogo y veredictos:** [figures/README.md](figures/README.md). Con 540 escenarios no use heatmaps N×N; use `figures/aggregated/` y `figures/paper/main/`.
 - **reports/**: Conclusiones en texto (`correlation_report.txt`), y **observaciones para trabajo posterior** (`observaciones_correlacion.md`).
 
-El script `run_analysis.py` se ejecuta por fases y escribe siempre en esta estructura. Para explorar el **corpus_v1** (570 escenarios, perfiles TP, diagnóstico, heatmaps) usa el **dashboard** (`dashboard.py`): 8 vistas temáticas, filtros globales en la barra lateral y tablas unificadas desde `manifest.csv` + CSV en `data/`.
+El script `run_analysis.py` se ejecuta por fases y escribe siempre en esta estructura. Para explorar el **corpus_v1** (540 escenarios, perfiles TP, diagnóstico, heatmaps) usa el **dashboard** (`dashboard.py`): 8 vistas temáticas, filtros globales en la barra lateral y tablas unificadas desde `manifest.csv` + CSV en `data/`.
 
 ---
 

@@ -13,7 +13,6 @@ AGG_DIR = FIGURES_DIR / "aggregated"
 PAPER_MAIN = FIGURES_DIR / "paper" / "main"
 PAPER_SUPP = FIGURES_DIR / "paper" / "supplementary"
 
-
 def _show_images(directory: Path, pattern: str = "*.png", caption_prefix: str = "") -> int:
     if not directory.is_dir():
         st.caption(f"No existe `{directory}`.")
@@ -24,7 +23,6 @@ def _show_images(directory: Path, pattern: str = "*.png", caption_prefix: str = 
         st.image(str(f), caption=f"{caption_prefix}{f.name}", use_container_width=True)
         n += 1
     return n
-
 
 def render(filtered, master) -> None:
     st.header("Figuras del análisis")

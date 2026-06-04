@@ -33,13 +33,11 @@ MAX_STOP_DIST_M = 100.0
 
 ROUTE_FILES = ("A_emergency_route.wkt", "B_mule_route.wkt")
 
-
 def _route_separation(stops_a: list[tuple[float, float]], stops_b: list[tuple[float, float]]) -> float:
     if not stops_a or not stops_b:
         return 0.0
     dists = [min(math.hypot(a[0] - b[0], a[1] - b[1]) for b in stops_b) for a in stops_a]
     return sum(dists) / len(dists)
-
 
 def _route_stops_sim(route_path: Path, roads_path: Path) -> list[tuple[float, float]]:
     raw = parse_linestrings(route_path)
@@ -49,7 +47,6 @@ def _route_stops_sim(route_path: Path, roads_path: Path) -> list[tuple[float, fl
     tf = SimTransform.from_raw_lines(roads_lines)
     return [tf.raw_to_sim(x, y) for x, y in raw[0]]
 
-
 def _nearest_poi_dist(stops: list[tuple[float, float]], poi_pts: list[tuple[float, float]]) -> float:
     if not stops or not poi_pts:
         return 0.0
@@ -57,7 +54,6 @@ def _nearest_poi_dist(stops: list[tuple[float, float]], poi_pts: list[tuple[floa
         min(math.hypot(s[0] - p[0], s[1] - p[1]) for p in poi_pts)
         for s in stops
     )
-
 
 def validate_disaster_route(
     rg: RoadGraph,
@@ -146,7 +142,6 @@ def validate_disaster_route(
         "notes": "; ".join(notes),
     }
 
-
 def _refine_stops(rg: RoadGraph, stops: list[tuple[float, float]]) -> list[tuple[float, float]]:
     refined: list[tuple[float, float]] = []
     for p in stops:
@@ -157,7 +152,6 @@ def _refine_stops(rg: RoadGraph, stops: list[tuple[float, float]]) -> list[tuple
         if dists and dists[0] <= MAX_STOP_DIST_M:
             refined.append(snapped)
     return dedupe_consecutive(refined)
-
 
 def _graph_node_routes(rg: RoadGraph, rng: random.Random) -> dict[str, list[tuple[float, float]]]:
     """Build both routes from graph nodes (vertex_dist == 0)."""
@@ -189,7 +183,6 @@ def _graph_node_routes(rg: RoadGraph, rng: random.Random) -> dict[str, list[tupl
         out[fname] = dedupe_consecutive(tour)
     return out
 
-
 def regenerate_disaster_routes(
     map_dir: Path,
     rng: random.Random,
@@ -215,7 +208,6 @@ def regenerate_disaster_routes(
             }
         )
     return corrections
-
 
 def load_all_poi_sim(map_dir: Path) -> list[tuple[float, float]]:
     pts: list[tuple[float, float]] = []

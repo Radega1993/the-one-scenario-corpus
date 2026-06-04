@@ -10,4 +10,4 @@
 | Silhouette | Cluster cohesion vs separation | From cosine distance matrix + Ward labels | Higher ⇒ better-separated clusters |
 | Ablation 17/23/46 | Feature-set trade-off | Same metrics on reduced/core/full spaces | Core-23 balances interpretability and separation |
 
-**Canonical scope:** `corpus_v1` only — **540** scenarios. `stress_controls` (30) are documented separately.
+**Canonical scope:** `corpus_v1` only — **540** scenarios. `` (30) are documented separately.

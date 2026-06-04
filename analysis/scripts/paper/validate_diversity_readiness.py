@@ -28,7 +28,7 @@ PIPELINE = REPORTS / "pipeline"
 ARCHIVE_LEGACY = SCEN / "_archive" / "diversity_legacy_20260527"
 
 EXPECTED_N = 540
-COMBINED_N = 570
+COMBINED_N = 540
 EXPECTED_PAIRS = EXPECTED_N * (EXPECTED_N - 1) // 2  # 145530
 FEATURE_DIMS = {"reduced_17": 17, "core_23": 23, "full_46": 46}
 ABLATION_SETS = ("reduced_17", "core_23", "full_46")
@@ -40,10 +40,8 @@ ARCHIVE_CANDIDATES_MD = REPORTS / "diversity_archive_candidates.md"
 checks: list[dict[str, str]] = []
 structure_notes: list[str] = []
 
-
 def utc_now() -> str:
     return datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M UTC")
-
 
 def add(
     item_id: str,
@@ -70,17 +68,14 @@ def add(
         }
     )
 
-
 def count_settings(d: Path) -> int:
     return sum(1 for _ in d.rglob("*.settings")) if d.is_dir() else 0
-
 
 def csv_data_rows(p: Path) -> int:
     if not p.is_file():
         return -1
     with p.open(newline="", encoding="utf-8", errors="replace") as f:
         return sum(1 for _ in csv.DictReader(f))
-
 
 def matrix_dim(p: Path) -> tuple[int, int] | None:
     if not p.is_file():
@@ -94,7 +89,6 @@ def matrix_dim(p: Path) -> tuple[int, int] | None:
     except Exception:
         return None
 
-
 def scenario_ids_from_features() -> set[str] | None:
     p = DATA / "features.csv"
     if not p.is_file():
@@ -102,7 +96,6 @@ def scenario_ids_from_features() -> set[str] | None:
     df = pd.read_csv(p)
     col = "scenario" if "scenario" in df.columns else df.columns[0]
     return set(df[col].astype(str))
-
 
 def check_scenario_id_alignment() -> None:
     ids_feat = scenario_ids_from_features()
@@ -116,7 +109,7 @@ def check_scenario_id_alignment() -> None:
             "FAIL",
             "BLOCKER",
             "features.csv missing",
-            "run --phase features --no-stress",
+            "run --phase features ",
         )
         return
 
@@ -151,9 +144,8 @@ def check_scenario_id_alignment() -> None:
         status,
         "BLOCKER" if mismatches else "INFO",
         "; ".join(mismatches) if mismatches else f"n={len(ids_feat)} aligned",
-        "regenerate correlation/cluster with --no-stress" if mismatches else "none",
+        "regenerate correlation/cluster with " if mismatches else "none",
     )
-
 
 def check_matrix_finite() -> None:
     for fname in (
@@ -182,7 +174,6 @@ def check_matrix_finite() -> None:
             "inspect feature extraction" if not ok else "none",
         )
 
-
 def check_ablation_dims() -> None:
     p = DATA / "ablation_metrics.csv"
     if not p.is_file():
@@ -209,9 +200,8 @@ def check_ablation_dims() -> None:
         "PASS" if not issues else "FAIL",
         "BLOCKER" if issues else "INFO",
         "; ".join(issues) if issues else "17/23/46 verified",
-        "rerun --phase ablation --no-stress" if issues else "none",
+        "rerun --phase ablation " if issues else "none",
     )
-
 
 def check_resultados_coherence() -> None:
     res_path = REPORTS / "RESULTADOS_ACTUALES.md"
@@ -258,26 +248,20 @@ def check_resultados_coherence() -> None:
         "run run_phase_results_actuales or refresh RESULTADOS" if issues else "none",
     )
 
-
 def document_structure() -> None:
     base_n = count_settings(SCEN / "base_scenarios")
     corpus_n = count_settings(SCEN / "corpus_v1")
-    stress_n = count_settings(SCEN / "stress_controls")
-    combined = corpus_n + stress_n
     structure_notes.extend(
         [
             f"- **base_scenarios/**: {base_n} structural bases (no TP)",
-            f"- **corpus_v1/**: {corpus_n} environmental scenarios with TP (diversity scope)",
-            f"- **stress_controls/**: {stress_n} stress/control lab (excluded from diversity freeze)",
-            f"- **Combined paper benchmark:** {combined} ({corpus_n} + {stress_n})",
-            f"- **Diversity validation scope:** {EXPECTED_N} (`corpus_v1` only, `--no-stress`)",
+            f"- **corpus_v1/**: {corpus_n} environmental scenarios with TP (benchmark scope)",
+            f"- **Paper benchmark:** {EXPECTED_N} scenarios in `corpus_v1/`",
             f"- **Legacy archive:** `_archive/diversity_legacy_20260527/` (720-era CSVs; not canonical)",
         ]
     )
     if ARCHIVE_LEGACY.is_dir():
         n_legacy = sum(1 for _ in ARCHIVE_LEGACY.rglob("*.csv"))
         structure_notes.append(f"- Legacy CSV count in archive: {n_legacy}")
-
 
 def write_archive_candidates() -> None:
     lines = [
@@ -311,7 +295,6 @@ def write_archive_candidates() -> None:
     ARCHIVE_CANDIDATES_MD.parent.mkdir(parents=True, exist_ok=True)
     ARCHIVE_CANDIDATES_MD.write_text("\n".join(lines) + "\n", encoding="utf-8")
     print(f"wrote {ARCHIVE_CANDIDATES_MD}")
-
 
 def write_figures_inventory() -> None:
     """Classify diversity-related figures for paper use."""
@@ -355,7 +338,6 @@ def write_figures_inventory() -> None:
         w.writeheader()
         w.writerows(rows)
     print(f"wrote {inv_path}")
-
 
 def run_checks() -> None:
     document_structure()
@@ -464,7 +446,7 @@ def run_checks() -> None:
             status,
             severity,
             notes,
-            "regenerate diversity pipeline with --no-stress" if status != "PASS" else "none",
+            "regenerate diversity pipeline with " if status != "PASS" else "none",
         )
 
     check_scenario_id_alignment()
@@ -488,7 +470,7 @@ def run_checks() -> None:
             "PASS" if ok_scope else "FAIL",
             "BLOCKER" if not ok_scope else "INFO",
             f"rows={len(df)} stress_like={stress_hits}",
-            "rerun features with --no-stress",
+            "rerun features with ",
         )
 
     report_files = [
@@ -514,8 +496,8 @@ def run_checks() -> None:
             elif name == "RESULTADOS_ACTUALES.md":
                 if "540" not in txt[:500]:
                     status, severity, notes = "WARN", "MAJOR", "header should state 540 scenarios"
-            elif re.search(r"\bn\s*=\s*570\b", txt) and "stress" not in txt.lower():
-                status, severity, notes = "WARN", "MAJOR", "contains n=570 without stress context"
+            elif re.search(r"\bn\s*=\s*540\b", txt) and "stress" not in txt.lower():
+                status, severity, notes = "WARN", "MAJOR", "contains n=540 without stress context"
         flat_alt = REPORTS / name
         if not exists and flat_alt.is_file():
             notes = f"found at legacy flat path {flat_alt.name}; canonical: reports/pipeline/"
@@ -551,7 +533,7 @@ def run_checks() -> None:
             "PASS" if p.is_file() and p.stat().st_size > 1000 else "FAIL",
             "BLOCKER" if not p.is_file() else "INFO",
             "MAIN_PAPER" if p.is_file() else "missing",
-            "run --phase figures_paper --no-stress",
+            "run --phase figures_paper ",
         )
 
     paper_tables = [
@@ -568,7 +550,7 @@ def run_checks() -> None:
         if p.is_file():
             txt = p.read_text(encoding="utf-8", errors="replace")
             if re.search(r"\b570\b", txt) and "stress" not in txt.lower():
-                status, notes = "WARN", "table references n=570 without stress context"
+                status, notes = "WARN", "table references n=540 without stress context"
             elif "540" in txt or name == "table_diversity_criteria_en.md":
                 notes = "present"
         add(
@@ -580,7 +562,7 @@ def run_checks() -> None:
             status,
             "MAJOR" if status == "FAIL" else "INFO",
             notes,
-            "run --phase tables_paper --no-stress" if status != "PASS" else "none",
+            "run --phase tables_paper " if status != "PASS" else "none",
         )
 
     doc_paths = [
@@ -614,7 +596,7 @@ def run_checks() -> None:
     root_readme = SCEN / "README.md"
     if root_readme.is_file():
         txt = root_readme.read_text(encoding="utf-8", errors="replace")
-        if "Diversity snapshot (570" in txt:
+        if "Diversity snapshot (540" in txt:
             add(
                 "C001",
                 "consistency",
@@ -623,7 +605,7 @@ def run_checks() -> None:
                 True,
                 "WARN",
                 "MINOR",
-                "Diversity snapshot labeled 570; canonical freeze is 540",
+                "Diversity snapshot labeled 540; canonical freeze is 540",
                 "point to RESULTADOS_ACTUALES.md (540)",
             )
         else:
@@ -692,7 +674,6 @@ def run_checks() -> None:
         "complete simulations and rerun output_metrics" if n_out != COMBINED_N else "none",
     )
 
-
 def decide() -> str:
     blockers = [c for c in checks if c["status"] == "FAIL" and c["severity"] == "BLOCKER"]
     if blockers:
@@ -711,7 +692,6 @@ def decide() -> str:
     if benchmark_warns:
         return "READY_FOR_PAPER"  # diversity complete; benchmark outputs incomplete
     return "READY_FOR_PAPER"
-
 
 def write_outputs(decision: str) -> None:
     OUT_CSV.parent.mkdir(parents=True, exist_ok=True)
@@ -742,15 +722,15 @@ def write_outputs(decision: str) -> None:
         f.write(f"Generated: {utc_now()}\n\n")
         f.write(
             f"**Corpus scope:** `corpus_v1` only — **{EXPECTED_N}** scenarios "
-            "(stress_controls excluded)\n\n"
+            "\n\n"
         )
         f.write(f"**Expected pairs:** C({EXPECTED_N},2) = {EXPECTED_PAIRS}\n\n")
         f.write(f"**Decision (diversity scope):** `{decision}`\n\n")
         n_out = csv_data_rows(DATA / "output_metrics.csv")
         bench = "READY_WITH_MINOR_FIXES" if n_out != COMBINED_N else "READY"
         f.write(
-            f"**Combined benchmark (570 routing/outputs):** `{bench}` "
-            f"(output_metrics={n_out}/{COMBINED_N}; not part of diversity freeze)\n\n"
+            f"**Benchmark routing/outputs:** `{bench}` "
+            f"(output_metrics={n_out}/{COMBINED_N})\n\n"
         )
 
         f.write("## Project structure (active)\n\n")
@@ -801,11 +781,11 @@ def write_outputs(decision: str) -> None:
 
         f.write("\n## Recommended actions (non-diversity)\n\n")
         f.write(
-            "- Complete combined benchmark simulations (570) and regenerate "
+            "- Complete benchmark simulations (540) and regenerate "
             "`output_metrics.csv` if routing results are needed.\n"
         )
         f.write(
-            "- Regenerate `spatial_occupancy_metrics.csv` for 540/570 scope "
+            "- Regenerate `spatial_occupancy_metrics.csv` for 540 scope "
             "(current file may still be 720 legacy).\n"
         )
         f.write(
@@ -816,7 +796,6 @@ def write_outputs(decision: str) -> None:
     print(f"wrote {OUT_MD}")
     print(f"decision={decision}")
 
-
 def main() -> int:
     run_checks()
     write_figures_inventory()
@@ -824,7 +803,6 @@ def main() -> int:
     decision = decide()
     write_outputs(decision)
     return 0 if decision != "NOT_READY" else 1
-
 
 if __name__ == "__main__":
     raise SystemExit(main())

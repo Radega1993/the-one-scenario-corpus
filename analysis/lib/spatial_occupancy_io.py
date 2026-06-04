@@ -8,13 +8,11 @@ from __future__ import annotations
 from pathlib import Path
 from typing import TypedDict
 
-
 class SpatialOccupancyPaths(TypedDict):
     grid: Path | None
     coverage_timeseries: Path | None
     summary: Path | None
     node_positions: Path | None
-
 
 def default_paths_for_scenario(reports_dir: Path, scenario_name: str) -> SpatialOccupancyPaths:
     """Expected filenames: ``{scenario}_spatial_occupancy_grid.csv``, etc."""
@@ -26,11 +24,9 @@ def default_paths_for_scenario(reports_dir: Path, scenario_name: str) -> Spatial
         "node_positions": d / f"{scenario_name}_NodePositionReport.csv",
     }
 
-
 def resolve_existing(paths: SpatialOccupancyPaths) -> SpatialOccupancyPaths:
     """Return the same dict with paths set to None where the file does not exist."""
     return {k: (p if p is not None and p.is_file() else None) for k, p in paths.items()}  # type: ignore[misc]
-
 
 def find_spatial_artifacts(reports_dir: Path, scenario_name: str) -> SpatialOccupancyPaths:
     """

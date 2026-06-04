@@ -48,12 +48,11 @@ from lib.report_paths import (
 Status = Literal["DONE", "PARTIAL", "MISSING", "BLOCKER"]
 Rec = Literal["READY_FOR_WRITING", "READY_WITH_MINOR_FIXES", "NOT_READY", "BLOCKED"]
 
-EXPECTED_N = 570
+EXPECTED_N = 540
 PAPER_DIR = ANALYSIS_DIR / "figures" / "paper"
 FIG_INDEX = PAPER_DIR / "FIGURES_AND_TABLES_INDEX.md"
 WIKI_DIR = SCENARIOS_DIR / ".wiki-clone"
 HEATMAP_DIR = ANALYSIS_DIR / "figures" / "spatial_heatmaps"
-
 
 @dataclass
 class Item:
@@ -65,7 +64,6 @@ class Item:
     action_required: str = ""
     blocks_writing: str = "no"
 
-
 def _count_csv_rows(path: Path) -> int | None:
     if not path.is_file():
         return None
@@ -74,10 +72,8 @@ def _count_csv_rows(path: Path) -> int | None:
     except Exception:
         return None
 
-
 def _count_settings() -> int:
-    return len(collect_settings_paths("corpus_v1", include_stress=True))
-
+    return len(collect_settings_paths("corpus_v1"))
 
 def _parse_figure_index() -> list[dict[str, str]]:
     if not FIG_INDEX.is_file():
@@ -99,14 +95,12 @@ def _parse_figure_index() -> list[dict[str, str]]:
         )
     return rows
 
-
 def _wiki_message_window_drift() -> bool:
     p = WIKI_DIR / "11-Message-Analysis-Window.md"
     if not p.is_file():
         return False
     text = p.read_text(encoding="utf-8", errors="replace").lower()
     return "policy b" in text or "5% warmup" in text or "0.05*endtime" in text
-
 
 def _bench_validation_counts() -> dict[str, int]:
     p = DATA_DIR / "corpus_benchmark_validation.csv"
@@ -118,7 +112,6 @@ def _bench_validation_counts() -> dict[str, int]:
         return {}
     return df[col].astype(str).value_counts().to_dict()
 
-
 def _tp_kpi_counts() -> dict[str, int]:
     p = DATA_DIR / "traffic_profile_kpi_summary.csv"
     if not p.is_file():
@@ -127,7 +120,6 @@ def _tp_kpi_counts() -> dict[str, int]:
     if "validation_status" not in df.columns:
         return {}
     return df["validation_status"].astype(str).value_counts().to_dict()
-
 
 def _null_delivery() -> int:
     p = DATA_DIR / "output_metrics.csv"
@@ -138,7 +130,6 @@ def _null_delivery() -> int:
         return -1
     return int(df["delivery_ratio"].isna().sum())
 
-
 def _spatial_summary_stale() -> bool:
     p = SPATIAL_OCCUPANCY_ANALYSIS_SUMMARY
     if not p.is_file():
@@ -148,7 +139,6 @@ def _spatial_summary_stale() -> bool:
     if m and int(m.group(1)) < EXPECTED_N:
         return True
     return False
-
 
 def audit() -> dict:
     manifest_n = _count_csv_rows(COMBINED_MANIFEST_CSV)
@@ -217,7 +207,6 @@ def audit() -> dict:
         "wiki_protocol_page": (WIKI_DIR / "12-Benchmark-Protocol-Comparison.md").is_file(),
         "limitations_report": False,
     }
-
 
 def build_items(a: dict) -> list[Item]:
     items: list[Item] = []
@@ -652,7 +641,7 @@ def build_items(a: dict) -> list[Item]:
     add(
         "limitations",
         "LIM-01",
-        "Limitations documented (maps WDM synthetic stress tiers)",
+        "Limitations documented (maps WDM synthetic mobility)",
         "PARTIAL",
         f"Dispersed in benchmark validation ({sospechosa} sospechosa, 312 valido_extremo)",
         "Consolidate into Methods/Limitations section",
@@ -675,7 +664,6 @@ def build_items(a: dict) -> list[Item]:
     )
 
     return items
-
 
 def recommend(items: list[Item]) -> Rec:
     blockers = [i for i in items if i.status == "BLOCKER"]
@@ -709,7 +697,6 @@ def recommend(items: list[Item]) -> Rec:
 
     return "READY_FOR_WRITING"
 
-
 def write_csv(path: Path, items: list[Item]) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
     with path.open("w", encoding="utf-8", newline="") as f:
@@ -717,7 +704,6 @@ def write_csv(path: Path, items: list[Item]) -> None:
         w.writerow(["block", "item_id", "item", "status", "evidence", "action_required", "blocks_writing"])
         for i in items:
             w.writerow([i.block, i.item_id, i.item, i.status, i.evidence, i.action_required, i.blocks_writing])
-
 
 def write_md(path: Path, items: list[Item], rec: Rec, a: dict) -> None:
     ts = datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M UTC")
@@ -856,7 +842,6 @@ def write_md(path: Path, items: list[Item], rec: Rec, a: dict) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text("\n".join(lines), encoding="utf-8")
 
-
 def main() -> int:
     ap = argparse.ArgumentParser(description="Build paper freeze checklist for corpus_v1.")
     ap.add_argument("--report", type=Path, default=PAPER_FREEZE_CHECKLIST)
@@ -873,7 +858,6 @@ def main() -> int:
     print(f"Wrote {args.report} ({len(items)} items, recommendation={rec}, blockers={n_block})")
     print(f"Wrote {args.csv}")
     return 0
-
 
 if __name__ == "__main__":
     raise SystemExit(main())

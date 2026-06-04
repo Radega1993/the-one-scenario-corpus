@@ -33,7 +33,6 @@ FAMILY_ORDER = [
     "04_rural",
     "05_disaster",
     "06_social",
-    "07_stress_controls",
 ]
 FAMILY_SHORT = {
     "01_urban": "Urban",
@@ -42,19 +41,16 @@ FAMILY_SHORT = {
     "04_rural": "Rural",
     "05_disaster": "Disaster",
     "06_social": "Social",
-    "07_stress_controls": "Stress/Control",
 }
 
 GALLERY_TPS = ["TP01", "TP07", "TP10", "TP02", "TP03", "TP04", "TP05", "TP06",
                "TP08", "TP09", "TP11", "TP12"]
-
 
 def _save(fig: plt.Figure, path: Path) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
     fig.savefig(path.with_suffix(".png"), dpi=150, bbox_inches="tight")
     fig.savefig(path.with_suffix(".pdf"), dpi=150, bbox_inches="tight")
     plt.close(fig)
-
 
 def load_manifest(corpus: str) -> pd.DataFrame:
     p = HERE.parent / corpus / "manifest.csv"
@@ -66,7 +62,6 @@ def load_manifest(corpus: str) -> pd.DataFrame:
     m["traffic_profile_id"] = m["traffic_profile_id"].astype(str)
     return m
 
-
 def merge_outputs(manifest: pd.DataFrame) -> pd.DataFrame:
     om = DATA_DIR / "output_metrics.csv"
     if not om.is_file():
@@ -74,7 +69,6 @@ def merge_outputs(manifest: pd.DataFrame) -> pd.DataFrame:
     out = pd.read_csv(om)
     df = manifest.merge(out, left_on="scenario_name", right_on="scenario", how="inner")
     return df
-
 
 def plot_outputs_boxplot_by_tp(df: pd.DataFrame, out_dir: Path) -> None:
     metrics = [
@@ -94,7 +88,6 @@ def plot_outputs_boxplot_by_tp(df: pd.DataFrame, out_dir: Path) -> None:
     fig.suptitle("Métricas de salida por perfil TP (todo el corpus)", fontsize=11)
     fig.tight_layout()
     _save(fig, out_dir / "outputs_boxplot_by_tp")
-
 
 def plot_outputs_boxplot_faceted(df: pd.DataFrame, out_dir: Path) -> None:
     fig, axes = plt.subplots(3, 3, figsize=(14, 10))
@@ -119,7 +112,6 @@ def plot_outputs_boxplot_faceted(df: pd.DataFrame, out_dir: Path) -> None:
     fig.suptitle("Delivery ratio por TP y familia", fontsize=11)
     fig.tight_layout()
     _save(fig, out_dir / "outputs_boxplot_by_tp_faceted")
-
 
 def _heatmap_base_tp(sub: pd.DataFrame, title: str, path: Path) -> None:
     if sub.empty:
@@ -149,7 +141,6 @@ def _heatmap_base_tp(sub: pd.DataFrame, title: str, path: Path) -> None:
     fig.tight_layout()
     _save(fig, path)
 
-
 def plot_heatmaps_base_tp(df: pd.DataFrame, out_dir: Path) -> None:
     _heatmap_base_tp(
         df,
@@ -166,7 +157,6 @@ def plot_heatmaps_base_tp(df: pd.DataFrame, out_dir: Path) -> None:
             f"Delivery ratio: base × TP — {FAMILY_SHORT.get(fam, fam)}",
             out_dir / f"outputs_heatmap_base_x_tp_{slug}",
         )
-
 
 def plot_correlation_hist_by_family(manifest: pd.DataFrame, out_dir: Path) -> None:
     path_r = DATA_DIR / "correlation_pearson.csv"
@@ -198,7 +188,6 @@ def plot_correlation_hist_by_family(manifest: pd.DataFrame, out_dir: Path) -> No
     fig.suptitle("Distribución de correlaciones Pearson intra-familia (features Z)", fontsize=11)
     fig.tight_layout()
     _save(fig, out_dir / "correlation_hist_by_family")
-
 
 def plot_tp12_median_offdiag(manifest: pd.DataFrame, out_dir: Path) -> None:
     path_r = DATA_DIR / "correlation_pearson.csv"
@@ -235,7 +224,6 @@ def plot_tp12_median_offdiag(manifest: pd.DataFrame, out_dir: Path) -> None:
     fig.tight_layout()
     _save(fig, out_dir / "correlation_tp12_median_offdiag_by_base")
 
-
 def plot_tp06_tp11_redundancy(manifest: pd.DataFrame, out_dir: Path) -> None:
     path_r = DATA_DIR / "correlation_pearson.csv"
     if not path_r.is_file():
@@ -265,7 +253,6 @@ def plot_tp06_tp11_redundancy(manifest: pd.DataFrame, out_dir: Path) -> None:
     ax.set_title("Redundancia conocida TP06 (OneToMany) ↔ TP11 (ManyToOne)")
     fig.tight_layout()
     _save(fig, out_dir / "correlation_tp06_tp11_redundancy")
-
 
 def plot_ablation_histogram_compare(out_dir: Path, threshold: float = 0.7) -> None:
     spaces = [
@@ -302,7 +289,6 @@ def plot_ablation_histogram_compare(out_dir: Path, threshold: float = 0.7) -> No
     fig.tight_layout()
     _save(fig, out_dir / "correlation_ablation_histogram_compare")
 
-
 def plot_spatial_coverage(df: pd.DataFrame, out_dir: Path) -> None:
     sp_path = DATA_DIR / "spatial_occupancy_metrics.csv"
     if not sp_path.is_file():
@@ -320,7 +306,6 @@ def plot_spatial_coverage(df: pd.DataFrame, out_dir: Path) -> None:
     ax.grid(True, alpha=0.25, axis="y")
     fig.tight_layout()
     _save(fig, out_dir / "spatial_coverage_by_family")
-
 
 def plot_spatial_galleries(manifest: pd.DataFrame, out_dir: Path) -> None:
     if not SPATIAL_HEATMAPS.is_dir():
@@ -365,7 +350,6 @@ def plot_spatial_galleries(manifest: pd.DataFrame, out_dir: Path) -> None:
         slug = fam.replace("/", "_")
         _save(fig, out_dir / f"spatial_gallery_{slug}")
 
-
 def plot_block_heatmap(manifest: pd.DataFrame, out_dir: Path) -> None:
     path_r = DATA_DIR / "correlation_pearson.csv"
     if not path_r.is_file():
@@ -404,7 +388,6 @@ def plot_block_heatmap(manifest: pd.DataFrame, out_dir: Path) -> None:
     fig.tight_layout()
     _save(fig, out_dir / "pearson_block_heatmap_ordered")
 
-
 def main() -> int:
     ap = argparse.ArgumentParser(description="Figuras agregadas por familia/TP/base")
     ap.add_argument("--corpus", default="corpus_v1")
@@ -442,7 +425,6 @@ def main() -> int:
     n_png = len(list(out_dir.glob("*.png")))
     print(f"Done. {n_png} PNG files in {out_dir}")
     return 0
-
 
 if __name__ == "__main__":
     raise SystemExit(main())

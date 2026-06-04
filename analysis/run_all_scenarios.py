@@ -5,7 +5,6 @@ Por cada .settings ejecuta one.sh en modo batch (-b 1, sin GUI) y genera los rep
 
 Uso:
   python3 scenarios/analysis/run_all_scenarios.py --corpus corpus_v1
-  python3 scenarios/analysis/run_all_scenarios.py --corpus stress_controls
   python3 scenarios/analysis/run_all_scenarios.py --corpus corpus_v1 --dry-run
   python3 scenarios/analysis/run_all_scenarios.py --corpus corpus_v1 \\
     --extra-settings scenarios/analysis/overlays/routing_contact_reports_overrides.txt \\
@@ -23,13 +22,10 @@ Uso:
   python3 scenarios/analysis/run_all_scenarios.py --corpus corpus_v1 \\
     --select-file scenarios/analysis/my_selection.txt
 
-``--corpus corpus_v1`` runs only the 540 environmental scenarios (families 01–06).
-Stress/control (30) is separate: ``--corpus stress_controls`` or ``--benchmark stress``.
+``--corpus corpus_v1`` runs the 540 environmental scenarios (families 01–06).
 
 Benchmark-aware modes (use benchmark_definition.csv):
   python3 scenarios/analysis/run_all_scenarios.py --corpus corpus_v1 --benchmark core
-  python3 scenarios/analysis/run_all_scenarios.py --corpus stress_controls
-  python3 scenarios/analysis/run_all_scenarios.py --corpus corpus_v1 --benchmark all
   python3 scenarios/analysis/run_all_scenarios.py --corpus corpus_v1 --benchmark core --estimate-runtime
   python3 scenarios/analysis/run_all_scenarios.py --corpus corpus_v1 --benchmark core \\
     --family 01_urban --tp TP01 --dry-run
@@ -72,7 +68,6 @@ from lib.scenario_select import (  # noqa: E402
     select_scenario_paths,
 )
 
-
 # ── Reproducibility helpers ──────────────────────────────────────────────
 
 def _get_git_hash(repo_root: Path) -> str:
@@ -85,7 +80,6 @@ def _get_git_hash(repo_root: Path) -> str:
     except Exception:
         return "unknown"
 
-
 def _get_java_version() -> str:
     try:
         r = subprocess.run(
@@ -97,7 +91,6 @@ def _get_java_version() -> str:
     except Exception:
         return "unknown"
 
-
 def _get_one_version(repo_root: Path) -> str:
     hist = repo_root / "HISTORY.txt"
     if hist.is_file():
@@ -106,7 +99,6 @@ def _get_one_version(repo_root: Path) -> str:
             if line:
                 return line
     return "unknown"
-
 
 def resolve_settings_path(settings_path: Path, repo_root: Path) -> tuple[Path, str]:
     """Return absolute path and repo-relative path string for one.sh."""
@@ -120,7 +112,6 @@ def resolve_settings_path(settings_path: Path, repo_root: Path) -> tuple[Path, s
     except ValueError:
         rel = str(path)
     return path, rel
-
 
 def run_one_scenario(
     settings_path: Path,
@@ -166,7 +157,6 @@ def run_one_scenario(
         return r.returncode == 0, err
     except subprocess.TimeoutExpired:
         return False, f"Timeout ({timeout_s}s): la simulación no terminó a tiempo; los reportes quedan vacíos."
-
 
 def main() -> int:
     ap = argparse.ArgumentParser(
@@ -270,12 +260,11 @@ def main() -> int:
     )
     ap.add_argument(
         "--benchmark",
-        choices=["core", "stress", "all"],
+        choices=["core", "all"],
         default=None,
         help=(
             "Filtrar por tier de benchmark (benchmark_definition.csv). "
-            "core=540 environmental (corpus_v1 only), stress=30 (use stress_controls paths), "
-            "all=540+30 (merges stress_controls when --corpus corpus_v1)."
+            "core/all = 540 escenarios ambientales en corpus_v1."
         ),
     )
     ap.add_argument(
@@ -302,10 +291,6 @@ def main() -> int:
     if args.corpus in PAPER_BENCHMARK_CORPORA:
         corpus_dir = primary_corpus_dir(args.corpus)
         build_combined_manifest_csv()
-    elif args.corpus in ("stress_controls", "07_stress_controls"):
-        from lib.paths import STRESS_CONTROLS_DIR
-
-        corpus_dir = STRESS_CONTROLS_DIR
     else:
         corpus_dir = SCENARIOS_DIR / args.corpus
         if not corpus_dir.exists():
@@ -382,14 +367,6 @@ def main() -> int:
     except FileNotFoundError as e:
         print(f"Error: {e}", file=sys.stderr)
         return 1
-
-    # Merge stress_controls when simulating the full paper set from corpus_v1
-    if args.corpus in PAPER_BENCHMARK_CORPORA and args.benchmark in ("stress", "all"):
-        stress_paths = collect_settings_paths("stress_controls")
-        if args.benchmark == "stress":
-            scenario_paths = stress_paths
-        else:
-            scenario_paths = sorted(set(scenario_paths) | set(stress_paths))
 
     # ── Benchmark-tier filtering ─────────────────────────────────────────
     bench_csv = DATA_DIR / "benchmark_definition.csv"
@@ -585,7 +562,6 @@ def main() -> int:
         print(f"Metadatos de reproducibilidad: {repro_path}")
 
     return 0 if fail == 0 else 1
-
 
 if __name__ == "__main__":
     raise SystemExit(main())

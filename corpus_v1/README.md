@@ -2,11 +2,11 @@
 
 `corpus_v1/` contiene **540** escenarios del benchmark ambiental (familias `01_urban` … `06_social`) con perfiles de tráfico (TP) aplicados según `analysis/data/benchmark_definition.csv`.
 
-Los **15 escenarios de laboratorio** de la familia `07_stress_controls` viven en [`../stress_controls/`](../stress_controls/) (30 simulaciones: TP01 + TP10).
+Los **15 escenarios de laboratorio** de la familia `07_` viven en [`../`](../) (30 simulaciones: TP01 + TP10).
 
 Las **45 bases estructurales** sin TP están en [`../base_scenarios/`](../base_scenarios/).
 
-**Total paper benchmark:** **570** simulaciones (`corpus_v1` + `stress_controls`). El nombre histórico `corpus_v2` fue renombrado en la reorganización de 2026-05-27 (ver [`../CHANGELOG.md`](../CHANGELOG.md)).
+**Total paper benchmark:** **540** simulaciones (`corpus_v1` + ``). El nombre histórico `corpus_v2` fue renombrado en la reorganización de 2026-05-27 (ver [`../CHANGELOG.md`](../CHANGELOG.md)).
 
 ---
 
@@ -14,7 +14,7 @@ Las **45 bases estructurales** sin TP están en [`../base_scenarios/`](../base_s
 
 - Bases estructurales: [`../base_scenarios/`](../base_scenarios/) (45 `.settings`)
 - Benchmark TP ambiental: este directorio (540 `.settings`)
-- Stress/control: [`../stress_controls/`](../stress_controls/) (30 `.settings`)
+- Stress/control: [`../`](../) (30 `.settings`)
 - Manifest combinado: [`../analysis/data/corpus_v1_combined_manifest.csv`](../analysis/data/corpus_v1_combined_manifest.csv)
 - Definiciones TP: [`../analysis/lib/traffic_profile_generator.py`](../analysis/lib/traffic_profile_generator.py)
 - Validación bases: [`../analysis/reports/base_scenarios_validation.md`](../analysis/reports/base_scenarios_validation.md)
@@ -23,7 +23,7 @@ Las **45 bases estructurales** sin TP están en [`../base_scenarios/`](../base_s
 
 ## Organización del directorio
 
-Solo familias ambientales (sin `07_stress_controls`):
+Solo familias ambientales (sin `07_`):
 
 - `01_urban/`
 - `02_campus/`

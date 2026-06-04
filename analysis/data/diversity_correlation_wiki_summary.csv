@@ -1,7 +1,7 @@
 metric_group,metric_name,feature_space,value,source_file,notes
-corpus,n_scenarios,all,540,corpus_v1/,6 environmental families x 12 TPs; stress_controls excluded
+corpus,n_scenarios,all,540,corpus_v1/,6 environmental families x 12 TPs;  excluded
 corpus,n_environmental_families,all,6,corpus_v1/,01_urban .. 06_social
-corpus,stress_controls_excluded,all,yes,run_analysis.py --no-stress,30 stress/control scenarios analyzed separately
+corpus,_excluded,all,yes,run_analysis.py ,30 stress/control scenarios analyzed separately
 corpus,total_pairs,all,145530,"C(540,2)",
 ablation,n_features,Reduced-17,17,ablation_metrics.csv,
 ablation,max_abs_r,Reduced-17,1.0,ablation_metrics.csv,

@@ -52,7 +52,6 @@ CLASSIFICATION: dict[str, tuple[str, str, str]] = {
     ),
 }
 
-
 def load_kv(path: Path) -> dict[str, str]:
     out: dict[str, str] = {}
     for raw in path.read_text(encoding="utf-8", errors="replace").splitlines():
@@ -62,7 +61,6 @@ def load_kv(path: Path) -> dict[str, str]:
         k, v = line.split("=", 1)
         out[k.strip()] = v.strip()
     return out
-
 
 def classify_base(path: Path) -> dict:
     kv = load_kv(path)
@@ -95,7 +93,6 @@ def classify_base(path: Path) -> dict:
         "uses_community_routes_in_settings": "no",
     }
 
-
 def write_md(rows: list[dict]) -> None:
     path = REPORTS / "KallioCommunityCompact_social_scenario_classification.md"
     cluster = [r for r in rows if not r["map_constrained"]]
@@ -127,7 +124,6 @@ def write_md(rows: list[dict]) -> None:
         )
     path.write_text("\n".join(lines) + "\n", encoding="utf-8")
 
-
 def main() -> int:
     ap = argparse.ArgumentParser()
     ap.parse_args()
@@ -143,7 +139,6 @@ def main() -> int:
     write_md(rows)
     print(f"Wrote {out_csv} ({len(rows)} scenarios)")
     return 0
-
 
 if __name__ == "__main__":
     raise SystemExit(main())

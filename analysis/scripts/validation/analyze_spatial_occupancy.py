@@ -53,7 +53,6 @@ from lib.spatial_coverage import (  # noqa: E402
     zoom_extent_from_masks,
 )
 
-
 def _load_spatial_io():
     spec = importlib.util.spec_from_file_location(
         "spatial_occupancy_io", ANALYSIS_DIR / "lib" / "spatial_occupancy_io.py"
@@ -63,13 +62,11 @@ def _load_spatial_io():
     spec.loader.exec_module(mod)
     return mod
 
-
 def load_manifest(path: Path) -> pd.DataFrame:
     df = pd.read_csv(path)
     if "scenario_name" not in df.columns:
         raise ValueError("manifest must contain scenario_name")
     return df
-
 
 def parse_end_time_from_settings(settings_path: Path) -> float | None:
     if not settings_path.is_file():
@@ -86,10 +83,8 @@ def parse_end_time_from_settings(settings_path: Path) -> float | None:
                 return None
     return None
 
-
 def scenario_list_from_corpus(corpus_dir: Path) -> list[str]:
     return sorted({p.stem for p in corpus_dir.rglob("*.settings")})
-
 
 def _world_size_from_summary(summary_path: Path | None) -> tuple[float, float] | None:
     if summary_path is None or not summary_path.is_file():
@@ -107,7 +102,6 @@ def _world_size_from_summary(summary_path: Path | None) -> tuple[float, float] |
         return None
     return None
 
-
 def _grid_to_matrix(df: pd.DataFrame) -> tuple[np.ndarray, int, int]:
     ni = int(df["cell_i"].max()) + 1
     nj = int(df["cell_j"].max()) + 1
@@ -118,10 +112,8 @@ def _grid_to_matrix(df: pd.DataFrame) -> tuple[np.ndarray, int, int]:
             mat[j, i] = float(row["visit_count"])
     return mat, ni, nj
 
-
 def _extent_full(wx: float, wy: float) -> tuple[float, float, float, float]:
     return (0.0, wx, 0.0, wy)
-
 
 def _extent_crop(
     extent_full: tuple[float, float, float, float],
@@ -141,7 +133,6 @@ def _extent_crop(
         y0 + (j0 / nj) * wy,
         y0 + (j1 / nj) * wy,
     )
-
 
 def draw_map_layers(
     ax,
@@ -172,7 +163,6 @@ def draw_map_layers(
             pass
     ax.set_xlim(extent[0], extent[1])
     ax.set_ylim(extent[2], extent[3])
-
 
 def draw_occupancy(
     ax,
@@ -215,7 +205,6 @@ def draw_occupancy(
     ax.set_ylabel("y (m)")
     plt.colorbar(im, ax=ax, label=cbar_label, shrink=0.85)
 
-
 def _coverage_title_note(
     metrics: dict[str, float | int | str | None] | None,
     summary_csv: Path | None = None,
@@ -232,7 +221,6 @@ def _coverage_title_note(
     if not parts:
         return ""
     return " | " + " · ".join(parts)
-
 
 def heatmap_for_scenario(
     grid_csv: Path,
@@ -341,7 +329,6 @@ def heatmap_for_scenario(
     fig.savefig(out_png, dpi=130)
     plt.close(fig)
 
-
 def resolve_settings_path(
     scenario: str,
     meta_row: dict | None,
@@ -358,7 +345,6 @@ def resolve_settings_path(
         if matches:
             return matches[0]
     return None
-
 
 def main() -> int:
     spatial_occupancy_io = _load_spatial_io()
@@ -582,7 +568,7 @@ def main() -> int:
             df_ts = pd.read_csv(ts)
             if "coverage_pct" in df_ts.columns and "coverage_world_pct" not in df_ts.columns:
                 df_ts = df_ts.rename(columns={"coverage_pct": "coverage_world_pct"})
-            if masks is not None and node_pos is not None and node_pos.is_file():
+            if masks is not None and node_pos is not None and node_pos.is_file() and node_pos.stat().st_size > 0:
                 et = None
                 if meta is not None and scenario in meta_by_name:
                     try:
@@ -715,7 +701,6 @@ def main() -> int:
 
     print(f"Wrote metrics and figures; summary: {report_path}")
     return 0
-
 
 if __name__ == "__main__":
     raise SystemExit(main())

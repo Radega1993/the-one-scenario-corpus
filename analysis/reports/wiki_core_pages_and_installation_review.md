@@ -43,7 +43,7 @@ All seven map PNGs present under `scenarios/.wiki-clone/assets/maps/`:
 - NuuksioSparseTrails.png
 - HelsinkiDisrupted.png
 - KallioCommunityCompact.png
-- ControlCompactGrid.png
+- .png
 
 **Missing:** none.
 
@@ -65,7 +65,7 @@ scenarios/analysis/.venv/bin/python scenarios/setup/render_wiki_map_previews.py 
 | Term | Handling |
 |------|----------|
 | seven environmental families | Removed from 05; Home states six + one stress |
-| 720 scenarios | Not used; counts 45/540/30/615 |
+| 720 scenarios | Not used; counts 45/540/30/540 |
 | `corpus_v2` | Legacy note on Home only (retired) |
 | HelsinkiMedium as active map | Legacy notes in 02, 03, 09; not used in settings |
 | RandomWaypoint | Documented as retired → R1_Rural_SparseSPMM |

@@ -15,4 +15,3 @@ Group1 (civilians/responders): `ShortestPathMapBasedMovement` on `roads.wkt` gra
 
 - `A_emergency_route.wkt` — emergency/UAV response path
 - `B_mule_route.wkt` — mule/backbone (figure asset; D2 uses SPMM mule without routeFile)
-

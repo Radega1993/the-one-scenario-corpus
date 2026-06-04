@@ -18,4 +18,3 @@ All campus scenarios use `ShortestPathMapBasedMovement` on `data/KumpulaCampus/r
 ## C6 evacuation
 
 Residual `Group.LinearMovement.*` keys removed (legacy 800×600 world). Evacuation represented by SPMM with speed 2–4 m/s and waitTime 0–10 s.
-

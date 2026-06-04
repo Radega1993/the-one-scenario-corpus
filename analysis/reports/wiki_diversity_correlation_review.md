@@ -1,7 +1,7 @@
 # Wiki diversity and correlation — technical review
 
 **Date:** 2026-05-28  
-**Corpus:** `corpus_v1` (environmental only, `--no-stress`)  
+**Corpus:** `corpus_v1` (environmental only, ``)  
 **Scenarios analyzed:** **540** (6 environmental families × 12 Traffic Profiles)  
 **Backup:** `scenarios/.wiki-clone/_backup_before_diversity_page_20260528_214741/`
 
@@ -88,7 +88,7 @@ New: `diversity_correlation_wiki_summary.csv`, `wiki_diversity_correlation_revie
 | Location | Issue | Action |
 |----------|-------|--------|
 | `analysis/data/paper_freeze_checklist.csv` | FEAT-02 mentions n=720 | Report only; not updated (out of wiki scope) |
-| `analysis/README.es.md` | Mentions 570 for diversity in one line | Report only |
+| `analysis/README.es.md` | Mentions 540 for diversity in one line | Report only |
 | `06-Traffic-Profiles.md` | `msgTtl` value 7200 | Legitimate parameter, not corpus size |
 | `Home.md`, `03-Installation.md` | Legacy notes for corpus_v2 / HelsinkiMedium | Intentional historical warnings |
 
@@ -100,7 +100,7 @@ New: `diversity_correlation_wiki_summary.csv`, `wiki_diversity_correlation_revie
 |----------|--------|
 | Ready for wiki documentation? | **Yes** — metrics and figures regenerated on corpus_v1 (n=540). |
 | Ready for paper? | **Yes with caveats** — use **Core-23** as primary interpretable space; cite Extended-46 for robustness; disclose TP06/TP11 perfect correlations and feature `mm_WDM`/`mm_Bus` dependency. |
-| Pending before paper? | Cross-check simulation KPIs (delivery, overhead) complement geometric diversity; optional separate stress_controls analysis with `--include-stress`. |
+| Pending before paper? | Cross-check simulation KPIs (delivery, overhead) complement geometric diversity; optional separate  analysis with ``. |
 
 ## Wiki deliverables
 

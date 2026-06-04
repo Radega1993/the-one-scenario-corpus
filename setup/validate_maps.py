@@ -36,7 +36,6 @@ POI_MARGIN_M = 500
 BUS_SNAP_M = 200
 COVERAGE_WARN_PCT = 5.0
 
-
 # ── WKT parsing ─────────────────────────────────────────────────────────────
 
 def parse_linestrings(path: Path) -> list[list[tuple[float, float]]]:
@@ -57,7 +56,6 @@ def parse_linestrings(path: Path) -> list[list[tuple[float, float]]]:
             lines.append(coords)
     return lines
 
-
 def parse_points(path: Path) -> list[tuple[float, float]]:
     pts = []
     for raw in path.read_text().splitlines():
@@ -72,7 +70,6 @@ def parse_points(path: Path) -> list[tuple[float, float]]:
             pts.append((float(parts[0]), float(parts[1])))
     return pts
 
-
 # ── Validation logic ────────────────────────────────────────────────────────
 
 def _build_adjacency(edges: list[list[tuple[float, float]]]) -> dict[tuple, set[tuple]]:
@@ -84,7 +81,6 @@ def _build_adjacency(edges: list[list[tuple[float, float]]]) -> dict[tuple, set[
             adj.setdefault(a, set()).add(b)
             adj.setdefault(b, set()).add(a)
     return adj
-
 
 def _count_components(adj: dict[tuple, set[tuple]]) -> int:
     visited: set[tuple] = set()
@@ -103,7 +99,6 @@ def _count_components(adj: dict[tuple, set[tuple]]) -> int:
                 if nb not in visited:
                     stack.append(nb)
     return components
-
 
 def validate_map(name: str) -> dict:
     result: dict = {"map_name": name, "checks": {}, "status": "PASS", "notes": []}
@@ -217,7 +212,6 @@ def validate_map(name: str) -> dict:
 
     return result
 
-
 def main() -> int:
     VALIDATION_DIR.mkdir(parents=True, exist_ok=True)
     DATA_DIR.mkdir(parents=True, exist_ok=True)
@@ -276,7 +270,6 @@ def main() -> int:
         return 1
     print("\nAll maps PASS.")
     return 0
-
 
 if __name__ == "__main__":
     raise SystemExit(main())

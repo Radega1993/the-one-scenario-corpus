@@ -41,7 +41,7 @@
 | `04_rural` | 45 |
 | `05_disaster` | 36 |
 | `01_urban` | 33 |
-| `07_stress_controls` | 28 |
+| `07_` | 28 |
 | `02_campus` | 16 |
 | `06_social` | 13 |
 | `03_vehicles` | 10 |

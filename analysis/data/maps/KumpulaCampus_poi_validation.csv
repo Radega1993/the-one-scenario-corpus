@@ -7,13 +7,13 @@ KumpulaCampus,A_homes.wkt,homes,4,386971.162,6676007.387,148.192,680.897,True,19
 KumpulaCampus,A_homes.wkt,homes,5,387436.748,6675943.862,613.778,744.422,True,8.53,8.53,OK,none
 KumpulaCampus,A_homes.wkt,homes,6,387476.357,6675977.391,653.387,710.893,True,6.1,6.1,OK,none
 KumpulaCampus,A_homes.wkt,homes,7,387521.774,6676022.499,698.804,665.786,True,6.67,6.67,OK,none
-KumpulaCampus,A_homes.wkt,homes,8,387581.454,6676072.428,758.484,615.856,True,16.18,16.18,OK,none
+KumpulaCampus,A_homes.wkt,homes,8,387581.454,6676072.428,758.484,540.856,True,16.18,16.18,OK,none
 KumpulaCampus,A_homes.wkt,homes,9,387908.1,6676042.411,1085.131,645.873,True,9.47,9.47,OK,none
 KumpulaCampus,A_homes.wkt,homes,10,387854.058,6676124.104,1031.088,564.18,True,3.49,3.49,OK,none
 KumpulaCampus,A_homes.wkt,homes,11,387795.299,6676117.036,972.329,571.249,True,2.46,2.46,OK,none
 KumpulaCampus,A_homes.wkt,homes,12,387781.507,6676159.974,958.537,528.311,True,3.75,3.75,OK,none
 KumpulaCampus,A_homes.wkt,homes,13,387830.557,6676536.577,1007.587,151.708,True,12.71,12.71,OK,none
-KumpulaCampus,A_homes.wkt,homes,14,387798.717,6676569.615,975.747,118.67,True,1.43,1.43,OK,none
+KumpulaCampus,A_homes.wkt,homes,14,387798.717,6676569.540,975.747,118.67,True,1.43,1.43,OK,none
 KumpulaCampus,A_homes.wkt,homes,15,387780.445,6676527.349,957.475,160.936,True,0.4,0.4,OK,none
 KumpulaCampus,A_homes.wkt,homes,16,387714.243,6676535.989,891.273,152.295,True,10.21,10.21,OK,none
 KumpulaCampus,A_homes.wkt,homes,17,387699.763,6676504.573,876.793,183.712,True,19.75,19.75,OK,none
@@ -54,7 +54,7 @@ KumpulaCampus,A_meetingspots.wkt,meetingspots,1,387300.55,6676360.322,477.58,327
 KumpulaCampus,A_meetingspots.wkt,meetingspots,2,387609.039,6676688.284,786.069,0.0,True,19.75,19.75,FIX_REQUIRED,corrected
 KumpulaCampus,A_meetingspots.wkt,meetingspots,3,387419.912,6676238.619,596.942,449.666,True,1.08,1.08,OK,none
 KumpulaCampus,A_meetingspots.wkt,meetingspots,4,387333.097,6675701.314,510.127,986.97,True,17.53,17.53,OK,none
-KumpulaCampus,A_meetingspots.wkt,meetingspots,5,387393.193,6675699.987,570.223,988.297,True,12.88,12.88,OK,none
+KumpulaCampus,A_meetingspots.wkt,meetingspots,5,387393.193,6675699.987,540.223,988.297,True,12.88,12.88,OK,none
 KumpulaCampus,A_meetingspots.wkt,meetingspots,6,387143.971,6676051.141,321.001,637.143,True,4.72,4.72,OK,none
 KumpulaCampus,A_meetingspots.wkt,meetingspots,7,386822.97,6676093.066,0.0,595.219,True,19.75,19.75,FIX_REQUIRED,corrected
 KumpulaCampus,A_meetingspots.wkt,meetingspots,8,387103.938,6675974.111,280.968,714.173,True,4.64,4.64,OK,none

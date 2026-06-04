@@ -15,7 +15,6 @@ from lib.spatial_occupancy_io import find_spatial_artifacts
 
 _ROADS_BBOX_CACHE: dict[str, tuple[float, float, float, float]] = {}
 
-
 def _parse_simple_yaml(text: str) -> dict[str, Any]:
     """Parse flat nested YAML (no lists) without PyYAML dependency."""
     root: dict[str, Any] = {}
@@ -42,10 +41,8 @@ def _parse_simple_yaml(text: str) -> dict[str, Any]:
                 parent[key] = val
     return root
 
-
 def load_thresholds(path: Path) -> dict[str, Any]:
     return _parse_simple_yaml(path.read_text(encoding="utf-8"))
-
 
 def _roads_bbox(dataset: str | None, repo_root: Path = REPO_ROOT) -> tuple[float, float, float, float] | None:
     if not dataset:
@@ -68,11 +65,9 @@ def _roads_bbox(dataset: str | None, repo_root: Path = REPO_ROOT) -> tuple[float
     _ROADS_BBOX_CACHE[dataset] = bb
     return bb
 
-
 def _point_in_bbox(x: float, y: float, bb: tuple[float, float, float, float], margin: float = 50.0) -> bool:
     x0, y0, x1, y1 = bb
     return (x0 - margin) <= x <= (x1 + margin) and (y0 - margin) <= y <= (y1 + margin)
-
 
 def coverage_accessible_from_grid(
     grid_path: Path,
@@ -100,7 +95,6 @@ def coverage_accessible_from_grid(
             inside += 1
     return inside / len(visited)
 
-
 def _is_structural_partition(row: pd.Series) -> bool:
     tp = str(row.get("tp", ""))
     if tp == "TP12":
@@ -111,7 +105,6 @@ def _is_structural_partition(row: pd.Series) -> bool:
     if "GroupToGroup" in str(row.get("movement_models", "")):
         return True
     return False
-
 
 def _assign_flags(row: pd.Series, th: dict[str, Any], corpus_helsinki_pct: float) -> list[str]:
     flags: list[str] = []
@@ -167,14 +160,12 @@ def _assign_flags(row: pd.Series, th: dict[str, Any], corpus_helsinki_pct: float
 
     return flags
 
-
 def _flag_set(val: Any) -> set[str]:
     if isinstance(val, list):
         return set(val)
     if isinstance(val, str):
         return {x.strip() for x in val.split(",") if x.strip()}
     return set()
-
 
 def _priority(flags: list[str], th: dict[str, Any]) -> str:
     pr = th.get("priority", {})
@@ -188,7 +179,6 @@ def _priority(flags: list[str], th: dict[str, Any]) -> str:
     if flags:
         return "P2"
     return ""
-
 
 def enrich_spatial_from_reports(
     df: pd.DataFrame,
@@ -214,7 +204,6 @@ def enrich_spatial_from_reports(
             if car is not None:
                 df.at[idx, "coverage_accessible_ratio"] = car
     return df
-
 
 def build_diagnosis_table(
     settings_audit: pd.DataFrame,
@@ -312,7 +301,6 @@ def build_diagnosis_table(
 
     return pd.DataFrame(rows)
 
-
 def _action_hint(flags: list[str], row: pd.Series) -> str:
     if "STRUCTURAL_PARTITION_VALID" in flags:
         return "keep_diagnostic"
@@ -327,7 +315,6 @@ def _action_hint(flags: list[str], row: pd.Series) -> str:
     if "ZERO_CONTACTS" in flags:
         return "stress_or_exclude"
     return "keep"
-
 
 def write_diagnosis_report(df: pd.DataFrame, path: Path, thresholds_path: Path) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)

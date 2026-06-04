@@ -150,14 +150,11 @@ STRESS_TPS = frozenset({"TP04", "TP05", "TP09", "TP10"})
 DIRECTIONAL_TPS = frozenset({"TP06", "TP08", "TP11", "TP12"})
 FAVORABLE_TPS = frozenset({"TP02", "TP07"})
 
-
 def _utc() -> str:
     return datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M UTC")
 
-
 def _is_nan(x: Any) -> bool:
     return x is None or (isinstance(x, float) and np.isnan(x))
-
 
 def _safe_rel_delta(delta: float, base: float) -> float:
     if _is_nan(delta) or _is_nan(base):
@@ -165,7 +162,6 @@ def _safe_rel_delta(delta: float, base: float) -> float:
     if abs(base) < 1e-12:
         return float("nan") if abs(delta) < 1e-12 else float("inf") * np.sign(delta)
     return delta / base
-
 
 def _series_stats(s: pd.Series) -> dict[str, float]:
     s = s.dropna()
@@ -181,7 +177,6 @@ def _series_stats(s: pd.Series) -> dict[str, float]:
         "min": float(s.min()),
         "max": float(s.max()),
     }
-
 
 def load_and_merge(manifest_path: Path, data_dir: Path) -> pd.DataFrame:
     m = pd.read_csv(manifest_path)
@@ -284,7 +279,6 @@ def load_and_merge(manifest_path: Path, data_dir: Path) -> pd.DataFrame:
 
     return df
 
-
 def compute_tp_stats(df: pd.DataFrame) -> pd.DataFrame:
     rows: list[dict[str, Any]] = []
     for tp_id in PROFILE_IDS:
@@ -312,7 +306,6 @@ def compute_tp_stats(df: pd.DataFrame) -> pd.DataFrame:
                 row[f"{metric}_{suffix}"] = round(val, 6) if not _is_nan(val) else val
         rows.append(row)
     return pd.DataFrame(rows)
-
 
 def compute_paired_deltas(df: pd.DataFrame) -> pd.DataFrame:
     """Paired comparison vs TP01 per scenario_base."""
@@ -356,7 +349,6 @@ def compute_paired_deltas(df: pd.DataFrame) -> pd.DataFrame:
         rows.append(row)
     return pd.DataFrame(rows)
 
-
 def compute_rankings(stats: pd.DataFrame) -> dict[str, list[str]]:
     """Rank TPs by median of core metrics (higher delivery better; lower others better)."""
     rankings: dict[str, list[str]] = {}
@@ -366,13 +358,11 @@ def compute_rankings(stats: pd.DataFrame) -> dict[str, list[str]]:
     rankings["latency_mean"] = stats.sort_values("latency_mean_median", ascending=True)["tp_id"].tolist()
     return rankings
 
-
 def _stat(stats: pd.DataFrame, tp_id: str, col: str) -> float:
     row = stats.loc[stats["tp_id"] == tp_id, col]
     if row.empty:
         return float("nan")
     return float(row.iloc[0])
-
 
 def validate_tp_intent(
     tp_id: str,
@@ -495,7 +485,6 @@ def validate_tp_intent(
 
     return status, notes
 
-
 def _fmt_val(v: float, metric: str) -> str:
     if _is_nan(v):
         return "n/a"
@@ -506,7 +495,6 @@ def _fmt_val(v: float, metric: str) -> str:
     if metric == "n_created":
         return f"{v:.0f}"
     return f"{v:.1f}"
-
 
 def build_observed_behavior(tp_id: str, stats: pd.DataFrame, deltas: pd.DataFrame) -> str:
     s = stats[stats["tp_id"] == tp_id].iloc[0]
@@ -527,7 +515,6 @@ def build_observed_behavior(tp_id: str, stats: pd.DataFrame, deltas: pd.DataFram
     if tp_id == "TP05":
         parts.append(f"latency median {_fmt_val(s['latency_mean_median'], 'latency_mean')} s")
     return "; ".join(parts) + "."
-
 
 def build_paper_interpretation(tp_id: str, status: str) -> str:
     kpi = TP_KPI_SPEC[tp_id]
@@ -561,7 +548,6 @@ def build_paper_interpretation(tp_id: str, status: str) -> str:
         return f"Review before freeze: validation incomplete; still report {primary} if included in benchmark."
     return f"Report {primary} as primary outcome; use {kpi['cost_kpi']} for resource cost comparison."
 
-
 def build_kpi_summary(stats: pd.DataFrame, deltas: pd.DataFrame, df: pd.DataFrame) -> pd.DataFrame:
     rows: list[dict[str, str]] = []
     for tp_id, tp_name in PROFILE_ORDER:
@@ -584,14 +570,12 @@ def build_kpi_summary(stats: pd.DataFrame, deltas: pd.DataFrame, df: pd.DataFram
         )
     return pd.DataFrame(rows)
 
-
 def _rank_str(rankings: dict[str, list[str]], tp_id: str) -> str:
     parts = []
     for metric, order in rankings.items():
         if tp_id in order:
             parts.append(f"{metric}=#{order.index(tp_id) + 1}")
     return ", ".join(parts)
-
 
 def write_report(
     path: Path,
@@ -791,7 +775,6 @@ def write_report(
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text("\n".join(lines) + "\n", encoding="utf-8")
 
-
 def main() -> int:
     ap = argparse.ArgumentParser(description="Analyze Traffic Profile KPIs for corpus_v1.")
     ap.add_argument("--manifest", type=Path, default=DEFAULT_MANIFEST)
@@ -833,7 +816,6 @@ def main() -> int:
     print(f"Wrote {report_path}")
     print(f"TP01 delivery mean: {stats.loc[stats['tp_id'] == 'TP01', 'delivery_ratio_mean'].iloc[0]:.4f}")
     return 0
-
 
 if __name__ == "__main__":
     raise SystemExit(main())

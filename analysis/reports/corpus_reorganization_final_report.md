@@ -11,11 +11,11 @@
 |-----------------|-----------------|
 | `scenarios/corpus_v1/` (mobility-only) | `scenarios/_archive/legacy_corpus_v1_pre_rename/` |
 | `scenarios/corpus_v2/` (paper benchmark) | `scenarios/corpus_v1/` (540 environmental) |
-| `scenarios/corpus_v1/07_stress_controls/` | `scenarios/stress_controls/07_stress_controls/` (30) |
+| `scenarios/corpus_v1/07_` | `scenarios/07_` (30) |
 | *(new)* | `scenarios/base_scenarios/` (45 structural bases) |
-| CLI `corpus_v2` | Alias of `corpus_v1` (+ `stress_controls/`) |
+| CLI `corpus_v2` | Alias of `corpus_v1` (+ ``) |
 
-**Paper simulation count:** **570** (540 + 30), not 720.
+**Paper simulation count:** **540** (540 + 30), not 720.
 
 ---
 
@@ -33,8 +33,8 @@
 |-----------|------------:|
 | `base_scenarios/` | 45 |
 | `corpus_v1/` | 540 |
-| `stress_controls/` | 30 |
-| **Combined manifest** | 570 rows |
+| `` | 30 |
+| **Combined manifest** | 540 rows |
 
 ---
 
@@ -57,8 +57,8 @@ Combined manifest: `analysis/data/corpus_v1_combined_manifest.csv`
 | Check | Result |
 |-------|--------|
 | `validate_base_scenarios.py` | **45/45 OK** |
-| `validate_traffic_profiles.py --corpus corpus_v1` | **568/570** settings OK |
-| `validate_corpus_benchmark.py` | 570 rows written; status mix (191 ok, 168 error_probable, …) |
+| `validate_traffic_profiles.py --corpus corpus_v1` | **568/540** settings OK |
+| `validate_corpus_benchmark.py` | 540 rows written; status mix (191 ok, 168 error_probable, …) |
 
 Reports: `reports/base_scenarios_validation.md`, `reports/validation/tp_validation_report.md`, `reports/canonical/corpus_benchmark_validation.md`
 
@@ -67,10 +67,10 @@ Reports: `reports/base_scenarios_validation.md`, `reports/validation/tp_validati
 ## Pipeline updates
 
 - `lib/paths.py`: `CORPUS_V1_DIR`, `STRESS_CONTROLS_DIR`, `BASE_SCENARIOS_DIR`, `collect_settings_paths()`, `build_combined_manifest_csv()`
-- `--corpus corpus_v1` resolves **both** `corpus_v1/` and `stress_controls/`
-- Dashboard loaders use combined manifest (570 rows)
+- `--corpus corpus_v1` resolves **both** `corpus_v1/` and ``
+- Dashboard loaders use combined manifest (540 rows)
 - `validate_corpus_v2_benchmark.py` removed; menu → `validate_corpus_benchmark.py`
-- `run_analysis.py`: fixed pandas read-only array bugs for correlation phases (570 scenarios)
+- `run_analysis.py`: fixed pandas read-only array bugs for correlation phases (540 scenarios)
 
 ---
 
@@ -86,7 +86,7 @@ cd scenarios/analysis
 .venv/bin/python run_figures_aggregated.py --corpus corpus_v1
 ```
 
-**Outputs:** `data/features.csv` (570×46), correlation CSVs, `reports/RESULTADOS_ACTUALES.md`, `figures/paper/`, `figures/aggregated/` (22 PNG).
+**Outputs:** `data/features.csv` (540×46), correlation CSVs, `reports/RESULTADOS_ACTUALES.md`, `figures/paper/`, `figures/aggregated/` (22 PNG).
 
 ### Diversity metrics (from `RESULTADOS_ACTUALES.md`)
 
@@ -124,6 +124,6 @@ Allowed in: `_archive/`, legacy report filenames (`corpus_v2_revision_changelog.
 ## Pending / follow-up
 
 1. Install `scipy` in `analysis/.venv` and re-run `--phase ablation` for updated silhouette table.
-2. Investigate 2 TP validation failures (568/570).
-3. Align `output_metrics.csv` row count (566) with 570 manifest rows if missing reports exist.
+2. Investigate 2 TP validation failures (568/540).
+3. Align `output_metrics.csv` row count (566) with 540 manifest rows if missing reports exist.
 4. Optional: rename legacy canonical file `corpus_v2_benchmark_validation.md` → archive only (superseded by `corpus_benchmark_validation.md`).

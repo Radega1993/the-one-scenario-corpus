@@ -43,7 +43,7 @@ TABLES_DIR = PAPER_DIR / "tables"
 AGG_DIR = HERE / "figures" / "aggregated"
 FIGURES_ROOT = HERE / "figures"
 
-EXPECTED_N = 540  # diversity validation scope: corpus_v1 only (no stress_controls)
+EXPECTED_N = 540  # diversity validation scope: corpus_v1 only (no )
 
 # Catalog: stem -> metadata (without extension)
 FIGURE_CATALOG: dict[str, dict[str, str]] = {
@@ -206,7 +206,7 @@ TABLE_CATALOG: dict[str, dict[str, str]] = {
         "type": "table",
         "data_source": ".wiki-clone/04-Scenario-Families.md",
         "generator_script": "run_analysis.py --phase tables_paper",
-        "description": "Six environmental families + stress lab (base counts per family).",
+        "description": "Six environmental families (base counts per family).",
         "scientific_message": "Taxonomy of mobility/traffic regimes in the benchmark.",
         "paper_section": "Methods / Scenario families",
     },
@@ -228,13 +228,11 @@ PROMOTIONS: list[tuple[Path, Path]] = [
     (FIGURES_ROOT / "message_creation_time_boxplot_by_tp.png", SUPP_DIR / "message_creation_time_by_tp_paper.png"),
 ]
 
-
 def _utc() -> str:
     return datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M UTC")
 
-
 def validate_corpus(manifest_path: Path, data_dir: Path) -> dict[str, Any]:
-    """Validate diversity inputs (540) separately from combined benchmark outputs (570)."""
+    """Validate diversity inputs and benchmark outputs (540)."""
     m = pd.read_csv(manifest_path)
     n_manifest = len(m)
     checks: dict[str, Any] = {
@@ -262,7 +260,7 @@ def validate_corpus(manifest_path: Path, data_dir: Path) -> dict[str, Any]:
     if p_out.is_file():
         n_out = len(pd.read_csv(p_out))
         checks["output_metrics.csv"] = n_out
-        # Combined benchmark target is 570; does not fail diversity-only index
+        # Benchmark target is 540
         if n_out != EXPECTED_N:
             checks["benchmark_ok"] = n_out >= EXPECTED_N
     else:
@@ -271,12 +269,10 @@ def validate_corpus(manifest_path: Path, data_dir: Path) -> dict[str, Any]:
     checks["ok"] = checks["diversity_ok"]
     return checks
 
-
 def _newer_than(src: Path, dst: Path) -> bool:
     if not dst.is_file() or not src.is_file():
         return False
     return src.stat().st_mtime > dst.stat().st_mtime
-
 
 def _figure_status(stem: str, png: Path, data_dir: Path) -> str:
     if stem == "protocol_comparison_placeholder":
@@ -300,7 +296,6 @@ def _figure_status(stem: str, png: Path, data_dir: Path) -> str:
         return "lista"
     return "lista"
 
-
 def _table_status(path: Path, data_dir: Path, reports_dir: Path) -> str:
     if not path.is_file():
         return "regenerar"
@@ -321,7 +316,6 @@ def _table_status(path: Path, data_dir: Path, reports_dir: Path) -> str:
             return "regenerar"
     return "lista"
 
-
 def promote_figures() -> list[str]:
     log: list[str] = []
     for src, dst in PROMOTIONS:
@@ -333,14 +327,13 @@ def promote_figures() -> list[str]:
         log.append(f"Copied {src.name} -> {dst.relative_to(HERE)}")
     return log
 
-
 def plot_corpus_overview(manifest_path: Path, out_base: Path) -> None:
     m = pd.read_csv(manifest_path)
     fam_order = [
         "01_urban", "02_campus", "03_vehicles", "04_rural",
-        "05_disaster", "06_social", "07_stress_controls",
+        "05_disaster", "06_social",
     ]
-    labels = ["Urban", "Campus", "Vehicles", "Rural", "Disaster", "Social", "Stress/Control"]
+    labels = ["Urban", "Campus", "Vehicles", "Rural", "Disaster", "Social"]
     bases = m.groupby("family")["scenario_base"].nunique().reindex(fam_order).fillna(0).astype(int)
     sims = m.groupby("family").size().reindex(fam_order).fillna(0).astype(int)
 
@@ -367,7 +360,6 @@ def plot_corpus_overview(manifest_path: Path, out_base: Path) -> None:
     fig.savefig(out_base.with_suffix(".png"), dpi=150, bbox_inches="tight")
     fig.savefig(out_base.with_suffix(".pdf"), dpi=150, bbox_inches="tight")
     plt.close(fig)
-
 
 def create_protocol_placeholder(out_base: Path) -> None:
     fig, ax = plt.subplots(figsize=(8, 3))
@@ -396,7 +388,6 @@ def create_protocol_placeholder(out_base: Path) -> None:
     fig.savefig(out_base.with_suffix(".pdf"), dpi=150, bbox_inches="tight")
     fig.savefig(out_base.with_suffix(".png"), dpi=150, bbox_inches="tight")
     plt.close(fig)
-
 
 def collect_index_rows(data_dir: Path, reports_dir: Path) -> list[dict[str, str]]:
     rows: list[dict[str, str]] = []
@@ -441,7 +432,6 @@ def collect_index_rows(data_dir: Path, reports_dir: Path) -> list[dict[str, str]
         )
     return rows
 
-
 def write_index(path: Path, rows: list[dict[str, str]], validation: dict[str, Any]) -> None:
     lines = [
         "# Paper figures and tables index (corpus_v1)",
@@ -450,7 +440,7 @@ def write_index(path: Path, rows: list[dict[str, str]], validation: dict[str, An
         "",
         f"**Corpus:** corpus_v1 — {validation['n_manifest']} simulations (diversity scope {EXPECTED_N}).",
         f"**Diversity validation:** {'PASS' if validation.get('diversity_ok') else 'CHECK FAILED'}",
-        f"**Benchmark outputs (570):** output_metrics={validation.get('output_metrics.csv', 'n/a')} "
+        f"**Benchmark outputs (540):** output_metrics={validation.get('output_metrics.csv', 'n/a')} "
         f"({'OK' if validation.get('benchmark_ok') else 'incomplete — not a diversity blocker'})",
         "",
         "| filename | type | data_source | generator_script | description | scientific_message | paper_section | status |",
@@ -483,7 +473,6 @@ def write_index(path: Path, rows: list[dict[str, str]], validation: dict[str, An
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text("\n".join(lines) + "\n", encoding="utf-8")
 
-
 def write_readiness(
     path: Path,
     rows: list[dict[str, str]],
@@ -510,7 +499,7 @@ def write_readiness(
         f"- **Corpus:** corpus_v1, N={validation.get('n_manifest', '?')} simulations.",
         f"- **Data validation:** correlation_pearson={validation.get('correlation_pearson.csv', '?')}, "
         f"output_metrics={validation.get('output_metrics.csv', '?')}.",
-        "- **Policy:** Diversity figures trace to `analysis/data/*.csv` with n=540 (corpus_v1 only). Combined benchmark (570) is separate.",
+        "- **Policy:** Figures and tables trace to `analysis/data/*.csv` with n=540 (`corpus_v1`).",
         "",
         "## Figures ready (main)",
         "",
@@ -584,7 +573,6 @@ def write_readiness(
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text("\n".join(lines) + "\n", encoding="utf-8")
 
-
 def main() -> int:
     ap = argparse.ArgumentParser(description="Build paper figures/tables index for corpus_v1.")
     ap.add_argument("--manifest", type=Path, default=DEFAULT_MANIFEST)
@@ -627,7 +615,6 @@ def main() -> int:
     print(f"Wrote {report_path}")
     print(f"Validation ok={validation.get('ok')}")
     return 0
-
 
 if __name__ == "__main__":
     raise SystemExit(main())

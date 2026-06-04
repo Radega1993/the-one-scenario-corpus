@@ -27,19 +27,17 @@ from map_geometry import (  # noqa: E402
     world_size_from_metadata,
 )
 
-
 def file_md5(path: Path) -> str:
     if not path.is_file():
         return ""
     return hashlib.md5(path.read_bytes()).hexdigest()[:12]
-
 
 def inventory_row(map_name: str, include_data: bool) -> dict:
     wkt_dir = WKT_DIR / map_name
     data_dir = DATA_DIR / map_name
     meta = load_map_metadata(wkt_dir)
     family = meta.get("family", "")
-    source = meta.get("source", "osm" if map_name != "ControlCompactGrid" else "synthetic")
+    source = meta.get("source", "osm")
 
     roads_wkt = wkt_dir / "roads.wkt"
     raw_roads = parse_linestrings(roads_wkt) if roads_wkt.is_file() else []
@@ -91,7 +89,6 @@ def inventory_row(map_name: str, include_data: bool) -> dict:
         "notes": "; ".join(notes),
     }
 
-
 def main() -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--include-data", action="store_true")
@@ -108,7 +105,6 @@ def main() -> int:
         w.writerows(rows)
     print(f"Wrote {out} ({len(rows)} maps)")
     return 0
-
 
 if __name__ == "__main__":
     raise SystemExit(main())

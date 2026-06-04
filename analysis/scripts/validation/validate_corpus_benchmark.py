@@ -33,20 +33,16 @@ from lib.report_paths import CORPUS_BENCHMARK_VALIDATION  # noqa: E402
 STRESS_TPS = frozenset({"TP04", "TP05", "TP09", "TP10", "TP11"})
 EXTREME_BASE_PREFIXES = ("R10_", "R11_", "D1_", "D2_", "D3_", "D4_", "D5_", "D6_", "D7_", "D8_", "D9_")
 
-
 def _utc() -> str:
     return datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M UTC")
-
 
 def _parse_flags(val: Any) -> set[str]:
     if pd.isna(val) or val == "":
         return set()
     return {x.strip() for x in str(val).split("|") if x.strip()}
 
-
 def _is_nan(x: Any) -> bool:
     return x is None or (isinstance(x, float) and pd.isna(x))
-
 
 def classify_row(row: pd.Series) -> tuple[str, str, str]:
     """Return (validation_status, reason, recommended_action)."""
@@ -123,13 +119,6 @@ def classify_row(row: pd.Series) -> tuple[str, str, str]:
             "low world grid coverage on roads (MAP_UNDERUSED, mobility on streets)",
             "document_as_extreme",
         )
-    if family == "07_stress_controls":
-        return (
-            "valido_extremo",
-            "07_stress_controls laboratory family (stress/control tier)",
-            "include_stress",
-        )
-
     # 3. configuracion_sospechosa
     if "ZERO_DELIVERY" in flags and enc_val > 0 and "STRUCTURAL_PARTITION_VALID" not in flags:
         return (
@@ -188,7 +177,6 @@ def classify_row(row: pd.Series) -> tuple[str, str, str]:
     # 5. ok
     return ("ok", "metrics complete, no P0/P1 flags", "include_main")
 
-
 def load_and_merge(
     manifest_path: Path,
     data_dir: Path,
@@ -211,7 +199,7 @@ def load_and_merge(
     diag_path = data_dir / "scenario_diagnosis.csv"
     diag = pd.read_csv(diag_path) if diag_path.is_file() else pd.DataFrame()
 
-    settings_count = len(collect_settings_paths("corpus_v1", include_stress=True))
+    settings_count = len(collect_settings_paths("corpus_v1"))
 
     completeness: dict[str, Any] = {
         "settings_count": settings_count,
@@ -291,7 +279,6 @@ def load_and_merge(
 
     return df, completeness
 
-
 def build_validation_table(df: pd.DataFrame) -> pd.DataFrame:
     statuses: list[str] = []
     reasons: list[str] = []
@@ -322,7 +309,6 @@ def build_validation_table(df: pd.DataFrame) -> pd.DataFrame:
     out["reason"] = reasons
     out["recommended_action"] = actions
     return out
-
 
 def write_report(
     val: pd.DataFrame,
@@ -431,7 +417,6 @@ def write_report(
         "- **TP12** cross-group partition controls (`include_control`)",
         "- **TP04 / TP05 / TP10** stress load and CriticalTTL tiers (`include_stress`)",
         "- **R10 / R11** and disconnected bases with `ZERO_CONTACTS` (`include_control` / `document_as_extreme`)",
-        "- **07_stress_controls** family (stress/control laboratory)",
         "- **MAP_UNDERUSED** WDM scenarios (~8–10% world grid coverage on roads — not a simulation failure)",
         "",
         f"Count `valido_extremo`: **{int(status_counts.get('valido_extremo', 0))}** scenarios.",
@@ -462,7 +447,7 @@ def write_report(
         "Align protocol runs with `corpus_v1/manifest_revision.csv`:",
         "",
         "- **main:** TP01–TP08 on viable bases; exclude `error_probable` and `configuracion_sospechosa`",
-        "- **stress:** TP09–TP11, TP04–TP06 load, all `07_stress_controls`",
+        "- **Extreme load TPs:** TP09–TP11, TP04–TP06 on environmental bases",
         "- **control:** TP12 partition, disconnected extremes",
         "",
         "## Next steps",
@@ -483,7 +468,6 @@ def write_report(
 
     out_path.parent.mkdir(parents=True, exist_ok=True)
     out_path.write_text("\n".join(lines), encoding="utf-8")
-
 
 def main() -> int:
     ap = argparse.ArgumentParser(description="Validate corpus_v1 paper benchmark readiness.")
@@ -519,7 +503,6 @@ def main() -> int:
     print(f"Wrote {args.output_report}")
     print(val["validation_status"].value_counts().to_string())
     return 0
-
 
 if __name__ == "__main__":
     raise SystemExit(main())

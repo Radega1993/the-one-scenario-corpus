@@ -22,4 +22,3 @@ All map-based rural scenarios: `data/NuuksioSparseTrails/roads.wkt`, `worldSize 
 ## Historical analysis CSVs
 
 Manifests updated; `output_metrics.csv` and other analysis artifacts may still reference the old R1 name until regenerated.
-

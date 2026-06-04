@@ -2,21 +2,21 @@
 
 Generated: 2026-05-28 07:47 UTC
 
-**Corpus scope:** `corpus_v1` only — **540** scenarios (stress_controls excluded)
+**Corpus scope:** `corpus_v1` only — **540** scenarios ( excluded)
 
 **Expected pairs:** C(540,2) = 145530
 
 **Decision (diversity scope):** `READY_FOR_PAPER`
 
-**Combined benchmark (570 routing/outputs):** `READY_WITH_MINOR_FIXES` (output_metrics=540/570; not part of diversity freeze)
+**Combined benchmark (540 routing/outputs):** `READY_WITH_MINOR_FIXES` (output_metrics=540/540; not part of diversity freeze)
 
 ## Project structure (active)
 
 - **base_scenarios/**: 45 structural bases (no TP)
 - **corpus_v1/**: 540 environmental scenarios with TP (diversity scope)
-- **stress_controls/**: 30 stress/control lab (excluded from diversity freeze)
-- **Combined paper benchmark:** 570 (540 + 30)
-- **Diversity validation scope:** 540 (`corpus_v1` only, `--no-stress`)
+- ****: 30 stress/control lab (excluded from diversity freeze)
+- **Combined paper benchmark:** 540 (540 + 30)
+- **Diversity validation scope:** 540 (`corpus_v1` only, ``)
 - **Legacy archive:** `_archive/diversity_legacy_20260527/` (720-era CSVs; not canonical)
 - Legacy CSV count in archive: 3
 
@@ -93,14 +93,14 @@ Generated: 2026-05-28 07:47 UTC
 | DOC005 | wiki | wiki Resultados-Actuales | PASS | INFO |  |
 | C001 | consistency | root_README_diversity_scope | PASS | INFO | OK |
 | C002 | consistency | FIGURES_AND_TABLES_INDEX | PASS | INFO | diversity validation PASS in index |
-| C003 | consistency | output_metrics_benchmark_scope | WARN | MINOR | rows=540 expected 570 for combined benchmark (not diversity scope) |
+| C003 | consistency | output_metrics_benchmark_scope | WARN | MINOR | rows=540 expected 540 for combined benchmark (not diversity scope) |
 
 ## Warnings
 
-- **C003** output_metrics_benchmark_scope: rows=540 expected 570 for combined benchmark (not diversity scope) → complete simulations and rerun output_metrics
+- **C003** output_metrics_benchmark_scope: rows=540 expected 540 for combined benchmark (not diversity scope) → complete simulations and rerun output_metrics
 
 ## Recommended actions (non-diversity)
 
-- Complete combined benchmark simulations (570) and regenerate `output_metrics.csv` if routing results are needed.
-- Regenerate `spatial_occupancy_metrics.csv` for 540/570 scope (current file may still be 720 legacy).
+- Complete combined benchmark simulations (540) and regenerate `output_metrics.csv` if routing results are needed.
+- Regenerate `spatial_occupancy_metrics.csv` for 540/540 scope (current file may still be 720 legacy).
 - Archive candidates: see [diversity_archive_candidates.md](diversity_archive_candidates.md)

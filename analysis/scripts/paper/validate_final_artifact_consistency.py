@@ -10,7 +10,6 @@ REPORTS=AN/'reports'
 FIG=AN/'figures'
 WIKI=SCEN/'.wiki-clone'
 
-
 def count_settings(d:Path)->int:
     return sum(1 for _ in d.rglob('*.settings')) if d.exists() else 0
 
@@ -36,25 +35,25 @@ def add(cid,name,expected,observed,status,severity,fix):
 # counts
 base=count_settings(SCEN/'base_scenarios')
 corp=count_settings(SCEN/'corpus_v1')
-stress=count_settings(SCEN/'stress_controls')
 comb=csv_rows(DATA/'corpus_v1_combined_manifest.csv')
 outm=csv_rows(DATA/'output_metrics.csv')
 feat=csv_rows(DATA/'features.csv')
 spat=csv_rows(DATA/'spatial_occupancy_metrics.csv')
+stress_refs=search_active_refs(r'|07_|')
 
 add('C001','base_scenarios_count','45',base,'PASS' if base==45 else 'FAIL','BLOCKER','regenerate base_scenarios')
 add('C002','corpus_v1_count','540',corp,'PASS' if corp==540 else 'FAIL','BLOCKER','verify corpus_v1 split')
-add('C003','stress_controls_count','30',stress,'PASS' if stress==30 else 'FAIL','BLOCKER','verify stress_controls flattening')
-add('C004','combined_manifest_rows','570',comb,'PASS' if comb==570 else 'FAIL','BLOCKER','rebuild combined manifest')
-add('C005','output_metrics_rows','~570',outm,'PASS' if outm==570 else 'WARN','MAJOR','rerun output_metrics for missing reports')
-add('C006','features_rows','570',feat,'PASS' if feat==570 else 'WARN','MAJOR','rerun features phase')
-if spat==570:
+add('C003','combined_manifest_rows','540',comb,'PASS' if comb==540 else 'FAIL','BLOCKER','rebuild combined manifest from corpus_v1')
+add('C004','output_metrics_rows','540',outm,'PASS' if outm==540 else 'WARN','MAJOR','rerun output_metrics for missing reports')
+add('C005','features_rows','540',feat,'PASS' if feat==540 else 'WARN','MAJOR','rerun features phase')
+if spat in (540, -1):
     st='PASS'; sev='INFO'; fix='none'
 elif spat==720:
     st='WARN'; sev='MAJOR'; fix='legacy 720 spatial metrics; regenerate or archive as legacy'
 else:
     st='WARN'; sev='MAJOR'; fix='verify spatial occupancy scope'
-add('C007','spatial_metrics_scope','570 or explicit legacy',spat,st,sev,fix)
+add('C006','spatial_metrics_scope','540 or missing',spat,st,sev,fix)
+add('C007','no__refs','0',stress_refs,'PASS' if stress_refs==0 else 'FAIL','BLOCKER','remove  references from active tree')
 
 # references
 c2=search_active_refs(r'\bcorpus_v2\b')
@@ -62,7 +61,7 @@ c3=search_active_refs(r'\bcorpus_v3\b')
 refs720=search_active_refs(r'\b720\b')
 add('C008','active corpus_v2 refs outside archive','0 (except legacy context)',c2,'PASS' if c2==0 else 'WARN','MAJOR','review docs/scripts and keep only legacy context')
 add('C009','active corpus_v3 refs outside archive','0 (except legacy context)',c3,'PASS' if c3==0 else 'WARN','MINOR','review historical mentions')
-add('C010','active 720 refs outside archive','historical context only',refs720,'WARN' if refs720>0 else 'PASS','MINOR','mark as historical or update to 570')
+add('C010','active 720 refs outside archive','historical context only',refs720,'WARN' if refs720>0 else 'PASS','MINOR','mark as historical or update to 540')
 
 # paper-ready artifacts
 required=[

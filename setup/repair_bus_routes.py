@@ -35,14 +35,12 @@ REPORTS_DIR = SCENARIOS_DIR / "analysis" / "reports" / "maps"
 
 from validate_bus_routes import validate_one  # noqa: E402
 
-
 def load_validation_rows() -> list[dict]:
     p = ANALYSIS_DATA / "bus_route_validation.csv"
     if not p.is_file():
         return []
     with p.open(encoding="utf-8") as f:
         return list(csv.DictReader(f))
-
 
 def write_repair_plan(rows: list[dict], repairs: list[dict], path: Path) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
@@ -75,7 +73,6 @@ def write_repair_plan(rows: list[dict], repairs: list[dict], path: Path) -> None
         ]
     )
     path.write_text("\n".join(lines), encoding="utf-8")
-
 
 def repair_map_routes(
     map_name: str,
@@ -133,7 +130,6 @@ def repair_map_routes(
         )
     return actions
 
-
 def main() -> int:
     ap = argparse.ArgumentParser()
     mode = ap.add_mutually_exclusive_group()
@@ -190,7 +186,6 @@ def main() -> int:
                 print(f"Installed {map_name} -> data/")
 
     return 0
-
 
 if __name__ == "__main__":
     raise SystemExit(main())

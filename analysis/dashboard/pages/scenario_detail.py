@@ -14,7 +14,6 @@ from dashboard.components import (
 from dashboard.data_loaders import SPATIAL_HEATMAP_DIR, list_raw_report_types, raw_report_path
 from lib.paths import REPO_ROOT
 
-
 def _row_dict(df: pd.DataFrame, scenario: str) -> dict:
     if df is None or df.empty or "scenario" not in df.columns:
         return {}
@@ -22,7 +21,6 @@ def _row_dict(df: pd.DataFrame, scenario: str) -> dict:
     if not m.any():
         return {}
     return df.loc[m].iloc[0].to_dict()
-
 
 def render(filtered: pd.DataFrame, master: pd.DataFrame) -> None:
     st.header("Detalle de escenario")
@@ -127,7 +125,6 @@ def render(filtered: pd.DataFrame, master: pd.DataFrame) -> None:
                 preview_text_file(Path(path_s))
             else:
                 st.warning(f"No existe `{scenario}_{rtype}.txt` (nombre antiguo o sim no ejecutada).")
-
 
 def _fmt(v) -> str:
     if v is None or (isinstance(v, float) and pd.isna(v)):

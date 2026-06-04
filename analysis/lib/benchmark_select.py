@@ -8,8 +8,7 @@ from __future__ import annotations
 import csv
 from pathlib import Path
 
-_VALID_BENCHMARKS = ("core", "stress", "all")
-
+_VALID_BENCHMARKS = ("core", "all")
 
 def select_by_benchmark(
     csv_path: Path,
@@ -20,9 +19,7 @@ def select_by_benchmark(
     """Return scenario_name values matching the requested benchmark tier.
 
     benchmark:
-        "core"   -> included_in_core == TRUE
-        "stress" -> included_in_stress == TRUE
-        "all"    -> included_in_core == TRUE OR included_in_stress == TRUE
+        "core" / "all" -> included_in_core == TRUE (540 environmental scenarios)
     """
     if benchmark not in _VALID_BENCHMARKS:
         raise ValueError(
@@ -34,15 +31,9 @@ def select_by_benchmark(
             if exclude_deprecated and row.get("deprecated", "").strip().upper() == "TRUE":
                 continue
             core = row.get("included_in_core", "").strip().upper() == "TRUE"
-            stress = row.get("included_in_stress", "").strip().upper() == "TRUE"
-            if benchmark == "core" and core:
-                names.add(row["scenario_name"])
-            elif benchmark == "stress" and stress:
-                names.add(row["scenario_name"])
-            elif benchmark == "all" and (core or stress):
+            if benchmark in ("core", "all") and core:
                 names.add(row["scenario_name"])
     return names
-
 
 def load_endtimes(manifest_path: Path) -> dict[str, int]:
     """Return {scenario_name: endTime_seconds} from manifest.csv."""

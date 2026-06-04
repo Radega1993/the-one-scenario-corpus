@@ -12,7 +12,7 @@
 
 | Elemento | Valor |
 |----------|--------|
-| **Benchmark paper** | [`corpus_v1/`](corpus_v1/) (540) + [`stress_controls/`](stress_controls/) (30) = **570** |
+| **Benchmark paper** | [`corpus_v1/`](corpus_v1/) (540) + [``]() (30) = **540** |
 | **Bases estructurales** | [`base_scenarios/`](base_scenarios/) — 45 escenarios sin TP |
 | **Corpus ambiental** | [`corpus_v1/`](corpus_v1/) — 540 escenarios con TP |
 | **Perfiles de tráfico** | 12 (TP01 Baseline … TP12 GroupToGroup) |

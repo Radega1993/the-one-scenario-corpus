@@ -12,12 +12,12 @@ Auxiliary route files (`routeFile` in `.settings`) are **waypoint sequences** fo
 | 04_rural | NuuksioSparseTrails | Ranger patrol | `A_ranger_patrol.wkt` | `A_bus.wkt` |
 | 05_disaster | HelsinkiDisrupted | Emergency + mule | `A_emergency_route.wkt`, `B_mule_route.wkt` | `A_bus.wkt`, `B_bus.wkt` |
 | 06_social | KallioCommunityCompact | Community local routes (optional) | `A_community_route.wkt`, `B_community_route.wkt` | `A_bus.wkt` |
-| 07_stress_controls | ControlCompactGrid | Synthetic control route | `A_control_route.wkt` | `A_bus.wkt` |
+| 07_ |  | Synthetic control route | `A_control_route.wkt` | `A_bus.wkt` |
 
 ## Settings update policy
 
-- **Referenced maps only:** `.settings` under `base_scenarios/`, `corpus_v1/`, and `stress_controls/` are updated when `GroupN.routeFile` already points at a renamed path.
-- **No new `routeFile`:** Kumpula, Kallio, and ControlCompactGrid keep movement models without `routeFile` in the corpus; semantic WKT may exist for figures and documentation only.
+- **Referenced maps only:** `.settings` under `base_scenarios/`, `corpus_v1/`, and `` are updated when `GroupN.routeFile` already points at a renamed path.
+- **No new `routeFile`:** Kumpula, Kallio, and  keep movement models without `routeFile` in the corpus; semantic WKT may exist for figures and documentation only.
 
 ## Render legend (paper figures)
 

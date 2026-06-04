@@ -1,6 +1,6 @@
 # Resultados actuales del corpus (referencia única)
 
-**Corpus:** 540 escenarios en `corpus_v1/`. (sin stress_controls; laboratorio stress documentado aparte)
+**Corpus:** 540 escenarios en `corpus_v1/`. (sin ; laboratorio stress documentado aparte)
 **Umbral |r|:** 0.7
 **Pares totales (i<k):** 145530 (= C(540,2))
 

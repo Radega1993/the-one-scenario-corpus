@@ -29,7 +29,6 @@ VEHICLE_B = "data/ManhattanMidtownGrid/B_vehicle_route.wkt"
 
 ROUTE_FILE_RE = re.compile(r"^Group\d*\.routeFile$")
 
-
 def load_kv(path: Path) -> dict[str, str]:
     out: dict[str, str] = {}
     for raw in path.read_text(encoding="utf-8", errors="replace").splitlines():
@@ -39,7 +38,6 @@ def load_kv(path: Path) -> dict[str, str]:
         k, v = line.split("=", 1)
         out[k.strip()] = v.strip()
     return out
-
 
 def audit_file(path: Path) -> dict:
     kv = load_kv(path)
@@ -87,7 +85,6 @@ def audit_file(path: Path) -> dict:
         "status": status,
     }
 
-
 def fix_legacy_bus_paths(apply: bool) -> list[str]:
     changed: list[str] = []
     for root in (BASE_VEH, CORPUS_VEH):
@@ -107,7 +104,6 @@ def fix_legacy_bus_paths(apply: bool) -> list[str]:
             if new_text != text:
                 changed.append(str(sp.relative_to(SCENARIOS_DIR.parent)))
     return changed
-
 
 def write_report(rows: list[dict], fixed: list[str]) -> None:
     fails = [r for r in rows if r["status"] == "FAIL"]
@@ -142,7 +138,6 @@ def write_report(rows: list[dict], fixed: list[str]) -> None:
         for r in fails[:15]:
             lines.append(f"- `{r['settings_path']}`: {r['issues']}")
     path.write_text("\n".join(lines) + "\n", encoding="utf-8")
-
 
 def main() -> int:
     ap = argparse.ArgumentParser()
@@ -179,7 +174,6 @@ def main() -> int:
     if fixed:
         print(f"Fixed legacy bus paths: {len(fixed)} files")
     return 1 if any(r["status"] == "FAIL" for r in rows) else 0
-
 
 if __name__ == "__main__":
     raise SystemExit(main())

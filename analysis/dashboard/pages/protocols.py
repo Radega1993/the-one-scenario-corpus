@@ -7,7 +7,6 @@ import streamlit as st
 
 from dashboard.data_loaders import DATA_DIR, load_csv
 
-
 def render(filtered: pd.DataFrame, master: pd.DataFrame) -> None:
     st.header("Protocolos de routing")
     st.caption("Corpus actual: **Epidemic** únicamente (720 simulaciones).")

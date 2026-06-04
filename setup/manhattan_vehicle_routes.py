@@ -29,14 +29,12 @@ BORDER_EPS = 2.0
 ORIGIN_EPS = 15.0
 MIN_DIST_FROM_ORIGIN = 80.0
 
-
 def _route_separation(stops_a: list[tuple[float, float]], stops_b: list[tuple[float, float]]) -> float:
     """Mean min distance between stop sets (differentiation metric)."""
     if not stops_a or not stops_b:
         return 0.0
     dists = [min(math.hypot(a[0] - b[0], a[1] - b[1]) for b in stops_b) for a in stops_a]
     return sum(dists) / len(dists)
-
 
 def validate_vehicle_route(
     rg: RoadGraph,
@@ -117,7 +115,6 @@ def validate_vehicle_route(
         "status": status,
         "notes": "; ".join(notes),
     }
-
 
 def regenerate_vehicle_routes(
     map_dir: Path,

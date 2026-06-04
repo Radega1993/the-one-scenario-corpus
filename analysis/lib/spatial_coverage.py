@@ -24,7 +24,6 @@ DEFAULT_BBOX_MARGIN_M = 50.0
 
 _MASK_CACHE: dict[tuple[Any, ...], RoadCellMasks] = {}
 
-
 @dataclass
 class RoadCellMasks:
     """Boolean masks over the occupancy grid (shape grid_size x grid_size, index cell_i, cell_j)."""
@@ -55,7 +54,6 @@ class RoadCellMasks:
                     mask[i, j] = True
         return mask
 
-
 def map_name_from_settings(settings_path: Path | None, repo_root: Path = REPO_ROOT) -> str | None:
     """Extract map folder name from MapBasedMovement.mapFile1 or scenarios/maps/wkt/."""
     if settings_path and settings_path.is_file():
@@ -74,7 +72,6 @@ def map_name_from_settings(settings_path: Path | None, repo_root: Path = REPO_RO
                     return parts[idx + 1]
     return None
 
-
 def roads_bbox_sim(
     roads_sim: list[list[tuple[float, float]]] | None,
     *,
@@ -91,7 +88,6 @@ def roads_bbox_sim(
     if not xs:
         return None
     return (min(xs) - margin, min(ys) - margin, max(xs) + margin, max(ys) + margin)
-
 
 def _cell_indices_for_point(x: float, y: float, world_x: float, world_y: float, gs: int) -> tuple[int, int]:
     """Match SpatialOccupancyReport.cellIndex (clamp to grid)."""
@@ -110,7 +106,6 @@ def _cell_indices_for_point(x: float, y: float, world_x: float, world_y: float, 
     if j < 0:
         j = 0
     return i, j
-
 
 def _rasterize_segment(
     x0: float,
@@ -135,7 +130,6 @@ def _rasterize_segment(
         y = y0 + t * (y1 - y0)
         i, j = _cell_indices_for_point(x, y, world_x, world_y, gs)
         mask[i, j] = True
-
 
 def build_road_cell_masks(
     roads_sim: list[list[tuple[float, float]]] | None,
@@ -188,7 +182,6 @@ def build_road_cell_masks(
         _MASK_CACHE[cache_key] = masks
     return masks
 
-
 def visited_mask_from_grid(grid_df: pd.DataFrame, grid_size: int) -> np.ndarray:
     """Boolean (gs, gs) visited cells from occupancy grid CSV."""
     gs = int(grid_size)
@@ -199,12 +192,10 @@ def visited_mask_from_grid(grid_df: pd.DataFrame, grid_size: int) -> np.ndarray:
             vis[i, j] = True
     return vis
 
-
 def _coverage_pct(visited: int, total: int) -> float | None:
     if total <= 0:
         return None
     return round(100.0 * visited / total, 4)
-
 
 def compute_spatial_coverage_metrics(
     grid_df: pd.DataFrame,
@@ -272,7 +263,6 @@ def compute_spatial_coverage_metrics(
 
     return out
 
-
 def masks_for_scenario(
     settings_path: Path | None,
     *,
@@ -303,7 +293,6 @@ def masks_for_scenario(
     )
     return masks, map_name
 
-
 def metrics_for_scenario(
     grid_path: Path,
     settings_path: Path | None,
@@ -321,7 +310,6 @@ def metrics_for_scenario(
     gs = int(grid_size) if grid_size is not None else int(df["cell_i"].max()) + 1
     masks, map_name = masks_for_scenario(settings_path, world_x=wx, world_y=wy, grid_size=gs)
     return compute_spatial_coverage_metrics(df, masks, scenario_name=name, map_name=map_name)
-
 
 def zoom_extent_from_masks(
     masks: RoadCellMasks,
@@ -347,7 +335,6 @@ def zoom_extent_from_masks(
     j1 = min(int(idx[:, 1].max()) + pad_cells + 1, gs)
     return i0, i1, j0, j1
 
-
 def coverage_title_parts(metrics: dict[str, float | int | str | None]) -> list[str]:
     """Short labels for heatmap titles."""
     parts: list[str] = []
@@ -365,7 +352,6 @@ def coverage_title_parts(metrics: dict[str, float | int | str | None]) -> list[s
         parts.append(f"buffer25 {float(b25):.1f}%")
     return parts
 
-
 def enrich_timeseries_from_positions(
     world_ts: pd.DataFrame,
     node_pos_path: Path,
@@ -378,7 +364,12 @@ def enrich_timeseries_from_positions(
     Replay NodePositionReport to compute multi-denominator coverage per time bin.
     world_ts must contain time_bin_end (and optionally legacy coverage_pct).
     """
-    pos = pd.read_csv(node_pos_path)
+    if not node_pos_path.is_file() or node_pos_path.stat().st_size == 0:
+        return world_ts
+    try:
+        pos = pd.read_csv(node_pos_path)
+    except pd.errors.EmptyDataError:
+        return world_ts
     if pos.empty or "time" not in pos.columns:
         return world_ts
 
@@ -444,7 +435,6 @@ def enrich_timeseries_from_positions(
     meta = world_ts[meta_cols].reset_index(drop=True)
     return pd.concat([meta, cov_df.drop(columns=["time_bin_end"])], axis=1)
 
-
 # Backward compatibility
 def compute_coverage_breakdown(
     grid_df: pd.DataFrame,
@@ -482,7 +472,6 @@ def compute_coverage_breakdown(
         "cells_visited_in_map_bbox": m.get("map_bbox_visited_cells"),
         "coverage_road_cells_pct": m.get("coverage_road_cells_pct"),
     }
-
 
 def coverage_breakdown_for_scenario(
     grid_path: Path,

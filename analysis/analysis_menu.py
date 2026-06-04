@@ -159,14 +159,12 @@ SCRIPT_CATALOG: dict[str, dict[str, object]] = {
     },
 }
 
-
 def _ask(prompt: str, default: str | None = None) -> str:
     hint = f" [{default}]" if default is not None else ""
     raw = input(f"{prompt}{hint}: ").strip()
     if not raw and default is not None:
         return default
     return raw
-
 
 def _ask_yes(prompt: str, default: bool = False) -> bool:
     d = "s/N" if not default else "S/n"
@@ -175,10 +173,8 @@ def _ask_yes(prompt: str, default: bool = False) -> bool:
         return default
     return raw in ("s", "si", "sí", "y", "yes", "1", "true")
 
-
 def _is_back_choice(choice: str) -> bool:
     return choice.strip().lower() in ("0", "", "q", "b", "back", "m", "menu")
-
 
 def _rel_repo(p: Path) -> str:
     try:
@@ -186,9 +182,7 @@ def _rel_repo(p: Path) -> str:
     except ValueError:
         return str(p)
 
-
 _MENU_WIDTH = 58
-
 
 def _menu_box_line(text: str) -> str:
     """Una línea interior del marco (ancho fijo)."""
@@ -196,7 +190,6 @@ def _menu_box_line(text: str) -> str:
     if len(t) > _MENU_WIDTH:
         t = t[: _MENU_WIDTH - 1] + "…"
     return f"║ {t:<{_MENU_WIDTH}} ║"
-
 
 def _print_main_menu() -> None:
     items = [
@@ -206,10 +199,10 @@ def _print_main_menu() -> None:
         "4) Paper y validación (submenú)",
         "5) Tiempo útil de simulación (connectivity)",
         "6) Tiempos de creación de mensajes",
-        "7) Ocupación espacial / heatmaps",
+        "7) Ocupación espacial (coverage_road_cells_pct, zoom roads)",
         "8) Dashboard (Streamlit)",
         "9) Figuras agregadas / paper",
-        "10) Ruta paper-ready guiada (540/570)",
+        "10) Ruta paper-ready guiada (540/540)",
         "11) Simular con protocolo (overlay)",
         "0) Salir",
     ]
@@ -225,13 +218,11 @@ def _print_main_menu() -> None:
     print(f"Analysis: {ANALYSIS_DIR}")
     print()
 
-
 def _run_script(args: list[str], *, cwd: Path | None = None) -> int:
     cmd = [sys.executable, *args]
     print("\n→", " ".join(cmd), "\n")
     r = subprocess.run(cmd, cwd=cwd or REPO_ROOT)
     return int(r.returncode)
-
 
 def _collect_extra_settings() -> list[str]:
     """Pregunta presets de reportes y rutas manuales; devuelve flags --extra-settings."""
@@ -262,7 +253,6 @@ def _collect_extra_settings() -> list[str]:
                 extra.extend(["--extra-settings", part])
     return extra
 
-
 def _corpus_dir(corpus: str) -> Path:
     d = REPO_ROOT / "scenarios" / corpus
     if not d.is_dir():
@@ -270,7 +260,6 @@ def _corpus_dir(corpus: str) -> Path:
         if not d.is_absolute():
             d = REPO_ROOT / d
     return d
-
 
 def _resolve_selection(corpus: str, selection: str) -> dict:
     """
@@ -415,7 +404,6 @@ def _resolve_selection(corpus: str, selection: str) -> dict:
 
     return empty
 
-
 def _run_simulations_cmd(
     *,
     corpus: str,
@@ -471,7 +459,6 @@ def _run_simulations_cmd(
             cmd.extend(["--settings", sp])
     cmd.extend(extra)
     return cmd
-
 
 def menu_run_selected_scenarios() -> None:
     print("\n--- Simular escenarios (selección flexible) ---")
@@ -529,7 +516,6 @@ def menu_run_selected_scenarios() -> None:
     print(f"\n(código salida {rc})")
     input("Enter para volver al menú…")
 
-
 def menu_run_all_scenarios() -> None:
     print("\n--- Ejecutar todas las simulaciones ---")
     corpus = _ask("Carpeta del corpus bajo scenarios/", "corpus_v1")
@@ -542,11 +528,10 @@ def menu_run_all_scenarios() -> None:
         "\nBenchmark tier:\n"
         "  0 = sin filtro (todo el corpus)\n"
         "  1 = core (540 escenarios ambientales)\n"
-        "  2 = stress (30 escenarios stress/control)\n"
-        "  3 = all activos (570 = core + stress)\n"
+        "  2 = all (alias de core, 540)\n"
     )
     bench_choice = _ask("Benchmark tier", "0")
-    benchmark_map = {"0": None, "1": "core", "2": "stress", "3": "all"}
+    benchmark_map = {"0": None, "1": "core", "2": "all"}
     benchmark = benchmark_map.get(bench_choice)
 
     fam_filter = _ask("Limitar a familia (vacío = todo el corpus)", "") or None
@@ -576,7 +561,6 @@ def menu_run_all_scenarios() -> None:
     print(f"\n(código salida {rc})")
     input("Enter para volver al menú…")
 
-
 def menu_run_analysis() -> None:
     print("\n--- Pipeline run_analysis.py ---")
     corpus = _ask("Corpus", "corpus_v1")
@@ -592,27 +576,25 @@ def menu_run_analysis() -> None:
     print(f"\n(código salida {rc})")
     input("Enter para volver al menú…")
 
-
 def _paper_ready_steps() -> list[tuple[str, list[str]]]:
     return [
         ("output_metrics (benchmark/routing)", [str(ANALYSIS_DIR / "run_analysis.py"), "--corpus", "corpus_v1", "--phase", "output_metrics"]),
-        ("features (diversidad 540)", [str(ANALYSIS_DIR / "run_analysis.py"), "--corpus", "corpus_v1", "--no-stress", "--phase", "features"]),
-        ("normalize", [str(ANALYSIS_DIR / "run_analysis.py"), "--corpus", "corpus_v1", "--no-stress", "--phase", "normalize"]),
-        ("correlation", [str(ANALYSIS_DIR / "run_analysis.py"), "--corpus", "corpus_v1", "--no-stress", "--phase", "correlation"]),
-        ("feature_correlation", [str(ANALYSIS_DIR / "run_analysis.py"), "--corpus", "corpus_v1", "--no-stress", "--phase", "feature_correlation"]),
-        ("ablation", [str(ANALYSIS_DIR / "run_analysis.py"), "--corpus", "corpus_v1", "--no-stress", "--phase", "ablation"]),
-        ("figures_paper", [str(ANALYSIS_DIR / "run_analysis.py"), "--corpus", "corpus_v1", "--no-stress", "--phase", "figures_paper"]),
-        ("tables_paper", [str(ANALYSIS_DIR / "run_analysis.py"), "--corpus", "corpus_v1", "--no-stress", "--phase", "tables_paper"]),
+        ("features (diversidad 540)", [str(ANALYSIS_DIR / "run_analysis.py"), "--corpus", "corpus_v1", "--phase", "features"]),
+        ("normalize", [str(ANALYSIS_DIR / "run_analysis.py"), "--corpus", "corpus_v1", "--phase", "normalize"]),
+        ("correlation", [str(ANALYSIS_DIR / "run_analysis.py"), "--corpus", "corpus_v1", "--phase", "correlation"]),
+        ("feature_correlation", [str(ANALYSIS_DIR / "run_analysis.py"), "--corpus", "corpus_v1", "--phase", "feature_correlation"]),
+        ("ablation", [str(ANALYSIS_DIR / "run_analysis.py"), "--corpus", "corpus_v1", "--phase", "ablation"]),
+        ("figures_paper", [str(ANALYSIS_DIR / "run_analysis.py"), "--corpus", "corpus_v1", "--phase", "figures_paper"]),
+        ("tables_paper", [str(ANALYSIS_DIR / "run_analysis.py"), "--corpus", "corpus_v1", "--phase", "tables_paper"]),
         ("build_paper_figures_tables_index", [str(ANALYSIS_DIR / "scripts/paper/build_paper_figures_tables_index.py")]),
         ("build_paper_freeze_checklist", [str(ANALYSIS_DIR / "scripts/paper/build_paper_freeze_checklist.py")]),
         ("validate_diversity_readiness", [str(ANALYSIS_DIR / "scripts/paper/validate_diversity_readiness.py")]),
         ("populate_wiki_paper", [str(ANALYSIS_DIR / "scripts/wiki/populate_wiki_paper.py")]),
     ]
 
-
 def menu_paper_ready_flow() -> None:
     print("\n--- Ruta paper-ready (orden recomendado) ---")
-    print("Scope diversidad: 540 (corpus_v1 + --no-stress). Scope benchmark combinado: 570 (540 + stress_controls).")
+    print("Scope benchmark: 540 escenarios en corpus_v1 (seis familias ambientales).")
     steps = _paper_ready_steps()
     for i, (label, cmd) in enumerate(steps, start=1):
         print(f"{i:2d}. {label}")
@@ -633,7 +615,6 @@ def menu_paper_ready_flow() -> None:
                 break
     input("Enter para volver al menú…")
 
-
 def _router_overlay_options() -> dict[str, Path]:
     base = ANALYSIS_DIR / "protocol_overlays"
     options: dict[str, Path] = {}
@@ -644,7 +625,6 @@ def _router_overlay_options() -> dict[str, Path]:
             options[key] = p
     return options
 
-
 def _write_report_dir_overlay(report_dir: str) -> Path:
     gen = ANALYSIS_DIR / "overlays" / "_generated"
     gen.mkdir(parents=True, exist_ok=True)
@@ -652,7 +632,6 @@ def _write_report_dir_overlay(report_dir: str) -> Path:
     overlay_path = gen / f"report_dir_{safe}.txt"
     overlay_path.write_text(f"Report.reportDir = {report_dir}\n", encoding="utf-8")
     return overlay_path
-
 
 def menu_protocol_overlay_runs() -> None:
     print("\n--- Simular con protocolo (overlay, sin editar .settings) ---")
@@ -675,10 +654,8 @@ def menu_protocol_overlay_runs() -> None:
 
     print(
         "\nScope de simulación:\n"
-        "  1 = core (540, corpus_v1)\n"
-        "  2 = stress (30, stress_controls)\n"
-        "  3 = all activos (570, core + stress)\n"
-        "  4 = selección manual (familia/TP/regex/lista)\n"
+        "  1 = corpus_v1 completo (540)\n"
+        "  2 = selección manual (familia/TP/regex/lista)\n"
     )
     scope = _ask("Scope", "1").strip()
     dry = _ask_yes("¿Solo listar (dry-run)?", default=True)
@@ -710,26 +687,6 @@ def menu_protocol_overlay_runs() -> None:
             exclude_deprecated=True,
         )
     elif scope == "2":
-        cmd = _run_simulations_cmd(
-            corpus="stress_controls",
-            gui=False,
-            dry_run=dry,
-            jobs=jobs_s,
-            timeout=timeout_s,
-            extra=extra,
-        )
-    elif scope == "3":
-        cmd = _run_simulations_cmd(
-            corpus="corpus_v1",
-            gui=False,
-            dry_run=dry,
-            jobs=jobs_s,
-            timeout=timeout_s,
-            extra=extra,
-            benchmark="all",
-            exclude_deprecated=True,
-        )
-    elif scope == "4":
         corpus = _ask("Corpus para selección manual", "corpus_v1")
         print("Selección manual: 1=.settings, 2=familia, 3=TP, 4=familia+TP, 5=lista, 6=archivo, 7=regex, 8=numerado")
         sel_mode = _ask("Modo de selección", "2")
@@ -752,15 +709,13 @@ def menu_protocol_overlay_runs() -> None:
     print(f"\n(código salida {rc})")
     input("Enter para volver al menú…")
 
-
 def _print_paper_submenu() -> None:
     print("\n--- Paper y validación ---")
-    print("Estado actual: diversidad 540 (corpus_v1, --no-stress) + benchmark combinado 570 (core + stress).\n")
+    print("Estado actual: benchmark 540 escenarios (corpus_v1).\n")
     for key in sorted(SCRIPT_CATALOG.keys()):
         entry = SCRIPT_CATALOG[key]
         print(f"  {key}) {entry['title']}")
     print("  0|b|back|m|menu|q) Volver al menú principal")
-
 
 def _run_catalog_entry(catalog_id: str) -> None:
     entry = SCRIPT_CATALOG.get(catalog_id)
@@ -788,7 +743,6 @@ def _run_catalog_entry(catalog_id: str) -> None:
     print(f"\n(código salida {rc})")
     input("Enter para volver…")
 
-
 def menu_paper_validation() -> None:
     while True:
         _print_paper_submenu()
@@ -799,7 +753,6 @@ def menu_paper_validation() -> None:
             _run_catalog_entry(choice)
         else:
             print("Opción no reconocida. Usa 4a..4n o 0/back/menu.")
-
 
 def menu_useful_time() -> None:
     print("\n--- Tiempo útil (ConnectivityONEReport) ---")
@@ -823,7 +776,6 @@ def menu_useful_time() -> None:
     print(f"\n(código salida {rc})")
     input("Enter para volver al menú…")
 
-
 def menu_message_creation() -> None:
     print("\n--- Tiempos de creación de mensajes ---")
     use_rep = _ask_yes("¿Usar CreatedMessagesReport si existe (--use-reports)?", default=False)
@@ -833,7 +785,6 @@ def menu_message_creation() -> None:
     rc = _run_script(cmd)
     print(f"\n(código salida {rc})")
     input("Enter para volver al menú…")
-
 
 def menu_spatial() -> None:
     print("\n--- Ocupación espacial (heatmaps / CSV agregados) ---")
@@ -849,13 +800,14 @@ def menu_spatial() -> None:
         reports,
         "--manifest",
         str(manifest_path),
+        "--zoom-mode",
+        "roads",
     ]
     if families:
         cmd.extend(["--families", families])
     rc = _run_script(cmd)
     print(f"\n(código salida {rc})")
     input("Enter para volver al menú…")
-
 
 def menu_figures_guide() -> None:
     print("\n--- Guía de figuras ---")
@@ -888,7 +840,6 @@ def menu_figures_guide() -> None:
         print(f"\n(código salida {rc})")
     input("Enter para volver al menú…")
 
-
 def menu_dashboard() -> None:
     print("\n--- Dashboard Streamlit ---")
     dash = ANALYSIS_DIR / "dashboard.py"
@@ -914,7 +865,6 @@ def menu_dashboard() -> None:
     print("\n→", " ".join(cmd), "(cwd=", REPO_ROOT, ")\n")
     subprocess.run(cmd, cwd=REPO_ROOT)
     input("Enter para volver al menú…")
-
 
 def main() -> int:
     while True:
@@ -948,7 +898,6 @@ def main() -> int:
         else:
             print("Opción no reconocida.")
     return 0
-
 
 if __name__ == "__main__":
     try:

@@ -22,7 +22,7 @@ Routes were **regenerated per family** (2026-05-28) with semantic filenames, gra
 | NuuksioSparseTrails | 04_rural | osm | 1 | 10/5/8 | PASS |
 | HelsinkiDisrupted | 05_disaster | osm | 2 | 40/25/15 | PASS |
 | KallioCommunityCompact | 06_social | osm | 2 | 70/20/30 | PASS |
-| ControlCompactGrid | 07_stress_controls | synthetic | 1 | 50/30/20 | PASS |
+|  | 07_ | synthetic | 1 | 50/30/20 | PASS |
 
 ## Semantic route inventory
 
@@ -39,7 +39,7 @@ Routes were **regenerated per family** (2026-05-28) with semantic filenames, gra
 | HelsinkiDisrupted | B_bus.wkt | B_mule_route.wkt | mule_route | 0 | optional_asset |
 | KallioCommunityCompact | A_bus.wkt | A_community_route.wkt | community_route | 0 | optional_asset |
 | KallioCommunityCompact | B_bus.wkt | B_community_route.wkt | community_route | 0 | optional_asset |
-| ControlCompactGrid | A_bus.wkt | A_control_route.wkt | control_route | 0 | optional_asset |
+|  | A_bus.wkt | A_control_route.wkt | control_route | 0 | optional_asset |
 
 ## Route files (geometry)
 
@@ -56,7 +56,7 @@ Routes were **regenerated per family** (2026-05-28) with semantic filenames, gra
 | HelsinkiDisrupted | B_mule_route.wkt | WARNING | 97.53 |  |
 | KallioCommunityCompact | A_community_route.wkt | WARNING | 61.81 |  |
 | KallioCommunityCompact | B_community_route.wkt | WARNING | 55.22 |  |
-| ControlCompactGrid | A_control_route.wkt | PASS | 0.0 |  |
+|  | A_control_route.wkt | PASS | 0.0 |  |
 
 ## POIs
 
@@ -80,9 +80,9 @@ Routes were **regenerated per family** (2026-05-28) with semantic filenames, gra
 | KallioCommunityCompact | A_homes.wkt | WARNING | 100.0 | 55.84 | 1 POIs >50.0m from road |
 | KallioCommunityCompact | A_offices.wkt | WARNING | 100.0 | 117.24 | 1 POIs >50.0m from road |
 | KallioCommunityCompact | A_meetingspots.wkt | WARNING | 100.0 | 97.62 | 2 POIs >50.0m from road |
-| ControlCompactGrid | A_homes.wkt | PASS | 100.0 | 0.0 |  |
-| ControlCompactGrid | A_offices.wkt | PASS | 100.0 | 0.0 |  |
-| ControlCompactGrid | A_meetingspots.wkt | PASS | 100.0 | 0.0 |  |
+|  | A_homes.wkt | PASS | 100.0 | 0.0 |  |
+|  | A_offices.wkt | PASS | 100.0 | 0.0 |  |
+|  | A_meetingspots.wkt | PASS | 100.0 | 0.0 |  |
 
 ## POI exceptions
 
@@ -116,4 +116,4 @@ scenarios/analysis/.venv/bin/python scenarios/setup/render_wiki_map_previews.py 
 
 ## Paper-ready statement
 
-The benchmark assigns **one fixed map per scenario family** (six OSM extracts in Helsinki and Midtown Manhattan, plus a synthetic grid for protocol stress controls). Street geometry is imported from OpenStreetMap, reprojected to metric coordinates, reduced to the largest connected component, and exported as WKT for The ONE. Auxiliary route files use **semantic names** per family (urban bus, vehicle route, ranger patrol, etc.). Waypoints sit on the road network; carriers follow shortest paths on the graph between stops. POI and route assets are checked against `worldSize` and road proximity before inclusion. The `stress_controls` family uses **ControlCompactGrid**, a synthetic topology isolated from geographic bias, only for extreme protocol stress experiments outside the 540-scenario environmental core.
+The benchmark assigns **one fixed map per scenario family** (six OSM extracts in Helsinki and Midtown Manhattan, plus a synthetic grid for protocol stress controls). Street geometry is imported from OpenStreetMap, reprojected to metric coordinates, reduced to the largest connected component, and exported as WKT for The ONE. Auxiliary route files use **semantic names** per family (urban bus, vehicle route, ranger patrol, etc.). Waypoints sit on the road network; carriers follow shortest paths on the graph between stops. POI and route assets are checked against `worldSize` and road proximity before inclusion. The `` family uses ****, a synthetic topology isolated from geographic bias, only for extreme protocol stress experiments outside the 540-scenario environmental core.

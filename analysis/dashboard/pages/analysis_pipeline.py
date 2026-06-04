@@ -29,13 +29,11 @@ OUTPUT_HELP = {
     "drop_ratio": "Mensajes descartados / creados",
 }
 
-
 def _filter_scenario(df: pd.DataFrame, text: str) -> pd.DataFrame:
     if not text or df is None or df.empty:
         return df
     col = "scenario" if "scenario" in df.columns else df.columns[0]
     return df[df[col].astype(str).str.lower().str.contains(text.lower(), na=False)]
-
 
 def render(filtered: pd.DataFrame, _master: pd.DataFrame) -> None:
     st.header("Pipeline clásico (avanzado)")
@@ -46,7 +44,6 @@ def render(filtered: pd.DataFrame, _master: pd.DataFrame) -> None:
 
     with tab_compare:
         _view_compare(filtered)
-
 
 def _view_by_phase() -> None:
     phase = st.selectbox(
@@ -164,7 +161,6 @@ def _view_by_phase() -> None:
                 st.image(str(hist), caption=hist.name, use_container_width=True)
             else:
                 st.caption("Ejecuta `--phase outputs` para histograma de correlaciones en salidas.")
-
 
 def _view_compare(filtered: pd.DataFrame) -> None:
     features = load_csv("features.csv")

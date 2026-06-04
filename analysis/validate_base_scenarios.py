@@ -19,7 +19,7 @@ sys.path.insert(0, str(SCENARIOS_DIR / "setup"))
 from migrate_corpus_maps import FAMILY_MAP  # noqa: E402
 from regenerate_manifests import parse_settings  # noqa: E402
 
-EXPECTED_FAMILIES = frozenset(FAMILY_MAP.keys()) - {"07_stress_controls"}
+EXPECTED_FAMILIES = frozenset(FAMILY_MAP.keys()) - {"07_"}
 TP_IN_NAME = re.compile(r"__TP\d{2}_")
 BENCH_CSV = DATA_DIR / "benchmark_definition.csv"
 OUT_CSV = DATA_DIR / "base_scenarios_validation.csv"
@@ -31,7 +31,6 @@ TP_WARN_PATTERNS = [
     (re.compile(r"^Events2\.", re.M), "warn_Events2"),
     (re.compile(r"^Events1\.tohosts\s*=", re.M), "warn_Events1.tohosts"),
 ]
-
 
 def load_benchmark_bases() -> dict[str, set[str]]:
     """scenario_base -> set of active TP ids in corpus_v1 benchmark."""
@@ -50,13 +49,11 @@ def load_benchmark_bases() -> dict[str, set[str]]:
             out.setdefault(base, set()).add(tp)
     return out
 
-
 def expected_world_size(family: str) -> tuple[int, int] | None:
     pol = FAMILY_MAP.get(family)
     if not pol:
         return None
     return pol["world_size"]
-
 
 def validate_file(path: Path, family: str) -> dict:
     issues: list[str] = []
@@ -99,7 +96,6 @@ def validate_file(path: Path, family: str) -> dict:
         "issues": "; ".join(issues),
         "warnings": "; ".join(warnings),
     }
-
 
 def main() -> int:
     ap = argparse.ArgumentParser(description="Validate base_scenarios/")
@@ -161,7 +157,6 @@ def main() -> int:
     print(f"Wrote {OUT_CSV} and {OUT_MD}")
     print(f"Summary: {n_ok} ok, {n_fail} fail (expected {args.expected_count})")
     return 0 if len(rows) == args.expected_count and n_fail == 0 else 1
-
 
 if __name__ == "__main__":
     raise SystemExit(main())

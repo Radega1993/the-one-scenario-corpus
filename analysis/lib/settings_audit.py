@@ -28,13 +28,11 @@ WDM_KEYS = (
     "officeMaxWaitTime",
 )
 
-
 def parse_scenario_name(name: str) -> tuple[str, str]:
     m = re.search(r"__(TP\d{2}_[A-Za-z0-9]+)$", name)
     if m:
         return name[: m.start()], m.group(1).split("_", 1)[0]
     return name, ""
-
 
 def _collect_group_fields(kv: dict[str, str]) -> dict[str, Any]:
     n_groups = 0
@@ -120,7 +118,6 @@ def _collect_group_fields(kv: dict[str, str]) -> dict[str, Any]:
         "wdm_params": "|".join(f"{k}={v}" for k, v in sorted(wdm.items())) if wdm else "",
     }
 
-
 def _collect_events(kv: dict[str, str]) -> dict[str, str]:
     try:
         n_ev = int(kv.get("Events.nrof", "0") or "0")
@@ -141,7 +138,6 @@ def _collect_events(kv: dict[str, str]) -> dict[str, str]:
         "events_nrof": n_ev,
         "events_summary": ";".join(blocks) if blocks else "",
     }
-
 
 def audit_settings_file(
     path: Path,
@@ -197,7 +193,6 @@ def audit_settings_file(
     row.update(ev)
     return row
 
-
 def audit_from_manifest(manifest_rows: list[dict[str, str]], repo_root: Path) -> list[dict[str, Any]]:
     rows: list[dict[str, Any]] = []
     for mr in manifest_rows:
@@ -215,7 +210,6 @@ def audit_from_manifest(manifest_rows: list[dict[str, str]], repo_root: Path) ->
             )
         )
     return rows
-
 
 def audit_corpus_dir(corpus_dir: Path) -> list[dict[str, Any]]:
     rows: list[dict[str, Any]] = []

@@ -26,7 +26,7 @@ Tiers are defined in `analysis/data/benchmark_definition.csv`:
 |------|--------|-----------|-------------|
 | `core` | `included_in_core == TRUE` | 540 | Environmental families (01-06) x 12 TP |
 | `stress` | `included_in_stress == TRUE` | 30 | Stress/control family (07) x TP01 + TP10 |
-| `all` | `core OR stress` | 570 | All active scenarios |
+| `all` | `core OR stress` | 540 | All active scenarios |
 
 Deprecated scenarios (150 archived TP combinations) are excluded when `--benchmark` is used or `--exclude-deprecated` is set.
 
@@ -80,7 +80,7 @@ This enables exact reproduction of any batch run.
 - `0` = no filter (entire corpus, legacy behavior)
 - `1` = core (540 environmental)
 - `2` = stress (30 stress/control)
-- `3` = all active (570)
+- `3` = all active (540)
 
 A runtime estimation prompt is also available before execution.
 

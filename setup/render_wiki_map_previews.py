@@ -49,9 +49,7 @@ MAP_META = {
     "NuuksioSparseTrails": ("04_rural", "OSM"),
     "HelsinkiDisrupted": ("05_disaster", "OSM"),
     "KallioCommunityCompact": ("06_social", "OSM"),
-    "ControlCompactGrid": ("07_stress_controls", "synthetic"),
 }
-
 
 def load_bus_validation() -> dict[tuple[str, str], dict]:
     p = ANALYSIS_DATA / "bus_route_validation.csv"
@@ -63,7 +61,6 @@ def load_bus_validation() -> dict[tuple[str, str], dict]:
             out[(row["map_name"], row["route_file"])] = row
     return out
 
-
 def load_poi_validation() -> dict[tuple[str, str], dict]:
     p = ANALYSIS_DATA / "map_poi_validation.csv"
     out: dict[tuple[str, str], dict] = {}
@@ -73,7 +70,6 @@ def load_poi_validation() -> dict[tuple[str, str], dict]:
         for row in csv.DictReader(f):
             out[(row["map_name"], row["poi_file"])] = row
     return out
-
 
 def render_map(
     map_name: str,
@@ -225,7 +221,6 @@ def render_map(
             print(f"Wrote {map_name} -> wiki + figures")
     plt.close(fig)
 
-
 def main() -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--validation", action="store_true", help="Write *_validation.png with warning overlays")
@@ -249,7 +244,6 @@ def main() -> int:
             poi_val=poi_val,
         )
     return 0
-
 
 if __name__ == "__main__":
     raise SystemExit(main())

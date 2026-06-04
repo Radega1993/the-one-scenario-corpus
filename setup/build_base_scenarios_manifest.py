@@ -17,7 +17,6 @@ from regenerate_manifests import infer_hosts, parse_settings  # noqa: E402
 
 from migrate_corpus_maps import FAMILY_MAP  # noqa: E402
 
-
 def movement_models(kv: dict[str, str]) -> str:
     models: list[str] = []
     for key, val in kv.items():
@@ -25,13 +24,11 @@ def movement_models(kv: dict[str, str]) -> str:
             models.append(val)
     return "|".join(sorted(set(models)))
 
-
 def map_profile(kv: dict[str, str], family: str) -> str:
     mf = kv.get("MapBasedMovement.mapFile1", "")
     if mf:
         return Path(mf).parts[1] if mf.startswith("data/") else mf
     return FAMILY_MAP.get(family, {}).get("map_name", "")
-
 
 def main() -> int:
     rows: list[dict] = []
@@ -64,7 +61,6 @@ def main() -> int:
         w.writerows(rows)
     print(f"Wrote {OUT} ({len(rows)} rows)")
     return 0
-
 
 if __name__ == "__main__":
     raise SystemExit(main())

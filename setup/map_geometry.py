@@ -30,7 +30,6 @@ ACTIVE_MAPS = [
     "NuuksioSparseTrails",
     "HelsinkiDisrupted",
     "KallioCommunityCompact",
-    "ControlCompactGrid",
 ]
 
 FAMILY_THRESHOLD_M = {
@@ -40,7 +39,6 @@ FAMILY_THRESHOLD_M = {
     "04_rural": 150.0,
     "05_disaster": 50.0,
     "06_social": 50.0,
-    "07_stress_controls": 100.0,
 }
 
 BUS_COLORS = {
@@ -49,7 +47,6 @@ BUS_COLORS = {
     "C_bus": "#ed8936",
     "D_bus": "#f6ad55",
 }
-
 
 def parse_linestrings(path: Path) -> list[list[tuple[float, float]]]:
     if not path.is_file():
@@ -69,7 +66,6 @@ def parse_linestrings(path: Path) -> list[list[tuple[float, float]]]:
             lines.append(pts)
     return lines
 
-
 def parse_points(path: Path) -> list[tuple[float, float]]:
     if not path.is_file():
         return []
@@ -84,7 +80,6 @@ def parse_points(path: Path) -> list[tuple[float, float]]:
                 continue
     return pts
 
-
 def wkt_to_sim_coords(raw_lines: list[list[tuple[float, float]]]) -> list[list[tuple[float, float]]]:
     if not raw_lines:
         return []
@@ -96,7 +91,6 @@ def wkt_to_sim_coords(raw_lines: list[list[tuple[float, float]]]) -> list[list[t
     min_x, min_y = min(xs), min(ys)
     return [[(x - min_x, y - min_y) for x, y in line] for line in mirrored]
 
-
 def transform_points(pts: list[tuple[float, float]]) -> list[tuple[float, float]]:
     if not pts:
         return []
@@ -104,7 +98,6 @@ def transform_points(pts: list[tuple[float, float]]) -> list[tuple[float, float]
     min_x = min(x for x, _ in mirrored)
     min_y = min(y for _, y in mirrored)
     return [(x - min_x, y - min_y) for x, y in mirrored]
-
 
 @dataclass
 class SimTransform:
@@ -124,7 +117,6 @@ class SimTransform:
     def raw_to_sim(self, x: float, y: float) -> tuple[float, float]:
         return (x - self.min_x, -y - self.min_y)
 
-
 def sim_waypoints_to_raw(
     sim_pts: list[tuple[float, float]],
     raw_lines: list[list[tuple[float, float]]],
@@ -139,7 +131,6 @@ def sim_waypoints_to_raw(
     tf = SimTransform.from_raw_lines(raw_lines)
     return dedupe_consecutive([tf.sim_to_raw(x, y) for x, y in sim_pts])
 
-
 def point_to_segment_distance(
     px: float, py: float,
     x1: float, y1: float, x2: float, y2: float,
@@ -152,16 +143,13 @@ def point_to_segment_distance(
     proj_y = y1 + t * dy
     return math.hypot(px - proj_x, py - proj_y)
 
-
 def nearest_segment_distance(px: float, py: float, segments: list[tuple[tuple, tuple]]) -> float:
     if not segments:
         return float("inf")
     return min(point_to_segment_distance(px, py, a[0], a[1], b[0], b[1]) for a, b in segments)
 
-
 def _round_key(x: float, y: float, prec: int = 3) -> tuple[float, float]:
     return (round(x, prec), round(y, prec))
-
 
 @dataclass
 class RoadGraph:
@@ -233,13 +221,11 @@ class RoadGraph:
         except (nx.NetworkXNoPath, nx.NodeNotFound):
             return [a, b]
 
-
 def load_map_metadata(map_dir: Path) -> dict:
     meta_path = map_dir / "metadata.json"
     if meta_path.is_file():
         return json.loads(meta_path.read_text(encoding="utf-8"))
     return {}
-
 
 def world_size_from_metadata(meta: dict) -> tuple[float, float]:
     ws = meta.get("world_size", [0, 0])
@@ -247,20 +233,16 @@ def world_size_from_metadata(meta: dict) -> tuple[float, float]:
         return float(ws[0]), float(ws[1])
     return 0.0, 0.0
 
-
 def points_inside_world_size(pts: list[tuple[float, float]], wx: float, wy: float) -> bool:
     if wx <= 0 or wy <= 0:
         return True
     return all(0 <= x <= wx and 0 <= y <= wy for x, y in pts)
 
-
 def threshold_for_family(family: str) -> float:
     return FAMILY_THRESHOLD_M.get(family, 50.0)
 
-
 def list_bus_wkt_files(map_dir: Path) -> list[Path]:
     return sorted(map_dir.glob("*_bus.wkt"))
-
 
 def list_route_wkt_files(map_dir: Path) -> list[Path]:
     """All auxiliary route WKT files (bus, shuttle, patrol, vehicle, etc.)."""
@@ -284,7 +266,6 @@ def list_route_wkt_files(map_dir: Path) -> list[Path]:
                 out.append(p)
     return sorted(out, key=lambda p: p.name)
 
-
 def resolve_route_path_polyline(
     rg: RoadGraph,
     stops: list[tuple[float, float]],
@@ -307,7 +288,6 @@ def resolve_route_path_polyline(
         poly.extend(seg)
     return dedupe_consecutive(poly), failed
 
-
 def list_poi_wkt_files(map_dir: Path) -> list[Path]:
     out = []
     for name in ("A_homes.wkt", "A_offices.wkt", "A_meetingspots.wkt"):
@@ -316,12 +296,10 @@ def list_poi_wkt_files(map_dir: Path) -> list[Path]:
             out.append(p)
     return out
 
-
 def euclidean_polyline_length(pts: list[tuple[float, float]]) -> float:
     if len(pts) < 2:
         return 0.0
     return sum(math.hypot(pts[i + 1][0] - pts[i][0], pts[i + 1][1] - pts[i][1]) for i in range(len(pts) - 1))
-
 
 def graph_path_length(rg: RoadGraph, pts: list[tuple[float, float]]) -> float | None:
     if len(pts) < 2:
@@ -334,10 +312,8 @@ def graph_path_length(rg: RoadGraph, pts: list[tuple[float, float]]) -> float | 
         total += d
     return total
 
-
 def vertex_distances(rg: RoadGraph, pts: list[tuple[float, float]]) -> list[float]:
     return [nearest_segment_distance(x, y, rg.segments) for x, y in pts]
-
 
 def percentile(values: list[float], p: float) -> float:
     if not values:
@@ -350,7 +326,6 @@ def percentile(values: list[float], p: float) -> float:
         return s[f]
     return s[f] + (s[c] - s[f]) * (k - f)
 
-
 def dedupe_consecutive(pts: list[tuple[float, float]], eps: float = 1.0) -> list[tuple[float, float]]:
     if not pts:
         return []
@@ -359,7 +334,6 @@ def dedupe_consecutive(pts: list[tuple[float, float]], eps: float = 1.0) -> list
         if math.hypot(p[0] - out[-1][0], p[1] - out[-1][1]) > eps:
             out.append(p)
     return out
-
 
 def generate_bus_route_on_graph(
     rg: RoadGraph,
@@ -409,7 +383,6 @@ def generate_bus_route_on_graph(
 
     return dedupe_consecutive(tour)
 
-
 def repair_route_waypoints(
     rg: RoadGraph,
     raw_route: list[tuple[float, float]],
@@ -428,7 +401,6 @@ def repair_route_waypoints(
         return snapped
     return generate_bus_route_on_graph(rg, rng, n_stops=max(8, min(15, len(snapped))), family=family)
 
-
 def write_linestring_wkt(points: list[tuple[float, float]], path: Path) -> None:
     def fmt(v: float) -> str:
         return f"{v:.6f}"
@@ -438,14 +410,12 @@ def write_linestring_wkt(points: list[tuple[float, float]], path: Path) -> None:
             pts = ", ".join(f"{fmt(x)} {fmt(y)}" for x, y in points)
             f.write(f"LINESTRING ({pts})\n\n")
 
-
 def map_wkt_dir(map_name: str, prefer_data: bool = False) -> Path:
     if prefer_data:
         p = DATA_DIR / map_name
         if p.is_dir():
             return p
     return WKT_DIR / map_name
-
 
 def load_road_graph(map_name: str) -> tuple[RoadGraph, Path, dict]:
     map_dir = WKT_DIR / map_name

@@ -37,10 +37,8 @@ SENSITIVITY_TPS = frozenset({"TP02", "TP06", "TP08", "TP11"})
 LATE_BIAS_THRESHOLD = 12.0
 SENSITIVITY_LOW = 10.0
 
-
 def _utc() -> str:
     return datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M UTC")
-
 
 def _window_type(tp_id: str, gen_note: str) -> str:
     if tp_id == "TP07" or gen_note == "burst_only":
@@ -48,7 +46,6 @@ def _window_type(tp_id: str, gen_note: str) -> str:
     if tp_id in DIRECTIONAL_TPS:
         return "directional"
     return "full_simulation"
-
 
 def _tp_decision(tp_id: str) -> str:
     if tp_id == "TP07":
@@ -58,7 +55,6 @@ def _tp_decision(tp_id: str) -> str:
     if tp_id in SENSITIVITY_TPS:
         return "sensitivity_required"
     return "complete_window"
-
 
 def _policy_status(row: pd.Series) -> str:
     tp = str(row["traffic_profile"])
@@ -78,7 +74,6 @@ def _policy_status(row: pd.Series) -> str:
         return "sensitivity_required"
     return "ok"
 
-
 def _build_notes(row: pd.Series) -> str:
     parts: list[str] = []
     wtype = row["window_type"]
@@ -92,7 +87,6 @@ def _build_notes(row: pd.Series) -> str:
     if row["policy_status"] == "stress_profile":
         parts.append("report_in_stress_tier")
     return "; ".join(parts)
-
 
 def load_merged(manifest_path: Path, data_dir: Path) -> pd.DataFrame:
     m = pd.read_csv(manifest_path)
@@ -169,7 +163,6 @@ def load_merged(manifest_path: Path, data_dir: Path) -> pd.DataFrame:
     df["notes"] = df.apply(_build_notes, axis=1)
     return df
 
-
 def build_scenario_csv(df: pd.DataFrame) -> pd.DataFrame:
     cols = [
         "scenario_name",
@@ -189,7 +182,6 @@ def build_scenario_csv(df: pd.DataFrame) -> pd.DataFrame:
         "notes",
     ]
     return df[cols].copy()
-
 
 def build_tp_summary(df: pd.DataFrame) -> pd.DataFrame:
     rows: list[dict[str, Any]] = []
@@ -226,7 +218,6 @@ def build_tp_summary(df: pd.DataFrame) -> pd.DataFrame:
         )
     return pd.DataFrame(rows)
 
-
 def _correlation_stats(df: pd.DataFrame) -> dict[str, float]:
     sub = df[df["policy_status"] != "disconnected"].copy()
     sub = sub[sub["delivery_ratio"].notna() & sub["pct_messages_last_10"].notna()]
@@ -234,7 +225,6 @@ def _correlation_stats(df: pd.DataFrame) -> dict[str, float]:
         return {"pearson_r": float("nan"), "n": len(sub)}
     r = float(sub["pct_messages_last_10"].corr(sub["delivery_ratio"]))
     return {"pearson_r": round(r, 4), "n": len(sub)}
-
 
 def write_report(
     path: Path,
@@ -400,7 +390,6 @@ def write_report(
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text("\n".join(lines) + "\n", encoding="utf-8")
 
-
 def main() -> int:
     ap = argparse.ArgumentParser(description="Build message analysis window policy for corpus_v1.")
     ap.add_argument("--manifest", type=Path, default=DEFAULT_MANIFEST)
@@ -432,7 +421,6 @@ def main() -> int:
     print(f"TP07 mean_pct_last_10: {tp_summary.loc[tp_summary.tp_id=='TP07', 'mean_pct_last_10'].iloc[0]}")
     print(f"Correlation r: {corr['pearson_r']}")
     return 0
-
 
 if __name__ == "__main__":
     raise SystemExit(main())

@@ -6,7 +6,7 @@ This directory contains the analysis pipeline for the scenario corpus: extractio
 
 **Script index (roles and paper pipeline):** [SCRIPTS_INDEX.md](SCRIPTS_INDEX.md).
 
-**Context:** active benchmark corpus is [../corpus_v1](../corpus_v1) (540 environmental) plus [../stress_controls](../stress_controls) (30 stress/control); structural base reference is [../base_scenarios](../base_scenarios) (45). The ONE configuration guide is in [../README.md](../README.md) (summary) and [../README.es.md](../README.es.md) (full .settings reference).
+**Context:** active benchmark corpus is [../corpus_v1](../corpus_v1) (540 environmental) plus [../](../) (30 stress/control); structural base reference is [../base_scenarios](../base_scenarios) (45). The ONE configuration guide is in [../README.md](../README.md) (summary) and [../README.es.md](../README.es.md) (full .settings reference).
 
 ---
 
@@ -14,7 +14,7 @@ This directory contains the analysis pipeline for the scenario corpus: extractio
 
 | Item | Value |
 |------|--------|
-| **Active corpus** | `corpus_v1` + `stress_controls` — 570 simulations (540 + 30) |
+| **Active corpus** | `corpus_v1` + `` — 540 simulations (540 + 30) |
 | **Status** | Main benchmark under methodological freeze / review |
 | **Frozen results (diversity)** | [reports/RESULTADOS_ACTUALES.md](reports/RESULTADOS_ACTUALES.md) (n=540) |
 | **Diversity readiness** | [reports/diversity_validation_readiness.md](reports/diversity_validation_readiness.md) |
@@ -22,7 +22,7 @@ This directory contains the analysis pipeline for the scenario corpus: extractio
 | **Paper tables** | [figures/paper/tables/](figures/paper/tables/) (ES/EN Markdown) |
 | **Figure catalogue** | [figures/README.md](figures/README.md) |
 
-**Diversity (540 scenarios, `corpus_v1` only — use `--no-stress`):** reduced-17 — 7 425 pairs (5.1%), silhouette 0.3355; core-23 — 5 029 pairs (3.5%), silhouette 0.3045; full-46 — 3 378 pairs (2.3%), silhouette 0.2354; feature–feature `mm_WDM ↔ mm_Bus = 0.9354`. Details in `RESULTADOS_ACTUALES.md`. Combined benchmark (570) includes `stress_controls` separately.
+**Diversity (540 scenarios, `corpus_v1` only — use ``):** reduced-17 — 7 425 pairs (5.1%), silhouette 0.3355; core-23 — 5 029 pairs (3.5%), silhouette 0.3045; full-46 — 3 378 pairs (2.3%), silhouette 0.2354; feature–feature `mm_WDM ↔ mm_Bus = 0.9354`. Details in `RESULTADOS_ACTUALES.md`. Combined benchmark (540) includes `` separately.
 
 ---
 
@@ -55,9 +55,9 @@ Regenerate with the [official pipeline](#official-pipeline) below.
 
 Full commands (12 steps): **[SCRIPTS_INDEX.md](SCRIPTS_INDEX.md)**.
 
-1. Simulation — `run_all_scenarios.py --corpus corpus_v1` (+ `--corpus stress_controls` when needed) + routing/contact + spatial overlays  
+1. Simulation — `run_all_scenarios.py --corpus corpus_v1` (+ `--corpus ` when needed) + routing/contact + spatial overlays  
 2. Output metrics — `run_analysis.py --phase output_metrics` (+ `indirects`)  
-3. Features — `--phase features` → `normalize` → `correlation` → `feature_correlation` → `ablation` (diversity: add `--no-stress` for n=540)  
+3. Features — `--phase features` → `normalize` → `correlation` → `feature_correlation` → `ablation` (diversity: add `` for n=540)  
 4. Spatial — `scripts/validation/analyze_spatial_occupancy.py`  
 5. Message creation — `scripts/validation/analyze_message_creation_times.py`  
 6. TP validation — `scripts/validation/validate_traffic_profiles.py`  
@@ -107,7 +107,7 @@ From the **repository root**, run:
 python3 scenarios/analysis/analysis_menu.py
 ```
 
-Full option map: **[MENU.md](MENU.md)**. The menu delegates to scripts via `subprocess` (Diego17/spatial overlays under `overlays/`). Canonical scopes: diversity freeze **540** (`--no-stress`) and combined benchmark **570** (core + stress). TP definitions live in `lib/traffic_profile_generator.py`.
+Full option map: **[MENU.md](MENU.md)**. The menu delegates to scripts via `subprocess` (Diego17/spatial overlays under `overlays/`). Canonical scopes: diversity freeze **540** (``) and combined benchmark **540** (core + stress). TP definitions live in `lib/traffic_profile_generator.py`.
 
 | Menu | Action |
 |------|--------|
@@ -124,7 +124,7 @@ Full option map: **[MENU.md](MENU.md)**. The menu delegates to scripts via `subp
 
 ## Features (summary)
 
-**Current results (`corpus_v1` combined, 570 scenarios):** **46 extended features**; **23 core** for methodology/paper. See [reports/RESULTADOS_ACTUALES.md](reports/RESULTADOS_ACTUALES.md).
+**Current results (`corpus_v1` combined, 540 scenarios):** **46 extended features**; **23 core** for methodology/paper. See [reports/RESULTADOS_ACTUALES.md](reports/RESULTADOS_ACTUALES.md).
 
 - **Core-23:** max \|r\| = 1.0; 11 325 pairs (4.4%) with \|r\| ≥ 0.7; ablation silhouette (Ward k=7) = 0.3451  
 - **Full-46:** 8 356 pairs (3.2%) with \|r\| ≥ 0.7; silhouette = 0.2680  
@@ -178,6 +178,8 @@ python3 scenarios/analysis/run_all_scenarios.py --corpus corpus_v1 \
 
 Methodology and setting keys (`SpatialOccupancyReport.*`, `NodePositionReport.*`): [reports/spatial/spatial_occupancy_report.md](reports/spatial/spatial_occupancy_report.md).
 
+**Mobility repair (2026-05):** S1, S6, D1, R2 use map-aware routes (no `ClusterMovement`); see [reports/project/corpus_v1_mobility_repair_changelog.md](reports/project/corpus_v1_mobility_repair_changelog.md) and [reports/problematic_scenarios_resim_commands.md](reports/problematic_scenarios_resim_commands.md).
+
 Post-processing (heatmaps, merged metrics, family-level coverage curves):
 
 ```bash
@@ -199,7 +201,7 @@ scenarios/analysis/.venv/bin/python scenarios/analysis/scripts/validation/analyz
 
 Writes `data/spatial_occupancy_metrics.csv` (multi-denominator columns + legacy `final_coverage_pct` alias), `data/spatial_coverage_timeseries.csv`, `figures/spatial_heatmaps/`, etc.
 
-You can also run the same flow from the Spanish interactive menu: [analysis_menu.py](analysis_menu.py) → option **6**.
+You can also run the same flow from the Spanish interactive menu: [analysis_menu.py](analysis_menu.py) → option **7** (`coverage_road_cells_pct`, `--zoom-mode roads`).
 
 Use `--skip-heatmaps` to refresh `spatial_occupancy_metrics.csv` from existing grid CSVs only (faster).
 

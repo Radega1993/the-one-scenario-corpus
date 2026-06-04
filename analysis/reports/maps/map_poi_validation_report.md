@@ -32,6 +32,6 @@ Generated: 2026-05-28 15:34 UTC
 | KallioCommunityCompact | A_homes.wkt | WARNING | 100.0 | 55.84 | 1 POIs >50.0m from road |
 | KallioCommunityCompact | A_offices.wkt | WARNING | 100.0 | 117.24 | 1 POIs >50.0m from road |
 | KallioCommunityCompact | A_meetingspots.wkt | WARNING | 100.0 | 97.62 | 2 POIs >50.0m from road |
-| ControlCompactGrid | A_homes.wkt | PASS | 100.0 | 0.0 |  |
-| ControlCompactGrid | A_offices.wkt | PASS | 100.0 | 0.0 |  |
-| ControlCompactGrid | A_meetingspots.wkt | PASS | 100.0 | 0.0 |  |
+|  | A_homes.wkt | PASS | 100.0 | 0.0 |  |
+|  | A_offices.wkt | PASS | 100.0 | 0.0 |  |
+|  | A_meetingspots.wkt | PASS | 100.0 | 0.0 |  |

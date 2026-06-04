@@ -21,7 +21,6 @@ OUT_CSV = ANALYSIS_DATA / "map_route_semantic_inventory.csv"
 USAGE_CSV = ANALYSIS_DATA / "route_usage_by_scenario.csv"
 REPORT_MD = SCENARIOS_DIR / "analysis" / "reports" / "maps" / "route_semantic_policy.md"
 
-
 def ensure_route_usage() -> None:
     if USAGE_CSV.is_file():
         return
@@ -30,7 +29,6 @@ def ensure_route_usage() -> None:
         cwd=SCENARIOS_DIR.parent,
         check=False,
     )
-
 
 def load_settings_refs() -> dict[tuple[str, str], int]:
     """Count routeFile references per (map, filename)."""
@@ -49,14 +47,12 @@ def load_settings_refs() -> dict[tuple[str, str], int]:
             counts[(map_name, fname)] += 1
     return counts
 
-
 def action_for(map_name: str, current: str, recommended: str, refs: int) -> str:
     if current == recommended:
         return "regenerate_only" if refs else "optional_asset"
     if refs > 0:
         return "rename_and_regenerate"
     return "optional_asset"
-
 
 def build_rows() -> list[dict]:
     ensure_route_usage()
@@ -106,7 +102,6 @@ def build_rows() -> list[dict]:
             )
     return rows
 
-
 def write_policy_stub() -> None:
     REPORT_MD.parent.mkdir(parents=True, exist_ok=True)
     if REPORT_MD.is_file():
@@ -117,7 +112,6 @@ def write_policy_stub() -> None:
         "or regenerate via `regenerate_family_routes.py`.\n",
         encoding="utf-8",
     )
-
 
 def main() -> int:
     ap = argparse.ArgumentParser()
@@ -144,7 +138,6 @@ def main() -> int:
     if args.write_policy_stub:
         write_policy_stub()
     return 0
-
 
 if __name__ == "__main__":
     raise SystemExit(main())

@@ -9,7 +9,6 @@ MAP_FAMILY: dict[str, str] = {
     "NuuksioSparseTrails": "04_rural",
     "HelsinkiDisrupted": "05_disaster",
     "KallioCommunityCompact": "06_social",
-    "ControlCompactGrid": "07_stress_controls",
 }
 
 # (current_filename, recommended_filename, semantic_label)
@@ -26,7 +25,6 @@ ROUTE_SEMANTIC_ROWS: list[tuple[str, str, str, str]] = [
     ("HelsinkiDisrupted", "B_bus.wkt", "B_mule_route.wkt", "mule_route"),
     ("KallioCommunityCompact", "A_bus.wkt", "A_community_route.wkt", "community_route"),
     ("KallioCommunityCompact", "B_bus.wkt", "B_community_route.wkt", "community_route"),
-    ("ControlCompactGrid", "A_bus.wkt", "A_control_route.wkt", "control_route"),
 ]
 
 ROUTE_COLORS: dict[str, str] = {

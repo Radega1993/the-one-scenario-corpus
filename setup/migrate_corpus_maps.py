@@ -67,11 +67,6 @@ FAMILY_MAP: dict[str, dict] = {
         "world_size": (1458, 1529),
         "data_dir": "data/KallioCommunityCompact",
     },
-    "07_stress_controls": {
-        "map_name": "ControlCompactGrid",
-        "world_size": (2000, 1700),
-        "data_dir": "data/ControlCompactGrid",
-    },
 }
 
 OLD_MAP_NAMES = {"HelsinkiMedium", "Manhattan"}
@@ -104,14 +99,12 @@ RE_CLUSTER_RANGE = re.compile(
 )
 RE_RNG_SEED_LINE = re.compile(r"^MovementModel\.rngSeed\s*=.*$", re.MULTILINE)
 
-
 def _parse_world_size(text: str) -> tuple[int, int] | None:
     m = RE_WORLD_SIZE.search(text)
     if not m:
         return None
     parts = m.group(2).strip().split(",")
     return int(parts[0].strip()), int(parts[1].strip())
-
 
 def _detect_old_map(text: str) -> str:
     if "data/Manhattan/" in text:
@@ -120,14 +113,11 @@ def _detect_old_map(text: str) -> str:
         return "HelsinkiMedium"
     return "none"
 
-
 def _detect_movement_models(text: str) -> list[str]:
     return [m.group(2) for m in RE_MOVEMENT_MODEL.finditer(text)]
 
-
 def _has_map_based(text: str) -> bool:
     return bool(RE_NROF_MAP.search(text))
-
 
 def migrate_file(
     path: Path, family: str, policy: dict, dry_run: bool
@@ -246,7 +236,6 @@ def migrate_file(
     }
     return record
 
-
 def rename_file(path: Path, policy: dict) -> Path | None:
     """Rename .settings file if it contains old map names. Returns new path or None."""
     name = path.name
@@ -256,7 +245,6 @@ def rename_file(path: Path, policy: dict) -> Path | None:
         path.rename(new_path)
         return new_path
     return None
-
 
 def post_validate(path: Path, policy: dict) -> list[str]:
     """Validate a migrated .settings file. Returns list of issues."""
@@ -282,7 +270,6 @@ def post_validate(path: Path, policy: dict) -> list[str]:
             issues.append(f"STALE_REF: data/{old}/ still in file")
 
     return issues
-
 
 def main() -> int:
     ap = argparse.ArgumentParser(description="Migrate corpus_v1 maps.")
@@ -397,7 +384,6 @@ def main() -> int:
         print("\n(dry-run: no files were modified)")
 
     return 1 if fail_count else 0
-
 
 if __name__ == "__main__":
     raise SystemExit(main())

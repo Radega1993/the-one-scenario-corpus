@@ -1,5 +1,5 @@
 page,status,map_image_present,family_consistency,legacy_terms_found,broken_links,notes
-02-Maps-and-Map-Generation.md,updated,yes,yes,"corpus_v2 (retired label only); HelsinkiMedium (legacy section)",none,Added Benchmark map policy and Map assignment by family table; gallery intro; fixed R1 smoke path
+02-Maps-and-Map-Generation.md,updated,yes,yes,corpus_v2 (retired label only); HelsinkiMedium (legacy section),none,Added Benchmark map policy and Map assignment by family table; gallery intro; fixed R1 smoke path
 05-Scenario-Families.md,rewritten,n/a,yes,none (fixed seven families),none,Six environmental + one stress index with base/TP counts
 06-Urban-Family.md,updated,yes,yes,none,none,Full template; A_bus valid for urban
 07-Campus-Family.md,updated,yes,yes,none,none,Full template; shuttle optional asset only

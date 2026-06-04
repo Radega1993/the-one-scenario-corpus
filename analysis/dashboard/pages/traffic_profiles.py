@@ -9,7 +9,6 @@ from lib.report_paths import TP_VALIDATION_REPORT
 
 from dashboard.data_loaders import load_csv, load_tp_kpi_summary
 
-
 def render(filtered: pd.DataFrame, master: pd.DataFrame) -> None:
     st.header("Perfiles de tráfico (TP01–TP12)")
     st.caption(

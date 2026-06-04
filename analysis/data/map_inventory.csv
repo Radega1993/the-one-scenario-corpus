@@ -1,5 +1,4 @@
 map_name,family,source,crs,n_road_segments,n_unique_points,n_components,span_x,span_y,world_size_x,world_size_y,total_road_length_m,coverage_pct,n_homes,n_offices,n_meetingspots,n_bus_stops,status,notes
-ControlCompactGrid,07_stress_controls,synthetic,local,24,143,1,1800.0,1500.0,2000,1700,39300.0,11.56,50,30,20,15,PASS,All checks passed
 HelsinkiDisrupted,05_disaster,osm,EPSG:3067,8398,7338,1,1690.0,1853.3,2067,2206,207674.5,45.54,40,25,15,15,PASS,All checks passed
 HelsinkiDowntown,01_urban,osm,EPSG:3067,575,2531,1,1692.7,1438.2,2093,1838,45632.7,11.86,80,40,25,15,PASS,All checks passed
 KallioCommunityCompact,06_social,osm,EPSG:3067,7204,5522,1,1103.2,1128.1,1458,1529,132200.0,59.3,70,20,30,15,PASS,All checks passed

@@ -46,13 +46,11 @@ if str(BASE_ANALYSIS) not in __import__("sys").path:
 from lib.paths import collect_settings_paths, primary_corpus_dir  # noqa: E402
 from lib.report_paths import RESULTADOS_ACTUALES  # noqa: E402
 
-
 def _pipeline_reports_dir(out_dir: Path) -> Path:
     """Pipeline text/md reports live under reports/pipeline/."""
     d = Path(out_dir) / "reports" / "pipeline"
     d.mkdir(parents=True, exist_ok=True)
     return d
-
 
 # ---------- Parser de settings (reutilizado del script de correlación) ----------
 
@@ -83,7 +81,6 @@ def _parse_size(value: str) -> float:
     except ValueError:
         return np.nan
 
-
 def _parse_range(value: str) -> float:
     """Parsea 'a, b' -> media; valor único -> float. Acepta sufijos k, M."""
     parts = [p.strip() for p in value.split(",")]
@@ -99,7 +96,6 @@ def _parse_range(value: str) -> float:
     except (ValueError, IndexError, TypeError):
         return np.nan
 
-
 def load_settings(path: Path) -> dict[str, Any]:
     """Carga un .settings en un dict plano key -> value (strings)."""
     out: dict[str, Any] = {}
@@ -111,13 +107,11 @@ def load_settings(path: Path) -> dict[str, Any]:
         out[k.strip()] = v.strip()
     return out
 
-
 def _get_float(d: dict[str, Any], key: str, default: float = np.nan) -> float:
     try:
         return float(d[key])
     except (KeyError, ValueError):
         return default
-
 
 def _get_range_mean(d: dict[str, Any], key: str, default: float = np.nan) -> float:
     if key not in d:
@@ -125,12 +119,10 @@ def _get_range_mean(d: dict[str, Any], key: str, default: float = np.nan) -> flo
     val = _parse_range(d[key])
     return val if isinstance(val, (int, float)) else val
 
-
 def _get_size(d: dict[str, Any], key: str, default: float = np.nan) -> float:
     if key not in d:
         return default
     return _parse_size(d[key])
-
 
 # ---------- Features estables y reportables (ver README.md) ----------
 
@@ -404,7 +396,6 @@ def settings_to_reportable_features(d: dict[str, Any]) -> dict[str, float | int]
         "has_active_times": has_active_times,
     }
 
-
 # Conjuntos core (23) y reducido (17) para ablación y correlación feature–feature (features_core_vs_extended.md)
 FEATURES_CORE_23 = [
     "world_area", "aspect_ratio", "N", "nrofHostGroups", "speed_mean", "wait_mean",
@@ -577,7 +568,6 @@ NOT_USED_REASONS: dict[str, str] = {
 # Razón por defecto para claves no listadas (p. ej. Group2.*, Group3.*, ...)
 NOT_USED_REASON_DEFAULT = "DESCARTADO: Ver ../docs/features_decision.md (variante de grupo o misma categoría que Group/Group1)."
 
-
 def collect_all_settings_keys(corpus_dir: Path, scenario_paths: list[Path]) -> set[str]:
     """Recorre todos los .settings del corpus y devuelve el conjunto de claves (key=value)."""
     keys = set()
@@ -585,7 +575,6 @@ def collect_all_settings_keys(corpus_dir: Path, scenario_paths: list[Path]) -> s
         d = load_settings(p)
         keys.update(d.keys())
     return keys
-
 
 def run_phase_features_report(corpus_dir: Path, out_dir: Path, scenario_paths: list[Path]) -> bool:
     """
@@ -658,13 +647,11 @@ def run_phase_features_report(corpus_dir: Path, out_dir: Path, scenario_paths: l
     print(f"Written {reports_dir / 'features_report.txt'} and features_report.md")
     return True
 
-
 def collect_scenario_files(corpus_dir: Path, pattern: str = "**/*.settings") -> list[Path]:
     """Lista de .settings bajo corpus_dir (recursivo)."""
     if not corpus_dir.is_absolute():
         corpus_dir = Path.cwd() / corpus_dir
     return sorted(corpus_dir.glob(pattern))
-
 
 def run_phase_features(scenario_paths: list[Path], out_dir: Path) -> None:
     """Fase 1: extraer features y guardar data/features.csv y data/scenario_list.txt."""
@@ -701,7 +688,6 @@ def run_phase_features(scenario_paths: list[Path], out_dir: Path) -> None:
             f.write(f"{p}\n")
     print(f"Written {data_dir / 'scenario_list.txt'}")
 
-
 def zscore_normalize_per_feature(df: "pd.DataFrame", impute_nan_zero: bool = True) -> tuple["pd.DataFrame", "pd.DataFrame"]:
     """
     Normalización z-score por característica (por columna), política NaN según features_core_vs_extended.md §4:
@@ -727,7 +713,6 @@ def zscore_normalize_per_feature(df: "pd.DataFrame", impute_nan_zero: bool = Tru
         Z = Z.fillna(0.0)
     params_df = pd.DataFrame(params)
     return Z, params_df
-
 
 def run_phase_normalize(out_dir: Path) -> bool:
     """
@@ -766,7 +751,6 @@ def run_phase_normalize(out_dir: Path) -> bool:
     print(f"Written {data_dir / 'normalization_params.csv'} ({len(params_df)} features)")
     return True
 
-
 def pearson_pvalue_from_r(r: float, n: int) -> float:
     """P-value (two-tailed) para H0: rho=0, dado r de Pearson con n observaciones. n = número de puntos (p. ej. d features)."""
     if np.isnan(r) or n < 3:
@@ -778,7 +762,6 @@ def pearson_pvalue_from_r(r: float, n: int) -> float:
     if scipy_stats is not None:
         return float(2 * (1 - scipy_stats.t.cdf(np.abs(t_stat), n - 2)))
     return np.nan
-
 
 def spearman_matrix_rows(Z: np.ndarray) -> np.ndarray:
     """Correlación de Spearman entre filas de Z (n×d). Devuelve (n×n)."""
@@ -796,7 +779,6 @@ def spearman_matrix_rows(Z: np.ndarray) -> np.ndarray:
             R[k, i] = R[i, k]
     return R
 
-
 def cosine_distance_matrix(Z: np.ndarray) -> np.ndarray:
     """Distancia coseno entre filas: 1 - cos_sim. (n×n). cos_sim = (Zi·Zk)/(|Zi||Zk|)."""
     norms = np.linalg.norm(Z, axis=1, keepdims=True)
@@ -805,13 +787,11 @@ def cosine_distance_matrix(Z: np.ndarray) -> np.ndarray:
     sim = U @ U.T
     return 1.0 - sim
 
-
 def euclidean_distance_matrix(Z: np.ndarray) -> np.ndarray:
     """Distancia euclídea entre filas. (n×n)."""
     a = Z[:, np.newaxis, :]
     b = Z[np.newaxis, :, :]
     return np.sqrt(np.nansum((a - b) ** 2, axis=2))
-
 
 def silhouette_from_distance(D: np.ndarray, labels: np.ndarray) -> float:
     """
@@ -845,7 +825,6 @@ def silhouette_from_distance(D: np.ndarray, labels: np.ndarray) -> float:
         s[i] = (b_i - a_i) / denom if denom > 0 else 0.0
     return float(np.nanmean(s))
 
-
 def benjamini_hochberg(pvalues_flat: np.ndarray, alpha: float = 0.05) -> np.ndarray:
     """FDR Benjamini-Hochberg. pvalues_flat: 1d. Devuelve máscara booleana: True = rechazar H0."""
     p = np.asarray(pvalues_flat, dtype=float).ravel()
@@ -861,7 +840,6 @@ def benjamini_hochberg(pvalues_flat: np.ndarray, alpha: float = 0.05) -> np.ndar
     if k_max >= 0:
         rej[order[: k_max + 1]] = True
     return rej
-
 
 def run_phase_correlation(out_dir: Path, threshold: float = 0.7, criterion_95: bool = True, fdr_alpha: float = 0.05) -> bool:
     """
@@ -1170,7 +1148,6 @@ def run_phase_correlation(out_dir: Path, threshold: float = 0.7, criterion_95: b
         print(f"Written {reports_dir / 'multiple_comparisons_report.txt'}")
     return True
 
-
 def run_phase_feature_feature_correlation(out_dir: Path) -> bool:
     """
     Correlación entre las 23 features del core (feature–feature), §5 features_core_vs_extended.md.
@@ -1236,7 +1213,6 @@ def run_phase_feature_feature_correlation(out_dir: Path) -> bool:
     print(report_text)
     print(f"Written {data_dir / 'feature_feature_correlation_core.csv'}, {reports_dir / 'feature_feature_correlation_report.txt'}")
     return True
-
 
 def run_phase_ablation(out_dir: Path, threshold: float = 0.7, n_clusters: int = 7) -> bool:
     """
@@ -1328,13 +1304,11 @@ def run_phase_ablation(out_dir: Path, threshold: float = 0.7, n_clusters: int = 
     print(f"Written {data_dir / 'ablation_metrics.csv'}, {reports_dir / 'ablation_report.txt'}")
     return True
 
-
 def _resolve_include_full_heatmaps(n_scenarios: int, include_full_heatmaps: bool | None) -> bool:
     """Por defecto no generar heatmaps N×N si n > 100 (corpus_v1)."""
     if include_full_heatmaps is not None:
         return include_full_heatmaps
     return n_scenarios <= 100
-
 
 def _plot_correlation_histogram(
     r_flat: np.ndarray,
@@ -1380,7 +1354,6 @@ def _plot_correlation_histogram(
     fig.savefig(path_base.with_suffix(".png"), dpi=150, bbox_inches="tight")
     fig.savefig(path_base.with_suffix(".pdf"), dpi=150, bbox_inches="tight")
     plt.close(fig)
-
 
 def run_phase_figures(
     out_dir: Path,
@@ -1636,7 +1609,6 @@ def run_phase_figures(
 
     print(f"Written {len(list(figures_dir.glob('*.png')))} figures to {figures_dir}")
     return True
-
 
 def run_phase_figures_paper(
     out_dir: Path,
@@ -1927,7 +1899,6 @@ def run_phase_figures_paper(
     print(f"Written paper figures to {figures_paper_dir}")
     return True
 
-
 def _parse_contact_times_histogram(path: Path) -> tuple[float, float, int]:
     """
     Parsea ContactTimesReport de The ONE en formato:
@@ -1961,7 +1932,6 @@ def _parse_contact_times_histogram(path: Path) -> tuple[float, float, int]:
         return (np.nan, 0.0, valid_rows)
     return (weighted_sum / total_count, total_count, valid_rows)
 
-
 def _parse_distribution_report(path: Path) -> tuple[list[tuple[float, int]], int]:
     """
     Parsea reportes de distribución de The ONE (formato 'value count').
@@ -1989,13 +1959,11 @@ def _parse_distribution_report(path: Path) -> tuple[list[tuple[float, int]], int
         valid_rows += 1
     return rows, valid_rows
 
-
 def _weighted_mean_from_distribution(rows: list[tuple[float, int]]) -> float:
     total = sum(c for _, c in rows)
     if total <= 0:
         return np.nan
     return float(sum(v * c for v, c in rows) / total)
-
 
 def _expand_distribution_values(rows: list[tuple[float, int]], max_expand: int = 200000) -> list[float]:
     """
@@ -2015,7 +1983,6 @@ def _expand_distribution_values(rows: list[tuple[float, int]], max_expand: int =
         if n >= max_expand:
             break
     return out
-
 
 def _brandes_betweenness_undirected(adj: dict[int, set[int]]) -> dict[int, float]:
     """
@@ -2053,7 +2020,6 @@ def _brandes_betweenness_undirected(adj: dict[int, set[int]]) -> dict[int, float
     for v in bc:
         bc[v] /= 2.0
     return bc
-
 
 def _parse_connectivity_one_report(path: Path, window_s: float = 3600.0) -> dict[str, Any]:
     """
@@ -2182,7 +2148,6 @@ def _parse_connectivity_one_report(path: Path, window_s: float = 3600.0) -> dict
         "encounters_top10_mean": encounters_top10_mean,
         "sociability_top10_mean": sociability_top10_mean,
     }
-
 
 def run_phase_indirects(out_dir: Path, reports_dir: Path, scenario_paths: list[Path] | None = None) -> bool:
     """
@@ -2424,7 +2389,6 @@ def run_phase_indirects(out_dir: Path, reports_dir: Path, scenario_paths: list[P
     print(f"Written {reports_out_dir / 'indirect_features_report.txt'} and indirect_features_report.md")
     return True
 
-
 def _parse_feature_fichas_tecnicas(path: Path) -> dict[str, dict[str, str]]:
     """
     Parse de `scenarios/internal/*-feature_fichas_tecnicas*.md`.
@@ -2473,7 +2437,6 @@ def _parse_feature_fichas_tecnicas(path: Path) -> dict[str, dict[str, str]]:
     if current_name and current is not None and current_name not in features:
         features[current_name] = current
     return features
-
 
 def _parse_diversity_report(path: Path) -> dict[str, Any]:
     """
@@ -2532,7 +2495,6 @@ def _parse_diversity_report(path: Path) -> dict[str, Any]:
         "threshold": thr,
     }
     return out
-
 
 def run_phase_tables_paper(out_dir: Path, threshold: float = 0.7) -> bool:
     """
@@ -2937,7 +2899,6 @@ def run_phase_tables_paper(out_dir: Path, threshold: float = 0.7) -> bool:
     print(f"Written paper tables to {tables_dir}")
     return True
 
-
 # Columnas esperadas en output_metrics.csv (nombres alternativos aceptados)
 OUTPUT_METRIC_COLUMNS = [
     ("delivery_ratio", ["delivery_ratio", "delivery_prob", "delivery prob"]),
@@ -2945,7 +2906,6 @@ OUTPUT_METRIC_COLUMNS = [
     ("overhead_ratio", ["overhead_ratio", "overhead_ratio", "overhead ratio"]),
     ("drop_ratio", ["drop_ratio", "drop_ratio", "dropped", "drop ratio"]),
 ]
-
 
 def _parse_message_stats_report(path: Path) -> dict[str, Any]:
     """
@@ -2989,7 +2949,6 @@ def _parse_message_stats_report(path: Path) -> dict[str, Any]:
         "drop_ratio": drop_ratio,
     }
 
-
 def run_phase_output_metrics(out_dir: Path, reports_dir: Path, allowed_scenarios: set[str] | None = None) -> bool:
     """
     Rellena data/output_metrics.csv a partir de los MessageStatsReport en reports_dir.
@@ -3026,10 +2985,14 @@ def run_phase_output_metrics(out_dir: Path, reports_dir: Path, allowed_scenarios
         return True
     df = pd.DataFrame(rows)
     out_csv = data_dir / "output_metrics.csv"
+    if allowed_scenarios is not None and out_csv.is_file():
+        prev = pd.read_csv(out_csv)
+        if "scenario" in prev.columns:
+            prev = prev[~prev["scenario"].isin(df["scenario"])]
+            df = pd.concat([prev, df], ignore_index=True)
     df.to_csv(out_csv, index=False)
-    print(f"Written {out_csv} ({len(rows)} scenarios from {reports_dir})")
+    print(f"Written {out_csv} ({len(df)} scenarios; {len(rows)} from {reports_dir})")
     return True
-
 
 def run_phase_results_actuales(
     out_dir: Path,
@@ -3186,7 +3149,7 @@ def run_phase_results_actuales(
 
     scope_note = ""
     if scenario_count == 540 and corpus_name in ("corpus_v1", "corpus_v2"):
-        scope_note = " (sin stress_controls; laboratorio stress documentado aparte)"
+        scope_note = ""
 
     lines = [
         "# Resultados actuales del corpus (referencia única)",
@@ -3311,7 +3274,6 @@ def run_phase_results_actuales(
     report_path.write_text("\n".join(lines), encoding="utf-8")
     print(f"Written {report_path}")
     return True
-
 
 def run_phase_outputs(
     out_dir: Path,
@@ -3454,7 +3416,6 @@ def run_phase_outputs(
 
     return True
 
-
 def run_phase_figures_aggregated(
     out_dir: Path,
     corpus: str,
@@ -3474,7 +3435,6 @@ def run_phase_figures_aggregated(
     print("→", " ".join(cmd))
     r = subprocess.run(cmd, cwd=Path(__file__).resolve().parent)
     return r.returncode == 0
-
 
 def main():
     ap = argparse.ArgumentParser(description="Análisis del corpus de escenarios (por partes).")
@@ -3502,23 +3462,11 @@ def main():
                     help="Directorio base de salida (default: directorio analysis/ donde está este script)")
     ap.add_argument("--reports-dir", type=str, default=None,
                     help="Directorio con *_MessageStatsReport.txt para --phase output_metrics (default: repo/reports)")
-    stress_group = ap.add_mutually_exclusive_group()
-    stress_group.add_argument(
-        "--include-stress",
-        action="store_true",
-        help="Incluir stress_controls (570 escenarios combinados). Default: solo corpus_v1 (540).",
-    )
-    stress_group.add_argument(
-        "--no-stress",
-        action="store_true",
-        help="Solo corpus_v1 ambiental (540). Usado por defecto para validación de diversidad.",
-    )
     args = ap.parse_args()
 
     base = Path(__file__).resolve().parent
-    include_stress = bool(args.include_stress)
     if args.corpus in ("corpus_v1", "corpus_v2"):
-        scenario_paths = collect_settings_paths(args.corpus, include_stress=include_stress)
+        scenario_paths = collect_settings_paths(args.corpus)
         corpus_dir = primary_corpus_dir(args.corpus)
     else:
         corpus_dir = base.parent / args.corpus  # corpus bajo scenarios/
@@ -3631,7 +3579,6 @@ def main():
             scenario_count=len(scenario_paths) if scenario_paths else None,
         )
     return 0
-
 
 if __name__ == "__main__":
     raise SystemExit(main())

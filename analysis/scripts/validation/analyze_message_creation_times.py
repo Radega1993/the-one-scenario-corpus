@@ -44,7 +44,6 @@ PROFILE_ORDER = [
     "TP09", "TP10", "TP11", "TP12",
 ]
 
-
 def java_string_hashcode(s: str) -> int:
     """Java String.hashCode() for RNG seeding."""
     h = 0
@@ -53,7 +52,6 @@ def java_string_hashcode(s: str) -> int:
     if h >= 0x80000000:
         h -= 0x100000000
     return h
-
 
 class JavaRandom:
     """java.util.Random (LCG) — matches OpenJDK 17 used by The ONE."""
@@ -81,7 +79,6 @@ class JavaRandom:
             if bits - val + (bound - 1) >= 0:
                 return val
 
-
 def parse_size(s: str) -> int:
     s = s.strip().upper()
     if s.endswith("K"):
@@ -89,7 +86,6 @@ def parse_size(s: str) -> int:
     if s.endswith("M"):
         return int(float(s[:-1]) * 1024 * 1024)
     return int(float(s))
-
 
 def parse_settings(text: str) -> dict[str, str]:
     d: dict[str, str] = {}
@@ -101,13 +97,11 @@ def parse_settings(text: str) -> dict[str, str]:
         d[k.strip()] = v.strip()
     return d
 
-
 def parse_scenario_name(name: str) -> tuple[str, str]:
     m = re.search(r"__(TP\d{2}_[A-Za-z0-9]+)$", name)
     if not m:
         return name, ""
     return name[: m.start()], m.group(1).split("_", 1)[0]
-
 
 class MessageEventGeneratorSim:
     """Replicates input.MessageEventGenerator scheduling."""
@@ -180,7 +174,6 @@ class MessageEventGeneratorSim:
                 self.active = False
         return times
 
-
 def generators_from_settings(d: dict[str, str]) -> list[MessageEventGeneratorSim]:
     try:
         n_gen = int(d.get("Events.nrof", "1"))
@@ -208,7 +201,6 @@ def generators_from_settings(d: dict[str, str]) -> list[MessageEventGeneratorSim
         )
     return gens
 
-
 def simulate_creation_times(settings_path: Path) -> tuple[list[float], float, str]:
     text = settings_path.read_text(encoding="utf-8", errors="replace")
     d = parse_settings(text)
@@ -219,7 +211,6 @@ def simulate_creation_times(settings_path: Path) -> tuple[list[float], float, st
         times.extend(gen.collect_times(end_time))
     times.sort()
     return times, end_time, scenario
-
 
 def parse_created_messages_report(path: Path) -> list[float]:
     times: list[float] = []
@@ -236,7 +227,6 @@ def parse_created_messages_report(path: Path) -> list[float]:
             continue
     return times
 
-
 def percentile(sorted_vals: list[float], p: float) -> float:
     if not sorted_vals:
         return float("nan")
@@ -248,7 +238,6 @@ def percentile(sorted_vals: list[float], p: float) -> float:
     if f == c:
         return sorted_vals[int(k)]
     return sorted_vals[f] * (c - k) + sorted_vals[c] * (k - f)
-
 
 def summarize_times(times: list[float], end_time: float) -> dict[str, float | int]:
     if not times:
@@ -287,7 +276,6 @@ def summarize_times(times: list[float], end_time: float) -> dict[str, float | in
         "pct_last_10pct_sim": 100.0 * in_last10 / n,
     }
 
-
 def validate_against_reports(scenarios: list[str]) -> list[str]:
     notes: list[str] = []
     for scen in scenarios:
@@ -312,7 +300,6 @@ def validate_against_reports(scenarios: list[str]) -> list[str]:
             notes.append(f"{scen}: OK (n={len(emp)})")
     return notes
 
-
 def write_summary_csv(rows: list[dict], path: Path) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
     fields = [
@@ -326,7 +313,6 @@ def write_summary_csv(rows: list[dict], path: Path) -> None:
         w = csv.DictWriter(f, fieldnames=fields, extrasaction="ignore")
         w.writeheader()
         w.writerows(rows)
-
 
 def make_figures(all_times_by_tp: dict[str, list[float]], end_time_default: float, rows: list[dict]) -> None:
     FIGURES_DIR.mkdir(parents=True, exist_ok=True)
@@ -381,7 +367,6 @@ def make_figures(all_times_by_tp: dict[str, list[float]], end_time_default: floa
     fig2.tight_layout()
     fig2.savefig(FIGURES_DIR / "message_creation_time_boxplot_by_tp.png", dpi=150)
     plt.close(fig2)
-
 
 def write_audit_md(rows: list[dict], validation_notes: list[str], path: Path) -> None:
     by_tp: dict[str, list[dict]] = defaultdict(list)
@@ -506,7 +491,6 @@ def write_audit_md(rows: list[dict], validation_notes: list[str], path: Path) ->
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text("\n".join(lines), encoding="utf-8")
 
-
 def main() -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--corpus-dir", type=Path, default=CORPUS_V1_DIR)
@@ -555,7 +539,6 @@ def main() -> int:
     for v in validation:
         print(f"  validate: {v}")
     return 0
-
 
 if __name__ == "__main__":
     sys.exit(main())

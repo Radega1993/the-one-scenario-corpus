@@ -55,11 +55,9 @@ EXPECTED_FILES = (
     "A_campus_shuttle.wkt",
 )
 
-
 def ensure_dirs() -> None:
     MAP_DATA.mkdir(parents=True, exist_ok=True)
     (SCENARIOS_DIR / "analysis" / "figures" / "paper" / "maps").mkdir(parents=True, exist_ok=True)
-
 
 def build_asset_inventory() -> list[dict]:
     wkt_dir = WKT_DIR / MAP_NAME
@@ -90,7 +88,6 @@ def build_asset_inventory() -> list[dict]:
             }
         )
     return rows
-
 
 def build_geometry_validation(meta: dict) -> list[dict]:
     wx, wy = world_size_from_metadata(meta)
@@ -141,7 +138,6 @@ def build_geometry_validation(meta: dict) -> list[dict]:
     )
     return rows
 
-
 def write_family_fit_report() -> None:
     path = REPORTS / "KumpulaCampus_family_fit_report.md"
     path.write_text(
@@ -186,7 +182,6 @@ Generated as part of campus map finalization.
         encoding="utf-8",
     )
 
-
 def write_validation_report(
     geom_rows: list[dict],
     poi_val: list[dict],
@@ -227,7 +222,6 @@ def write_validation_report(
     )
     path.write_text("\n".join(lines) + "\n", encoding="utf-8")
 
-
 def build_affected_scenarios() -> list[dict]:
     rows: list[dict] = []
     for root, tree in ((BASE_CAMPUS, "base_scenarios"), (CORPUS_CAMPUS, "corpus_v1")):
@@ -248,7 +242,6 @@ def build_affected_scenarios() -> list[dict]:
                 }
             )
     return rows
-
 
 def write_resimulation_plan(n: int) -> None:
     path = REPORTS / "KumpulaCampus_resimulation_plan.md"
@@ -276,7 +269,6 @@ Generated: {datetime.now().isoformat(timespec='seconds')}
         encoding="utf-8",
     )
 
-
 def print_summary(**kwargs) -> None:
     print("\n" + "=" * 60)
     print(f"GLOBAL: {'PASS' if kwargs['global_pass'] else 'FAIL'}")
@@ -289,7 +281,6 @@ def print_summary(**kwargs) -> None:
     print(f"Files generated: {len(kwargs['generated'])}")
     print("Re-simulation: RECOMMENDED if POI/shuttle WKT changed")
     print("=" * 60)
-
 
 def main() -> int:
     ap = argparse.ArgumentParser(description="Finalize KumpulaCampus for paper")
@@ -443,7 +434,6 @@ def main() -> int:
         generated=generated,
     )
     return 0 if global_pass else 1
-
 
 if __name__ == "__main__":
     raise SystemExit(main())

@@ -61,7 +61,6 @@ MAP_DEFS = {
         "bbox": (60.179, 60.189, 24.938, 24.957),
         "crs": "EPSG:3067", "network_type": "all",
     },
-    "ControlCompactGrid": {"synthetic": True},
 }
 
 try:

@@ -10,7 +10,6 @@ from lib.report_paths import TRAFFIC_PROFILE_KPI_ANALYSIS
 
 from dashboard.data_loaders import load_tp_kpi_summary
 
-
 def render(filtered: pd.DataFrame, master: pd.DataFrame) -> None:
     st.header("KPIs benchmark por Traffic Profile")
     st.caption(

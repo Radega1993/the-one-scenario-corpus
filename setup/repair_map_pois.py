@@ -40,7 +40,6 @@ DEFAULT_OK_M = 30.0
 DEFAULT_WARN_M = 75.0
 BORDER_EPS = 2.0
 
-
 def write_points_wkt(raw_points: list[tuple[float, float]], path: Path) -> None:
     def fmt(v: float) -> str:
         return f"{v:.6f}"
@@ -48,7 +47,6 @@ def write_points_wkt(raw_points: list[tuple[float, float]], path: Path) -> None:
     with path.open("w", encoding="utf-8") as f:
         for x, y in raw_points:
             f.write(f"POINT ({fmt(x)} {fmt(y)})\n\n")
-
 
 def classify_dist(
     d: float,
@@ -66,10 +64,8 @@ def classify_dist(
         return "WARNING"
     return "FIX_REQUIRED"
 
-
 def needs_fix(status: str) -> bool:
     return status == "FIX_REQUIRED"
-
 
 def fix_sim_point(
     x: float,
@@ -93,7 +89,6 @@ def fix_sim_point(
     if snapped != (nx, ny):
         reason_parts.append("snap_to_road_node")
     return snapped, "; ".join(reason_parts) if reason_parts else "snap_to_road_node"
-
 
 def audit_and_repair_map(
     map_name: str,
@@ -187,7 +182,6 @@ def audit_and_repair_map(
 
     return validation_rows, correction_rows, modified_files
 
-
 def write_poi_report(
     map_name: str,
     validation_rows: list[dict],
@@ -234,7 +228,6 @@ def write_poi_report(
             lines.append(f"- … and {len(correction_rows) - 30} more")
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text("\n".join(lines) + "\n", encoding="utf-8")
-
 
 def main() -> int:
     ap = argparse.ArgumentParser()
@@ -294,7 +287,6 @@ def main() -> int:
     print(f"Wrote {val_csv} ({len(val)} points)")
     print(f"Corrections: {len(corr)}")
     return 0
-
 
 if __name__ == "__main__":
     raise SystemExit(main())

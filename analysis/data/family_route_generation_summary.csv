@@ -10,4 +10,3 @@ HelsinkiDisrupted,05_disaster,A_emergency_route.wkt,8,yes,ok,yes
 HelsinkiDisrupted,05_disaster,B_mule_route.wkt,8,yes,ok,yes
 KallioCommunityCompact,06_social,A_community_route.wkt,8,yes,ok,yes
 KallioCommunityCompact,06_social,B_community_route.wkt,8,yes,ok,yes
-ControlCompactGrid,07_stress_controls,A_control_route.wkt,10,yes,ok,yes

@@ -22,7 +22,7 @@ S004_distance,consistency,distance_cosine.csv_finite,analysis/data/distance_cosi
 S004_distance,consistency,distance_euclidean.csv_finite,analysis/data/distance_euclidean.csv,yes,PASS,INFO,nan_frac=0.0000 inf=0,none
 S005,consistency,ablation_feature_dims,analysis/data/ablation_metrics.csv,yes,PASS,INFO,17/23/46 verified,none
 S006,consistency,RESULTADOS_vs_ablation,analysis/reports/RESULTADOS_ACTUALES.md,yes,PASS,INFO,numeric fields match ablation_metrics.csv,none
-S002,consistency,features_scope_no_stress,analysis/data/features.csv,yes,PASS,INFO,rows=540 stress_like=0,rerun features with --no-stress
+S002,consistency,features_scope_no_stress,analysis/data/features.csv,yes,PASS,INFO,rows=540 stress_like=0,rerun features with 
 R001,report,RESULTADOS_ACTUALES.md,analysis/reports/RESULTADOS_ACTUALES.md,yes,PASS,INFO,pipeline path OK,none
 R002,report,correlation_report.txt,reports/pipeline/correlation_report.txt,yes,PASS,INFO,pipeline path OK,none
 R003,report,correlation_core23_report.txt,reports/pipeline/correlation_core23_report.txt,yes,PASS,INFO,pipeline path OK,none
@@ -32,12 +32,12 @@ R006,report,multiple_comparisons_report.txt,reports/pipeline/multiple_comparison
 R007,report,clustering_report.txt,reports/pipeline/clustering_report.txt,yes,PASS,INFO,pipeline path OK,none
 R008,report,scenarios_to_diversify.txt,reports/pipeline/scenarios_to_diversify.txt,yes,PASS,INFO,pipeline path OK,none
 R009,report,scenarios_to_diversify_core23.txt,reports/pipeline/scenarios_to_diversify_core23.txt,yes,PASS,INFO,pipeline path OK,none
-F001,figure,histogram_correlations_pearson_paper.png,analysis/figures/paper/main/histogram_correlations_pearson_paper.png,yes,PASS,INFO,MAIN_PAPER,run --phase figures_paper --no-stress
-F002,figure,pca_by_family.png,analysis/figures/paper/main/pca_by_family.png,yes,PASS,INFO,MAIN_PAPER,run --phase figures_paper --no-stress
-F003,figure,pca_by_cluster.png,analysis/figures/paper/main/pca_by_cluster.png,yes,PASS,INFO,MAIN_PAPER,run --phase figures_paper --no-stress
-F004,figure,ablation_pairs_high_bar.png,analysis/figures/paper/main/ablation_pairs_high_bar.png,yes,PASS,INFO,MAIN_PAPER,run --phase figures_paper --no-stress
-F005,figure,ablation_silhouette_bar.png,analysis/figures/paper/main/ablation_silhouette_bar.png,yes,PASS,INFO,MAIN_PAPER,run --phase figures_paper --no-stress
-F006,figure,heatmap_feature_feature_core.png,analysis/figures/paper/main/heatmap_feature_feature_core.png,yes,PASS,INFO,MAIN_PAPER,run --phase figures_paper --no-stress
+F001,figure,histogram_correlations_pearson_paper.png,analysis/figures/paper/main/histogram_correlations_pearson_paper.png,yes,PASS,INFO,MAIN_PAPER,run --phase figures_paper 
+F002,figure,pca_by_family.png,analysis/figures/paper/main/pca_by_family.png,yes,PASS,INFO,MAIN_PAPER,run --phase figures_paper 
+F003,figure,pca_by_cluster.png,analysis/figures/paper/main/pca_by_cluster.png,yes,PASS,INFO,MAIN_PAPER,run --phase figures_paper 
+F004,figure,ablation_pairs_high_bar.png,analysis/figures/paper/main/ablation_pairs_high_bar.png,yes,PASS,INFO,MAIN_PAPER,run --phase figures_paper 
+F005,figure,ablation_silhouette_bar.png,analysis/figures/paper/main/ablation_silhouette_bar.png,yes,PASS,INFO,MAIN_PAPER,run --phase figures_paper 
+F006,figure,heatmap_feature_feature_core.png,analysis/figures/paper/main/heatmap_feature_feature_core.png,yes,PASS,INFO,MAIN_PAPER,run --phase figures_paper 
 T001,table,table_diversity_metrics_en.md,analysis/figures/paper/tables/table_diversity_metrics_en.md,yes,PASS,INFO,present,none
 T002,table,table_ablation_metrics_en.md,analysis/figures/paper/tables/table_ablation_metrics_en.md,yes,PASS,INFO,,none
 T003,table,table_core_vs_extended_en.md,analysis/figures/paper/tables/table_core_vs_extended_en.md,yes,PASS,INFO,,none
@@ -50,4 +50,4 @@ DOC004,wiki,wiki 07-Diversity-Validation,.wiki-clone/07-Diversity-Validation.md,
 DOC005,wiki,wiki Resultados-Actuales,.wiki-clone/Resultados-Actuales.md,yes,PASS,INFO,,update documentation to scope 540
 C001,consistency,root_README_diversity_scope,README.md,yes,PASS,INFO,OK,none
 C002,consistency,FIGURES_AND_TABLES_INDEX,analysis/figures/paper/FIGURES_AND_TABLES_INDEX.md,yes,PASS,INFO,diversity validation PASS in index,none
-C003,consistency,output_metrics_benchmark_scope,analysis/data/output_metrics.csv,yes,WARN,MINOR,rows=540 expected 570 for combined benchmark (not diversity scope),complete simulations and rerun output_metrics
+C003,consistency,output_metrics_benchmark_scope,analysis/data/output_metrics.csv,yes,WARN,MINOR,rows=540 expected 540 for combined benchmark (not diversity scope),complete simulations and rerun output_metrics

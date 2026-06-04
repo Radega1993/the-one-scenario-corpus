@@ -17,6 +17,3 @@ HelsinkiDisrupted,A_meetingspots.wkt,meetingspots,05_disaster,15,100.0,46.32,152
 KallioCommunityCompact,A_homes.wkt,homes,06_social,70,100.0,8.06,23.81,55.84,1,1.43,50.0,1458,1529,WARNING,1 POIs >50.0m from road
 KallioCommunityCompact,A_offices.wkt,offices,06_social,20,100.0,14.03,41.93,117.24,1,5.0,50.0,1458,1529,WARNING,1 POIs >50.0m from road
 KallioCommunityCompact,A_meetingspots.wkt,meetingspots,06_social,30,100.0,13.72,62.26,97.62,2,6.67,50.0,1458,1529,WARNING,2 POIs >50.0m from road
-ControlCompactGrid,A_homes.wkt,homes,07_stress_controls,50,100.0,0.0,0.0,0.0,0,0.0,100.0,2000,1700,PASS,
-ControlCompactGrid,A_offices.wkt,offices,07_stress_controls,30,100.0,0.0,0.0,0.0,0,0.0,100.0,2000,1700,PASS,
-ControlCompactGrid,A_meetingspots.wkt,meetingspots,07_stress_controls,20,100.0,0.0,0.0,0.0,0,0.0,100.0,2000,1700,PASS,

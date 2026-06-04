@@ -15,4 +15,3 @@ Generated: 2026-05-28T18:25:21
 ## Community routes (optional)
 
 `A_community_route.wkt` and `B_community_route.wkt` are **figure assets only** — no `routeFile` in any social `.settings` (unlike D5 UAV in disaster).
-

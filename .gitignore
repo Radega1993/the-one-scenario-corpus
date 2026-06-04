@@ -35,3 +35,13 @@ _archive/
 maps/raw/
 maps/processed/
 setup/.venv_osmnx/
+
+# Stress tier + synthetic control map (not in active benchmark)
+stress_controls/
+maps/wkt/ControlCompactGrid/
+maps/validation/ControlCompactGrid_validation.json
+analysis/reports/validation/stress_*
+analysis/reports/validation/project_scope_no_stress.md
+analysis/scripts/validation/stress_vs_corpus_validation.py
+analysis/reports/maps/stress_control_grid_review.md
+maps/wkt/_backup*/

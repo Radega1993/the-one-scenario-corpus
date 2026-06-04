@@ -26,7 +26,6 @@ from lib.paths import DATA_DIR  # noqa: E402
 from lib.report_paths import SETTINGS_AUDIT  # noqa: E402
 from lib.settings_audit import audit_corpus_dir, audit_from_manifest  # noqa: E402
 
-
 def _write_csv(rows: list[dict], path: Path) -> None:
     if not rows:
         return
@@ -36,7 +35,6 @@ def _write_csv(rows: list[dict], path: Path) -> None:
         w = csv.DictWriter(f, fieldnames=keys, extrasaction="ignore")
         w.writeheader()
         w.writerows(rows)
-
 
 def _write_report(rows: list[dict], path: Path) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
@@ -117,7 +115,6 @@ def _write_report(rows: list[dict], path: Path) -> None:
     )
     path.write_text("\n".join(lines), encoding="utf-8")
 
-
 def main() -> int:
     ap = argparse.ArgumentParser(description="Audit corpus .settings files.")
     ap.add_argument("--manifest", type=str, default="scenarios/corpus_v1/manifest.csv")
@@ -162,7 +159,6 @@ def main() -> int:
     print(f"Wrote {out_csv}")
     print(f"Wrote {out_md}")
     return 0
-
 
 if __name__ == "__main__":
     raise SystemExit(main())

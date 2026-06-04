@@ -158,7 +158,6 @@ CANONICAL_REPORTS: tuple[Path, ...] = (
     PAPER_FREEZE_CHECKLIST,
 )
 
-
 def resolve_report(name: str) -> Path:
     """Return path for report basename; prefers registered layout, else first match."""
     if name in _REPORT_BY_NAME:
@@ -168,7 +167,6 @@ def resolve_report(name: str) -> Path:
         if p.is_file():
             return p
     return REPORTS_ROOT / name
-
 
 def report_path(name: str) -> Path:
     """Alias for resolve_report."""

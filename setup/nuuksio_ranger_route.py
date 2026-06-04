@@ -27,7 +27,6 @@ ORIGIN_EPS = 15.0
 MIN_DIST_FROM_ORIGIN = 50.0
 MAX_STOP_DIST_M = 150.0
 
-
 def _nearest_poi_dist(stops: list[tuple[float, float]], poi_pts: list[tuple[float, float]]) -> float:
     if not stops or not poi_pts:
         return 0.0
@@ -36,7 +35,6 @@ def _nearest_poi_dist(stops: list[tuple[float, float]], poi_pts: list[tuple[floa
         for s in stops
     )
 
-
 def _route_stops_sim(route_path: Path, roads_path: Path) -> list[tuple[float, float]]:
     raw = parse_linestrings(route_path)
     if not raw or not raw[0]:
@@ -44,7 +42,6 @@ def _route_stops_sim(route_path: Path, roads_path: Path) -> list[tuple[float, fl
     roads_lines = parse_linestrings(roads_path)
     tf = SimTransform.from_raw_lines(roads_lines)
     return [tf.raw_to_sim(x, y) for x, y in raw[0]]
-
 
 def validate_ranger_route(
     rg: RoadGraph,
@@ -130,7 +127,6 @@ def validate_ranger_route(
         "notes": "; ".join(notes),
     }
 
-
 def _refine_patrol_stops(rg: RoadGraph, stops: list[tuple[float, float]]) -> list[tuple[float, float]]:
     """Snap stops to trail graph; drop points far from network or near sim origin."""
     refined: list[tuple[float, float]] = []
@@ -153,7 +149,6 @@ def _refine_patrol_stops(rg: RoadGraph, stops: list[tuple[float, float]]) -> lis
         seeds = [p for p in nodes if math.hypot(p[0], p[1]) >= MIN_DIST_FROM_ORIGIN][:8]
     tour = _nn_tour(rg, seeds[:8])
     return dedupe_consecutive(tour)[:10]
-
 
 def _graph_node_patrol(rg: RoadGraph, rng: random.Random) -> list[tuple[float, float]]:
     """Build patrol entirely from graph nodes (vertex_dist == 0 on trails)."""
@@ -182,7 +177,6 @@ def _graph_node_patrol(rg: RoadGraph, rng: random.Random) -> list[tuple[float, f
     tour = _nn_tour(rg, seeds)[:10]
     return dedupe_consecutive(tour)
 
-
 def regenerate_ranger_route(
     map_dir: Path,
     rng: random.Random,
@@ -206,7 +200,6 @@ def regenerate_ranger_route(
         }
     )
     return corrections
-
 
 def load_all_poi_sim(map_dir: Path) -> list[tuple[float, float]]:
     pts: list[tuple[float, float]] = []

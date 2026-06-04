@@ -35,7 +35,6 @@ WRONG_MAPS = (
     "KumpulaCampus",
 )
 
-
 def load_kv(path: Path) -> dict[str, str]:
     out: dict[str, str] = {}
     for raw in path.read_text(encoding="utf-8", errors="replace").splitlines():
@@ -45,7 +44,6 @@ def load_kv(path: Path) -> dict[str, str]:
         k, v = line.split("=", 1)
         out[k.strip()] = v.strip()
     return out
-
 
 def audit_file(path: Path) -> dict:
     kv = load_kv(path)
@@ -96,7 +94,6 @@ def audit_file(path: Path) -> dict:
         "status": status,
     }
 
-
 def fix_d5_group1_spmm(apply: bool) -> list[str]:
     changed: list[str] = []
     paths = [BASE_DISASTER / f"{D5_GLOB}.settings"]
@@ -126,7 +123,6 @@ def fix_d5_group1_spmm(apply: bool) -> list[str]:
         changed.append(str(sp.relative_to(SCENARIOS_DIR.parent)))
     return changed
 
-
 def fix_helsinki_medium_comments(apply: bool) -> list[str]:
     """Fix HelsinkiMedium comments in non-D5 files if any."""
     changed: list[str] = []
@@ -145,7 +141,6 @@ def fix_helsinki_medium_comments(apply: bool) -> list[str]:
             if new_text != text:
                 changed.append(str(sp.relative_to(SCENARIOS_DIR.parent)))
     return changed
-
 
 def write_report(rows: list[dict], d5_fixed: list[str], comment_fixed: list[str]) -> None:
     fails = [r for r in rows if r["status"] == "FAIL"]
@@ -176,7 +171,6 @@ def write_report(rows: list[dict], d5_fixed: list[str], comment_fixed: list[str]
         for r in fails[:20]:
             lines.append(f"- `{r['settings_path']}`: {r['issues']}")
     path.write_text("\n".join(lines) + "\n", encoding="utf-8")
-
 
 def main() -> int:
     ap = argparse.ArgumentParser()
@@ -217,7 +211,6 @@ def main() -> int:
     if d5_fixed:
         print(f"D5 SPMM fixed: {len(d5_fixed)}")
     return 1 if any(r["status"] == "FAIL" for r in rows) else 0
-
 
 if __name__ == "__main__":
     raise SystemExit(main())

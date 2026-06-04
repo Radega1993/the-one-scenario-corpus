@@ -65,7 +65,6 @@ CHECK_KEYS = [
     "Events2.size",
 ]
 
-
 def _parse_scenario_name(name: str) -> tuple[str, str]:
     m = re.search(r"__(TP\d{2}_[A-Za-z0-9]+)$", name)
     if not m:
@@ -75,7 +74,6 @@ def _parse_scenario_name(name: str) -> tuple[str, str]:
     tp_id = tp_label.split("_", 1)[0]
     return base, tp_id
 
-
 def _infer_group_sizes(kv: dict[str, str]) -> tuple[int | None, int | None]:
     g1 = kv.get("Group1.nrofHosts")
     g2 = kv.get("Group2.nrofHosts")
@@ -84,7 +82,6 @@ def _infer_group_sizes(kv: dict[str, str]) -> tuple[int | None, int | None]:
     except ValueError:
         return None, None
 
-
 def _tp07_window(end_t: float) -> tuple[int, int]:
     t0 = int(end_t * 0.20)
     t1 = int(end_t * 0.28)
@@ -92,13 +89,11 @@ def _tp07_window(end_t: float) -> tuple[int, int]:
         t1 = min(int(end_t * 0.95), t0 + max(120, int(end_t * 0.05)))
     return t0, t1
 
-
 def _read_csv(path: Path) -> list[dict[str, str]]:
     if not path.exists():
         return []
     with path.open(newline="", encoding="utf-8") as f:
         return list(csv.DictReader(f))
-
 
 def _fnum(x: Any) -> float | None:
     if x is None or x == "":
@@ -110,7 +105,6 @@ def _fnum(x: Any) -> float | None:
         return v
     except (TypeError, ValueError):
         return None
-
 
 def check_settings_file(path: Path) -> dict[str, Any]:
     text = path.read_text(encoding="utf-8", errors="replace")
@@ -170,7 +164,6 @@ def check_settings_file(path: Path) -> dict[str, Any]:
         "mismatches": "; ".join(mismatches),
     }
 
-
 def build_windows_table(settings_paths: list[Path]) -> list[dict[str, Any]]:
     rows: list[dict[str, Any]] = []
     for path in settings_paths:
@@ -206,7 +199,6 @@ def build_windows_table(settings_paths: list[Path]) -> list[dict[str, Any]]:
             }
         )
     return rows
-
 
 def summarize_metrics(
     output_metrics: Path,
@@ -306,7 +298,6 @@ def summarize_metrics(
         ),
     }
     return summary_rows, base_rows, meta
-
 
 def write_report(
     path: Path,
@@ -422,7 +413,6 @@ def write_report(
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text("\n".join(lines), encoding="utf-8")
 
-
 def _write_csv(path: Path, rows: list[dict], fieldnames: list[str] | None = None) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
     if not rows:
@@ -435,14 +425,13 @@ def _write_csv(path: Path, rows: list[dict], fieldnames: list[str] | None = None
         w.writeheader()
         w.writerows(rows)
 
-
 def main() -> int:
     ap = argparse.ArgumentParser(description="Validate TP01–TP12 and summarize benchmark metrics.")
     ap.add_argument(
         "--corpus",
         type=str,
         default="corpus_v1",
-        help="Logical corpus name (corpus_v1 includes stress_controls)",
+        help="Logical corpus name (default: corpus_v1, 540 scenarios)",
     )
     ap.add_argument("--manifest", type=Path, default=DEFAULT_MANIFEST)
     ap.add_argument("--data-dir", type=Path, default=DEFAULT_DATA)
@@ -453,13 +442,12 @@ def main() -> int:
     ap.add_argument("--skip-metrics", action="store_true")
     args = ap.parse_args()
 
-    include_stress = args.corpus.strip() in ("corpus_v1", "corpus_v2")
-    settings_paths = collect_settings_paths(args.corpus, include_stress=include_stress)
+    settings_paths = collect_settings_paths(args.corpus)
     manifest_rows = _read_csv(args.manifest)
 
-    expected = 570 if include_stress else len(settings_paths)
-    if include_stress and len(settings_paths) != 570:
-        print(f"Warning: expected 570 active settings, found {len(settings_paths)}", file=sys.stderr)
+    expected = 540 if args.corpus.strip() in ("corpus_v1", "corpus_v2") else len(settings_paths)
+    if args.corpus.strip() in ("corpus_v1", "corpus_v2") and len(settings_paths) != 540:
+        print(f"Warning: expected 540 settings, found {len(settings_paths)}", file=sys.stderr)
     if manifest_rows and len(manifest_rows) != len(settings_paths):
         print(
             f"Warning: manifest rows ({len(manifest_rows)}) != settings files ({len(settings_paths)})",
@@ -505,7 +493,6 @@ def main() -> int:
     if summary_rows:
         print(f"TP summary rows: {len(summary_rows)}")
     return 1 if n_fail else 0
-
 
 if __name__ == "__main__":
     sys.exit(main())

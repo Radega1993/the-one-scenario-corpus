@@ -2,7 +2,7 @@
 
 **Estado:** versión vigente para documentación pública y paper.  
 **Referencia canónica:** `analysis/reports/RESULTADOS_ACTUALES.md`.  
-**Scope de diversidad:** `corpus_v1` — **540** escenarios (sin `stress_controls`).
+**Scope de diversidad:** `corpus_v1` — **540** escenarios (sin ``).
 
 ## 1) Criterio de diseño
 
@@ -47,7 +47,7 @@ Regla de inclusión en core:
 La versión actual se presenta como **baseline mejorado, estable y publicable**, con limitaciones declaradas (pares altos residuales TP06↔TP11, silhouette moderado en full-46, dependencia `mm_WDM ↔ mm_Bus`).  
 No se presenta como corpus óptimo final.
 
-**Stress controls:** los 30 escenarios de `stress_controls/` no entran en este freeze de diversidad; se reportan como laboratorio aparte.
+**Stress controls:** los 30 escenarios de `` no entran en este freeze de diversidad; se reportan como laboratorio aparte.
 
 ## 6) Artefactos canónicos (diversidad)
 
@@ -64,7 +64,7 @@ No se presenta como corpus óptimo final.
 | Figuras paper | `figures/paper/main/`, `figures/paper/supplementary/` |
 | Tablas paper | `figures/paper/tables/` |
 
-Regeneración: `run_analysis.py --corpus corpus_v1 --no-stress --phase <features|normalize|correlation|...>`.
+Regeneración: `run_analysis.py --corpus corpus_v1  --phase <features|normalize|correlation|...>`.
 
 ## 7) Metodología de diversidad (escenarios → vectores)
 
@@ -91,7 +91,7 @@ Cada escenario `.settings` se convierte en un **vector numérico** de features (
 - Pares TP06↔TP11 pueden alcanzar \|r\| = 1.0 (redundancia documentada).
 - `mm_WDM ↔ mm_Bus` correlaciona fuertemente en core-23 (0.9354).
 - Silhouette moderado en full-46; core-23 es el espacio narrativo principal.
-- `stress_controls` (30) quedan **fuera** del freeze de diversidad de inputs.
+- `` (30) quedan **fuera** del freeze de diversidad de inputs.
 
 ## 9) Validación automatizada
 

@@ -1,6 +1,6 @@
 # Informes de análisis (`analysis/reports/`)
 
-Repositorio temático de informes Markdown y texto del benchmark combinado del paper (**570 simulaciones**: 540 `corpus_v1` + 30 `stress_controls`). La reorganización de 2026-05-24 agrupa artefactos por función sin borrar ningún fichero.
+Repositorio temático de informes Markdown y texto del benchmark combinado del paper (**540 simulaciones**: 540 `corpus_v1` + 30 ``). La reorganización de 2026-05-24 agrupa artefactos por función sin borrar ningún fichero.
 
 ## 1. Overview
 
@@ -30,7 +30,7 @@ Manifiesto de movimientos: [../data/reports_reorganization_manifest.csv](../data
 | [canonical/protocol_benchmark_kpi_policy.md](canonical/protocol_benchmark_kpi_policy.md) | Métricas para comparar protocolos |
 | [canonical/message_analysis_window_policy.md](canonical/message_analysis_window_policy.md) | Ventana de análisis de mensajes |
 | [canonical/spatial_vs_performance_analysis.md](canonical/spatial_vs_performance_analysis.md) | Ocupación espacial vs rendimiento |
-| [canonical/corpus_benchmark_validation.md](canonical/corpus_benchmark_validation.md) | Validación benchmark combinado (570) |
+| [canonical/corpus_benchmark_validation.md](canonical/corpus_benchmark_validation.md) | Validación benchmark combinado (540) |
 
 ## 3. Pipeline reports
 

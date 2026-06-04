@@ -2,7 +2,7 @@
 
 Generated: 2026-05-28T17:36:11
 Mode: apply
-Maps: HelsinkiDowntown, KumpulaCampus, ManhattanMidtownGrid, NuuksioSparseTrails, HelsinkiDisrupted, KallioCommunityCompact, ControlCompactGrid
+Maps: HelsinkiDowntown, KumpulaCampus, ManhattanMidtownGrid, NuuksioSparseTrails, HelsinkiDisrupted, KallioCommunityCompact, 
 
 Summary CSV: `analysis/data/family_route_generation_summary.csv`
 
@@ -19,4 +19,4 @@ Summary CSV: `analysis/data/family_route_generation_summary.csv`
 | HelsinkiDisrupted | B_mule_route.wkt | 8 | yes | ok |
 | KallioCommunityCompact | A_community_route.wkt | 8 | yes | ok |
 | KallioCommunityCompact | B_community_route.wkt | 8 | yes | ok |
-| ControlCompactGrid | A_control_route.wkt | 10 | yes | ok |
+|  | A_control_route.wkt | 10 | yes | ok |

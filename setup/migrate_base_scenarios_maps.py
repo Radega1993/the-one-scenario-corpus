@@ -36,7 +36,6 @@ BASE_FAMILIES = (
     "06_social",
 )
 
-
 def main() -> int:
     ap = argparse.ArgumentParser(description="Migrate base_scenarios maps.")
     ap.add_argument("--dry-run", action="store_true")
@@ -132,7 +131,6 @@ def main() -> int:
 
     print(f"Migrated {len(records)} base scenarios, {renamed} renamed")
     return 1 if fail else 0
-
 
 if __name__ == "__main__":
     raise SystemExit(main())

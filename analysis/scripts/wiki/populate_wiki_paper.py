@@ -21,7 +21,7 @@ REPO = REPO_ROOT
 WIKI = SCENARIOS_DIR / ".wiki-clone"
 DATA = ANALYSIS_DIR / "data"
 DIVERSITY_N = 540  # canonical diversity scope: corpus_v1 only
-COMBINED_N = 570  # corpus_v1 (540) + stress_controls (30)
+COMBINED_N = 540  # corpus_v1 (540) +  (30)
 WIKI_DIV_ASSETS = WIKI / "assets" / "diversity"
 PAPER_MAIN = ANALYSIS_DIR / "figures" / "paper" / "main"
 ARCHIVE_ROUND2 = WIKI / "_legacy_pre_paper_rebuild" / "round2_20260523"
@@ -46,10 +46,8 @@ OBSOLETE_ROOT = frozenset(
     }
 )
 
-
 def _utc() -> str:
     return datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M UTC")
-
 
 def _csv_data_rows(path: Path) -> int:
     """Return number of data rows in a CSV (excluding header), or -1 if missing."""
@@ -61,14 +59,12 @@ def _csv_data_rows(path: Path) -> int:
     except OSError:
         return -1
 
-
 def _load_ablation_metrics() -> list[dict[str, str]]:
     path = DATA / "ablation_metrics.csv"
     if not path.is_file():
         return []
     with path.open(newline="", encoding="utf-8", errors="replace") as f:
         return list(csv.DictReader(f))
-
 
 def _diversity_snapshot_table() -> str:
     """Markdown table 17/23/46 from canonical ablation_metrics.csv."""
@@ -97,7 +93,6 @@ def _diversity_snapshot_table() -> str:
         lines.append(f"| **{label[key]}** | {pairs} | {pct} | {sil} |")
     return "\n".join(lines)
 
-
 def _home_current_status_block() -> str:
     """Build Home status table from live analysis/data counts."""
     n_feat = _csv_data_rows(DATA / "features.csv")
@@ -111,7 +106,7 @@ def _home_current_status_block() -> str:
 
     spat_note = ""
     if n_spat == 720:
-        spat_note = " (legacy 720; pendiente alinear a 540/570)"
+        spat_note = " (legacy 720; pendiente alinear a 540/540)"
     elif n_spat >= 0 and n_spat != COMBINED_N:
         spat_note = f" (objetivo {COMBINED_N})"
 
@@ -123,14 +118,14 @@ def _home_current_status_block() -> str:
     elif n_feat >= 0:
         div_val = (
             f"**{n_feat}** rows en `features.csv` (esperado {DIVERSITY_N}) — "
-            "revisar pipeline `--no-stress`"
+            "revisar pipeline ``"
         )
     else:
         div_val = f"**{DIVERSITY_N}** (sin `features.csv`)"
 
     return f"""| Item | Value |
 |------|-------|
-| Combined paper benchmark | **{COMBINED_N}** = {DIVERSITY_N} `corpus_v1` + 30 `stress_controls` |
+| Combined paper benchmark | **{COMBINED_N}** = {DIVERSITY_N} `corpus_v1` + 30 `` |
 | Structural bases | 45 en `base_scenarios/` (sin TP) |
 | Combined manifest | {n_manifest if n_manifest >= 0 else '—'} rows en `corpus_v1_combined_manifest.csv` |
 | Diversity validation | {div_val} |
@@ -143,9 +138,8 @@ def _home_current_status_block() -> str:
 
 Ver detalle: [Resultados-Actuales](Resultados-Actuales), [Figuras-y-Tablas](Figuras-y-Tablas)."""
 
-
 def _csv_rows_label(path: Path, target: int) -> str:
-    """Human-readable row count for wiki tables (e.g. '566 rows (objetivo 570)')."""
+    """Human-readable row count for wiki tables (e.g. '566 rows (objetivo 540)')."""
     n = _csv_data_rows(path)
     if n < 0:
         return f"missing (objetivo {target})"
@@ -154,7 +148,6 @@ def _csv_rows_label(path: Path, target: int) -> str:
     legacy = path.name == "spatial_occupancy_metrics.csv" and n == 720
     suffix = " — legacy 720" if legacy else f" — objetivo {target}"
     return f"{n} rows{suffix}"
-
 
 def _output_metrics_status_line() -> str:
     n = _csv_data_rows(DATA / "output_metrics.csv")
@@ -166,7 +159,6 @@ def _output_metrics_status_line() -> str:
         f"{n}/{COMBINED_N} rows in output_metrics.csv "
         f"(pendiente regenerar hasta {COMBINED_N}); indirect features available."
     )
-
 
 def _spatial_metrics_status_line() -> str:
     n = _csv_data_rows(DATA / "spatial_occupancy_metrics.csv")
@@ -181,7 +173,6 @@ def _spatial_metrics_status_line() -> str:
         return f"spatial_occupancy_metrics.csv missing (objetivo {COMBINED_N})."
     return f"**{n}/{COMBINED_N}** rows in spatial_occupancy_metrics.csv (pendiente alinear)."
 
-
 def _paper_freeze_metrics_checklist() -> str:
     n_out = _csv_data_rows(DATA / "output_metrics.csv")
     n_spat = _csv_data_rows(DATA / "spatial_occupancy_metrics.csv")
@@ -189,7 +180,7 @@ def _paper_freeze_metrics_checklist() -> str:
     chk_spat = "[x]" if n_spat == COMBINED_N else "[ ]"
     out_label = f"{n_out}/{COMBINED_N}" if n_out >= 0 else f"missing/{COMBINED_N}"
     if n_spat == 720:
-        spat_label = "720 rows (legacy; objetivo 570)"
+        spat_label = "720 rows (legacy; objetivo 540)"
     elif n_spat >= 0:
         spat_label = f"{n_spat}/{COMBINED_N}"
     else:
@@ -203,7 +194,6 @@ def _paper_freeze_metrics_checklist() -> str:
 - [ ] Protocol comparison on main split complete
 - [ ] Methods text matches actual scripts
 - [ ] Limitations section includes map/traffic/synthetic disclaimers"""
-
 
 def _rewrite_repo_links_for_github_wiki(text: str) -> str:
     """Rewrite markdown links that currently use ../analysis/... for GitHub Wiki.
@@ -253,7 +243,6 @@ def _rewrite_repo_links_for_github_wiki(text: str) -> str:
 
     return link_target_re.sub(repl, text)
 
-
 def _page(
     title: str,
     purpose: str,
@@ -298,13 +287,10 @@ def _page(
 {paper}
 """
 
-
 PAGES: dict[str, str] = {}
-
 
 def _add(name: str, **kwargs) -> None:
     PAGES[name] = _page(**kwargs)
-
 
 def build_pages() -> None:
     _add(
@@ -336,7 +322,7 @@ This is a **synthetic benchmark corpus**, not a collection of real-world traces.
 |---|---|
 | `base_scenarios/` | Base mobility scenarios without Traffic Profiles |
 | `corpus_v1/` | Main benchmark corpus with Traffic Profiles |
-| `stress_controls/` | Stress scenarios for extreme protocol evaluation |
+| `` | Stress scenarios for extreme protocol evaluation |
 | `analysis/` | Scripts for feature extraction, validation, figures and reports |
 | `analysis/data/` | Generated CSV files |
 | `analysis/reports/` | Generated methodological and validation reports |
@@ -436,7 +422,7 @@ Detailed bibliography: [References](References).""",
 3. Enable fair protocol comparison with documented limitations.
 
 **Non-goals:** emulating a specific real city; claiming empirical realism of contact traces.""",
-        current_status="Paper benchmark (570) is the active benchmark under methodological freeze/review.",
+        current_status="Paper benchmark (540) is the active benchmark under methodological freeze/review.",
         pending="Exact protocol set and router list for the paper.",
         status="stable",
         links="[02-Corpus-Overview](02-Corpus-Overview), [13-Benchmark-Protocol-Comparison](13-Benchmark-Protocol-Comparison)",
@@ -451,22 +437,22 @@ Detailed bibliography: [References](References).""",
 |-------|----------:|------|------|
 | **base_scenarios** | 45 | `scenarios/base_scenarios/` | Structural mobility bases (no `__TP`); families 01–06 |
 | **corpus_v1** | 540 | `scenarios/corpus_v1/` | Environmental benchmark with Traffic Profiles |
-| **stress_controls** | 30 | `scenarios/stress_controls/` | Stress/control laboratory (TP01 + TP10 only) |
+| **** | 30 | `scenarios/` | Stress/control laboratory (TP01 + TP10 only) |
 | legacy archive | 60 | `scenarios/_archive/legacy_corpus_v1_pre_rename/` | Pre-rename mobility corpus |
 | dropped | 10 | `scenarios/corpus_dropped_v1/` | Archived v1 scenarios |
 
-**Manifests:** `corpus_v1/manifest.csv`, `stress_controls/manifest.csv`, combined `analysis/data/corpus_v1_combined_manifest.csv`  
+**Manifests:** `corpus_v1/manifest.csv`, `manifest.csv`, combined `analysis/data/corpus_v1_combined_manifest.csv`  
 **Revision sidecar:** `manifest_revision.csv` per directory (`benchmark_split`: main / stress / control)  
 **TP definitions:** `lib/traffic_profile_generator.py`  
 **Changelog:** [corpus_reorganization_final_report.md](../analysis/reports/corpus_reorganization_final_report.md)
 
-The retired legacy benchmark name is now split into `corpus_v1` + `stress_controls`.""",
+The retired legacy benchmark name is now split into `corpus_v1` + ``.""",
         interpretation="""Each structural base in `base_scenarios/` is crossed with an **active subset** of traffic profiles (TP01–TP12) per `benchmark_definition.csv`, yielding **540** environmental simulations plus **30** stress/control runs.
 
 Mobility and map settings originate from the legacy mobility corpus (migrated maps/worldSize); traffic overlays replace `Events*` blocks and adjust `Group*.msgTtl`.
 
 Traces are **synthetic/semi-synthetic**: real map geometry constrains movement, but mobility patterns and messages are simulator-generated.""",
-        current_status="570 `.settings` files and 570 combined-manifest rows; 45 structural bases validated in `base_scenarios/`.",
+        current_status="540 `.settings` files and 540 combined-manifest rows; 45 structural bases validated in `base_scenarios/`.",
         pending="Freeze manifest after protocol comparison phase; merge `manifest_revision.csv` into main manifest.",
         status="stable",
         links="[03-Base-Scenarios](03-Base-Scenarios), [04-Scenario-Families](04-Scenario-Families), [05-Traffic-Profiles](05-Traffic-Profiles)",
@@ -484,10 +470,10 @@ Traces are **synthetic/semi-synthetic**: real map geometry constrains movement, 
 | Validation | [base_scenarios_validation.md](../analysis/reports/base_scenarios_validation.md) |
 | Generator | `scenarios/setup/migrate_base_scenarios_maps.py` |
 
-**Scope:** families `01_urban` … `06_social` only — **no** `07_stress_controls`, **no** `__TP` suffix in filenames.""",
+**Scope:** families `01_urban` … `06_social` only — **no** `07_`, **no** `__TP` suffix in filenames.""",
         interpretation="""Base scenarios hold **mobility, map, and default traffic blocks** before Traffic Profile overlays. They are the structural reference layer for the paper: same map migration (`HelsinkiMedium`/`Manhattan` → final maps) as the active benchmark, but without TP experimental factors.
 
-Use `base_scenarios/` to inspect mobility design; use `corpus_v1/` + `stress_controls/` for routing benchmark runs.""",
+Use `base_scenarios/` to inspect mobility design; use `corpus_v1/` + `` for routing benchmark runs.""",
         current_status="45/45 bases pass automated validation (`validate_base_scenarios.py`).",
         pending="None for structural layer; TP assignments tracked in `benchmark_definition.csv`.",
         status="stable",
@@ -507,13 +493,13 @@ Use `base_scenarios/` to inspect mobility design; use `corpus_v1/` + `stress_con
 | 04_rural | 12 | Sparse RWP, clusters, extremes |
 | 05_disaster | 9 | Post-disaster mobility patterns |
 | 06_social | 6 | Communities, mixing |
-| 07_stress_controls | 15 | Stress/control laboratory — lives under `stress_controls/` (not in `corpus_v1/`) |
+| 07_ | 15 | Stress/control laboratory — lives under `` (not in `corpus_v1/`) |
 
 **Benchmark splits** (`manifest_revision.csv`):
 - **main:** TP01–TP08 on viable bases
-- **stress:** TP09–TP11, TP04–TP06 on load, all 07_stress_controls
+- **stress:** TP09–TP11, TP04–TP06 on load, all 07_
 - **control:** TP12 partition, R1/R11 extremes""",
-        interpretation="Families cover distinct mobility regimes. Environmental families (01–06) contribute **45** bases × active TP assignments → **540** runs in `corpus_v1/`. Family **07_stress_controls** contributes **15** bases × {TP01, TP10} → **30** runs in `stress_controls/`.",
+        interpretation="Families cover distinct mobility regimes. Environmental families (01–06) contribute **45** bases × active TP assignments → **540** runs in `corpus_v1/`. Family **07_** contributes **15** bases × {TP01, TP10} → **30** runs in ``.",
         current_status="60 unique scenario bases in the combined paper benchmark (45 + 15 stress).",
         pending="Finalize main benchmark base list (~40–45) for protocol comparison subset.",
         status="draft",
@@ -569,7 +555,7 @@ TP12 serves as a **partition control** (cross-group messaging); TP04/TP10 are **
 **NaN policy:** z-score per column ignoring NaN; impute NaN → 0 in standardized space (see features_core_vs_extended §4).
 
 Space uses **world_area** (Wx×Wy) and **aspect_ratio** = min(Wx,Wy)/max(Wx,Wy). Density is excluded from core due to redundancy with N and world_area.""",
-        current_status=f"Feature extraction stable; {DIVERSITY_N} rows in features.csv for diversity scope (corpus_v1, --no-stress).",
+        current_status=f"Feature extraction stable; {DIVERSITY_N} rows in features.csv for diversity scope (corpus_v1, ).",
         pending="Confirm core-23 list frozen for paper; document any post-revision feature drift.",
         status="stable",
         links="[07-Diversity-Validation](07-Diversity-Validation), [features_core_vs_extended.md](../analysis/docs/features_core_vs_extended.md)",
@@ -625,7 +611,7 @@ Ablation shows **core-23** offers the best interpretability trade-off: lower red
 **Nota:** esta pagina es el punto de entrada de lectura para resultados; los `.txt` quedan como anexos tecnicos.""",
         interpretation="""## Freeze activo (diversidad)
 
-- Scope: **540** escenarios en `corpus_v1/` (sin `stress_controls`).
+- Scope: **540** escenarios en `corpus_v1/` (sin ``).
 - Umbral de diversidad: **|r| >= 0.7**.
 - Pares totales: C(540,2) = **145 530**.
 
@@ -703,7 +689,7 @@ Interpretacion: el corpus cumple el criterio operativo (>=95% pares con |r|<0.7 
 |------|-----|
 | `scenarios/base_scenarios/` | 45 bases estructurales (sin TP) |
 | `scenarios/corpus_v1/` | 540 escenarios ambientales |
-| `scenarios/stress_controls/` | 30 escenarios stress/control |
+| `scenarios/` | 30 escenarios stress/control |
 | `scenarios/analysis/data/` | CSV de análisis y manifiestos |
 | `scenarios/analysis/reports/` | reportes canónicos y validaciones |
 | `scenarios/analysis/figures/` | tablas/figuras generadas |
@@ -711,11 +697,11 @@ Interpretacion: el corpus cumple el criterio operativo (>=95% pares con |r|<0.7 
         interpretation="""Esta página resume la topología operativa del benchmark:
 
 1. Capa estructural: `base_scenarios`
-2. Capa benchmark: `corpus_v1` + `stress_controls`
+2. Capa benchmark: `corpus_v1` + ``
 3. Capa analítica: `analysis/data`, `analysis/reports`, `analysis/figures`
 
 Objetivo: trazabilidad rápida de artefactos para redacción de paper.""",
-        current_status="""- [x] Mapa funcional para scope 45/540/30/570
+        current_status="""- [x] Mapa funcional para scope 45/540/30/540
 - [x] Sin dependencia de enlaces externos a GitHub
 - [x] Navegable desde Home""",
         pending="- Mantener sincronizado con `02-Corpus-Overview` ante futuros cambios de estructura.",
@@ -908,7 +894,7 @@ Late messages in last 10%: label **censored_late**, exclude from latency compari
 4. **Window:** TTL-aware message filter (policy B).
 5. **Runs:** N seeds or confidence intervals if time permits.
 
-**Stress tier** (TP10, TP04, 07_stress_controls): report separately. **Control tier** (TP12): validate partition behavior, not delivery ranking.""",
+**Stress tier** (TP10, TP04, 07_): report separately. **Control tier** (TP12): validate partition behavior, not delivery ranking.""",
         current_status="Plan documented; **no protocol comparison runs yet**.",
         pending="Select protocol set; run on main split after analysis window implemented.",
         status="draft",
@@ -1020,14 +1006,13 @@ python3 scenarios/analysis/run_all_scenarios.py --corpus corpus_v1 \\
         purpose="Track wiki rebuild history.",
         data_paths="Backups: `scenarios/_archive/wiki/wiki_backup_*`",
         interpretation="N/A",
-        current_status=f"""- **{_utc()}:** Diversity freeze documented (540 corpus_v1); wiki status reads live CSV counts (output/spatial may lag combined benchmark 570).
+        current_status=f"""- **{_utc()}:** Diversity freeze documented (540 corpus_v1); wiki status reads live CSV counts (output/spatial may lag combined benchmark 540).
 - **2026-06-20 11:41 UTC:** Full rebuild (paper-oriented). Old wiki in `wiki_backup_20260520_133832/`.""",
         pending="N/A",
         status="draft",
         links="[Home](Home)",
         paper="N/A",
     )
-
 
 def _sync_wiki_diversity_assets() -> None:
     """Copy canonical paper diversity PNGs into wiki assets for inline display."""
@@ -1048,7 +1033,6 @@ def _sync_wiki_diversity_assets() -> None:
         if src.is_file():
             shutil.copy2(src, WIKI_DIV_ASSETS / stem)
 
-
 def _archive_obsolete_root() -> None:
     """Move superseded root .md pages to round2 archive folder."""
     ARCHIVE_ROUND2.mkdir(parents=True, exist_ok=True)
@@ -1060,7 +1044,6 @@ def _archive_obsolete_root() -> None:
                 dest.unlink()
             shutil.move(str(src), str(dest))
             print(f"Archived {name} -> {dest.relative_to(WIKI)}")
-
 
 def main() -> int:
     global LINK_MODE, REPO_BASE_URL, REPO_BRANCH
@@ -1110,7 +1093,6 @@ def main() -> int:
         encoding="utf-8",
     )
     return 0
-
 
 if __name__ == "__main__":
     sys.exit(main())

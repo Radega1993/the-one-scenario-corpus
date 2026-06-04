@@ -34,7 +34,6 @@ from lib.report_paths import USEFUL_SIMULATION_TIME_REPORT  # noqa: E402
 
 REPORTS_OUT = USEFUL_SIMULATION_TIME_REPORT.parent
 
-
 def parse_settings(text: str) -> dict[str, str]:
     d: dict[str, str] = {}
     for raw in text.splitlines():
@@ -44,7 +43,6 @@ def parse_settings(text: str) -> dict[str, str]:
         k, v = line.split("=", 1)
         d[k.strip()] = v.strip()
     return d
-
 
 def infer_n_hosts(kv: dict[str, str]) -> int | None:
     ng = kv.get("Scenario.nrofHostGroups")
@@ -74,13 +72,11 @@ def infer_n_hosts(kv: dict[str, str]) -> int | None:
                 pass
     return total if total > 0 else None
 
-
 def parse_scenario_name(name: str) -> tuple[str, str]:
     m = re.search(r"__(TP\d{2}_[A-Za-z0-9]+)$", name)
     if not m:
         return name, ""
     return name[: m.start()], m.group(1).split("_", 1)[0]
-
 
 def _fnum(x) -> float | None:
     if x is None or x == "":
@@ -91,10 +87,8 @@ def _fnum(x) -> float | None:
     except (TypeError, ValueError):
         return None
 
-
 def load_settings_index(corpus_dir: Path) -> dict[str, Path]:
     return {p.stem: p for p in corpus_dir.rglob("*.settings")}
-
 
 def write_csv(rows: list[dict], path: Path) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
@@ -127,7 +121,6 @@ def write_csv(rows: list[dict], path: Path) -> None:
         w.writeheader()
         for r in rows:
             w.writerow(r)
-
 
 def write_report(rows: list[dict], path: Path) -> None:
     by_class = defaultdict(list)
@@ -280,7 +273,6 @@ def write_report(rows: list[dict], path: Path) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text("\n".join(lines), encoding="utf-8")
 
-
 def main() -> int:
     ap = argparse.ArgumentParser(description="Compute useful simulation time metrics.")
     ap.add_argument("--corpus-dir", type=Path, default=CORPUS_V1_DIR)
@@ -340,7 +332,6 @@ def main() -> int:
     bases = {r["base_scenario"]: r["classification"] for r in rows}
     print("Classification (unique bases):", dict(Counter(bases.values())))
     return 0
-
 
 if __name__ == "__main__":
     sys.exit(main())

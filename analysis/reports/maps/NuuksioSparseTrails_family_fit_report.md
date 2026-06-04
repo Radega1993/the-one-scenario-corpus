@@ -12,7 +12,7 @@ Generated as part of rural map finalization.
 | Methodological value | Scarce contacts, long routes, partial partitions, high delay |
 | vs urban/campus | No dense grid or pedestrian campus; trails not streets |
 | vs vehicles | No taxi/bus grid routes |
-| vs stress grid | Real OSM trails, not synthetic `ControlCompactGrid` |
+| vs stress grid | Real OSM trails, not synthetic `` |
 
 ## Expected outcomes (not errors)
 

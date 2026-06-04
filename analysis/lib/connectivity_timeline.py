@@ -17,7 +17,6 @@ LINE_RE = re.compile(
     re.I,
 )
 
-
 def parse_connectivity_timeline(
     path: Path,
     end_time: float,
@@ -147,7 +146,6 @@ def parse_connectivity_timeline(
         "tail_time_ratio": ((end_time - useful_time) / end_time) if end_time > 0 else float("nan"),
     }
 
-
 def _empty_result(end_time: float, n_hosts: int | None) -> dict[str, Any]:
     nan = float("nan")
     return {
@@ -173,7 +171,6 @@ def _empty_result(end_time: float, n_hosts: int | None) -> dict[str, Any]:
         "tail_time_ratio": 1.0 if end_time > 0 else nan,
     }
 
-
 def _median(vals: list[float]) -> float:
     if not vals:
         return float("nan")
@@ -183,7 +180,6 @@ def _median(vals: list[float]) -> float:
     if n % 2:
         return s[mid]
     return (s[mid - 1] + s[mid]) / 2.0
-
 
 def _time_to_pct_contact_nodes(
     node_first: dict[int, float],
@@ -206,7 +202,6 @@ def _time_to_pct_contact_nodes(
         else:
             out[key] = float("nan")
     return out
-
 
 def _time_to_pct_pairs(
     path: Path,
@@ -232,7 +227,6 @@ def _time_to_pct_pairs(
         if len(seen) >= target:
             return float(m.group(1))
     return float("nan")
-
 
 def classify_useful_time(
     metrics: dict[str, Any],

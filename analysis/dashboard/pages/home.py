@@ -11,7 +11,6 @@ from dashboard.data_loaders import list_markdown_reports, load_csv, pipeline_sta
 from lib.paths import ANALYSIS_DIR
 from lib.report_paths import DASHBOARD_READINESS_REPORT, RESULTADOS_ACTUALES
 
-
 def render(filtered: pd.DataFrame, master: pd.DataFrame) -> None:
     st.header("Resumen corpus_v1")
 
@@ -23,7 +22,7 @@ def render(filtered: pd.DataFrame, master: pd.DataFrame) -> None:
 
     kpi_row(
         [
-            ("Simulaciones", n, "manifest 570"),
+            ("Simulaciones", n, "manifest 540"),
             ("Escenarios base", n_bases, "45+15 stress"),
             ("Perfiles TP", n_tp, "TP01–TP12"),
             ("Familias", n_fam, "6+stress"),

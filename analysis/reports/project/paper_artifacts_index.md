@@ -3,12 +3,12 @@
 | Paper section | Main artifact | Path | Type | Status | Usage note |
 |---|---|---|---|---|---|
 | Abstract / Contribution | Frozen diversity results | `scenarios/analysis/reports/RESULTADOS_ACTUALES.md` | report | ready | Main quantitative snapshot for writing |
-| Introduction | Corpus overview docs | `scenarios/README.md` | doc | ready | Scope 45/540/30/570 |
+| Introduction | Corpus overview docs | `scenarios/README.md` | doc | ready | Scope 45/540/30/540 |
 | Related Work | Methodological context | `scenarios/analysis/docs/features_core_vs_extended.md` | doc | ready | Feature rationale and reductions |
-| Scenario Design | Combined manifest | `scenarios/analysis/data/corpus_v1_combined_manifest.csv` | data | ready | Canonical 570 benchmark index |
+| Scenario Design | Combined manifest | `scenarios/analysis/data/corpus_v1_combined_manifest.csv` | data | ready | Canonical 540 benchmark index |
 | Base Scenarios | Structural manifest | `scenarios/base_scenarios/manifest.csv` | data | ready | 45 non-TP base scenarios |
 | Traffic Profiles | TP validation report | `scenarios/analysis/reports/validation/tp_validation_report.md` | report | ready | TP correctness and checks |
-| Stress Controls | Stress manifest | `scenarios/stress_controls/manifest.csv` | data | ready | 30 stress/control scenarios |
+| Stress Controls | Stress manifest | `scenarios/manifest.csv` | data | ready | 30 stress/control scenarios |
 | Feature Space | Feature report | `scenarios/analysis/reports/pipeline/features_report.md` | report | ready | Feature definitions and exclusions |
 | Diversity Validation | Correlation + multiple-comparisons | `scenarios/analysis/reports/pipeline/correlation_report.txt` | report | ready | Core diversity evidence |
 | Message Generation Policy | Message analysis window policy | `scenarios/analysis/reports/canonical/message_analysis_window_policy.md` | policy | ready | Required for fair protocol comparison |

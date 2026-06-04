@@ -18,11 +18,9 @@ from lib.report_paths import INVENTORY_UPDATE_REPORT  # noqa: E402
 SCENARIOS = SCENARIOS_DIR
 REPORT = INVENTORY_UPDATE_REPORT
 
-
 def _run(cmd: str) -> str:
     r = subprocess.run(cmd, shell=True, capture_output=True, text=True, cwd=SCENARIOS)
     return (r.stdout or "").strip().split()[-1] if r.stdout else "?"
-
 
 def main() -> int:
     ts = datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M UTC")
@@ -71,7 +69,6 @@ Update [`INVENTARIO.md`](../INVENTARIO.md) manually when taxonomy changes.
     REPORT.write_text(text, encoding="utf-8")
     print(f"Wrote {REPORT}")
     return 0
-
 
 if __name__ == "__main__":
     raise SystemExit(main())

@@ -23,9 +23,7 @@ POI_KEYS = ("homeLocationsFile", "officeLocationsFile", "meetingSpotsFile")
 TREES = (
     ("base_scenarios", SCENARIOS_DIR / "base_scenarios"),
     ("corpus_v1", SCENARIOS_DIR / "corpus_v1"),
-    ("stress_controls", SCENARIOS_DIR / "stress_controls"),
 )
-
 
 def load_settings_flat(path: Path) -> dict[str, str]:
     out: dict[str, str] = {}
@@ -37,15 +35,11 @@ def load_settings_flat(path: Path) -> dict[str, str]:
         out[k.strip()] = v.strip()
     return out
 
-
 def infer_family(path: Path) -> str:
     for part in path.parts:
-        if re.match(r"0[1-7]_.*", part):
+        if re.match(r"0[1-6]_.*", part):
             return part
-    if "stress_controls" in path.parts:
-        return "07_stress_controls"
     return ""
-
 
 def infer_map_name(kv: dict[str, str]) -> str:
     raw = kv.get("MapBasedMovement.mapFile1", "")
@@ -53,7 +47,6 @@ def infer_map_name(kv: dict[str, str]) -> str:
         if name in raw:
             return name
     return ""
-
 
 def load_validation_status() -> dict[tuple[str, str], str]:
     p = ANALYSIS_DATA / "bus_route_validation.csv"
@@ -65,7 +58,6 @@ def load_validation_status() -> dict[tuple[str, str], str]:
             key = (row.get("map_name", ""), row.get("route_file", ""))
             out[key] = row.get("status", "")
     return out
-
 
 def collect_rows() -> list[dict]:
     val = load_validation_status()
@@ -119,7 +111,6 @@ def collect_rows() -> list[dict]:
                     )
     return rows
 
-
 def write_report(rows: list[dict], path: Path) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
     ts = datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M UTC")
@@ -168,7 +159,6 @@ def write_report(rows: list[dict], path: Path) -> None:
         lines.append("- None detected.")
     path.write_text("\n".join(lines) + "\n", encoding="utf-8")
 
-
 def main() -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--output-csv", type=str, default=str(ANALYSIS_DATA / "route_usage_by_scenario.csv"))
@@ -187,7 +177,6 @@ def main() -> int:
     print(f"Wrote {out} ({len(rows)} rows)")
     print(f"Wrote {args.output_report}")
     return 0
-
 
 if __name__ == "__main__":
     raise SystemExit(main())

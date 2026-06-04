@@ -24,7 +24,7 @@ analysis/reports/paper_gate/paper_phase1_action_plan.md,Paper phase 1 action pla
 analysis/reports/pipeline/ablation_report.txt,=== Ablación 17 vs 23 vs 46 (features_core_vs_extended.md §6) ===,9,analysis/run_analysis.py,pipeline,YES,YES,NO,KEEP_SUPPORT,keep,,,contains 720 references; verify historical context
 analysis/reports/pipeline/clustering_report.txt,"Clustering Ward sobre Z (k=7), silhouette = 0.2680",737,analysis/run_analysis.py,pipeline,NO,YES,NO,KEEP_SUPPORT,keep,,,
 analysis/reports/pipeline/correlation_core23_report.txt,=== Correlación entre escenarios en espacio CORE 23 (referencia para investigación) ===,45,analysis/run_analysis.py,pipeline,YES,YES,NO,KEEP_SUPPORT,keep,,,
-analysis/reports/pipeline/correlation_report.txt,"=== Correlación entre escenarios (vectores Z, 570×d) ===",72,analysis/run_analysis.py,pipeline,YES,YES,NO,KEEP_SUPPORT,keep,,,
+analysis/reports/pipeline/correlation_report.txt,"=== Correlación entre escenarios (vectores Z, 540×d) ===",72,analysis/run_analysis.py,pipeline,YES,YES,NO,KEEP_SUPPORT,keep,,,
 analysis/reports/pipeline/feature_feature_correlation_report.txt,=== Correlación feature–feature (core 23) ===,8,analysis/run_analysis.py,pipeline,YES,YES,NO,KEEP_SUPPORT,keep,,,
 analysis/reports/pipeline/features_report.md,Informe de features,141,analysis/run_analysis.py,pipeline,YES,YES,NO,KEEP_SUPPORT,keep,,,
 analysis/reports/pipeline/features_report.txt,=== Informe de features (correlación y diversidad) ===,441,analysis/run_analysis.py,pipeline,NO,YES,NO,KEEP_SUPPORT,keep,,,

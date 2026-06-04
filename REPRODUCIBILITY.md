@@ -6,15 +6,15 @@
 |------|------|------------------:|
 | `base_scenarios/` | Structural mobility bases (no TP) | 45 |
 | `corpus_v1/` | Environmental benchmark with Traffic Profiles | 540 |
-| `stress_controls/07_stress_controls/` | Stress/control laboratory (TP01 + TP10) | 30 |
-| **Combined paper benchmark** | Analysis/validation (`include_stress=True`) | **570** |
+| `07_` | Stress/control laboratory (TP01 + TP10) | 30 |
+| **Combined paper benchmark** | Analysis/validation (`include_stress=True`) | **540** |
 
 **Simulation:** `--corpus corpus_v1` runs **540** environmental scenarios only. Stress/control is separate:
 
 ```bash
 python3 scenarios/analysis/run_all_scenarios.py --corpus corpus_v1          # 540
-python3 scenarios/analysis/run_all_scenarios.py --corpus stress_controls  # 30
-python3 scenarios/analysis/run_all_scenarios.py --corpus corpus_v1 --benchmark all  # 570
+python3 scenarios/analysis/run_all_scenarios.py --corpus   # 30
+python3 scenarios/analysis/run_all_scenarios.py --corpus corpus_v1 --benchmark all  # 540
 ```
 
 Legacy pre-rename mobility corpus: `_archive/legacy_corpus_v1_pre_rename/` (60 files).
@@ -34,7 +34,7 @@ python3 build_base_scenarios_manifest.py --dest ../base_scenarios
 ```bash
 cd scenarios/setup
 python3 regenerate_manifests.py --corpus-dir ../corpus_v1
-python3 regenerate_manifests.py --corpus-dir ../stress_controls --flat-family 07_stress_controls
+python3 regenerate_manifests.py --corpus-dir ../ --flat-family 07_
 cd ../analysis
 python3 -c "from lib.paths import build_combined_manifest_csv; print(build_combined_manifest_csv())"
 ```

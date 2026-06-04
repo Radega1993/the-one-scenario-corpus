@@ -58,12 +58,10 @@ EXPECTED_FILES = (
 
 LEGACY_ROUTE_NAMES = ("A_bus.wkt", "B_bus.wkt", "A_vehicle_route.wkt", "B_vehicle_route.wkt")
 
-
 def ensure_dirs() -> None:
     MAP_DATA.mkdir(parents=True, exist_ok=True)
     REPORTS.mkdir(parents=True, exist_ok=True)
     (SCENARIOS_DIR / "analysis" / "figures" / "paper" / "maps").mkdir(parents=True, exist_ok=True)
-
 
 def build_asset_inventory() -> list[dict]:
     wkt_dir = WKT_DIR / MAP_NAME
@@ -96,7 +94,6 @@ def build_asset_inventory() -> list[dict]:
             }
         )
     return rows
-
 
 def build_geometry_validation(meta: dict) -> list[dict]:
     wx, wy = world_size_from_metadata(meta)
@@ -147,7 +144,6 @@ def build_geometry_validation(meta: dict) -> list[dict]:
     )
     return rows
 
-
 def write_family_fit_report() -> None:
     path = REPORTS / "NuuksioSparseTrails_family_fit_report.md"
     path.write_text(
@@ -165,7 +161,7 @@ Generated as part of rural map finalization.
 | Methodological value | Scarce contacts, long routes, partial partitions, high delay |
 | vs urban/campus | No dense grid or pedestrian campus; trails not streets |
 | vs vehicles | No taxi/bus grid routes |
-| vs stress grid | Real OSM trails, not synthetic `ControlCompactGrid` |
+| vs stress grid | Real OSM trails, not synthetic `` |
 
 ## Expected outcomes (not errors)
 
@@ -187,7 +183,6 @@ See `NuuksioSparseTrails_rural_scenario_classification.md` for full notes.
 """,
         encoding="utf-8",
     )
-
 
 def write_validation_report(
     geom_rows: list[dict],
@@ -232,7 +227,6 @@ def write_validation_report(
     )
     path.write_text("\n".join(lines) + "\n", encoding="utf-8")
 
-
 def build_affected_scenarios() -> list[dict]:
     rows: list[dict] = []
     for root, tree in ((BASE_RURAL, "base_scenarios"), (CORPUS_RURAL, "corpus_v1")):
@@ -253,7 +247,6 @@ def build_affected_scenarios() -> list[dict]:
                 }
             )
     return rows
-
 
 def write_resimulation_plan(n: int) -> None:
     path = REPORTS / "NuuksioSparseTrails_resimulation_plan.md"
@@ -282,7 +275,6 @@ Generated: {datetime.now().isoformat(timespec='seconds')}
 """,
         encoding="utf-8",
     )
-
 
 def write_final_decision(global_pass: bool, class_counts: dict[str, int]) -> None:
     path = REPORTS / "NuuksioSparseTrails_final_decision.md"
@@ -342,7 +334,6 @@ Other map families; OSM full regen; Traffic Profile changes; automatic re-simula
         encoding="utf-8",
     )
 
-
 def print_summary(**kwargs) -> None:
     print("\n" + "=" * 60)
     print(f"GLOBAL: {'PASS' if kwargs['global_pass'] else 'FAIL'}")
@@ -357,7 +348,6 @@ def print_summary(**kwargs) -> None:
     print(f"Files generated: {len(kwargs['generated'])}")
     print("Re-simulation: RECOMMENDED if POI/patrol WKT or settings changed")
     print("=" * 60)
-
 
 def main() -> int:
     ap = argparse.ArgumentParser(description="Finalize NuuksioSparseTrails for paper")
@@ -533,7 +523,6 @@ def main() -> int:
         generated=generated,
     )
     return 0 if global_pass else 1
-
 
 if __name__ == "__main__":
     raise SystemExit(main())

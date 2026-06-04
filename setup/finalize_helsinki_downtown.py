@@ -51,11 +51,9 @@ EXPECTED_FILES = (
     "C_bus.wkt",
 )
 
-
 def ensure_dirs() -> None:
     MAP_DATA.mkdir(parents=True, exist_ok=True)
     (SCENARIOS_DIR / "analysis" / "figures" / "paper" / "maps").mkdir(parents=True, exist_ok=True)
-
 
 def build_asset_inventory() -> list[dict]:
     wkt_dir = WKT_DIR / MAP_NAME
@@ -86,7 +84,6 @@ def build_asset_inventory() -> list[dict]:
             }
         )
     return rows
-
 
 def build_geometry_validation(meta: dict) -> list[dict]:
     wx, wy = world_size_from_metadata(meta)
@@ -140,7 +137,6 @@ def build_geometry_validation(meta: dict) -> list[dict]:
     )
     return rows
 
-
 def write_validation_report(
     asset_rows: list[dict],
     geom_rows: list[dict],
@@ -186,7 +182,6 @@ def write_validation_report(
     )
     path.write_text("\n".join(lines) + "\n", encoding="utf-8")
 
-
 def build_affected_scenarios() -> list[dict]:
     rows: list[dict] = []
     for root, tree in ((BASE_URBAN, "base_scenarios"), (CORPUS_URBAN, "corpus_v1")):
@@ -202,7 +197,6 @@ def build_affected_scenarios() -> list[dict]:
                 }
             )
     return rows
-
 
 def write_resimulation_plan(n_scenarios: int) -> None:
     path = REPORTS / "HelsinkiDowntown_resimulation_plan.md"
@@ -231,7 +225,6 @@ def write_resimulation_plan(n_scenarios: int) -> None:
     ]
     path.write_text("\n".join(lines) + "\n", encoding="utf-8")
 
-
 def print_summary(
     *,
     global_pass: bool,
@@ -254,7 +247,6 @@ def print_summary(
     print(f"Files generated: {len(generated)}")
     print("Re-simulation: RECOMMENDED for all 01_urban after WKT changes")
     print("=" * 60)
-
 
 def main() -> int:
     ap = argparse.ArgumentParser(description="Finalize HelsinkiDowntown for paper")
@@ -416,7 +408,6 @@ def main() -> int:
         generated=generated,
     )
     return 0 if global_pass else 1
-
 
 if __name__ == "__main__":
     raise SystemExit(main())

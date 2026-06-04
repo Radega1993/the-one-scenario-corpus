@@ -15,7 +15,7 @@ maps/
 │   ├── NuuksioSparseTrails/     → 04_rural
 │   ├── HelsinkiDisrupted/       → 05_disaster
 │   ├── KallioCommunityCompact/  → 06_social
-│   └── ControlCompactGrid/      → 07_stress_controls (sintético)
+│   └── /      → 07_ (sintético)
 └── validation/    # JSONs de validación por mapa
 ```
 
@@ -84,7 +84,7 @@ scenarios/analysis/.venv/bin/python scenarios/setup/finalize_helsinki_downtown.p
 
 Salidas: `analysis/data/maps/HelsinkiDowntown_*.csv`, informes `analysis/reports/maps/HelsinkiDowntown_*.md`, figuras `analysis/figures/paper/maps/HelsinkiDowntown_paper_ready.png`.
 
-Decisión final: `analysis/reports/maps/HelsinkiDowntown_final_decision.md`. Wiki: `.wiki-clone/06-Urban-Family.md`.
+Decisión final: `analysis/reports/maps/HelsinkiDowntown_final_decision.md`. Wiki: `.wiki-clone/09-Urban-Family.md`.
 
 ## KumpulaCampus (02_campus) — paper-ready
 
@@ -94,7 +94,7 @@ scenarios/analysis/.venv/bin/python scenarios/setup/finalize_kumpula_campus.py -
 
 Salidas: `analysis/data/maps/KumpulaCampus_*.csv`, `analysis/reports/maps/KumpulaCampus_final_decision.md`, figura paper en `analysis/figures/paper/maps/KumpulaCampus_paper_ready.png`.
 
-Wiki: `.wiki-clone/07-Campus-Family.md`. C4 renombrado a `CampusEvent_IngressEgress`.
+Wiki: `.wiki-clone/10-Campus-Family.md`. C4 renombrado a `CampusEvent_IngressEgress`.
 
 ## ManhattanMidtownGrid (03_vehicles) — paper-ready
 
@@ -104,7 +104,7 @@ scenarios/analysis/.venv/bin/python scenarios/setup/finalize_manhattan_midtown.p
 
 Salidas: `analysis/data/maps/ManhattanMidtownGrid_*.csv`, `analysis/reports/maps/ManhattanMidtownGrid_final_decision.md`, figura paper en `analysis/figures/paper/maps/ManhattanMidtownGrid_paper_ready.png`.
 
-Wiki: `.wiki-clone/08-Vehicles-Family.md`. Rutas `A_vehicle_route` / `B_vehicle_route`; sin `A_bus.wkt` en settings.
+Wiki: `.wiki-clone/11-Vehicles-Family.md`. Rutas `A_vehicle_route` / `B_vehicle_route`; sin `A_bus.wkt` en settings.
 
 ## NuuksioSparseTrails (04_rural) — paper-ready
 
@@ -114,7 +114,7 @@ scenarios/analysis/.venv/bin/python scenarios/setup/finalize_nuuksio_sparse_trai
 
 Salidas: `analysis/data/maps/NuuksioSparseTrails_*.csv`, `analysis/reports/maps/NuuksioSparseTrails_final_decision.md`, figura paper en `analysis/figures/paper/maps/NuuksioSparseTrails_paper_ready.png`.
 
-Wiki: `.wiki-clone/09-Rural-Family.md`. Patrulla `A_ranger_patrol`; R1 renombrado a `R1_Rural_SparseSPMM`.
+Wiki: `.wiki-clone/12-Rural-Family.md`. Patrulla `A_ranger_patrol`; R1 renombrado a `R1_Rural_SparseSPMM`.
 
 ## HelsinkiDisrupted (05_disaster) — paper-ready
 
@@ -124,7 +124,7 @@ scenarios/analysis/.venv/bin/python scenarios/setup/finalize_helsinki_disrupted.
 
 Salidas: `analysis/data/maps/HelsinkiDisrupted_*.csv`, `analysis/reports/maps/HelsinkiDisrupted_final_decision.md`, figura paper en `analysis/figures/paper/maps/HelsinkiDisrupted_paper_ready.png`.
 
-Wiki: `.wiki-clone/10-Disaster-Family.md`. Rutas `A_emergency_route` / `B_mule_route`; D5 Group1 → SPMM.
+Wiki: `.wiki-clone/13-Disaster-Family.md`. Rutas `A_emergency_route` / `B_mule_route`; D5 Group1 → SPMM.
 
 ## KallioCommunityCompact (06_social) — paper-ready
 
@@ -134,4 +134,4 @@ scenarios/analysis/.venv/bin/python scenarios/setup/finalize_kallio_community_co
 
 Salidas: `analysis/data/maps/KallioCommunityCompact_*.csv`, `analysis/reports/maps/KallioCommunityCompact_final_decision.md`, figura paper en `analysis/figures/paper/maps/KallioCommunityCompact_paper_ready.png`.
 
-Wiki: `.wiki-clone/11-Social-Family.md`. Rutas `A_community_route` / `B_community_route` (assets opcionales); S1/S6 ClusterMovement sin `routeFile`.
+Wiki: `.wiki-clone/14-Social-Family.md`. Rutas `A_community_route` / `B_community_route` (assets opcionales); S1/S6 map-aware routes.

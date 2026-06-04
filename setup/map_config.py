@@ -54,16 +54,6 @@ MAP_DEFS: dict[str, dict] = {
         "description": "Kallio residential neighbourhood. Dense, compact community — social/cluster scenarios.",
         "poi_density": {"homes": 70, "offices": 20, "meetingspots": 30, "bus_routes": 2},
     },
-    "ControlCompactGrid": {
-        "synthetic": True,
-        "grid_size": (12, 10),
-        "block_m": 150,
-        "margin_m": 100,
-        "crs": "local",
-        "family": "07_stress_controls",
-        "description": "Synthetic rectangular grid (12x10 blocks, 150 m spacing). Controlled baseline with no geographic bias.",
-        "poi_density": {"homes": 50, "offices": 30, "meetingspots": 20, "bus_routes": 1},
-    },
 }
 
 WORLD_SIZE_MARGIN_M = 200

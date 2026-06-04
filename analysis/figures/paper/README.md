@@ -48,4 +48,3 @@ Las figuras se generan exclusivamente a partir de:
 - `analysis/data/ablation_metrics.csv` (si existe)
 - `analysis/data/output_metrics.csv` (si existe)
 - `analysis/data/feature_feature_correlation_core.csv` (si existe)
-

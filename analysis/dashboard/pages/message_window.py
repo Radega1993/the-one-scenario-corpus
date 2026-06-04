@@ -11,7 +11,6 @@ from lib.report_paths import MESSAGE_ANALYSIS_WINDOW_POLICY
 
 from dashboard.data_loaders import FIGURES_DIR, load_csv
 
-
 def render(filtered: pd.DataFrame, master: pd.DataFrame) -> None:
     st.header("Ventana de análisis de mensajes")
     st.caption(

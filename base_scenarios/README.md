@@ -12,7 +12,7 @@ This directory holds **45 structural base scenarios** (families 01–06) used to
 ## What is NOT included
 
 - Traffic Profile overlays (TP01–TP12).
-- Stress/control laboratory tier — see [`../stress_controls/`](../stress_controls/).
+- Stress/control laboratory tier — see [`../`](../).
 
 ## Relation to other corpora
 
@@ -20,7 +20,7 @@ This directory holds **45 structural base scenarios** (families 01–06) used to
 |-----------|------|
 | `base_scenarios/` | Structural template (this folder) |
 | `corpus_v1/` | Paper benchmark: bases × Traffic Profiles (540 scenarios, 6 families) |
-| `stress_controls/` | Stress/control tier with TP (30 scenarios) |
+| `` | Stress/control tier with TP (30 scenarios) |
 | `_archive/legacy_corpus_v1_pre_rename/` | Pre-rename historical mobility corpus |
 
 ## Regeneration

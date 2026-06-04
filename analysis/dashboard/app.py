@@ -45,7 +45,6 @@ PAGES = {
     "Reportes crudos": raw_reports,
 }
 
-
 def main() -> None:
     st.set_page_config(
         page_title="Análisis corpus_v1 — The ONE",
@@ -80,7 +79,6 @@ def main() -> None:
 
     mod = PAGES[page]
     mod.render(filtered, master)
-
 
 if __name__ == "__main__":
     main()

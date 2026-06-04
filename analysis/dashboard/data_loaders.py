@@ -95,14 +95,12 @@ _OPTIONAL_CSV: dict[str, tuple[str, list[str] | None]] = {
     ),
 }
 
-
 def _scenario_col(df: pd.DataFrame) -> str:
     if "scenario" in df.columns:
         return "scenario"
     if "scenario_name" in df.columns:
         return "scenario_name"
     return df.columns[0]
-
 
 @st.cache_data(ttl=60)
 def load_csv(name: str) -> pd.DataFrame | None:
@@ -114,7 +112,6 @@ def load_csv(name: str) -> pd.DataFrame | None:
     except Exception:
         return None
 
-
 @st.cache_data(ttl=60)
 def load_features_table(core_only: bool = False) -> pd.DataFrame | None:
     name = "features_core.csv" if core_only else "features.csv"
@@ -124,7 +121,6 @@ def load_features_table(core_only: bool = False) -> pd.DataFrame | None:
     if "scenario" not in df.columns and df.columns[0]:
         df = df.rename(columns={df.columns[0]: "scenario"})
     return df
-
 
 @st.cache_data(ttl=60)
 def load_manifest() -> pd.DataFrame:
@@ -139,11 +135,9 @@ def load_manifest() -> pd.DataFrame:
         df["scenario"] = df.iloc[:, 0].astype(str)
     return df
 
-
 @st.cache_data(ttl=60)
 def load_tp_kpi_summary() -> pd.DataFrame | None:
     return load_csv("traffic_profile_kpi_summary.csv")
-
 
 @st.cache_data(ttl=60)
 def file_mtime(path_str: str) -> float | None:
@@ -152,11 +146,9 @@ def file_mtime(path_str: str) -> float | None:
         return p.stat().st_mtime
     return None
 
-
 @st.cache_data(ttl=120)
 def heatmap_exists(scenario: str) -> bool:
     return (SPATIAL_HEATMAP_DIR / f"{scenario}.png").is_file()
-
 
 @st.cache_data(ttl=120)
 def list_raw_report_types() -> list[str]:
@@ -169,12 +161,10 @@ def list_raw_report_types() -> list[str]:
             types.add(stem.rsplit("_", 1)[-1])
     return sorted(types)
 
-
 @st.cache_data(ttl=120)
 def raw_report_path(scenario: str, report_type: str) -> str | None:
     p = REPORTS_DIR / f"{scenario}_{report_type}.txt"
     return str(p) if p.is_file() else None
-
 
 def _merge_optional(master: pd.DataFrame, key: str) -> pd.DataFrame:
     spec = _OPTIONAL_CSV.get(key)
@@ -207,7 +197,6 @@ def _merge_optional(master: pd.DataFrame, key: str) -> pd.DataFrame:
                 sub = sub.rename(columns={"median_creation_time_norm": "msg_window_median_norm"})
     return master.merge(sub, on="scenario", how="left", suffixes=("", f"_{key}"))
 
-
 def _merge_tp_kpi(master: pd.DataFrame) -> pd.DataFrame:
     kpi = load_tp_kpi_summary()
     if kpi is None or kpi.empty or "traffic_profile_id" not in master.columns:
@@ -223,7 +212,6 @@ def _merge_tp_kpi(master: pd.DataFrame) -> pd.DataFrame:
         how="left",
         suffixes=("", "_kpi"),
     )
-
 
 @st.cache_data(ttl=60)
 def build_master_table() -> pd.DataFrame:
@@ -265,7 +253,6 @@ def build_master_table() -> pd.DataFrame:
 
     return master
 
-
 @st.cache_data(ttl=60)
 def pipeline_status() -> dict[str, bool]:
     return {
@@ -287,14 +274,12 @@ def pipeline_status() -> dict[str, bool]:
         "bench_validation": (DATA_DIR / "corpus_benchmark_validation.csv").is_file(),
     }
 
-
 def _primary_coverage_column(df: pd.DataFrame) -> str | None:
     """Prefer road-cell coverage; fall back to world / legacy columns."""
     for col in ("coverage_road_cells_pct", "coverage_world_pct", "final_coverage_pct"):
         if col in df.columns:
             return col
     return None
-
 
 def _num_range(
     series: pd.Series,
@@ -308,7 +293,6 @@ def _num_range(
     if hi is not None:
         mask &= s <= hi
     return mask
-
 
 def apply_global_filters(
     df: pd.DataFrame,
@@ -356,7 +340,6 @@ def apply_global_filters(
         out = out[out["policy_status"].astype(str).isin(policy_statuses)]
     return out
 
-
 def _slider_range(
     label: str,
     col: pd.Series,
@@ -382,7 +365,6 @@ def _slider_range(
         value=(float(default_lo if default_lo >= lo_data else lo_data), float(default_hi if default_hi <= hi_data else hi_data)),
     )
     return vals[0], vals[1]
-
 
 def render_sidebar_filters(master: pd.DataFrame) -> pd.DataFrame:
     """Global filters in sidebar; returns filtered master table."""
@@ -481,7 +463,6 @@ def render_sidebar_filters(master: pd.DataFrame) -> pd.DataFrame:
     st.sidebar.caption(f"Escenarios visibles: **{len(filtered)}** / {len(master)}")
     return filtered
 
-
 def list_markdown_reports() -> list[tuple[str, Path]]:
     pinned: list[tuple[str, Path]] = [
         ("Resultados actuales", RESULTADOS_ACTUALES),
@@ -519,7 +500,6 @@ def list_markdown_reports() -> list[tuple[str, Path]]:
     if fig_index.is_file():
         out.append(("Índice figuras paper", fig_index))
     return out
-
 
 def write_dashboard_readiness_report(path: Path | None = None) -> Path:
     """Generate dashboard_readiness_report.md from current pipeline state."""

@@ -7,7 +7,7 @@ Generated: 2026-05-28 17:46 UTC
 - Reorganized `scenarios/.wiki-clone/` into **18 numbered sections** plus `Home.md`.
 - Active wiki documents **current corpus only** (no legacy map/corpus callouts in section pages).
 - Map assets: **7/7** PNG under `assets/maps/`.
-- Corpus counts documented: **45** base + **540** corpus_v1 + **30** stress = **615** settings files.
+- Corpus counts documented: **45** base + **540** corpus_v1 + **30** stress = **540** settings files.
 
 ## Final tree (active markdown)
 

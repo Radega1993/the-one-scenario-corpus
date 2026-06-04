@@ -85,24 +85,12 @@ MAP_DEFS: dict[str, dict] = {
         "description": "Kallio residential neighbourhood.",
         "poi_density": {"homes": 70, "offices": 20, "meetingspots": 30, "bus_routes": 2},
     },
-    "ControlCompactGrid": {
-        "synthetic": True,
-        "grid_size": (12, 10),
-        "block_m": 150,
-        "margin_m": 100,
-        "crs": "local",
-        "family": "07_stress_controls",
-        "description": "Synthetic rectangular grid (12x10 blocks, 150 m spacing).",
-        "poi_density": {"homes": 50, "offices": 30, "meetingspots": 20, "bus_routes": 1},
-    },
 }
-
 
 # ── WKT writers ──────────────────────────────────────────────────────────────
 
 def _fmt(v: float) -> str:
     return f"{v:.6f}"
-
 
 def write_roads_wkt(edges: list[list[tuple[float, float]]], path: Path) -> None:
     with open(path, "w") as f:
@@ -110,12 +98,10 @@ def write_roads_wkt(edges: list[list[tuple[float, float]]], path: Path) -> None:
             pts = ", ".join(f"{_fmt(x)} {_fmt(y)}" for x, y in coords)
             f.write(f"LINESTRING ({pts})\n\n")
 
-
 def write_points_wkt(points: list[tuple[float, float]], path: Path) -> None:
     with open(path, "w") as f:
         for x, y in points:
             f.write(f"POINT ({_fmt(x)} {_fmt(y)})\n\n")
-
 
 def write_bus_route_wkt(route_points: list[tuple[float, float]], path: Path) -> None:
     if len(route_points) < 2:
@@ -123,7 +109,6 @@ def write_bus_route_wkt(route_points: list[tuple[float, float]], path: Path) -> 
     pts = ", ".join(f"{_fmt(x)} {_fmt(y)}" for x, y in route_points)
     with open(path, "w") as f:
         f.write(f"LINESTRING ({pts})\n")
-
 
 # ── Synthetic grid generator ────────────────────────────────────────────────
 
@@ -141,7 +126,6 @@ def _generate_synthetic_grid(cfg: dict) -> tuple[list[list[tuple[float, float]]]
         col_pts = [(margin + c * block, margin + r * block) for r in range(rows + 1)]
         edges.append(col_pts)
     return edges, list(set(nodes))
-
 
 # ── OSM graph processing ────────────────────────────────────────────────────
 
@@ -192,7 +176,6 @@ def _process_osm_map(name: str, cfg: dict) -> dict:
         "n_edges": len(all_edges),
     }
 
-
 # ── POI generation ──────────────────────────────────────────────────────────
 
 def _load_osm_pois(name: str) -> dict[str, list[dict]]:
@@ -201,7 +184,6 @@ def _load_osm_pois(name: str) -> dict[str, list[dict]]:
         with open(pois_path) as f:
             return json.load(f)
     return {}
-
 
 def _generate_pois_at_nodes(
     node_coords: list[tuple[float, float]],
@@ -220,7 +202,6 @@ def _generate_pois_at_nodes(
         return list(node_coords)
     return rng.sample(node_coords, count)
 
-
 def _snap_to_nearest_node(
     pt: tuple[float, float],
     node_coords: list[tuple[float, float]],
@@ -233,7 +214,6 @@ def _snap_to_nearest_node(
         if d < best_d:
             best, best_d = nc, d
     return best
-
 
 def _reproject_and_snap_pois(
     raw_pts: list[dict],
@@ -259,7 +239,6 @@ def _reproject_and_snap_pois(
             snapped.append(nearest)
     return snapped
 
-
 def _generate_bus_route(
     roads_path: Path,
     rng: random.Random,
@@ -282,7 +261,6 @@ def _generate_bus_route(
     rg = RoadGraph.from_roads_wkt(roads_path)
     sim_stops = generate_bus_route_on_graph(rg, rng, n_stops=n_stops, family=family)
     return sim_waypoints_to_raw(sim_stops, raw_roads, rg)
-
 
 # ── Main processing ─────────────────────────────────────────────────────────
 
@@ -374,7 +352,6 @@ def process_all(install: bool = False) -> None:
     for n, m in results.items():
         print(f"  {n}: {m['n_road_segments']} edges, worldSize={m['world_size']}")
 
-
 def _install_maps() -> None:
     """Copy WKT map directories into the repo data/ folder for The ONE."""
     print("\n--- Installing maps to data/ ---")
@@ -390,14 +367,12 @@ def _install_maps() -> None:
         shutil.copytree(src, dst)
         print(f"  [OK] {name} -> {dst}")
 
-
 def main() -> int:
     ap = argparse.ArgumentParser(description="Convert OSM GraphML to The ONE WKT.")
     ap.add_argument("--install", action="store_true", help="Copy WKT to data/ after processing")
     args = ap.parse_args()
     process_all(install=args.install)
     return 0
-
 
 if __name__ == "__main__":
     raise SystemExit(main())

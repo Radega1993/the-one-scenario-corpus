@@ -5,8 +5,8 @@ Generated: 2026-05-27 09:42 UTC
 ## Executive summary
 
 - **Corpus:** `corpus_v1` — **720** scenarios (60 bases × 12 TP)
-- **Settings files:** 570
-- **Manifest rows:** 570
+- **Settings files:** 540
+- **Manifest rows:** 540
 - **Output metrics:** 720 rows
 - **Spatial metrics:** 720 rows
 - **Scenarios needing attention (non-ok, non-valido_extremo):** 275
@@ -25,8 +25,8 @@ Generated: 2026-05-27 09:42 UTC
 
 | Check | Result |
 |-------|--------|
-| `.settings` in corpus_v1 | 570 |
-| manifest.csv data rows | 570 |
+| `.settings` in corpus_v1 | 540 |
+| manifest.csv data rows | 540 |
 | Scenario bases | 60 |
 | Traffic profiles | 12 |
 | output_metrics.csv | 720 |
@@ -50,7 +50,7 @@ Generated: 2026-05-27 09:42 UTC
 | `04_rural` | 44 | 40 | 0 | 48 | 12 |
 | `05_disaster` | 34 | 16 | 0 | 46 | 12 |
 | `06_social` | 57 | 9 | 0 | 6 | 0 |
-| `07_stress_controls` | 0 | 30 | 0 | 0 | 0 |
+| `07_` | 0 | 30 | 0 | 0 | 0 |
 
 ### By traffic profile
 
@@ -253,7 +253,7 @@ Generated: 2026-05-27 09:42 UTC
 - **TP12** cross-group partition controls (`include_control`)
 - **TP04 / TP05 / TP10** stress load and CriticalTTL tiers (`include_stress`)
 - **R10 / R11** and disconnected bases with `ZERO_CONTACTS` (`include_control` / `document_as_extreme`)
-- **07_stress_controls** family (stress/control laboratory)
+- **07_** family (stress/control laboratory)
 - **MAP_UNDERUSED** WDM scenarios (~8–10% world grid coverage on roads — not a simulation failure)
 
 Count `valido_extremo`: **104** scenarios.
@@ -284,7 +284,7 @@ Count `valido_extremo`: **104** scenarios.
 Align protocol runs with `corpus_v1/manifest_revision.csv`:
 
 - **main:** TP01–TP08 on viable bases; exclude `error_probable` and `configuracion_sospechosa`
-- **stress:** TP09–TP11, TP04–TP06 load, all `07_stress_controls`
+- **stress:** TP09–TP11, TP04–TP06 load, all `07_`
 - **control:** TP12 partition, disconnected extremes
 
 ## Next steps

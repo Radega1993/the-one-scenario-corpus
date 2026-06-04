@@ -14,7 +14,6 @@ from lib.report_paths import (
     SCENARIO_DIAGNOSIS,
 )
 
-
 def render(filtered: pd.DataFrame, master: pd.DataFrame) -> None:
     st.header("Diagnóstico del corpus")
 

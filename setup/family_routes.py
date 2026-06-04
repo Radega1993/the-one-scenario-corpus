@@ -16,7 +16,6 @@ from map_geometry import (
 )
 from route_semantic_config import FAMILY_ROUTE_TARGETS, MAP_FAMILY
 
-
 def _nn_tour(rg: RoadGraph, seeds: list[tuple[float, float]]) -> list[tuple[float, float]]:
     if not seeds:
         return []
@@ -28,7 +27,6 @@ def _nn_tour(rg: RoadGraph, seeds: list[tuple[float, float]]) -> list[tuple[floa
         tour.append(nxt)
         rem.remove(nxt)
     return dedupe_consecutive(tour)
-
 
 def _walk_axis(
     rg: RoadGraph,
@@ -48,7 +46,6 @@ def _walk_axis(
         stops = [ordered[0], ordered[-1]]
     return _nn_tour(rg, stops)
 
-
 def generate_urban_bus_routes(rg: RoadGraph, rng: random.Random) -> dict[str, list[tuple[float, float]]]:
     nodes = rg.node_list
     cx = sum(p[0] for p in nodes) / len(nodes)
@@ -63,7 +60,6 @@ def generate_urban_bus_routes(rg: RoadGraph, rng: random.Random) -> dict[str, li
     route_c = _nn_tour(rg, c_seeds)
     return {"A_bus.wkt": route_a, "B_bus.wkt": route_b, "C_bus.wkt": route_c}
 
-
 def generate_campus_shuttle_route(rg: RoadGraph, rng: random.Random) -> dict[str, list[tuple[float, float]]]:
     nodes = rg.node_list
     if len(nodes) < 4:
@@ -75,7 +71,6 @@ def generate_campus_shuttle_route(rg: RoadGraph, rng: random.Random) -> dict[str
     seeds = by_angle[::step][:10]
     tour = _nn_tour(rg, seeds)
     return {"A_campus_shuttle.wkt": tour}
-
 
 def generate_vehicle_grid_routes(rg: RoadGraph, rng: random.Random) -> dict[str, list[tuple[float, float]]]:
     nodes = rg.node_list
@@ -93,7 +88,6 @@ def generate_vehicle_grid_routes(rg: RoadGraph, rng: random.Random) -> dict[str,
         route_ew = _walk_axis(rg, nodes, sort_key=lambda p: p[1], n_stops=12)
     return {"A_vehicle_route.wkt": route_ns, "B_vehicle_route.wkt": route_ew}
 
-
 def generate_ranger_patrol_route(rg: RoadGraph, rng: random.Random) -> dict[str, list[tuple[float, float]]]:
     nodes = rg.node_list
     if len(nodes) < 2:
@@ -108,13 +102,11 @@ def generate_ranger_patrol_route(rg: RoadGraph, rng: random.Random) -> dict[str,
     tour = _nn_tour(rg, dedupe_consecutive(seeds))[:10]
     return {"A_ranger_patrol.wkt": tour}
 
-
 def generate_disaster_routes(rg: RoadGraph, rng: random.Random) -> dict[str, list[tuple[float, float]]]:
     nodes = rg.node_list
     em = _walk_axis(rg, nodes, sort_key=lambda p: p[0], n_stops=8)
     mule = _walk_axis(rg, nodes, sort_key=lambda p: p[1], n_stops=6)
     return {"A_emergency_route.wkt": em, "B_mule_route.wkt": mule}
-
 
 def generate_community_routes(rg: RoadGraph, rng: random.Random) -> dict[str, list[tuple[float, float]]]:
     nodes = rg.node_list
@@ -131,7 +123,6 @@ def generate_community_routes(rg: RoadGraph, rng: random.Random) -> dict[str, li
     route_b = _nn_tour(rg, b_seeds)
     return {"A_community_route.wkt": route_a, "B_community_route.wkt": route_b}
 
-
 def generate_control_grid_routes(rg: RoadGraph, rng: random.Random) -> dict[str, list[tuple[float, float]]]:
     nodes = rg.node_list
     xs = [p[0] for p in nodes]
@@ -146,7 +137,6 @@ def generate_control_grid_routes(rg: RoadGraph, rng: random.Random) -> dict[str,
         v_line = sorted(nodes, key=lambda p: p[1])
     return {"A_control_route.wkt": h_line[:: max(1, len(h_line) // 8)][:10]}
 
-
 GENERATORS: dict[str, Callable[[RoadGraph, random.Random], dict[str, list[tuple[float, float]]]]] = {
     "01_urban": generate_urban_bus_routes,
     "02_campus": generate_campus_shuttle_route,
@@ -154,9 +144,7 @@ GENERATORS: dict[str, Callable[[RoadGraph, random.Random], dict[str, list[tuple[
     "04_rural": generate_ranger_patrol_route,
     "05_disaster": generate_disaster_routes,
     "06_social": generate_community_routes,
-    "07_stress_controls": generate_control_grid_routes,
 }
-
 
 def generate_routes_for_map(map_name: str, rg: RoadGraph, rng: random.Random) -> dict[str, list[tuple[float, float]]]:
     family = MAP_FAMILY[map_name]
@@ -164,7 +152,6 @@ def generate_routes_for_map(map_name: str, rg: RoadGraph, rng: random.Random) ->
     routes = gen(rg, rng)
     targets = FAMILY_ROUTE_TARGETS.get(map_name, list(routes.keys()))
     return {k: routes[k] for k in targets if k in routes}
-
 
 def validate_stops(rg: RoadGraph, stops: list[tuple[float, float]], family: str) -> tuple[bool, str]:
     if len(stops) < 2:

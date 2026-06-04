@@ -20,7 +20,6 @@ from lib.paths import DATA_DIR, REPO_ROOT as ROOT  # noqa: E402
 from lib.report_paths import SCENARIO_DIAGNOSIS  # noqa: E402
 from lib.scenario_diagnosis import build_diagnosis_table, write_diagnosis_report  # noqa: E402
 
-
 def main() -> int:
     ap = argparse.ArgumentParser(description="Diagnose corpus scenarios.")
     ap.add_argument("--settings-audit", type=str, default=str(DATA_DIR / "settings_audit.csv"))
@@ -71,7 +70,6 @@ def main() -> int:
     print(f"Wrote {out_csv} ({len(df)} rows)")
     print(f"Wrote {out_md}")
     return 0
-
 
 if __name__ == "__main__":
     raise SystemExit(main())

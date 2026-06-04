@@ -49,7 +49,7 @@ Backup before edits: `scenarios/.wiki-clone/_backup_before_maps_doc_update_20260
 | `assets/maps/NuuksioSparseTrails.png` | Yes |
 | `assets/maps/HelsinkiDisrupted.png` | Yes |
 | `assets/maps/KallioCommunityCompact.png` | Yes |
-| `assets/maps/ControlCompactGrid.png` | Yes |
+| `assets/maps/.png` | Yes |
 
 **Missing images:** none.
 
@@ -85,13 +85,13 @@ scenarios/analysis/.venv/bin/python scenarios/setup/render_wiki_map_previews.py 
 | `04_rural` | NuuksioSparseTrails | Paper-ready |
 | `05_disaster` | HelsinkiDisrupted | Paper-ready |
 | `06_social` | KallioCommunityCompact | Paper-ready |
-| `07_stress_controls` | ControlCompactGrid | Stress/control only |
+| `07_` |  | Stress/control only |
 
 ## Final checklist
 
 - [x] 02 explains synthetic benchmark and no real mobility traces
 - [x] One fixed map per environmental family documented
-- [x] ControlCompactGrid excluded from environmental paper corpus
+- [x]  excluded from environmental paper corpus
 - [x] **Map assignment by family** table with 6 columns
 - [x] Gallery with intro + 7 PNGs from `assets/maps/`
 - [x] No validation PNGs as main wiki gallery images

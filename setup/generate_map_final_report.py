@@ -17,14 +17,12 @@ from map_geometry import SCENARIOS_DIR  # noqa: E402
 REPORTS = SCENARIOS_DIR / "analysis" / "reports" / "maps"
 DATA = SCENARIOS_DIR / "analysis" / "data"
 
-
 def read_csv(name: str) -> list[dict]:
     p = DATA / name
     if not p.is_file():
         return []
     with p.open(encoding="utf-8") as f:
         return list(csv.DictReader(f))
-
 
 def main() -> int:
     inv = read_csv("map_assets_inventory.csv")
@@ -130,7 +128,7 @@ def main() -> int:
             "reprojected to metric coordinates, reduced to the largest connected component, and exported as WKT for The ONE. "
             "Auxiliary route files use **semantic names** per family (urban bus, vehicle route, ranger patrol, etc.). "
             "Waypoints sit on the road network; carriers follow shortest paths on the graph between stops. POI and route assets are checked against `worldSize` and road "
-            "proximity before inclusion. The `stress_controls` family uses **ControlCompactGrid**, a synthetic topology "
+            "proximity before inclusion. The `` family uses ****, a synthetic topology "
             "isolated from geographic bias, only for extreme protocol stress experiments outside the 540-scenario environmental core.",
             "",
         ]
@@ -148,7 +146,6 @@ def main() -> int:
     out.write_text("\n".join(lines), encoding="utf-8")
     print(f"Wrote {out}")
     return 0
-
 
 if __name__ == "__main__":
     raise SystemExit(main())

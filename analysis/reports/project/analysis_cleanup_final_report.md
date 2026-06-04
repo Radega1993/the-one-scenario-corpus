@@ -4,7 +4,7 @@
 
 - Completed docs+wiki finalization for paper writing readiness on top of the analysis cleanup.
 - Raw The ONE reports under `../../reports/` were not modified.
-- Active benchmark confirmed: `base_scenarios` 45, `corpus_v1` 540, `stress_controls` 30, combined 570.
+- Active benchmark confirmed: `base_scenarios` 45, `corpus_v1` 540, `` 30, combined 540.
 
 ## Review metrics (final pass)
 
@@ -45,8 +45,8 @@
 ## Pending actions before final submission
 
 - Install `scipy` in `scenarios/analysis/.venv` and rerun `run_analysis.py --phase ablation` to refresh `ablation_metrics.csv` in the current environment.
-- Regenerate spatial occupancy datasets to strict 570 if required; current spatial CSV is legacy-720 fallback to keep dependent reports operable.
-- Close remaining consistency WARNs (`output_metrics` 566 vs 570, and legacy-string counters in broad docs) when simulation outputs are complete.
+- Regenerate spatial occupancy datasets to strict 540 if required; current spatial CSV is legacy-720 fallback to keep dependent reports operable.
+- Close remaining consistency WARNs (`output_metrics` 566 vs 540, and legacy-string counters in broad docs) when simulation outputs are complete.
 
 ## Writing readiness conclusion
 

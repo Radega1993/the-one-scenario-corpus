@@ -26,7 +26,6 @@ ROUTE_ROLES = {
     "C_bus.wkt": "Peripheral loop / edge coverage",
 }
 
-
 def validate_bus_route_extended(
     rg: RoadGraph,
     route_path: Path,
@@ -86,7 +85,6 @@ def validate_bus_route_extended(
         "status": status,
         "notes": "; ".join(notes),
     }
-
 
 def regenerate_helsinki_bus_routes(
     map_dir: Path,

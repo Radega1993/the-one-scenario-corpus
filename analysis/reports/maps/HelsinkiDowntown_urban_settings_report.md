@@ -13,4 +13,3 @@ Urban scenarios use `Group.busControlSystemNr = -1` so pedestrians use the bus s
 ## U2 rename
 
 `U2_SparseSuburb_HelsinkiDowntown` → `U2_SparseUrban_HelsinkiDowntown`: low-density urban scenario on the same downtown map (fewer hosts/offices), not a geographic suburb.
-

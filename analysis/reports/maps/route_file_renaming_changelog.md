@@ -13,7 +13,7 @@ Mode: apply
 - `HelsinkiDisrupted/B_bus.wkt` → `HelsinkiDisrupted/B_mule_route.wkt`
 - `KallioCommunityCompact/A_bus.wkt` → `KallioCommunityCompact/A_community_route.wkt`
 - `KallioCommunityCompact/B_bus.wkt` → `KallioCommunityCompact/B_community_route.wkt`
-- `ControlCompactGrid/A_bus.wkt` → `ControlCompactGrid/A_control_route.wkt`
+- `/A_bus.wkt` → `/A_control_route.wkt`
 
 ## Settings updates
 

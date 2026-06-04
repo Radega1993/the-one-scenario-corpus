@@ -21,7 +21,6 @@ LINESTRING_RE = re.compile(
 # Parsed sim-aligned road geometry per roads.wkt path (large files; reuse across scenarios).
 _ROADS_SIM_CACHE: dict[str, list[list[tuple[float, float]]]] = {}
 
-
 @dataclass
 class UnderlaySpec:
     path: Path
@@ -29,7 +28,6 @@ class UnderlaySpec:
     offset_y: float
     scale: float
     rotate: float
-
 
 @dataclass
 class MapContext:
@@ -39,7 +37,6 @@ class MapContext:
     underlay: UnderlaySpec | None
     world_x: float | None
     world_y: float | None
-
 
 def load_settings_flat(path: Path) -> dict[str, str]:
     out: dict[str, str] = {}
@@ -53,10 +50,8 @@ def load_settings_flat(path: Path) -> dict[str, str]:
         out[k.strip()] = v.strip()
     return out
 
-
 def _parse_csv_floats(value: str) -> list[float]:
     return [float(x.strip()) for x in value.split(",") if x.strip()]
-
 
 def infer_map_dataset(kv: dict[str, str]) -> str | None:
     """Return 'HelsinkiMedium', 'Manhattan', or None."""
@@ -88,14 +83,12 @@ def infer_map_dataset(kv: dict[str, str]) -> str | None:
         return "Manhattan"
     return None
 
-
 def roads_wkt_path(dataset: str | None, repo_root: Path = REPO_ROOT) -> Path | None:
     if dataset == "HelsinkiMedium":
         return repo_root / "data" / "HelsinkiMedium" / "roads.wkt"
     if dataset == "Manhattan":
         return repo_root / "data" / "Manhattan" / "roads.wkt"
     return None
-
 
 def roads_wkt_from_settings(kv: dict[str, str], repo_root: Path = REPO_ROOT) -> Path | None:
     """Prefer explicit MapBasedMovement.mapFile1 when available."""
@@ -106,7 +99,6 @@ def roads_wkt_from_settings(kv: dict[str, str], repo_root: Path = REPO_ROOT) -> 
     if not p.is_absolute():
         p = repo_root / p
     return p if p.is_file() else None
-
 
 def underlay_from_settings(kv: dict[str, str], repo_root: Path = REPO_ROOT) -> UnderlaySpec | None:
     fn = kv.get("GUI.UnderlayImage.fileName")
@@ -138,7 +130,6 @@ def underlay_from_settings(kv: dict[str, str], repo_root: Path = REPO_ROOT) -> U
         rotate = 0.0
     return UnderlaySpec(path=p, offset_x=ox, offset_y=oy, scale=scale, rotate=rotate)
 
-
 def parse_wkt_lines(path: Path) -> list[list[tuple[float, float]]]:
     """Parse LINESTRING entries from a WKT file (raw coordinates)."""
     text = path.read_text(encoding="utf-8", errors="replace")
@@ -160,7 +151,6 @@ def parse_wkt_lines(path: Path) -> list[list[tuple[float, float]]]:
             lines.append(pts)
     return lines
 
-
 def wkt_to_sim_coords(raw_lines: list[list[tuple[float, float]]]) -> list[list[tuple[float, float]]]:
     """
     Apply MapBasedMovement post-processing: mirror Y, translate to origin (min bound).
@@ -181,7 +171,6 @@ def wkt_to_sim_coords(raw_lines: list[list[tuple[float, float]]]) -> list[list[t
     min_x, min_y = min(all_x), min(all_y)
     return [[(x - min_x, y - min_y) for x, y in line] for line in mirrored]
 
-
 def world_size_from_settings(kv: dict[str, str]) -> tuple[float, float] | None:
     raw = kv.get("MovementModel.worldSize")
     if not raw:
@@ -193,7 +182,6 @@ def world_size_from_settings(kv: dict[str, str]) -> tuple[float, float] | None:
     except ValueError:
         pass
     return None
-
 
 def build_map_context(
     settings_path: Path | None,

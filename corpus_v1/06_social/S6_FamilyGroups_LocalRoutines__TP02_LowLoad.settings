@@ -1,0 +1,119 @@
+# Corpus traffic profile (TP02 LowLoad) — generated from base; mobility unchanged; Events* and Group*.msgTtl overridden.
+# =========================================================
+# S6 - Family groups with local routines on the road network
+# Twelve small families on micro-routes; shared civic route for indirect contacts.
+# Levers: MapRouteMovement per family, MapRouteMovement on shared civic loop.
+# =========================================================
+# =========================================================
+# S6 - Family groups with local routines on the road network
+# Twelve small families on micro-routes; shared civic route for indirect contacts.
+# Levers: MapRouteMovement per family, MapRouteMovement on shared civic loop.
+# =========================================================
+
+Scenario.name = S6_FamilyGroups_LocalRoutines__TP02_LowLoad
+Scenario.simulateConnections = true
+Scenario.updateInterval = 0.1
+Scenario.endTime = 43200
+MovementModel.rngSeed = 50
+MapBasedMovement.nrofMapFiles = 1
+MapBasedMovement.mapFile1 = data/KallioCommunityCompact/roads.wkt
+
+MovementModel.worldSize = 1458, 1529
+
+Group.router = EpidemicRouter
+Group.bufferSize = 50M
+Group.nrofInterfaces = 1
+Group.interface1 = bt0
+Group.speed = 0.35, 0.9
+Group.waitTime = 300, 900
+
+bt0.type = SimpleBroadcastInterface
+bt0.transmitSpeed = 2M
+bt0.transmitRange = 25
+
+Scenario.nrofHostGroups = 13
+
+# 12 families (3–4 hosts each) on local road micro-routes
+Group1.groupID = f1
+Group1.nrofHosts = 4
+Group1.movementModel = MapRouteMovement
+Group1.routeFile = data/KallioCommunityCompact/S6_family_1.wkt
+Group1.routeType = 1
+Group2.groupID = f2
+Group2.nrofHosts = 3
+Group2.movementModel = MapRouteMovement
+Group2.routeFile = data/KallioCommunityCompact/S6_family_2.wkt
+Group2.routeType = 1
+Group3.groupID = f3
+Group3.nrofHosts = 4
+Group3.movementModel = MapRouteMovement
+Group3.routeFile = data/KallioCommunityCompact/S6_family_3.wkt
+Group3.routeType = 1
+Group4.groupID = f4
+Group4.nrofHosts = 3
+Group4.movementModel = MapRouteMovement
+Group4.routeFile = data/KallioCommunityCompact/S6_family_4.wkt
+Group4.routeType = 1
+Group5.groupID = f5
+Group5.nrofHosts = 4
+Group5.movementModel = MapRouteMovement
+Group5.routeFile = data/KallioCommunityCompact/S6_family_5.wkt
+Group5.routeType = 1
+Group6.groupID = f6
+Group6.nrofHosts = 3
+Group6.movementModel = MapRouteMovement
+Group6.routeFile = data/KallioCommunityCompact/S6_family_6.wkt
+Group6.routeType = 1
+Group7.groupID = f7
+Group7.nrofHosts = 4
+Group7.movementModel = MapRouteMovement
+Group7.routeFile = data/KallioCommunityCompact/S6_family_7.wkt
+Group7.routeType = 1
+Group8.groupID = f8
+Group8.nrofHosts = 3
+Group8.movementModel = MapRouteMovement
+Group8.routeFile = data/KallioCommunityCompact/S6_family_8.wkt
+Group8.routeType = 1
+Group9.groupID = f9
+Group9.nrofHosts = 4
+Group9.movementModel = MapRouteMovement
+Group9.routeFile = data/KallioCommunityCompact/S6_family_9.wkt
+Group9.routeType = 1
+Group10.groupID = f10
+Group10.nrofHosts = 3
+Group10.movementModel = MapRouteMovement
+Group10.routeFile = data/KallioCommunityCompact/S6_family_10.wkt
+Group10.routeType = 1
+Group11.groupID = f11
+Group11.nrofHosts = 4
+Group11.movementModel = MapRouteMovement
+Group11.routeFile = data/KallioCommunityCompact/S6_family_11.wkt
+Group11.routeType = 1
+Group12.groupID = f12
+Group12.nrofHosts = 3
+Group12.movementModel = MapRouteMovement
+Group12.routeFile = data/KallioCommunityCompact/S6_family_12.wkt
+Group12.routeType = 1
+
+# Shared civic / meeting spots (occasional cross-family contact)
+Group13.groupID = cv
+Group13.nrofHosts = 4
+Group13.movementModel = MapRouteMovement
+Group13.routeFile = data/KallioCommunityCompact/S6_shared_civic.wkt
+Group13.routeType = 1
+Group13.speed = 0.6, 1.2
+Group13.waitTime = 120, 400
+
+Group.msgTtl = 21600
+
+Events.nrof = 1
+Events1.class = MessageEventGenerator
+Events1.interval = 300, 600
+Events1.size = 10k, 100k
+Events1.hosts = 0, 46
+Events1.prefix = M
+
+Report.nrofReports = 2
+Report.reportDir = reports/
+Report.report1 = MessageStatsReport
+Report.report2 = ContactTimesReport

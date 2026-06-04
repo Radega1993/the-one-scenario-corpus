@@ -9,7 +9,6 @@ import streamlit as st
 from dashboard.components import preview_text_file
 from lib.paths import REPORTS_DIR
 
-
 def render(_filtered, _master) -> None:
     st.header("Reportes crudos (repo/reports)")
     if not REPORTS_DIR.is_dir():

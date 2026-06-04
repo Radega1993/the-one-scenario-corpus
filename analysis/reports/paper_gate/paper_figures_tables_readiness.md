@@ -1,36 +1,36 @@
 # Paper figures and tables readiness (corpus_v1)
 
-Generated: 2026-05-28 07:46 UTC
+Generated: 2026-06-04 10:03 UTC
 
 ## Executive summary
 
 - **Corpus:** corpus_v1, N=540 simulations.
 - **Data validation:** correlation_pearson=540, output_metrics=540.
-- **Policy:** Diversity figures trace to `analysis/data/*.csv` with n=540 (corpus_v1 only). Combined benchmark (570) is separate.
+- **Policy:** Figures and tables trace to `analysis/data/*.csv` with n=540 (`corpus_v1`).
 
 ## Figures ready (main)
 
-- `ablation_pairs_high_bar.png` — Methods / Feature ablation
-- `ablation_silhouette_bar.png` — Methods / Feature ablation
 - `corpus_overview_paper.png` — Methods / Benchmark design
-- `heatmap_feature_feature_core.png` — Supplementary / Feature redundancy
-- `histogram_correlations_pearson_paper.png` — Methods / Corpus diversity
-- `outputs_boxplot_by_tp_paper.png` — Results / Output metrics by TP
-- `pca_by_cluster.png` — Results / Clustering
-- `pca_by_family.png` — Results / Feature space structure
 
 ## Figures to review or regenerate (main)
 
+- `ablation_pairs_high_bar.png` — **revisar**
+- `ablation_silhouette_bar.png` — **revisar**
+- `heatmap_feature_feature_core.png` — **revisar**
+- `histogram_correlations_pearson_paper.png` — **revisar**
+- `outputs_boxplot_by_tp_paper.png` — **revisar**
+- `pca_by_cluster.png` — **revisar**
+- `pca_by_family.png` — **revisar**
 
 ## Figures ready (supplementary)
 
-- `histogram_correlations_outputs_paper.png` — Supplementary / Output diversity
-- `histogram_correlations_spearman_paper.png` — Supplementary / Correlation robustness
-- `message_creation_time_by_tp_paper.png` — Supplementary / Traffic timing
 - `protocol_comparison_placeholder.png` — Discussion / Future work
 
 ## Figures to review (supplementary)
 
+- `histogram_correlations_outputs_paper.png` — **revisar**
+- `histogram_correlations_spearman_paper.png` — **revisar**
+- `message_creation_time_by_tp_paper.png` — **revisar**
 - `spatial_coverage_by_family_paper.png` — **revisar**
 
 ## Tables ready

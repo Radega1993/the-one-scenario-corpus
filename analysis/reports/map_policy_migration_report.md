@@ -27,7 +27,7 @@ Se han migrado los **720 ficheros `.settings`** del corpus v2 para que cada una 
 | 04_rural | NuuksioSparseTrails | 2848 x 2945 | OSM (Parque Nuuksio) | 12 | 144 |
 | 05_disaster | HelsinkiDisrupted | 2067 x 2206 | OSM (Kalasatama industrial) | 9 | 108 |
 | 06_social | KallioCommunityCompact | 1458 x 1529 | OSM (Barrio Kallio) | 6 | 72 |
-| 07_stress_controls | ControlCompactGrid | 2000 x 1700 | Sintético (grid 12x10) | 15 | 180 |
+| 07_ |  | 2000 x 1700 | Sintético (grid 12x10) | 15 | 180 |
 
 ## 3. Justificación: por qué cada familia usa un mapa distinto
 
@@ -45,7 +45,7 @@ Cada familia del benchmark representa un arquetipo de movilidad DTN fundamentalm
 
 - **06_social (KallioCommunityCompact):** Barrio residencial denso. La proximidad física entre vecinos genera patrones de contacto realistas para escenarios sociales/comunitarios.
 
-- **07_stress_controls (ControlCompactGrid):** Grid sintético controlado sin sesgo geográfico. Funciona como baseline experimental, análogo a un grupo control en un experimento.
+- **07_ ():** Grid sintético controlado sin sesgo geográfico. Funciona como baseline experimental, análogo a un grupo control en un experimento.
 
 ## 4. Por qué ya no se mezclan mapas arbitrariamente
 
@@ -53,7 +53,7 @@ En la versión anterior del corpus, existían problemas metodológicos graves:
 
 1. **Variable confundidora:** Dentro de 01_urban, 5 escenarios usaban HelsinkiMedium (8295x7304m) y 2 usaban Manhattan (6038x5608m). La diferencia de topología, densidad de calles y tamaño de mundo introducía variación no controlada que se confundía con el efecto de los levers del escenario.
 
-2. **Inconsistencia de worldSize:** Incluso dentro de la misma familia, los worldSize variaban significativamente (ej: 07_stress_controls iba de 3800x3000 a 7200x5600). Esto hace que la densidad de nodos por unidad de área sea diferente entre escenarios de la misma familia, invalidando comparaciones directas.
+2. **Inconsistencia de worldSize:** Incluso dentro de la misma familia, los worldSize variaban significativamente (ej: 07_ iba de 3800x3000 a 7200x5600). Esto hace que la densidad de nodos por unidad de área sea diferente entre escenarios de la misma familia, invalidando comparaciones directas.
 
 3. **Ausencia de mapas:** 43 de 60 escenarios base no usaban mapa alguno (free-space). El modelo RandomWaypoint no confina nodos a calles, lo que produce dinámicas de contacto fundamentalmente diferentes a las de un entorno real.
 
@@ -123,7 +123,7 @@ Todas las referencias a ficheros de datos actualizadas:
 - Los datos OSM varían con el tiempo
 - La calidad depende de la cobertura de la zona en OSM
 
-### Mapa sintético (ControlCompactGrid)
+### Mapa sintético ()
 
 **Ventajas:**
 - Controlabilidad total: grid regular sin sesgo geográfico
@@ -154,7 +154,7 @@ scenarios/corpus_v1/_backup_pre_migration/
 Para revertir la migración:
 ```bash
 cd scenarios/corpus_v1
-for fam in 01_urban 02_campus 03_vehicles 04_rural 05_disaster 06_social 07_stress_controls; do
+for fam in 01_urban 02_campus 03_vehicles 04_rural 05_disaster 06_social 07_; do
   rm -f "$fam"/*.settings
   cp _backup_pre_migration/"$fam"/*.settings "$fam"/
 done

@@ -36,7 +36,6 @@ POI_TYPES = (
     ("A_meetingspots.wkt", "meetingspots"),
 )
 
-
 def classify_poi(pct_inside: float, pct_over: float, max_dist: float, thresh: float) -> str:
     if pct_inside < 100:
         return "FAIL"
@@ -45,7 +44,6 @@ def classify_poi(pct_inside: float, pct_over: float, max_dist: float, thresh: fl
     if pct_over > 5 or max_dist > thresh:
         return "WARNING"
     return "PASS"
-
 
 def validate_poi(map_name: str, poi_path: Path, poi_type: str) -> dict:
     rg, _, meta = load_road_graph(map_name)
@@ -85,7 +83,6 @@ def validate_poi(map_name: str, poi_path: Path, poi_type: str) -> dict:
         "notes": "; ".join(notes),
     }
 
-
 def write_report(rows: list[dict], path: Path) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
     ts = datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M UTC")
@@ -117,7 +114,6 @@ def write_report(rows: list[dict], path: Path) -> None:
         )
     path.write_text("\n".join(lines) + "\n", encoding="utf-8")
 
-
 def main() -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--output-csv", type=str, default=str(ANALYSIS_DATA / "map_poi_validation.csv"))
@@ -143,7 +139,6 @@ def main() -> int:
     print(f"Wrote {out}")
     print(f"Wrote {args.output_report}")
     return 1 if any(r.get("status") == "FAIL" for r in rows) else 0
-
 
 if __name__ == "__main__":
     raise SystemExit(main())

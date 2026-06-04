@@ -27,4 +27,4 @@ Route files in wiki figures are **waypoint sequences** (`routeFile`), not roads.
 | HelsinkiDisrupted | B_mule_route.wkt | WARNING | 0.632 | 97.53 |  |
 | KallioCommunityCompact | A_community_route.wkt | WARNING | 0.737 | 61.81 |  |
 | KallioCommunityCompact | B_community_route.wkt | WARNING | 0.809 | 55.22 |  |
-| ControlCompactGrid | A_control_route.wkt | PASS | 1.0 | 0.0 |  |
+|  | A_control_route.wkt | PASS | 1.0 | 0.0 |  |

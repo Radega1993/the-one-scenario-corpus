@@ -14,7 +14,7 @@ Estandarizar los mapas del benchmark `corpus_v1` asignando **un mapa fijo y repr
 | 04_rural | NuuksioSparseTrails | OSM | Parque Nacional Nuuksio, Espoo | 2848 × 2945 | Red dispersa de senderos — entorno rural/wildlife |
 | 05_disaster | HelsinkiDisrupted | OSM | Kalasatama / Sörnäinen (zona industrial) | 2067 × 2206 | Infraestructura portuaria e industrial — escenarios de desastre |
 | 06_social | KallioCommunityCompact | OSM | Barrio Kallio, Helsinki | 1458 × 1529 | Barrio residencial denso — dinámica de comunidad |
-| 07_stress_controls | ControlCompactGrid | Sintético | Grid rectangular 12×10, 150 m/bloque | 2000 × 1700 | Baseline controlada sin sesgo geográfico |
+| 07_ |  | Sintético | Grid rectangular 12×10, 150 m/bloque | 2000 × 1700 | Baseline controlada sin sesgo geográfico |
 
 ## 3. Por qué cada familia usa un mapa distinto
 
@@ -97,7 +97,7 @@ bash scenarios/setup/bootstrap_maps.sh --force-download
 | NuuksioSparseTrails | 326 | 965 | 2450×2544 | 2848×2945 | 5.4% | 10 | 5 | 8 |
 | HelsinkiDisrupted | 8398 | 7338 | 1690×1853 | 2067×2206 | 45.5% | 40 | 25 | 15 |
 | KallioCommunityCompact | 7204 | 5522 | 1103×1128 | 1458×1529 | 59.3% | 70 | 20 | 30 |
-| ControlCompactGrid | 24 | 143 | 1800×1500 | 2000×1700 | 11.6% | 50 | 30 | 20 |
+|  | 24 | 143 | 1800×1500 | 2000×1700 | 11.6% | 50 | 30 | 20 |
 
 ## 7. Diferencias: mapas reales vs sintéticos
 
@@ -114,7 +114,7 @@ bash scenarios/setup/bootstrap_maps.sh --force-download
 - La zona elegida introduce sesgo geográfico (e.g., Helsinki ≠ una ciudad africana).
 - Los datos cambian con el tiempo — la descarga no es 100% determinista (se recomienda cachear los GraphML).
 
-### Mapas sintéticos (ControlCompactGrid)
+### Mapas sintéticos ()
 
 **Ventajas:**
 - Controlabilidad total: topología, densidad y distribución de POIs son parámetros explícitos.
@@ -129,7 +129,7 @@ bash scenarios/setup/bootstrap_maps.sh --force-download
 
 ### Recomendación
 
-Utilizar mapas reales como configuración primaria y el grid sintético exclusivamente como **control experimental** (familia 07_stress_controls), de forma análoga a un «control negativo» en un experimento biológico.
+Utilizar mapas reales como configuración primaria y el grid sintético exclusivamente como **control experimental** (familia 07_), de forma análoga a un «control negativo» en un experimento biológico.
 
 ## 8. Formato WKT para The ONE
 
@@ -172,7 +172,7 @@ scenarios/
     │   ├── NuuksioSparseTrails/
     │   ├── HelsinkiDisrupted/
     │   ├── KallioCommunityCompact/
-    │   └── ControlCompactGrid/
+    │   └── /
     └── validation/               # JSONs de validación por mapa
 ```
 

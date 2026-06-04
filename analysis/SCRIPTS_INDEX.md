@@ -1,6 +1,6 @@
 # Índice de scripts del pipeline (`scenarios/analysis/`)
 
-**Corpus activo:** `corpus_v1` — **570** escenarios (540 ambientales + 30 stress/control). Incluye `stress_controls/` cuando se usa `--corpus corpus_v1`.  
+**Corpus activo:** `corpus_v1` — **540** escenarios (540 ambientales + 30 stress/control). Incluye `` cuando se usa `--corpus corpus_v1`.  
 **Capa estructural:** `base_scenarios/` — 45 escenarios sin TP (familias 01–06).  
 **No existe `corpus_v3/`** — referencias a corpus_v3 son históricas; scripts v3 están en [`../_archive/scripts/`](../_archive/scripts/). El alias CLI `corpus_v2` está obsoleto.
 
@@ -83,13 +83,13 @@
 | `outputs` | correlaciones en espacio Y | sí |
 | `all` | secuencia completa | — |
 
-**Scope flags:** `--no-stress` (default for diversity) → 540 `corpus_v1` scenarios; `--include-stress` → 570 combined.
+**Scope flags:** `` (default for diversity) → 540 `corpus_v1` scenarios; `` → 540 combined.
 
 ### Validación de diversidad — script → artefacto
 
 | Script / fase | Artefactos generados |
 |---------------|---------------------|
-| `run_analysis.py --phase features --no-stress` | `data/features.csv`, `data/scenario_list.txt` |
+| `run_analysis.py --phase features ` | `data/features.csv`, `data/scenario_list.txt` |
 | `--phase normalize` | `features_normalized.csv` (46), `features_core.csv` (23), `features_reduced.csv` (17), `normalization_params.csv` |
 | `--phase correlation` | `correlation_pearson.csv`, `correlation_spearman.csv`, `distance_cosine.csv`, `distance_euclidean.csv`, `correlation_pearson_core23.csv`, `distance_cosine_core23.csv`, `cluster_assignments*.csv`, `reports/pipeline/correlation_*.txt`, `clustering_report.txt`, `scenarios_to_diversify*.txt` |
 | `--phase feature_correlation` | `feature_feature_correlation_core.csv`, `figures/heatmap_feature_feature_core.png` |
@@ -250,7 +250,7 @@ python3 scripts/validation/analyze_spatial_occupancy.py \
   --corpus corpus_v1
 ```
 
-Salida: `data/spatial_occupancy_metrics.csv`, `figures/spatial_heatmaps/*.png` (target 570 combined; legacy files may still show 720 rows)
+Salida: `data/spatial_occupancy_metrics.csv`, `figures/spatial_heatmaps/*.png` (target 540 combined; legacy files may still show 720 rows)
 
 ### 8. Tiempos de creación de mensajes
 
@@ -317,7 +317,7 @@ Salida: `scenarios/.wiki-clone/` (gitignored localmente)
 ### Pipeline canónico — validación de diversidad (540, sin stress)
 
 ```bash
-python3 scenarios/analysis/run_analysis.py --corpus corpus_v1 --no-stress \
+python3 scenarios/analysis/run_analysis.py --corpus corpus_v1  \
   --phase features normalize correlation feature_correlation ablation figures_paper tables_paper
 python3 scenarios/analysis/scripts/paper/validate_diversity_readiness.py
 python3 scenarios/analysis/scripts/wiki/populate_wiki_paper.py

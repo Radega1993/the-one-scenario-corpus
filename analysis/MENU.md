@@ -6,7 +6,7 @@ Guía rápida en español. Lanza scripts con `subprocess` desde la raíz del rep
 python3 scenarios/analysis/analysis_menu.py
 ```
 
-**Scope actual:** diversidad `corpus_v1` **540** (`--no-stress`) + benchmark combinado **570** (core + `stress_controls`).
+**Scope actual:** diversidad `corpus_v1` **540** (``) + benchmark combinado **540** (core + ``).
 
 ---
 
@@ -20,7 +20,7 @@ python3 scenarios/analysis/analysis_menu.py
 | 4 | **Paper y validación** (submenú 4a–4n) | Ver tabla siguiente |
 | 5 | Tiempo útil de simulación | `scripts/validation/compute_useful_simulation_time.py` |
 | 6 | Tiempos de creación de mensajes | `scripts/validation/analyze_message_creation_times.py` |
-| 7 | Ocupación espacial / heatmaps | `scripts/validation/analyze_spatial_occupancy.py` |
+| 7 | Ocupación espacial / heatmaps (`coverage_road_cells_pct`, `--zoom-mode roads`) | `scripts/validation/analyze_spatial_occupancy.py` |
 | 8 | Dashboard Streamlit | `dashboard.py` |
 | 9 | Figuras agregadas / paper | `run_figures_aggregated.py` + opcional `figures_paper` |
 | 10 | Ruta paper-ready guiada | Orden recomendado (output_metrics → features → ... → wiki) |
