@@ -1,0 +1,93 @@
+# Corpus traffic profile (TP08 HubTarget) — generated from base; mobility unchanged; Events* and Group*.msgTtl overridden.
+# =========================================================
+# S1 - Strong communities with limited inter-community mixing
+# Four local communities on road loops + bridge nodes on shared civic route.
+# Levers: MapRouteMovement per community, ShortestPathMapBasedMovement bridges.
+# =========================================================
+# =========================================================
+# S1 - Strong communities with limited inter-community mixing
+# Four local communities on road loops + bridge nodes on shared civic route.
+# Levers: MapRouteMovement per community, ShortestPathMapBasedMovement bridges.
+# =========================================================
+
+Scenario.name = S1_StrongCommunities_LimitedMixing__TP08_HubTarget
+Scenario.simulateConnections = true
+Scenario.updateInterval = 0.1
+Scenario.endTime = 43200
+MovementModel.rngSeed = 45
+MapBasedMovement.nrofMapFiles = 1
+MapBasedMovement.mapFile1 = data/KallioCommunityCompact/roads.wkt
+
+MovementModel.worldSize = 1458, 1529
+
+Group.router = EpidemicRouter
+Group.bufferSize = 50M
+Group.nrofInterfaces = 1
+Group.interface1 = bt0
+
+bt0.type = SimpleBroadcastInterface
+bt0.transmitSpeed = 2M
+bt0.transmitRange = 25
+
+Scenario.nrofHostGroups = 5
+
+# Community A (north-west) — local road loop
+Group1.groupID = cA
+Group1.nrofHosts = 28
+Group1.movementModel = MapRouteMovement
+Group1.routeFile = data/KallioCommunityCompact/S1_community_1.wkt
+Group1.routeType = 1
+Group1.speed = 0.5, 1.1
+Group1.waitTime = 60, 240
+
+# Community B (north-east)
+Group2.groupID = cB
+Group2.nrofHosts = 26
+Group2.movementModel = MapRouteMovement
+Group2.routeFile = data/KallioCommunityCompact/S1_community_2.wkt
+Group2.routeType = 1
+Group2.speed = 0.5, 1.1
+Group2.waitTime = 60, 240
+
+# Community C (south-west)
+Group3.groupID = cC
+Group3.nrofHosts = 24
+Group3.movementModel = MapRouteMovement
+Group3.routeFile = data/KallioCommunityCompact/S1_community_3.wkt
+Group3.routeType = 1
+Group3.speed = 0.5, 1.1
+Group3.waitTime = 60, 240
+
+# Community D (south-east)
+Group4.groupID = cD
+Group4.nrofHosts = 26
+Group4.movementModel = MapRouteMovement
+Group4.routeFile = data/KallioCommunityCompact/S1_community_4.wkt
+Group4.routeType = 1
+Group4.speed = 0.5, 1.1
+Group4.waitTime = 60, 240
+
+# Bridge nodes — higher mobility along inter-community route (limited mixing)
+Group5.groupID = br
+Group5.nrofHosts = 6
+Group5.movementModel = MapRouteMovement
+Group5.routeFile = data/KallioCommunityCompact/S1_bridge_route.wkt
+Group5.routeType = 1
+Group5.speed = 1.0, 1.8
+Group5.waitTime = 20, 90
+Group5.bufferSize = 50M
+
+Group.msgTtl = 7200
+
+Events.nrof = 1
+Events1.class = MessageEventGenerator
+Events1.interval = 30, 60
+Events1.size = 50k, 150k
+Events1.hosts = 10, 110
+Events1.tohosts = 0, 10
+Events1.prefix = M
+
+Report.nrofReports = 2
+Report.reportDir = reports/
+Report.report1 = MessageStatsReport
+Report.report2 = ContactTimesReport

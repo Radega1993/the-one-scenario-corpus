@@ -15,6 +15,7 @@ contacts:
   zero_max: 0.0
 
 spatial:
+  map_underused_coverage_road_max: 0.50
   map_underused_coverage_world_max: 0.12
   map_too_large_accessible_ratio_min: 2.0
   world_vs_roads_area_ratio_min: 3.0

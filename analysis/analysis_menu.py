@@ -788,9 +788,15 @@ def menu_message_creation() -> None:
 
 def menu_spatial() -> None:
     print("\n--- Ocupación espacial (heatmaps / CSV agregados) ---")
+    print(
+        "Nota: tras cambiar MovementModel.worldSize hay que re-simular antes de analizar.\n"
+        "  Informe: scenarios/analysis/reports/spatial/world_size_occupancy_calibration.md\n"
+        "  Métrica principal: coverage_road_cells_pct (no confiar en informes pre-calibración)."
+    )
     manifest = _ask("Manifiesto CSV", _rel_repo(DEFAULT_MANIFEST_V1))
     reports = _ask("Carpeta reportes (relativa al repo)", "reports")
-    families = _ask("Familias (coma, vacío = todas)", "") or None
+    families = _ask("Familias (coma, vacío = todas; recomendado si reports viejos)", "") or None
+    name_regex = _ask("Regex escenarios (vacío = todos del filtro)", "") or None
     manifest_path = Path(manifest)
     if not manifest_path.is_absolute():
         manifest_path = REPO_ROOT / manifest_path
@@ -805,6 +811,8 @@ def menu_spatial() -> None:
     ]
     if families:
         cmd.extend(["--families", families])
+    if name_regex:
+        cmd.extend(["--name-regex", name_regex])
     rc = _run_script(cmd)
     print(f"\n(código salida {rc})")
     input("Enter para volver al menú…")

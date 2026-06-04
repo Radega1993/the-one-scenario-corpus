@@ -18,7 +18,7 @@ MovementModel.rngSeed = 30
 MapBasedMovement.nrofMapFiles = 1
 MapBasedMovement.mapFile1 = data/NuuksioSparseTrails/roads.wkt
 
-MovementModel.worldSize = 2848, 2945
+MovementModel.worldSize = 2470, 2565
 
 Group.router = EpidemicRouter
 Group.bufferSize = 50M

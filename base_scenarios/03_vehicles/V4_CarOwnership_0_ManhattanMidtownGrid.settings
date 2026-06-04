@@ -6,12 +6,12 @@
 # Diversificación estructural: worldSize distinto → Wx,Wy,density distintos de V4/V5/V8
 # =========================================================
 
-Scenario.name = V4_CarOwnership_0_ManhattanMidtownGrid
+Scenario.name = V4_CarOwnership_0_ManhattanMidtownGridMidtownGrid
 Scenario.simulateConnections = true
 Scenario.updateInterval = 0.1
 Scenario.endTime = 43200
 MovementModel.rngSeed = 26
-MovementModel.worldSize = 2500, 2366
+MovementModel.worldSize = 2120, 1986
 
 MapBasedMovement.nrofMapFiles = 1
 MapBasedMovement.mapFile1 = data/ManhattanMidtownGrid/roads.wkt

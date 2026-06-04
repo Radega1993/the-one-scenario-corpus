@@ -7,6 +7,7 @@ This module derives interpretable metrics using roads.wkt in simulation-aligned 
 
 from __future__ import annotations
 
+import json
 import math
 from dataclasses import dataclass, field
 from pathlib import Path
@@ -21,6 +22,30 @@ from lib.paths import REPO_ROOT
 
 DEFAULT_BUFFER_M_LIST: tuple[int, ...] = (10, 15, 25)
 DEFAULT_BBOX_MARGIN_M = 50.0
+WKT_MAPS_DIR = REPO_ROOT / "scenarios" / "maps" / "wkt"
+
+
+def occupancy_margin_from_metadata(meta: dict, default: float = DEFAULT_BBOX_MARGIN_M) -> float:
+    for key in ("occupancy_margin_m", "world_size_margin_m"):
+        if key in meta:
+            try:
+                return float(meta[key])
+            except (TypeError, ValueError):
+                pass
+    return default
+
+
+def bbox_margin_for_map(map_name: str | None, default: float = DEFAULT_BBOX_MARGIN_M) -> float:
+    if not map_name:
+        return default
+    meta_path = WKT_MAPS_DIR / map_name / "metadata.json"
+    if not meta_path.is_file():
+        return default
+    try:
+        meta = json.loads(meta_path.read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError):
+        return default
+    return occupancy_margin_from_metadata(meta, default)
 
 _MASK_CACHE: dict[tuple[Any, ...], RoadCellMasks] = {}
 
@@ -270,9 +295,11 @@ def masks_for_scenario(
     world_y: float,
     grid_size: int,
     buffer_m_list: tuple[int, ...] = DEFAULT_BUFFER_M_LIST,
+    bbox_margin: float | None = None,
 ) -> tuple[RoadCellMasks | None, str | None]:
     ctx = build_map_context(settings_path, world_x=world_x, world_y=world_y, load_roads=True)
     map_name = map_name_from_settings(settings_path)
+    margin = bbox_margin if bbox_margin is not None else bbox_margin_for_map(map_name)
     roads_path = ctx.roads_path
     cache_key = None
     if roads_path and roads_path.is_file():
@@ -282,6 +309,7 @@ def masks_for_scenario(
             round(world_x, 3),
             round(world_y, 3),
             buffer_m_list,
+            round(margin, 3),
         )
     masks = build_road_cell_masks(
         ctx.roads_sim,
@@ -289,6 +317,7 @@ def masks_for_scenario(
         world_y=world_y,
         grid_size=grid_size,
         buffer_m_list=buffer_m_list,
+        bbox_margin=margin,
         cache_key=cache_key,
     )
     return masks, map_name

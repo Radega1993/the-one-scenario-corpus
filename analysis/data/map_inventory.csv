@@ -1,7 +1,35 @@
 map_name,family,source,crs,n_road_segments,n_unique_points,n_components,span_x,span_y,world_size_x,world_size_y,total_road_length_m,coverage_pct,n_homes,n_offices,n_meetingspots,n_bus_stops,status,notes
-HelsinkiDisrupted,05_disaster,osm,EPSG:3067,8398,7338,1,1690.0,1853.3,2067,2206,207674.5,45.54,40,25,15,15,PASS,All checks passed
-HelsinkiDowntown,01_urban,osm,EPSG:3067,575,2531,1,1692.7,1438.2,2093,1838,45632.7,11.86,80,40,25,15,PASS,All checks passed
-KallioCommunityCompact,06_social,osm,EPSG:3067,7204,5522,1,1103.2,1128.1,1458,1529,132200.0,59.3,70,20,30,15,PASS,All checks passed
-KumpulaCampus,02_campus,osm,EPSG:3067,4059,3632,1,1127.3,1016.0,1524,1416,109380.5,50.69,30,20,15,15,PASS,All checks passed
-ManhattanMidtownGrid,03_vehicles,osm,EPSG:32618,568,2116,1,2099.4,1966.0,2500,2366,71426.9,12.08,60,50,30,15,PASS,All checks passed
-NuuksioSparseTrails,04_rural,osm,EPSG:3067,326,965,1,2449.9,2544.1,2848,2945,44853.4,5.35,10,5,8,15,PASS,All checks passed
+HelsinkiDisrupted,05_disaster,osm,EPSG:3067,8398,7338,1,1690.0,1853.3,1711,1874,207674.5,64.77,40,25,15,,PASS,Missing A_bus.wkt
+HelsinkiDowntown,01_urban,osm,EPSG:3067,575,2531,1,1692.7,1438.2,1713,1459,45632.7,18.26,80,40,25,12,PASS,All checks passed
+KallioCommunityCompact,06_social,osm,EPSG:3067,7204,5522,1,1103.2,1128.1,1124,1149,132200.0,102.36,70,20,30,,PASS,Missing A_bus.wkt
+KumpulaCampus,02_campus,osm,EPSG:3067,4059,3632,1,1127.3,1016.0,1148,1036,109380.5,91.97,30,20,15,,PASS,Missing A_bus.wkt
+ManhattanMidtownGrid,03_vehicles,osm,EPSG:32618,568,2116,1,2099.4,1966.0,2120,1986,71426.9,16.96,60,50,30,,PASS,Missing A_bus.wkt
+NuuksioSparseTrails,04_rural,osm,EPSG:3067,326,965,1,2449.9,2544.1,2470,2565,44853.4,7.08,10,5,8,,PASS,Missing A_bus.wkt
+_backup_bus_routes_20260528_171524,,,,,,,,,,,,,,,,,MISSING,roads.wkt not found
+_backup_bus_routes_20260528_171557,,,,,,,,,,,,,,,,,MISSING,roads.wkt not found
+_backup_bus_routes_20260528_171650,,,,,,,,,,,,,,,,,MISSING,roads.wkt not found
+_backup_bus_routes_20260528_171704,,,,,,,,,,,,,,,,,MISSING,roads.wkt not found
+_backup_bus_routes_20260528_171731,,,,,,,,,,,,,,,,,MISSING,roads.wkt not found
+_backup_bus_routes_20260528_173628,,,,,,,,,,,,,,,,,MISSING,roads.wkt not found
+_backup_helsinki_bus_20260528_174903,,,,,,,,,,,,,,,,,MISSING,roads.wkt not found
+_backup_helsinki_disaster_routes_20260528_182117,,,,,,,,,,,,,,,,,MISSING,roads.wkt not found
+_backup_helsinki_poi_20260528_174902,,,,,,,,,,,,,,,,,MISSING,roads.wkt not found
+_backup_helsinki_poi_20260528_182116,,,,,,,,,,,,,,,,,MISSING,roads.wkt not found
+_backup_kallio_community_routes_20260528_182520,,,,,,,,,,,,,,,,,MISSING,roads.wkt not found
+_backup_kallio_poi_20260528_182519,,,,,,,,,,,,,,,,,MISSING,roads.wkt not found
+_backup_kumpula_poi_20260528_175659,,,,,,,,,,,,,,,,,MISSING,roads.wkt not found
+_backup_kumpula_poi_20260528_175757,,,,,,,,,,,,,,,,,MISSING,roads.wkt not found
+_backup_kumpula_poi_20260528_175911,,,,,,,,,,,,,,,,,MISSING,roads.wkt not found
+_backup_kumpula_shuttle_20260528_175700,,,,,,,,,,,,,,,,,MISSING,roads.wkt not found
+_backup_kumpula_shuttle_20260528_175758,,,,,,,,,,,,,,,,,MISSING,roads.wkt not found
+_backup_kumpula_shuttle_20260528_175911,,,,,,,,,,,,,,,,,MISSING,roads.wkt not found
+_backup_manhattan_poi_20260528_180610,,,,,,,,,,,,,,,,,MISSING,roads.wkt not found
+_backup_manhattan_vehicle_20260528_180611,,,,,,,,,,,,,,,,,MISSING,roads.wkt not found
+_backup_nuuksio_poi_20260528_181307,,,,,,,,,,,,,,,,,MISSING,roads.wkt not found
+_backup_nuuksio_poi_20260528_181532,,,,,,,,,,,,,,,,,MISSING,roads.wkt not found
+_backup_nuuksio_ranger_20260528_181307,,,,,,,,,,,,,,,,,MISSING,roads.wkt not found
+_backup_nuuksio_ranger_20260528_181532,,,,,,,,,,,,,,,,,MISSING,roads.wkt not found
+_backup_route_rename_20260528_173425,,,,,,,,,,,,,,,,,MISSING,roads.wkt not found
+_backup_semantic_regen_20260528_173424,,,,,,,,,,,,,,,,,MISSING,roads.wkt not found
+_backup_semantic_regen_20260528_173534,,,,,,,,,,,,,,,,,MISSING,roads.wkt not found
+_backup_semantic_regen_20260528_173608,,,,,,,,,,,,,,,,,MISSING,roads.wkt not found

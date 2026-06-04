@@ -10,7 +10,7 @@ MovementModel.rngSeed = 20
 MapBasedMovement.nrofMapFiles = 1
 MapBasedMovement.mapFile1 = data/KumpulaCampus/roads.wkt
 
-MovementModel.worldSize = 1524, 1416
+MovementModel.worldSize = 1148, 1036
 
 # Evacuation: ShortestPathMapBasedMovement on campus graph (speed 2–4 m/s, waitTime 0–10 s). Legacy LinearMovement keys removed.
 Group.movementModel = ShortestPathMapBasedMovement

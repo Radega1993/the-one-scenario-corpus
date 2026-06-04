@@ -15,7 +15,7 @@ Scenario.endTime = 43200
 MovementModel.rngSeed = 1
 
 # --- World ---
-MovementModel.worldSize = 2093, 1838
+MovementModel.worldSize = 1713, 1459
 
 # =========================================================
 # MapBasedMovement base (required by WDM stack)

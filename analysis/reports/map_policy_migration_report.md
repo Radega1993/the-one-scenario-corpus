@@ -21,12 +21,12 @@ Se han migrado los **720 ficheros `.settings`** del corpus v2 para que cada una 
 
 | Familia | Mapa asignado | worldSize (m) | Fuente | Escenarios | Ficheros |
 |---------|---------------|---------------|--------|------------|----------|
-| 01_urban | HelsinkiDowntown | 2093 x 1838 | OSM (Helsinki centro) | 7 | 84 |
-| 02_campus | KumpulaCampus | 1524 x 1416 | OSM (Campus Kumpula) | 6 | 72 |
-| 03_vehicles | ManhattanMidtownGrid | 2500 x 2366 | OSM (Midtown Manhattan) | 5 | 60 |
-| 04_rural | NuuksioSparseTrails | 2848 x 2945 | OSM (Parque Nuuksio) | 12 | 144 |
-| 05_disaster | HelsinkiDisrupted | 2067 x 2206 | OSM (Kalasatama industrial) | 9 | 108 |
-| 06_social | KallioCommunityCompact | 1458 x 1529 | OSM (Barrio Kallio) | 6 | 72 |
+| 01_urban | HelsinkiDowntown | 1713 x 1459 | OSM (Helsinki centro) | 7 | 84 |
+| 02_campus | KumpulaCampus | 1148 x 1036 | OSM (Campus Kumpula) | 6 | 72 |
+| 03_vehicles | ManhattanMidtownGrid | 2120 x 1986 | OSM (Midtown Manhattan) | 5 | 60 |
+| 04_rural | NuuksioSparseTrails | 2470 x 2565 | OSM (Parque Nuuksio) | 12 | 144 |
+| 05_disaster | HelsinkiDisrupted | 1711 x 1874 | OSM (Kalasatama industrial) | 9 | 108 |
+| 06_social | KallioCommunityCompact | 1124 x 1149 | OSM (Barrio Kallio) | 6 | 72 |
 
 ## 3. Justificación: por qué cada familia usa un mapa distinto
 
@@ -62,7 +62,7 @@ En la versión anterior del corpus, existían problemas metodológicos graves:
 
 ### 5.1 Actualización de mapas y worldSize
 
-Todos los ficheros ahora apuntan a `data/{MapName}/roads.wkt` con el worldSize correcto del mapa generado por el pipeline OSM-to-WKT.
+Todos los ficheros activos apuntan a `data/{MapName}/roads.wkt` con `worldSize` calibrado (2026-05: `ceil(max_road_sim) + 20 m` por eje; ver `analysis/data/world_size_calibration.csv`). Tras cambiar `worldSize`, re-simular antes de usar informes de ocupación espacial.
 
 ### 5.2 Conversión de modelos de movimiento
 

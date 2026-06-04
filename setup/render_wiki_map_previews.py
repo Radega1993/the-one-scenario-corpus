@@ -179,6 +179,9 @@ def render_map(
                 ax.scatter(bx, by, facecolors="none", edgecolors="red", s=60, linewidths=1.5, zorder=6)
 
     ax.set_aspect("equal", adjustable="box")
+    if paper_ready and wx > 0 and wy > 0:
+        ax.set_xlim(0, wx)
+        ax.set_ylim(0, wy)
     ax.set_xlabel("x (m, sim-aligned)")
     ax.set_ylabel("y (m, sim-aligned)")
     if paper_ready:

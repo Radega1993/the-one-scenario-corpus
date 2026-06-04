@@ -192,6 +192,8 @@ Requires `numpy`, `pandas`, `matplotlib`, and `scipy` (e.g. `scenarios/analysis/
 
 **Primary metric for papers:** `coverage_road_cells_pct` (visited / road-network cells). `coverage_world_pct` matches Java `final_coverage_pct` and is for transparency only. See [spatial_occupancy_denominator_validation.md](reports/spatial/spatial_occupancy_denominator_validation.md).
 
+**worldSize (2026-05):** Calibrated per map (`scenarios/analysis/data/world_size_calibration.csv`). Re-simulate after `migrate_corpus_maps.py --world-size-only` before trusting metrics; see [world_size_occupancy_calibration.md](reports/spatial/world_size_occupancy_calibration.md). Post-process reads `worldSize` from `.settings` and flags `world_size_mismatch` when reports are stale.
+
 ```bash
 # Optional flags
 scenarios/analysis/.venv/bin/python scenarios/analysis/scripts/validation/analyze_spatial_occupancy.py \

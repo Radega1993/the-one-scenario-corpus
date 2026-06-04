@@ -56,4 +56,5 @@ MAP_DEFS: dict[str, dict] = {
     },
 }
 
-WORLD_SIZE_MARGIN_M = 200
+# Default per-axis margin when metadata has no occupancy_margin_m (calibrator uses 20 m).
+WORLD_SIZE_MARGIN_M = 20

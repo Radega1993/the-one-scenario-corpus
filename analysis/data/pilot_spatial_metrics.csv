@@ -1,0 +1,7 @@
+scenario,map_name,status,world_size_mismatch,world_x_settings,world_y_settings,world_x_summary,world_y_summary,occupancy_margin_m,coverage_world_pct,coverage_road_cells_pct,coverage_map_bbox_pct,pilot_scenario
+U1_CBD_Commuting_HelsinkiDowntown__TP01_Baseline,HelsinkiDowntown,ok,False,1713.0,1459.0,1713.0,1459.0,20.0,28.24,65.2667,28.24,U1_CBD_Commuting_HelsinkiDowntown__TP01_Baseline
+C1_Campus_ClassChange__TP01_Baseline,KumpulaCampus,ok,False,1148.0,1036.0,1148.0,1036.0,20.0,62.44,91.4067,62.44,C1_Campus_ClassChange__TP01_Baseline
+V1_TaxiLow_ManhattanMidtownGridMidtownGrid__TP01_Baseline,ManhattanMidtownGrid,ok,False,2120.0,1986.0,2120.0,1986.0,20.0,11.88,17.7301,11.88,V1_TaxiLow_ManhattanMidtownGridMidtownGrid__TP01_Baseline
+R1_Rural_SparseSPMM__TP01_Baseline,NuuksioSparseTrails,ok,False,2470.0,2565.0,2470.0,2565.0,20.0,18.2,96.9499,18.2,R1_Rural_SparseSPMM__TP01_Baseline
+D1_ShelterHotspots_EmergencyMobility__TP01_Baseline,HelsinkiDisrupted,ok,False,1711.0,1874.0,1711.0,1874.0,20.0,49.44,89.083,49.44,D1_ShelterHotspots_EmergencyMobility__TP01_Baseline
+S2_WeakCommunities_HighMixing__TP01_Baseline,KallioCommunityCompact,ok,False,1124.0,1149.0,1124.0,1149.0,20.0,61.0,94.2056,61.0,S2_WeakCommunities_HighMixing__TP01_Baseline

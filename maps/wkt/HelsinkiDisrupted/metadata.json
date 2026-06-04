@@ -5,8 +5,8 @@
   "crs": "EPSG:3067",
   "source": "osm",
   "world_size": [
-    2067,
-    2206
+    1711,
+    1874
   ],
   "bbox_m": [
     387141.3395889582,
@@ -15,5 +15,11 @@
     6674969.445833619
   ],
   "n_road_segments": 8398,
-  "n_nodes": 3142
+  "n_nodes": 3142,
+  "world_size_policy": "sim_road_max_plus_20m_margin_per_axis",
+  "occupancy_margin_m": 20.0,
+  "sim_road_span_m": [
+    1690.0,
+    1853.3
+  ]
 }

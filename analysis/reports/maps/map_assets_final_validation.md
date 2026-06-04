@@ -1,6 +1,6 @@
 # Map assets — final validation
 
-Generated: 2026-06-04 10:26 UTC
+Generated: 2026-06-04 15:03 UTC
 
 ## Executive summary
 

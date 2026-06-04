@@ -15,7 +15,7 @@ MapBasedMovement.nrofMapFiles = 1
 MapBasedMovement.mapFile1 = data/KumpulaCampus/roads.wkt
 
 # Diversificación estructural vs C7 (mantener grupo Campus)
-MovementModel.worldSize = 1524, 1416
+MovementModel.worldSize = 1148, 1036
 
 Group.movementModel = ShortestPathMapBasedMovement
 Group.router = EpidemicRouter

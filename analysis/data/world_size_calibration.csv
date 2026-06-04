@@ -1,0 +1,7 @@
+map_name,family,sim_span_x_m,sim_span_y_m,occupancy_margin_m,world_size_x,world_size_y,map_bbox_cell_ratio,pilot_scenario,grid_size
+HelsinkiDowntown,01_urban,1692.7,1438.2,20.0,1713,1459,1.0,U1_CBD_Commuting_HelsinkiDowntown__TP01_Baseline,50
+KumpulaCampus,02_campus,1127.3,1016.0,20.0,1148,1036,1.0,C1_Campus_ClassChange__TP01_Baseline,50
+ManhattanMidtownGrid,03_vehicles,2099.4,1966.0,20.0,2120,1986,1.0,V1_TaxiLow_ManhattanMidtownGridMidtownGrid__TP01_Baseline,50
+NuuksioSparseTrails,04_rural,2449.9,2544.1,20.0,2470,2565,1.0,R1_Rural_SparseSPMM__TP01_Baseline,50
+HelsinkiDisrupted,05_disaster,1690.0,1853.3,20.0,1711,1874,1.0,D1_ShelterHotspots_EmergencyMobility__TP01_Baseline,50
+KallioCommunityCompact,06_social,1103.2,1128.1,20.0,1124,1149,1.0,S2_WeakCommunities_HighMixing__TP01_Baseline,50

@@ -18,17 +18,17 @@
   "n_unique_points": 2531,
   "span_x": 1692.7,
   "span_y": 1438.2,
-  "world_size_x": 2093,
-  "world_size_y": 1838,
+  "world_size_x": 1713,
+  "world_size_y": 1459,
   "source": "osm",
   "family": "01_urban",
   "crs": "EPSG:3067",
   "n_components": 1,
   "n_isolated": 0,
-  "coverage_pct": 11.86,
+  "coverage_pct": 18.26,
   "total_road_length_m": 45632.7,
   "n_homes": 80,
   "n_offices": 40,
   "n_meetingspots": 25,
-  "n_bus_stops": 15
+  "n_bus_stops": 12
 }

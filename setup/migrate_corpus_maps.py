@@ -29,45 +29,60 @@ import sys
 from pathlib import Path
 
 REPO_ROOT = Path(__file__).resolve().parent.parent.parent
-CORPUS_DIR = REPO_ROOT / "scenarios" / "corpus_v1"
+SCENARIOS_DIR = REPO_ROOT / "scenarios"
+CORPUS_DIR = SCENARIOS_DIR / "corpus_v1"
+BASE_DIR = SCENARIOS_DIR / "base_scenarios"
+WKT_DIR = SCENARIOS_DIR / "maps" / "wkt"
 DATA_DIR = REPO_ROOT / "data"
-ANALYSIS_DATA = REPO_ROOT / "scenarios" / "analysis" / "data"
+ANALYSIS_DATA = SCENARIOS_DIR / "analysis" / "data"
 BACKUP_DIR = CORPUS_DIR / "_backup_pre_migration"
+BACKUP_BASE_DIR = BASE_DIR / "_backup_worldsize_crop"
 
 # ── Family → map policy ────────────────────────────────────────────────────
 
 FAMILY_MAP: dict[str, dict] = {
     "01_urban": {
         "map_name": "HelsinkiDowntown",
-        "world_size": (2093, 1838),
+        "world_size": (1793, 1538),
         "data_dir": "data/HelsinkiDowntown",
     },
     "02_campus": {
         "map_name": "KumpulaCampus",
-        "world_size": (1524, 1416),
+        "world_size": (1227, 1116),
         "data_dir": "data/KumpulaCampus",
     },
     "03_vehicles": {
         "map_name": "ManhattanMidtownGrid",
-        "world_size": (2500, 2366),
+        "world_size": (2199, 2066),
         "data_dir": "data/ManhattanMidtownGrid",
     },
     "04_rural": {
         "map_name": "NuuksioSparseTrails",
-        "world_size": (2848, 2945),
+        "world_size": (2550, 2644),
         "data_dir": "data/NuuksioSparseTrails",
     },
     "05_disaster": {
         "map_name": "HelsinkiDisrupted",
-        "world_size": (2067, 2206),
+        "world_size": (1790, 1953),
         "data_dir": "data/HelsinkiDisrupted",
     },
     "06_social": {
         "map_name": "KallioCommunityCompact",
-        "world_size": (1458, 1529),
+        "world_size": (1203, 1228),
         "data_dir": "data/KallioCommunityCompact",
     },
 }
+
+
+def refresh_world_sizes_from_metadata() -> None:
+    """Sync FAMILY_MAP world_size from maps/wkt/*/metadata.json after crop."""
+    for pol in FAMILY_MAP.values():
+        meta_path = WKT_DIR / pol["map_name"] / "metadata.json"
+        if not meta_path.is_file():
+            continue
+        meta = json.loads(meta_path.read_text(encoding="utf-8"))
+        ws = meta.get("world_size", pol["world_size"])
+        pol["world_size"] = (int(ws[0]), int(ws[1]))
 
 OLD_MAP_NAMES = {"HelsinkiMedium", "Manhattan"}
 
@@ -120,7 +135,7 @@ def _has_map_based(text: str) -> bool:
     return bool(RE_NROF_MAP.search(text))
 
 def migrate_file(
-    path: Path, family: str, policy: dict, dry_run: bool
+    path: Path, family: str, policy: dict, dry_run: bool, *, world_size_only: bool = False
 ) -> dict:
     """Migrate a single .settings file. Returns a validation record."""
     text = path.read_text()
@@ -139,6 +154,48 @@ def migrate_file(
     text = RE_WORLD_SIZE.sub(
         rf"\g<1>{new_ws[0]}, {new_ws[1]}", text
     )
+
+    if world_size_only:
+        if old_ws and old_ws != new_ws:
+            scale_x = new_ws[0] / old_ws[0]
+            scale_y = new_ws[1] / old_ws[1]
+            scale_avg = (scale_x + scale_y) / 2
+
+            def _rescale_center(m: re.Match) -> str:
+                prefix = m.group(1)
+                cx = float(m.group(2)) * scale_x
+                cy = float(m.group(3)) * scale_y
+                return f"{prefix}{int(round(cx))}, {int(round(cy))}"
+
+            def _rescale_range(m: re.Match) -> str:
+                prefix = m.group(1)
+                r = float(m.group(2)) * scale_avg
+                return f"{prefix}{int(round(r))}"
+
+            centers_before = RE_CLUSTER_CENTER.findall(text)
+            text = RE_CLUSTER_CENTER.sub(_rescale_center, text)
+            text = RE_CLUSTER_RANGE.sub(_rescale_range, text)
+            if centers_before:
+                notes.append(
+                    f"world-size-only: rescaled {len(centers_before)} cluster(s)"
+                )
+        else:
+            notes.append("world-size-only: worldSize updated")
+        if not dry_run and text != original:
+            path.write_text(text)
+        new_models_list = _detect_movement_models(text)
+        return {
+            "family": family,
+            "scenario_name": path.stem,
+            "old_map": old_map,
+            "new_map": map_name,
+            "old_worldSize": f"{old_ws[0]},{old_ws[1]}" if old_ws else "?",
+            "new_worldSize": f"{new_ws[0]},{new_ws[1]}",
+            "old_movementModel": ";".join(old_models),
+            "new_movementModel": ";".join(new_models_list),
+            "validation_status": "OK",
+            "notes": "; ".join(notes) if notes else "",
+        }
 
     # B) MapBasedMovement
     if _has_map_based(original):
@@ -271,13 +328,44 @@ def post_validate(path: Path, policy: dict) -> list[str]:
 
     return issues
 
+def backup_settings_tree(src_root: Path, backup_root: Path) -> int:
+    if backup_root.exists():
+        return sum(1 for _ in backup_root.rglob("*.settings"))
+    backup_root.mkdir(parents=True)
+    for fam_dir in sorted(src_root.iterdir()):
+        if not fam_dir.is_dir() or fam_dir.name.startswith("_"):
+            continue
+        dst = backup_root / fam_dir.name
+        dst.mkdir(exist_ok=True)
+        for sf in fam_dir.glob("*.settings"):
+            shutil.copy2(sf, dst / sf.name)
+    return sum(1 for _ in backup_root.rglob("*.settings"))
+
+
 def main() -> int:
     ap = argparse.ArgumentParser(description="Migrate corpus_v1 maps.")
     ap.add_argument("--dry-run", action="store_true", help="Don't write files")
+    ap.add_argument(
+        "--corpus-only",
+        action="store_true",
+        help="Only update corpus_v1 (default: base_scenarios + corpus_v1)",
+    )
+    ap.add_argument(
+        "--world-size-only",
+        action="store_true",
+        help="Only update MovementModel.worldSize and rescale clusters (no map paths/models)",
+    )
     args = ap.parse_args()
 
-    if not CORPUS_DIR.exists():
-        print(f"ERROR: {CORPUS_DIR} not found")
+    refresh_world_sizes_from_metadata()
+
+    settings_roots: list[tuple[str, Path, Path]] = []
+    if BASE_DIR.exists() and not args.corpus_only:
+        settings_roots.append(("base_scenarios", BASE_DIR, BACKUP_BASE_DIR))
+    if CORPUS_DIR.exists():
+        settings_roots.append(("corpus_v1", CORPUS_DIR, BACKUP_DIR))
+    if not settings_roots:
+        print("ERROR: no settings directories found")
         return 1
 
     # Verify maps installed
@@ -288,59 +376,65 @@ def main() -> int:
             return 1
 
     # Step 0: Backup
-    if not BACKUP_DIR.exists():
-        print(f"Creating backup at {BACKUP_DIR}...")
-        BACKUP_DIR.mkdir(parents=True)
-        for fam_dir in sorted(CORPUS_DIR.iterdir()):
-            if not fam_dir.is_dir() or fam_dir.name.startswith("_"):
-                continue
-            dst = BACKUP_DIR / fam_dir.name
-            dst.mkdir(exist_ok=True)
-            for sf in fam_dir.glob("*.settings"):
-                shutil.copy2(sf, dst / sf.name)
-        count = sum(1 for _ in BACKUP_DIR.rglob("*.settings"))
-        print(f"  Backed up {count} files")
-    else:
-        print(f"Backup already exists at {BACKUP_DIR}, skipping")
+    for label, root, backup in settings_roots:
+        if not backup.exists():
+            print(f"Creating backup for {label} at {backup}...")
+            n = backup_settings_tree(root, backup)
+            print(f"  Backed up {n} files")
+        else:
+            print(f"Backup for {label} already exists at {backup}, skipping")
 
     # Step 1: Migrate
     records: list[dict] = []
     total = 0
     renamed = 0
 
-    for fam_name, policy in FAMILY_MAP.items():
-        fam_dir = CORPUS_DIR / fam_name
-        if not fam_dir.exists():
-            print(f"  [SKIP] {fam_name}: directory not found")
-            continue
+    for label, root, _backup in settings_roots:
+        print(f"\n######## {label} ########")
+        for fam_name, policy in FAMILY_MAP.items():
+            fam_dir = root / fam_name
+            if not fam_dir.exists():
+                print(f"  [SKIP] {label}/{fam_name}: directory not found")
+                continue
 
-        settings_files = sorted(fam_dir.glob("*.settings"))
-        print(f"\n{'='*60}")
-        print(f"  {fam_name}: {len(settings_files)} files -> {policy['map_name']}")
-        print(f"  worldSize: {policy['world_size']}")
-        print(f"{'='*60}")
+            settings_files = sorted(fam_dir.glob("*.settings"))
+            print(f"\n{'='*60}")
+            print(f"  {label}/{fam_name}: {len(settings_files)} files -> {policy['map_name']}")
+            print(f"  worldSize: {policy['world_size']}")
+            print(f"{'='*60}")
 
-        for sf in settings_files:
-            rec = migrate_file(sf, fam_name, policy, args.dry_run)
-            records.append(rec)
-            total += 1
+            for sf in settings_files:
+                rec = migrate_file(
+                    sf,
+                    fam_name,
+                    policy,
+                    args.dry_run,
+                    world_size_only=args.world_size_only,
+                )
+                rec["corpus"] = label
+                records.append(rec)
+                total += 1
 
-            if not args.dry_run:
-                new_path = rename_file(sf, policy)
-                if new_path:
-                    rec["scenario_name"] = new_path.stem
-                    rec["notes"] += f"; renamed to {new_path.name}"
-                    renamed += 1
+                if (
+                    label == "corpus_v1"
+                    and not args.dry_run
+                    and not args.world_size_only
+                ):
+                    new_path = rename_file(sf, policy)
+                    if new_path:
+                        rec["scenario_name"] = new_path.stem
+                        rec["notes"] += f"; renamed to {new_path.name}"
+                        renamed += 1
 
-        print(f"  Processed {len(settings_files)} files")
+            print(f"  Processed {len(settings_files)} files")
 
-    print(f"\nTotal: {total} files migrated, {renamed} renamed")
+    print(f"\nTotal: {total} files migrated, {renamed} renamed (corpus_v1 only)")
 
     # Step 2: Write CSV
     ANALYSIS_DATA.mkdir(parents=True, exist_ok=True)
     csv_path = ANALYSIS_DATA / "map_policy_validation.csv"
     fieldnames = [
-        "family", "scenario_name", "old_map", "new_map",
+        "corpus", "family", "scenario_name", "old_map", "new_map",
         "old_worldSize", "new_worldSize",
         "old_movementModel", "new_movementModel",
         "validation_status", "notes",
@@ -354,21 +448,22 @@ def main() -> int:
     # Step 3: Post-validation
     print("\n--- Post-validation ---")
     fail_count = 0
-    for fam_name, policy in FAMILY_MAP.items():
-        fam_dir = CORPUS_DIR / fam_name
-        if not fam_dir.exists():
-            continue
-        for sf in sorted(fam_dir.glob("*.settings")):
-            issues = post_validate(sf, policy)
-            if issues:
-                fail_count += 1
-                print(f"  [FAIL] {sf.name}")
-                for iss in issues:
-                    print(f"    - {iss}")
-                for rec in records:
-                    if rec["scenario_name"] == sf.stem:
-                        rec["validation_status"] = "FAIL"
-                        rec["notes"] += "; " + "; ".join(issues)
+    for label, root, _backup in settings_roots:
+        for fam_name, policy in FAMILY_MAP.items():
+            fam_dir = root / fam_name
+            if not fam_dir.exists():
+                continue
+            for sf in sorted(fam_dir.glob("*.settings")):
+                issues = post_validate(sf, policy)
+                if issues:
+                    fail_count += 1
+                    print(f"  [FAIL] {label}/{sf.name}")
+                    for iss in issues:
+                        print(f"    - {iss}")
+                    for rec in records:
+                        if rec.get("corpus") == label and rec["scenario_name"] == sf.stem:
+                            rec["validation_status"] = "FAIL"
+                            rec["notes"] += "; " + "; ".join(issues)
 
     if fail_count:
         print(f"\n*** {fail_count} file(s) failed post-validation ***")

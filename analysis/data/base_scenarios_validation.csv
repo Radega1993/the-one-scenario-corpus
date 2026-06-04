@@ -1,46 +1,46 @@
 settings_file,family,scenario_base,status,issues,warnings,corpus_v1_tp_count,corpus_v1_coverage
-scenarios/base_scenarios/01_urban/U1_CBD_Commuting_HelsinkiDowntown.settings,01_urban,U1_CBD_Commuting_HelsinkiDowntown,ok,,,12,yes
-scenarios/base_scenarios/01_urban/U2_SparseSuburb_HelsinkiDowntown.settings,01_urban,U2_SparseSuburb_HelsinkiDowntown,ok,,,12,yes
-scenarios/base_scenarios/01_urban/U3_MicroMobility_HelsinkiDowntown.settings,01_urban,U3_MicroMobility_HelsinkiDowntown,ok,,,12,yes
-scenarios/base_scenarios/01_urban/U4_CongestionHotspot_HelsinkiDowntown.settings,01_urban,U4_CongestionHotspot_HelsinkiDowntown,ok,,warn_Events1.time; warn_Events2; warn_Events1.tohosts,12,yes
-scenarios/base_scenarios/01_urban/U5_WorkdayShort_HelsinkiDowntown.settings,01_urban,U5_WorkdayShort_HelsinkiDowntown,ok,,,12,yes
-scenarios/base_scenarios/01_urban/U6_OfficeWaitHeavyTail_HelsinkiDowntown.settings,01_urban,U6_OfficeWaitHeavyTail_HelsinkiDowntown,ok,,warn_Events1.time; warn_Events2; warn_Events1.tohosts,12,yes
-scenarios/base_scenarios/01_urban/U7_HighTimeVariance_HelsinkiDowntown.settings,01_urban,U7_HighTimeVariance_HelsinkiDowntown,ok,,warn_Events1.time; warn_Events2,12,yes
-scenarios/base_scenarios/02_campus/C1_Campus_ClassChange.settings,02_campus,C1_Campus_ClassChange,ok,,,12,yes
-scenarios/base_scenarios/02_campus/C2_ExamDay_LongStays.settings,02_campus,C2_ExamDay_LongStays,ok,,,12,yes
-scenarios/base_scenarios/02_campus/C3_Hackathon_24h.settings,02_campus,C3_Hackathon_24h,ok,,warn_Events1.time; warn_Events2,12,yes
-scenarios/base_scenarios/02_campus/C4_Stadium_IngressEgress.settings,02_campus,C4_Stadium_IngressEgress,ok,,warn_Events1.time; warn_Events2,12,yes
-scenarios/base_scenarios/02_campus/C5_Library_Quiet.settings,02_campus,C5_Library_Quiet,ok,,,12,yes
-scenarios/base_scenarios/02_campus/C6_EmergencyDrill_Evacuation.settings,02_campus,C6_EmergencyDrill_Evacuation,ok,,,12,yes
-scenarios/base_scenarios/03_vehicles/V1_TaxiLow_ManhattanMidtownGrid.settings,03_vehicles,V1_TaxiLow_ManhattanMidtownGrid,ok,,,12,yes
-scenarios/base_scenarios/03_vehicles/V2_TaxiHigh_ManhattanMidtownGrid.settings,03_vehicles,V2_TaxiHigh_ManhattanMidtownGrid,ok,,,12,yes
-scenarios/base_scenarios/03_vehicles/V3_BusOnlyCarriers_ManhattanMidtownGrid.settings,03_vehicles,V3_BusOnlyCarriers_ManhattanMidtownGrid,ok,,warn_Events2; warn_Events1.tohosts,12,yes
-scenarios/base_scenarios/03_vehicles/V4_CarOwnership_0_ManhattanMidtownGrid.settings,03_vehicles,V4_CarOwnership_0_ManhattanMidtownGrid,ok,,warn_Events1.time; warn_Events2; warn_Events1.tohosts,12,yes
-scenarios/base_scenarios/03_vehicles/V5_CarOwnership_100_ManhattanMidtownGrid.settings,03_vehicles,V5_CarOwnership_100_ManhattanMidtownGrid,ok,,,12,yes
-scenarios/base_scenarios/04_rural/R10_TinyRange_5m.settings,04_rural,R10_TinyRange_5m,ok,,,12,yes
-scenarios/base_scenarios/04_rural/R11_SpeedExtremeLow.settings,04_rural,R11_SpeedExtremeLow,ok,,,12,yes
-scenarios/base_scenarios/04_rural/R12_SpeedExtremeHigh.settings,04_rural,R12_SpeedExtremeHigh,ok,,,12,yes
-scenarios/base_scenarios/04_rural/R1_Rural_RandomWaypoint.settings,04_rural,R1_Rural_RandomWaypoint,ok,,,12,yes
-scenarios/base_scenarios/04_rural/R2_VillagesTrails_ThreeClusters.settings,04_rural,R2_VillagesTrails_ThreeClusters,ok,,,12,yes
-scenarios/base_scenarios/04_rural/R3_WildlifeTracking.settings,04_rural,R3_WildlifeTracking,ok,,,12,yes
-scenarios/base_scenarios/04_rural/R4_ParkRangers_NuuksioSparseTrails.settings,04_rural,R4_ParkRangers_NuuksioSparseTrails,ok,,,12,yes
-scenarios/base_scenarios/04_rural/R5_MountainRescue.settings,04_rural,R5_MountainRescue,ok,,,12,yes
-scenarios/base_scenarios/04_rural/R6_SparseLongRange.settings,04_rural,R6_SparseLongRange,ok,,,12,yes
-scenarios/base_scenarios/04_rural/R7_SparseTinyBuffer.settings,04_rural,R7_SparseTinyBuffer,ok,,,12,yes
-scenarios/base_scenarios/04_rural/R8_IntermittentPower.settings,04_rural,R8_IntermittentPower,ok,,,12,yes
-scenarios/base_scenarios/04_rural/R9_ExtremeRange_200m.settings,04_rural,R9_ExtremeRange_200m,ok,,,12,yes
-scenarios/base_scenarios/05_disaster/D1_ShelterHotspots_Clusters.settings,05_disaster,D1_ShelterHotspots_Clusters,ok,,,12,yes
-scenarios/base_scenarios/05_disaster/D2_PartitionedCity_MuleBridge.settings,05_disaster,D2_PartitionedCity_MuleBridge,ok,,,12,yes
-scenarios/base_scenarios/05_disaster/D3_Aftershock_ErraticMobility.settings,05_disaster,D3_Aftershock_ErraticMobility,ok,,,12,yes
-scenarios/base_scenarios/05_disaster/D4_MedicalTriage_TwoClasses.settings,05_disaster,D4_MedicalTriage_TwoClasses,ok,,warn_Events2; warn_Events1.tohosts,12,yes
-scenarios/base_scenarios/05_disaster/D5_UAVMule_FastRoute_HelsinkiDisrupted.settings,05_disaster,D5_UAVMule_FastRoute_HelsinkiDisrupted,ok,,,12,yes
-scenarios/base_scenarios/05_disaster/D6_ShortTtlCritical_5to10min.settings,05_disaster,D6_ShortTtlCritical_5to10min,ok,,,12,yes
-scenarios/base_scenarios/05_disaster/D7_HighLoad_TrafficStorm.settings,05_disaster,D7_HighLoad_TrafficStorm,ok,,,12,yes
-scenarios/base_scenarios/05_disaster/D8_InfrastructureReturns_BackboneLinks.settings,05_disaster,D8_InfrastructureReturns_BackboneLinks,ok,,warn_Events2,12,yes
-scenarios/base_scenarios/05_disaster/D9_Critical_1minTTL.settings,05_disaster,D9_Critical_1minTTL,ok,,,12,yes
-scenarios/base_scenarios/06_social/S1_StrongCommunities_SeparateClusters.settings,06_social,S1_StrongCommunities_SeparateClusters,ok,,,12,yes
-scenarios/base_scenarios/06_social/S2_WeakCommunities_HighMixing.settings,06_social,S2_WeakCommunities_HighMixing,ok,,,12,yes
-scenarios/base_scenarios/06_social/S3_PeriodicMeetings_RegularRhythm.settings,06_social,S3_PeriodicMeetings_RegularRhythm,ok,,,12,yes
-scenarios/base_scenarios/06_social/S4_RandomMixing_NoHotspots.settings,06_social,S4_RandomMixing_NoHotspots,ok,,,12,yes
-scenarios/base_scenarios/06_social/S5_TwoLayer_StudentsStaff.settings,06_social,S5_TwoLayer_StudentsStaff,ok,,warn_Events1.tohosts,12,yes
-scenarios/base_scenarios/06_social/S6_FamilyGroups_SmallPersistent.settings,06_social,S6_FamilyGroups_SmallPersistent,ok,,,12,yes
+scenarios/base_scenarios/01_urban/U1_CBD_Commuting_HelsinkiDowntown.settings,01_urban,U1_CBD_Commuting_HelsinkiDowntown,fail,"worldSize_mismatch:got=1713,1459,exp=1793,1538",,12,yes
+scenarios/base_scenarios/01_urban/U2_SparseUrban_HelsinkiDowntown.settings,01_urban,U2_SparseUrban_HelsinkiDowntown,fail,"worldSize_mismatch:got=1713,1459,exp=1793,1538; no_corpus_v1_TP_variants",,0,no
+scenarios/base_scenarios/01_urban/U3_MicroMobility_HelsinkiDowntown.settings,01_urban,U3_MicroMobility_HelsinkiDowntown,fail,"worldSize_mismatch:got=1713,1459,exp=1793,1538",,12,yes
+scenarios/base_scenarios/01_urban/U4_CongestionHotspot_HelsinkiDowntown.settings,01_urban,U4_CongestionHotspot_HelsinkiDowntown,fail,"worldSize_mismatch:got=1713,1459,exp=1793,1538",warn_Events1.time; warn_Events2; warn_Events1.tohosts,12,yes
+scenarios/base_scenarios/01_urban/U5_WorkdayShort_HelsinkiDowntown.settings,01_urban,U5_WorkdayShort_HelsinkiDowntown,fail,"worldSize_mismatch:got=1713,1459,exp=1793,1538",,12,yes
+scenarios/base_scenarios/01_urban/U6_OfficeWaitHeavyTail_HelsinkiDowntown.settings,01_urban,U6_OfficeWaitHeavyTail_HelsinkiDowntown,fail,"worldSize_mismatch:got=1713,1459,exp=1793,1538",warn_Events1.time; warn_Events2; warn_Events1.tohosts,12,yes
+scenarios/base_scenarios/01_urban/U7_HighTimeVariance_HelsinkiDowntown.settings,01_urban,U7_HighTimeVariance_HelsinkiDowntown,fail,"worldSize_mismatch:got=1713,1459,exp=1793,1538",warn_Events1.time; warn_Events2,12,yes
+scenarios/base_scenarios/02_campus/C1_Campus_ClassChange.settings,02_campus,C1_Campus_ClassChange,fail,"worldSize_mismatch:got=1148,1036,exp=1227,1116",,12,yes
+scenarios/base_scenarios/02_campus/C2_ExamDay_LongStays.settings,02_campus,C2_ExamDay_LongStays,fail,"worldSize_mismatch:got=1148,1036,exp=1227,1116",,12,yes
+scenarios/base_scenarios/02_campus/C3_Hackathon_24h.settings,02_campus,C3_Hackathon_24h,fail,"worldSize_mismatch:got=1148,1036,exp=1227,1116",warn_Events1.time; warn_Events2,12,yes
+scenarios/base_scenarios/02_campus/C4_CampusEvent_IngressEgress.settings,02_campus,C4_CampusEvent_IngressEgress,fail,"worldSize_mismatch:got=1148,1036,exp=1227,1116; no_corpus_v1_TP_variants",warn_Events1.time; warn_Events2,0,no
+scenarios/base_scenarios/02_campus/C5_Library_Quiet.settings,02_campus,C5_Library_Quiet,fail,"worldSize_mismatch:got=1148,1036,exp=1227,1116",,12,yes
+scenarios/base_scenarios/02_campus/C6_EmergencyDrill_Evacuation.settings,02_campus,C6_EmergencyDrill_Evacuation,fail,"worldSize_mismatch:got=1148,1036,exp=1227,1116",,12,yes
+scenarios/base_scenarios/03_vehicles/V1_TaxiLow_ManhattanMidtownGrid.settings,03_vehicles,V1_TaxiLow_ManhattanMidtownGridMidtownGrid,fail,"worldSize_mismatch:got=2120,1986,exp=2199,2066; no_corpus_v1_TP_variants",,0,no
+scenarios/base_scenarios/03_vehicles/V2_TaxiHigh_ManhattanMidtownGrid.settings,03_vehicles,V2_TaxiHigh_ManhattanMidtownGridMidtownGrid,fail,"worldSize_mismatch:got=2120,1986,exp=2199,2066; no_corpus_v1_TP_variants",,0,no
+scenarios/base_scenarios/03_vehicles/V3_BusOnlyCarriers_ManhattanMidtownGrid.settings,03_vehicles,V3_BusOnlyCarriers_ManhattanMidtownGridMidtownGrid,fail,"worldSize_mismatch:got=2120,1986,exp=2199,2066; no_corpus_v1_TP_variants",warn_Events2; warn_Events1.tohosts,0,no
+scenarios/base_scenarios/03_vehicles/V4_CarOwnership_0_ManhattanMidtownGrid.settings,03_vehicles,V4_CarOwnership_0_ManhattanMidtownGridMidtownGrid,fail,"worldSize_mismatch:got=2120,1986,exp=2199,2066; no_corpus_v1_TP_variants",warn_Events1.time; warn_Events2; warn_Events1.tohosts,0,no
+scenarios/base_scenarios/03_vehicles/V5_CarOwnership_100_ManhattanMidtownGrid.settings,03_vehicles,V5_CarOwnership_100_ManhattanMidtownGridMidtownGrid,fail,"worldSize_mismatch:got=2120,1986,exp=2199,2066; no_corpus_v1_TP_variants",,0,no
+scenarios/base_scenarios/04_rural/R10_TinyRange_5m.settings,04_rural,R10_TinyRange_5m,fail,"worldSize_mismatch:got=2470,2565,exp=2550,2644",,12,yes
+scenarios/base_scenarios/04_rural/R11_SpeedExtremeLow.settings,04_rural,R11_SpeedExtremeLow,fail,"worldSize_mismatch:got=2470,2565,exp=2550,2644",,12,yes
+scenarios/base_scenarios/04_rural/R12_SpeedExtremeHigh.settings,04_rural,R12_SpeedExtremeHigh,fail,"worldSize_mismatch:got=2470,2565,exp=2550,2644",,12,yes
+scenarios/base_scenarios/04_rural/R1_Rural_SparseSPMM.settings,04_rural,R1_Rural_SparseSPMM,fail,"worldSize_mismatch:got=2470,2565,exp=2550,2644; no_corpus_v1_TP_variants",,0,no
+scenarios/base_scenarios/04_rural/R2_VillagesTrails_InterVillage.settings,04_rural,R2_VillagesTrails_InterVillage,fail,"worldSize_mismatch:got=2470,2565,exp=2550,2644",,12,yes
+scenarios/base_scenarios/04_rural/R3_WildlifeTracking.settings,04_rural,R3_WildlifeTracking,fail,"worldSize_mismatch:got=2470,2565,exp=2550,2644",,12,yes
+scenarios/base_scenarios/04_rural/R4_ParkRangers_NuuksioSparseTrails.settings,04_rural,R4_ParkRangers_NuuksioSparseTrails,fail,"worldSize_mismatch:got=2470,2565,exp=2550,2644",,12,yes
+scenarios/base_scenarios/04_rural/R5_MountainRescue.settings,04_rural,R5_MountainRescue,fail,"worldSize_mismatch:got=2470,2565,exp=2550,2644",,12,yes
+scenarios/base_scenarios/04_rural/R6_SparseLongRange.settings,04_rural,R6_SparseLongRange,fail,"worldSize_mismatch:got=2470,2565,exp=2550,2644",,12,yes
+scenarios/base_scenarios/04_rural/R7_SparseTinyBuffer.settings,04_rural,R7_SparseTinyBuffer,fail,"worldSize_mismatch:got=2470,2565,exp=2550,2644",,12,yes
+scenarios/base_scenarios/04_rural/R8_IntermittentPower.settings,04_rural,R8_IntermittentPower,fail,"worldSize_mismatch:got=2470,2565,exp=2550,2644",,12,yes
+scenarios/base_scenarios/04_rural/R9_ExtremeRange_200m.settings,04_rural,R9_ExtremeRange_200m,fail,"worldSize_mismatch:got=2470,2565,exp=2550,2644",,12,yes
+scenarios/base_scenarios/05_disaster/D1_ShelterHotspots_EmergencyMobility.settings,05_disaster,D1_ShelterHotspots_EmergencyMobility,fail,"worldSize_mismatch:got=1711,1874,exp=1790,1953",,12,yes
+scenarios/base_scenarios/05_disaster/D2_PartitionedCity_MuleBridge.settings,05_disaster,D2_PartitionedCity_MuleBridge,fail,"worldSize_mismatch:got=1711,1874,exp=1790,1953",,12,yes
+scenarios/base_scenarios/05_disaster/D3_Aftershock_ErraticMobility.settings,05_disaster,D3_Aftershock_ErraticMobility,fail,"worldSize_mismatch:got=1711,1874,exp=1790,1953",,12,yes
+scenarios/base_scenarios/05_disaster/D4_MedicalTriage_TwoClasses.settings,05_disaster,D4_MedicalTriage_TwoClasses,fail,"worldSize_mismatch:got=1711,1874,exp=1790,1953",warn_Events2; warn_Events1.tohosts,12,yes
+scenarios/base_scenarios/05_disaster/D5_UAVMule_FastRoute_HelsinkiDisrupted.settings,05_disaster,D5_UAVMule_FastRoute_HelsinkiDisrupted,fail,"worldSize_mismatch:got=1711,1874,exp=1790,1953",,12,yes
+scenarios/base_scenarios/05_disaster/D6_ShortTtlCritical_5to10min.settings,05_disaster,D6_ShortTtlCritical_5to10min,fail,"worldSize_mismatch:got=1711,1874,exp=1790,1953",,12,yes
+scenarios/base_scenarios/05_disaster/D7_HighLoad_TrafficStorm.settings,05_disaster,D7_HighLoad_TrafficStorm,fail,"worldSize_mismatch:got=1711,1874,exp=1790,1953",,12,yes
+scenarios/base_scenarios/05_disaster/D8_InfrastructureReturns_BackboneLinks.settings,05_disaster,D8_InfrastructureReturns_BackboneLinks,fail,"worldSize_mismatch:got=1711,1874,exp=1790,1953",warn_Events2,12,yes
+scenarios/base_scenarios/05_disaster/D9_Critical_1minTTL.settings,05_disaster,D9_Critical_1minTTL,fail,"worldSize_mismatch:got=1711,1874,exp=1790,1953",,12,yes
+scenarios/base_scenarios/06_social/S1_StrongCommunities_LimitedMixing.settings,06_social,S1_StrongCommunities_LimitedMixing,fail,"worldSize_mismatch:got=1124,1149,exp=1203,1228",,12,yes
+scenarios/base_scenarios/06_social/S2_WeakCommunities_HighMixing.settings,06_social,S2_WeakCommunities_HighMixing,fail,"worldSize_mismatch:got=1124,1149,exp=1203,1228",,12,yes
+scenarios/base_scenarios/06_social/S3_PeriodicMeetings_RegularRhythm.settings,06_social,S3_PeriodicMeetings_RegularRhythm,fail,"worldSize_mismatch:got=1124,1149,exp=1203,1228",,12,yes
+scenarios/base_scenarios/06_social/S4_RandomMixing_NoHotspots.settings,06_social,S4_RandomMixing_NoHotspots,fail,"worldSize_mismatch:got=1124,1149,exp=1203,1228",,12,yes
+scenarios/base_scenarios/06_social/S5_TwoLayer_StudentsStaff.settings,06_social,S5_TwoLayer_StudentsStaff,fail,"worldSize_mismatch:got=1124,1149,exp=1203,1228",warn_Events1.tohosts,12,yes
+scenarios/base_scenarios/06_social/S6_FamilyGroups_LocalRoutines.settings,06_social,S6_FamilyGroups_LocalRoutines,fail,"worldSize_mismatch:got=1124,1149,exp=1203,1228",,12,yes

@@ -26,12 +26,15 @@ import shutil
 import sys
 from pathlib import Path
 
-SCENARIOS_DIR = Path(__file__).resolve().parent.parent
+_SETUP_DIR = Path(__file__).resolve().parent
+SCENARIOS_DIR = _SETUP_DIR.parent
 RAW_DIR = SCENARIOS_DIR / "maps" / "raw"
 WKT_DIR = SCENARIOS_DIR / "maps" / "wkt"
 DATA_DIR = SCENARIOS_DIR.parent / "data"
 
-WORLD_SIZE_MARGIN_M = 200
+if str(_SETUP_DIR) not in sys.path:
+    sys.path.insert(0, str(_SETUP_DIR))
+from map_config import WORLD_SIZE_MARGIN_M  # noqa: E402
 SEED = 42
 
 # ── Map definitions (duplicated from map_config.py to be self-contained) ─────
@@ -163,8 +166,9 @@ def _process_osm_map(name: str, cfg: dict) -> dict:
     min_y, max_y = min(ys), max(ys)
     span_x = max_x - min_x
     span_y = max_y - min_y
-    world_x = math.ceil(span_x + 2 * WORLD_SIZE_MARGIN_M)
-    world_y = math.ceil(span_y + 2 * WORLD_SIZE_MARGIN_M)
+    # Provisional; final worldSize set from sim-aligned roads.wkt after write.
+    world_x = math.ceil(span_x)
+    world_y = math.ceil(span_y)
 
     return {
         "edges": all_edges,
@@ -295,9 +299,21 @@ def process_all(install: bool = False) -> None:
         else:
             info = _process_osm_map(name, cfg)
 
-        write_roads_wkt(info["edges"], out_dir / "roads.wkt")
+        roads_path = out_dir / "roads.wkt"
+        write_roads_wkt(info["edges"], roads_path)
+        _setup = Path(__file__).resolve().parent
+        if str(_setup) not in sys.path:
+            sys.path.insert(0, str(_setup))
+        from map_geometry import (  # noqa: WPS433
+            load_map_metadata,
+            occupancy_margin_from_metadata,
+            world_size_from_sim_roads,
+        )
+
+        margin_m = occupancy_margin_from_metadata(load_map_metadata(out_dir), WORLD_SIZE_MARGIN_M)
+        info["world_size"] = world_size_from_sim_roads(roads_path, margin_m)
         print(f"  roads.wkt: {info['n_edges']} segments, {info['n_nodes']} nodes")
-        print(f"  worldSize: {info['world_size']}")
+        print(f"  worldSize (sim max + {margin_m:.0f} m margin/axis): {info['world_size']}")
 
         target_crs = cfg.get("crs", "local")
         density = cfg.get("poi_density", {})
@@ -335,6 +351,8 @@ def process_all(install: bool = False) -> None:
             "crs": target_crs,
             "source": "synthetic" if cfg.get("synthetic") else "osm",
             "world_size": list(info["world_size"]),
+            "occupancy_margin_m": margin_m,
+            "world_size_policy": f"sim_road_max_plus_{int(margin_m)}m_margin_per_axis",
             "bbox_m": [info["min_x"], info["min_y"], info["max_x"], info["max_y"]],
             "n_road_segments": info["n_edges"],
             "n_nodes": info["n_nodes"],

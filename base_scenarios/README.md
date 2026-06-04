@@ -28,7 +28,10 @@ This directory holds **45 structural base scenarios** (families 01–06) used to
 python3 scenarios/setup/migrate_base_scenarios_maps.py \
   --source scenarios/_archive/legacy_corpus_v1_pre_rename
 
+python3 scenarios/setup/calibrate_world_size_per_map.py --apply
+python3 scenarios/setup/migrate_corpus_maps.py --world-size-only
 python3 scenarios/setup/build_base_scenarios_manifest.py
+python3 scenarios/setup/audit_world_size_settings.py
 python3 scenarios/analysis/validate_base_scenarios.py
 ```
 

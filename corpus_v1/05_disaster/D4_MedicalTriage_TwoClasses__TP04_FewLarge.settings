@@ -15,7 +15,7 @@ MovementModel.rngSeed = 40
 MapBasedMovement.nrofMapFiles = 1
 MapBasedMovement.mapFile1 = data/HelsinkiDisrupted/roads.wkt
 
-MovementModel.worldSize = 2067, 2206
+MovementModel.worldSize = 1711, 1874
 
 Group.router = EpidemicRouter
 Group.bufferSize = 50M

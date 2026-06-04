@@ -1,9 +1,9 @@
 # Spatial occupancy analysis (generated)
 
 - Reports directory: `/home/raul/Documents/the-one/reports`
-- Scenarios processed: 540
+- Scenarios processed: 1
 - Skipped (missing grid CSV): 0
-- Timeseries replay (NodePositionReport): 540 ok, 0 world-only
+- Timeseries replay (NodePositionReport): 1 ok, 0 world-only
 - Primary metric: `coverage_road_cells_pct`
 - Zoom mode: `roads`
 - Metrics: `/home/raul/Documents/the-one/scenarios/analysis/data/spatial_occupancy_metrics.csv`

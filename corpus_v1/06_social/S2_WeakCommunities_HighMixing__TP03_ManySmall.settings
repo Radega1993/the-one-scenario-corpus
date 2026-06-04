@@ -13,7 +13,7 @@ MovementModel.rngSeed = 46
 MapBasedMovement.nrofMapFiles = 1
 MapBasedMovement.mapFile1 = data/KallioCommunityCompact/roads.wkt
 
-MovementModel.worldSize = 1458, 1529
+MovementModel.worldSize = 1124, 1149
 
 Group.movementModel = ShortestPathMapBasedMovement
 Group.router = EpidemicRouter

@@ -127,12 +127,19 @@ def _assign_flags(row: pd.Series, th: dict[str, Any], corpus_helsinki_pct: float
     if structural and dr <= th["delivery"]["zero_max"] and enc > 0:
         flags.append("STRUCTURAL_PARTITION_VALID")
 
+    crr = row.get("coverage_road_ratio")
     cwr = row.get("coverage_world_ratio")
     car = row.get("coverage_accessible_ratio")
-    if cwr is not None and not pd.isna(cwr):
-        if float(cwr) < th["spatial"]["map_underused_coverage_world_max"]:
+    underused_metric = crr if crr is not None and not pd.isna(crr) else cwr
+    underused_max = th["spatial"].get(
+        "map_underused_coverage_road_max",
+        th["spatial"]["map_underused_coverage_world_max"],
+    )
+    if underused_metric is not None and not pd.isna(underused_metric):
+        if float(underused_metric) < underused_max:
             flags.append("MAP_UNDERUSED")
-        if car is not None and not pd.isna(car) and float(cwr) > 0:
+    if car is not None and not pd.isna(car) and cwr is not None and not pd.isna(cwr):
+        if float(cwr) > 0:
             ratio = float(car) / float(cwr)
             if ratio > th["spatial"]["map_too_large_accessible_ratio_min"]:
                 flags.append("MAP_TOO_LARGE")
@@ -242,6 +249,9 @@ def build_diagnosis_table(
                 "scenario",
                 "final_coverage_pct",
                 "cells_visited_pct",
+                "coverage_road_cells_pct",
+                "coverage_world_pct",
+                "world_size_mismatch",
                 "map_dataset",
                 "world_x",
                 "world_y",
@@ -255,8 +265,14 @@ def build_diagnosis_table(
 
     if "final_coverage_pct" in base.columns:
         base["coverage_world_ratio"] = base["final_coverage_pct"] / 100.0
+    elif "coverage_world_pct" in base.columns:
+        base["coverage_world_ratio"] = base["coverage_world_pct"] / 100.0
     else:
         base["coverage_world_ratio"] = None
+    if "coverage_road_cells_pct" in base.columns:
+        base["coverage_road_ratio"] = base["coverage_road_cells_pct"] / 100.0
+    else:
+        base["coverage_road_ratio"] = None
 
     base["coverage_accessible_ratio"] = None
     base = enrich_spatial_from_reports(base, reports_dir, repo_root=repo_root)
@@ -365,7 +381,7 @@ def write_diagnosis_report(df: pd.DataFrame, path: Path, thresholds_path: Path) 
             "## Notes",
             "",
             "- `STRUCTURAL_PARTITION_VALID` marks intentional zero delivery (e.g. TP12 cross-group).",
-            "- `MAP_UNDERUSED` uses `coverage_world_ratio` < threshold; WDM on large worlds often ~8–10%.",
+            "- `MAP_UNDERUSED` uses `coverage_road_ratio` when available (else world); see `realism_thresholds.yaml`.",
             "- Full table: `data/scenario_diagnosis.csv`.",
             "",
         ]

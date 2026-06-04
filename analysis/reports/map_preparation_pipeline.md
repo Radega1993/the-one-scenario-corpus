@@ -8,12 +8,14 @@ Estandarizar los mapas del benchmark `corpus_v1` asignando **un mapa fijo y repr
 
 | Familia | Mapa asignado | Fuente | Zona geográfica | worldSize (m) | Justificación |
 |---------|--------------|--------|-----------------|---------------|---------------|
-| 01_urban | HelsinkiDowntown | OSM | Kluuvi / Kamppi / Esplanadi, Helsinki | 2093 × 1838 | Red viaria densa urbana con transporte público; estándar histórico de The ONE |
-| 02_campus | KumpulaCampus | OSM | Campus Kumpula, Universidad de Helsinki | 1524 × 1416 | Zona compacta con peatones, carriles bici y caminos internos |
-| 03_vehicles | ManhattanMidtownGrid | OSM | Midtown Manhattan (34th–59th St) | 2500 × 2366 | Grid regular ideal para benchmarks vehiculares |
-| 04_rural | NuuksioSparseTrails | OSM | Parque Nacional Nuuksio, Espoo | 2848 × 2945 | Red dispersa de senderos — entorno rural/wildlife |
-| 05_disaster | HelsinkiDisrupted | OSM | Kalasatama / Sörnäinen (zona industrial) | 2067 × 2206 | Infraestructura portuaria e industrial — escenarios de desastre |
-| 06_social | KallioCommunityCompact | OSM | Barrio Kallio, Helsinki | 1458 × 1529 | Barrio residencial denso — dinámica de comunidad |
+| 01_urban | HelsinkiDowntown | OSM | Kluuvi / Kamppi / Esplanadi, Helsinki | 1713 × 1459 | Red viaria densa urbana con transporte público |
+| 02_campus | KumpulaCampus | OSM | Campus Kumpula, Universidad de Helsinki | 1148 × 1036 | Zona compacta con peatones, carriles bici y caminos internos |
+| 03_vehicles | ManhattanMidtownGrid | OSM | Midtown Manhattan (34th–59th St) | 2120 × 1986 | Grid regular ideal para benchmarks vehiculares |
+| 04_rural | NuuksioSparseTrails | OSM | Parque Nacional Nuuksio, Espoo | 2470 × 2565 | Red dispersa de senderos — entorno rural/wildlife |
+| 05_disaster | HelsinkiDisrupted | OSM | Kalasatama / Sörnäinen (zona industrial) | 1711 × 1874 | Infraestructura portuaria e industrial — escenarios de desastre |
+| 06_social | KallioCommunityCompact | OSM | Barrio Kallio, Helsinki | 1124 × 1149 | Barrio residencial denso — dinámica de comunidad |
+
+**worldSize (2026-05):** `ceil(max_road_sim) + occupancy_margin_m` por eje (`calibrate_world_size_per_map.py`, típicamente 20 m). SSOT: `analysis/data/world_size_calibration.csv`.
 
 ## 3. Por qué cada familia usa un mapa distinto
 
@@ -61,7 +63,7 @@ Equivale a ejecutar secuencialmente:
    - Genera `roads.wkt` con un `LINESTRING` por arista.
    - Genera POIs (`POINT`) a partir de datos OSM reales cuando están disponibles, con fallback a generación aleatoria cerca de nodos del grafo.
    - Genera rutas de bus como `LINESTRING`.
-   - Calcula `worldSize = span + 400m margen`.
+   - Calcula `worldSize` con `world_size_from_sim_roads()` (`ceil(max_road) + margin` por eje).
    - Escribe `metadata.json` por mapa.
 
 3. **`validate_maps.py`** — Valida cada mapa generado:
@@ -90,12 +92,12 @@ bash scenarios/setup/bootstrap_maps.sh --force-download
 
 | Mapa | Segmentos | Nodos | Span (m) | worldSize (m) | Cobertura (%) | Homes | Offices | Meeting |
 |------|-----------|-------|----------|---------------|---------------|-------|---------|---------|
-| HelsinkiDowntown | 575 | 2531 | 1693×1438 | 2093×1838 | 11.9% | 80 | 40 | 25 |
-| KumpulaCampus | 4059 | 3632 | 1127×1016 | 1524×1416 | 50.7% | 30 | 20 | 15 |
-| ManhattanMidtownGrid | 568 | 2116 | 2099×1966 | 2500×2366 | 12.1% | 60 | 50 | 30 |
-| NuuksioSparseTrails | 326 | 965 | 2450×2544 | 2848×2945 | 5.4% | 10 | 5 | 8 |
-| HelsinkiDisrupted | 8398 | 7338 | 1690×1853 | 2067×2206 | 45.5% | 40 | 25 | 15 |
-| KallioCommunityCompact | 7204 | 5522 | 1103×1128 | 1458×1529 | 59.3% | 70 | 20 | 30 |
+| HelsinkiDowntown | 575 | 2531 | 1693×1438 | 1713×1459 | 18.3% | 80 | 40 | 25 |
+| KumpulaCampus | 4059 | 3632 | 1127×1016 | 1148×1036 | 92.0% | 30 | 20 | 15 |
+| ManhattanMidtownGrid | 568 | 2116 | 2099×1966 | 2120×1986 | 17.0% | 60 | 50 | 30 |
+| NuuksioSparseTrails | 326 | 965 | 2449×2544 | 2470×2565 | 7.1% | 10 | 5 | 8 |
+| HelsinkiDisrupted | 8398 | 7338 | 1690×1853 | 1711×1874 | 64.8% | 40 | 25 | 15 |
+| KallioCommunityCompact | 7204 | 5522 | 1103×1128 | 1124×1149 | 102.4% | 70 | 20 | 30 |
 |  | 24 | 143 | 1800×1500 | 2000×1700 | 11.6% | 50 | 30 | 20 |
 
 ## 7. Diferencias: mapas reales vs sintéticos

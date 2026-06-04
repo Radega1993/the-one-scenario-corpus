@@ -5,14 +5,14 @@
 # Dataset: HelsinkiMedium (map + routes A, B)
 # =========================================================
 
-Scenario.name = V3_BusOnlyCarriers_ManhattanMidtownGrid
+Scenario.name = V3_BusOnlyCarriers_ManhattanMidtownGridMidtownGrid
 Scenario.simulateConnections = true
 Scenario.updateInterval = 0.1
 Scenario.endTime = 43200
 MovementModel.rngSeed = 23
 # Diversificar core 24: world_area, aspect_ratio distintos
 # Ajuste para evitar "Map node is out of world bounds" (y:7277.58 > 7100).
-MovementModel.worldSize = 2500, 2366
+MovementModel.worldSize = 2120, 1986
 
 MapBasedMovement.nrofMapFiles = 1
 MapBasedMovement.mapFile1 = data/ManhattanMidtownGrid/roads.wkt

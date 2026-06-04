@@ -227,6 +227,42 @@ def load_map_metadata(map_dir: Path) -> dict:
         return json.loads(meta_path.read_text(encoding="utf-8"))
     return {}
 
+def sim_road_max(roads_path: Path) -> tuple[float, float]:
+    """Max (x, y) of roads in sim-aligned coords (min pinned to origin)."""
+    rg = RoadGraph.from_roads_wkt(roads_path)
+    _min_x, _min_y, max_x, max_y = rg.bbox
+    return max(0.0, max_x), max(0.0, max_y)
+
+
+def sim_road_span(roads_path: Path) -> tuple[float, float]:
+    """Road extent in simulation-aligned coordinates (origin at 0,0)."""
+    return sim_road_max(roads_path)
+
+
+def world_size_from_sim_roads(roads_path: Path, margin_m: float = 50) -> tuple[int, int]:
+    """worldSize = ceil(road max) + margin per axis (no duplicate margin at origin)."""
+    max_x, max_y = sim_road_max(roads_path)
+    return int(math.ceil(max_x + margin_m)), int(math.ceil(max_y + margin_m))
+
+
+def occupancy_margin_from_metadata(meta: dict, default: float = 50.0) -> float:
+    """Per-map margin for worldSize and spatial coverage map_bbox (metadata.json)."""
+    for key in ("occupancy_margin_m", "world_size_margin_m"):
+        if key in meta:
+            try:
+                return float(meta[key])
+            except (TypeError, ValueError):
+                pass
+    return default
+
+
+def bbox_margin_for_map(map_name: str | None, default: float = 50.0) -> float:
+    if not map_name:
+        return default
+    meta = load_map_metadata(WKT_DIR / map_name)
+    return occupancy_margin_from_metadata(meta, default)
+
+
 def world_size_from_metadata(meta: dict) -> tuple[float, float]:
     ws = meta.get("world_size", [0, 0])
     if len(ws) >= 2:

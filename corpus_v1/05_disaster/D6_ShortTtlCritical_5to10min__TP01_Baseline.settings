@@ -14,7 +14,7 @@ MapBasedMovement.nrofMapFiles = 1
 MapBasedMovement.mapFile1 = data/HelsinkiDisrupted/roads.wkt
 
 # Diversificación estructural vs R5 (mantener grupo Disaster)
-MovementModel.worldSize = 2067, 2206
+MovementModel.worldSize = 1711, 1874
 
 Group.movementModel = ShortestPathMapBasedMovement
 Group.router = EpidemicRouter

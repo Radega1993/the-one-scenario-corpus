@@ -8,27 +8,26 @@
     "poi_homes_within_bounds": true,
     "poi_offices_within_bounds": true,
     "poi_meetingspots_within_bounds": true,
-    "bus_route_exists": true
+    "bus_route_exists": false
   },
   "status": "PASS",
   "notes": [
-    "All checks passed"
+    "Missing A_bus.wkt"
   ],
   "n_road_segments": 326,
   "n_unique_points": 965,
   "span_x": 2449.9,
   "span_y": 2544.1,
-  "world_size_x": 2848,
-  "world_size_y": 2945,
+  "world_size_x": 2470,
+  "world_size_y": 2565,
   "source": "osm",
   "family": "04_rural",
   "crs": "EPSG:3067",
   "n_components": 1,
   "n_isolated": 0,
-  "coverage_pct": 5.35,
+  "coverage_pct": 7.08,
   "total_road_length_m": 44853.4,
   "n_homes": 10,
   "n_offices": 5,
-  "n_meetingspots": 8,
-  "n_bus_stops": 15
+  "n_meetingspots": 8
 }

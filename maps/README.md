@@ -51,6 +51,27 @@ Ver `analysis/reports/map_preparation_pipeline.md` para la justificación de la 
 
 Ver `analysis/data/map_inventory.csv` para el resumen cuantitativo (segmentos, nodos, worldSize, cobertura, POIs).
 
+## worldSize calibrado (2026-05)
+
+Fórmula: `ceil(max_road_sim) + occupancy_margin_m` por eje (origen en 0,0). Tabla canónica: `analysis/data/world_size_calibration.csv`.
+
+| Mapa | worldSize (m) | margin (m) |
+|------|---------------|------------|
+| HelsinkiDowntown | 1713 × 1459 | 20 |
+| KumpulaCampus | 1148 × 1036 | 20 |
+| ManhattanMidtownGrid | 2120 × 1986 | 20 |
+| NuuksioSparseTrails | 2470 × 2565 | 20 |
+| HelsinkiDisrupted | 1711 × 1874 | 20 |
+| KallioCommunityCompact | 1124 × 1149 | 20 |
+
+Recalibrar y propagar a `.settings`:
+
+```bash
+python3 scenarios/setup/calibrate_world_size_per_map.py --apply
+python3 scenarios/setup/migrate_corpus_maps.py --world-size-only
+python3 scenarios/setup/audit_world_size_settings.py
+```
+
 ## Validación de rutas semánticas y POIs
 
 ```bash

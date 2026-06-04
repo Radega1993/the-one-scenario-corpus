@@ -13,7 +13,7 @@ MovementModel.rngSeed = 16
 MapBasedMovement.nrofMapFiles = 1
 MapBasedMovement.mapFile1 = data/KumpulaCampus/roads.wkt
 
-MovementModel.worldSize = 1524, 1416
+MovementModel.worldSize = 1148, 1036
 
 Group.movementModel = ShortestPathMapBasedMovement
 Group.router = EpidemicRouter

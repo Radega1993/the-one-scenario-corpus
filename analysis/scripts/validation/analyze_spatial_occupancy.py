@@ -86,21 +86,69 @@ def parse_end_time_from_settings(settings_path: Path) -> float | None:
 def scenario_list_from_corpus(corpus_dir: Path) -> list[str]:
     return sorted({p.stem for p in corpus_dir.rglob("*.settings")})
 
-def _world_size_from_summary(summary_path: Path | None) -> tuple[float, float] | None:
+WORLD_SIZE_MISMATCH_TOL_M = 2.0
+
+
+def _world_size_from_summary(
+    summary_path: Path | None,
+) -> tuple[float | None, float | None, int | None, float]:
+    """Return (world_x, world_y, grid_size, time_bin_size) from summary CSV."""
     if summary_path is None or not summary_path.is_file():
-        return None
+        return None, None, None, 300.0
     try:
         with summary_path.open(newline="", encoding="utf-8") as f:
             row = next(csv.DictReader(f), None)
         if not row:
-            return None
+            return None, None, None, 300.0
         wx = float(row.get("world_x", "nan"))
         wy = float(row.get("world_y", "nan"))
+        gs_raw = row.get("grid_size", "50")
+        gs = int(float(gs_raw)) if gs_raw not in ("", None) else 50
+        tbs = float(row.get("time_bin_size", "300"))
         if wx == wx and wy == wy and wx > 0 and wy > 0:
-            return wx, wy
+            return wx, wy, gs, tbs
     except (OSError, StopIteration, ValueError, TypeError):
-        return None
-    return None
+        pass
+    return None, None, None, 300.0
+
+
+def resolve_world_dimensions(
+    settings_path: Path | None,
+    summary_path: Path | None,
+    *,
+    world_from_report: bool = False,
+    tolerance_m: float = WORLD_SIZE_MISMATCH_TOL_M,
+) -> tuple[float | None, float | None, int | None, float, bool]:
+    """
+    Prefer MovementModel.worldSize from .settings; compare to simulation summary.
+
+    Returns (world_x, world_y, grid_size, time_bin_size, world_size_mismatch).
+    """
+    ctx = build_map_context(settings_path, load_roads=False)
+    wx_set = float(ctx.world_x) if ctx.world_x and ctx.world_x > 0 else None
+    wy_set = float(ctx.world_y) if ctx.world_y and ctx.world_y > 0 else None
+    wx_sum, wy_sum, gs_sum, tbs = _world_size_from_summary(summary_path)
+
+    if world_from_report and wx_sum and wy_sum:
+        gs = gs_sum or 50
+        return wx_sum, wy_sum, gs, tbs, False
+
+    mismatch = False
+    if wx_sum is not None and wy_sum is not None and wx_set is not None and wy_set is not None:
+        if (
+            abs(wx_sum - wx_set) > tolerance_m
+            or abs(wy_sum - wy_set) > tolerance_m
+        ):
+            mismatch = True
+            print(
+                f"WARN world_size_mismatch: settings=({wx_set:.0f},{wy_set:.0f}) "
+                f"summary=({wx_sum:.0f},{wy_sum:.0f}) — using settings for masks"
+            )
+
+    wx = wx_set if wx_set is not None else wx_sum
+    wy = wy_set if wy_set is not None else wy_sum
+    gs = gs_sum or 50
+    return wx, wy, gs, tbs, mismatch
 
 def _grid_to_matrix(df: pd.DataFrame) -> tuple[np.ndarray, int, int]:
     ni = int(df["cell_i"].max()) + 1
@@ -402,6 +450,11 @@ def main() -> int:
         default="coverage_road_cells_pct",
         help="Primary coverage metric for documentation (default: coverage_road_cells_pct)",
     )
+    ap.add_argument(
+        "--world-from-report",
+        action="store_true",
+        help="Use world_x/y from simulation summary instead of .settings (legacy)",
+    )
     args = ap.parse_args()
 
     reports_dir = (REPO_ROOT / args.reports_dir).resolve()
@@ -480,19 +533,11 @@ def main() -> int:
         settings_path = resolve_settings_path(scenario, mrow, corpus_dir)
         summary = paths["summary"]
 
-        wx = wy = gs = None
-        time_bin_size = 300.0
-        if summary is not None and summary.is_file():
-            try:
-                with summary.open(newline="", encoding="utf-8") as f:
-                    sr0 = next(csv.DictReader(f), None)
-                if sr0:
-                    wx = float(sr0.get("world_x", "nan"))
-                    wy = float(sr0.get("world_y", "nan"))
-                    gs = int(float(sr0.get("grid_size", "50")))
-                    time_bin_size = float(sr0.get("time_bin_size", "300"))
-            except (OSError, ValueError, TypeError):
-                pass
+        wx, wy, gs, time_bin_size, world_mismatch = resolve_world_dimensions(
+            settings_path,
+            summary,
+            world_from_report=args.world_from_report,
+        )
 
         metrics: dict[str, float | int | str | None] = {}
         masks = None
@@ -524,7 +569,7 @@ def main() -> int:
                 show_underlay=not args.heatmap_no_underlay,
             )
 
-        row_m: dict = {"scenario": scenario}
+        row_m: dict = {"scenario": scenario, "world_size_mismatch": world_mismatch}
         if meta is not None and scenario in meta_by_name:
             m = meta_by_name[scenario]
             row_m["family"] = m.get("family", "")
@@ -551,9 +596,11 @@ def main() -> int:
         for key, val in metrics.items():
             if key != "scenario_name":
                 row_m[key] = val
-        if metrics.get("coverage_world_pct") is not None:
+        if metrics.get("coverage_world_pct") is not None and not world_mismatch:
             row_m["final_coverage_pct"] = metrics["coverage_world_pct"]
             row_m["cells_visited_pct"] = metrics["coverage_world_pct"]
+        elif metrics.get("coverage_road_cells_pct") is not None:
+            row_m["primary_coverage_pct"] = metrics["coverage_road_cells_pct"]
         if metrics.get("grid_size") is not None:
             row_m["grid_size"] = metrics["grid_size"]
         if metrics.get("world_width") is not None:
