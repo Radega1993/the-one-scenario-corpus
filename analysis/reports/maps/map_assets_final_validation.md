@@ -103,7 +103,7 @@ python3 scenarios/setup/build_map_assets_inventory.py --include-data
 python3 scenarios/setup/validate_maps.py
 python3 scenarios/setup/validate_bus_routes.py
 python3 scenarios/setup/validate_map_pois.py
-python3 scenarios/setup/audit_route_usage.py
+python3 scenarios/setup/build_map_route_semantic_inventory.py
 python3 scenarios/setup/repair_bus_routes.py --dry-run
 scenarios/analysis/.venv/bin/python scenarios/setup/render_wiki_map_previews.py --validation
 ```

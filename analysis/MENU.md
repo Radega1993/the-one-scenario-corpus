@@ -47,8 +47,8 @@ Presets de reportes en simulación (opciones 1–2): overlays en `overlays/routi
 | 4j | `scripts/validation/audit_settings.py` | `data/settings_audit.csv` |
 | 4k | `scripts/validation/diagnose_scenarios.py` | `data/scenario_diagnosis.csv` |
 | 4l | `scripts/wiki/populate_wiki_paper.py` | `scenarios/.wiki-clone/` |
-| 4m | `scripts/wiki/build_wiki_research_reports.py` | `reports/wiki_meta/`, validación aux |
-| 4n | `scripts/paper/build_inventory_update_report.py` | `reports/project/inventory_update_report.md` |
+| 4m | `scripts/wiki/build_wiki_research_reports.py` | `reports/validation/` (auditorías aux; opcional) |
+| 4n | `scripts/paper/build_inventory_update_report.py` | informe de conteos (opcional; actualizar INVENTARIO.md) |
 
 Cada opción muestra 2–3 líneas de propósito antes de ejecutar.
 

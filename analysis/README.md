@@ -178,7 +178,7 @@ python3 scenarios/analysis/run_all_scenarios.py --corpus corpus_v1 \
 
 Methodology and setting keys (`SpatialOccupancyReport.*`, `NodePositionReport.*`): [reports/spatial/spatial_occupancy_report.md](reports/spatial/spatial_occupancy_report.md).
 
-**Mobility repair (2026-05):** S1, S6, D1, R2 use map-aware routes (no `ClusterMovement`); see [reports/project/corpus_v1_mobility_repair_changelog.md](reports/project/corpus_v1_mobility_repair_changelog.md) and [reports/problematic_scenarios_resim_commands.md](reports/problematic_scenarios_resim_commands.md).
+**Mobility repair (2026-05):** S1, S6, D1, R2 use map-aware routes (no `ClusterMovement`); see [CHANGELOG.md](../CHANGELOG.md). **36** R2/S1/S6 TP scenarios still lack auxiliary route WKT — see [Installation wiki](../.wiki-clone/03-Installation.md#known-scenario-gaps).
 
 Post-processing (heatmaps, merged metrics, family-level coverage curves):
 
@@ -230,15 +230,14 @@ $PY scenarios/analysis/scripts/validation/analyze_spatial_occupancy.py \
 $PY scenarios/analysis/scripts/validation/diagnose_scenarios.py --reports-dir reports
 ```
 
-Revision plan/apply scripts were removed after the v2 revision was applied; see `reports/project/corpus_v1_revision_changelog.md`.
+Revision plan/apply scripts were removed after the v2 revision was applied; see [CHANGELOG.md](../CHANGELOG.md).
 
-**Primary outputs (revision):**
+**Primary outputs (revision, archived CSVs in `data/` if present):**
 
 | Artifact | Path |
 |----------|------|
 | Prioritized table | `data/corpus_v1_revision_prioritized.csv` |
 | Per-base summary | `data/corpus_v1_revision_summary.csv` |
-| Revision plan (MD) | `reports/corpus_reorganization_final_report.md` |
 
 **Audit / diagnosis outputs:**
 
@@ -252,7 +251,7 @@ Revision plan/apply scripts were removed after the v2 revision was applied; see 
 
 ### Apply revision (historical)
 
-`apply_corpus_v1_revision.py` and `build_corpus_v1_revision_plan.py` were removed (revision already applied). Changelog: `reports/project/corpus_v1_revision_changelog.md`.
+`apply_corpus_v1_revision.py` and `build_corpus_v1_revision_plan.py` were removed (revision already applied). See [CHANGELOG.md](../CHANGELOG.md).
 
 `validate_traffic_profiles.py` may report TP05 mismatches on U4/U6 (`msgTtl=15` vs generator default 5) — intentional per revision plan.
 
@@ -274,7 +273,7 @@ $PY scenarios/analysis/populate_wiki_paper.py
 
 Wiki root: `scenarios/.wiki-clone/Home.md` — legacy content under `_legacy_pre_paper_rebuild/`.
 
-Summary: [`reports/wiki_meta/wiki_rebuild_summary.md`](reports/wiki_meta/wiki_rebuild_summary.md).
+Wiki source: `scenarios/.wiki-clone/` (see [03-Installation](../.wiki-clone/03-Installation.md) for portability). Optional: `build_wiki_research_reports.py` writes auxiliary notes under `reports/validation/`.
 
 ---
 

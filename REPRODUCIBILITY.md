@@ -16,14 +16,13 @@ python3 scenarios/analysis/run_all_scenarios.py --corpus corpus_v1          # 54
 
 Legacy pre-rename mobility corpus: `_archive/legacy_corpus_v1_pre_rename/` (60 files).
 
-## Regenerate structural bases
+## Structural bases
+
+`base_scenarios/` is version-controlled (45 files). After map or `worldSize` changes:
 
 ```bash
-cd scenarios/setup
-python3 migrate_base_scenarios_maps.py \
-  --source ../_archive/legacy_corpus_v1_pre_rename \
-  --dest ../base_scenarios
-python3 build_base_scenarios_manifest.py --dest ../base_scenarios
+python3 scenarios/setup/build_base_scenarios_manifest.py
+python3 scenarios/setup/audit_world_size_settings.py
 ```
 
 ## Regenerate manifests

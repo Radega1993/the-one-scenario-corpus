@@ -441,7 +441,7 @@ Detailed bibliography: [References](References).""",
 **Manifests:** `corpus_v1/manifest.csv`, `manifest.csv`, combined `analysis/data/corpus_v1_combined_manifest.csv`  
 **Revision sidecar:** `manifest_revision.csv` per directory (`benchmark_split`: main / stress / control)  
 **TP definitions:** `lib/traffic_profile_generator.py`  
-**Changelog:** [corpus_reorganization_final_report.md](../analysis/reports/corpus_reorganization_final_report.md)
+**Changelog:** [map_policy_migration_report.md](../analysis/reports/map_policy_migration_report.md), [CHANGELOG.md](../../CHANGELOG.md)
 
 The retired name `corpus_v2` was renamed to `corpus_v1` (see CHANGELOG).""",
         interpretation="""Each structural base in `base_scenarios/` is crossed with traffic profiles (TP01–TP12) per `benchmark_definition.csv`, yielding **540** environmental simulations in `corpus_v1/`.
@@ -465,7 +465,7 @@ Traces are **synthetic/semi-synthetic**: real map geometry constrains movement, 
 | Directory | `scenarios/base_scenarios/` |
 | Manifest | `scenarios/base_scenarios/manifest.csv` |
 | Validation | [base_scenarios_validation.md](../analysis/reports/base_scenarios_validation.md) |
-| Generator | `scenarios/setup/migrate_base_scenarios_maps.py` |
+| Maintenance | `scenarios/setup/build_base_scenarios_manifest.py`, `audit_world_size_settings.py` |
 
 **Scope:** families `01_urban` … `06_social` only — **no** `__TP` suffix in filenames.""",
         interpretation="""Base scenarios hold **mobility, map, and default traffic blocks** before Traffic Profile overlays. They are the structural reference layer for the paper: same map migration (`HelsinkiMedium`/`Manhattan` → final maps) as the active benchmark, but without TP experimental factors.

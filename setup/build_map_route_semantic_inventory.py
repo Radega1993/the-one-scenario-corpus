@@ -5,7 +5,6 @@ from __future__ import annotations
 
 import argparse
 import csv
-import subprocess
 import sys
 from collections import defaultdict
 from pathlib import Path
@@ -21,14 +20,53 @@ OUT_CSV = ANALYSIS_DATA / "map_route_semantic_inventory.csv"
 USAGE_CSV = ANALYSIS_DATA / "route_usage_by_scenario.csv"
 REPORT_MD = SCENARIOS_DIR / "analysis" / "reports" / "maps" / "route_semantic_policy.md"
 
+def _scan_route_usage_from_settings() -> list[dict]:
+    """Build route usage rows by parsing .settings (replaces removed audit_route_usage.py)."""
+    import re
+
+    rows: list[dict] = []
+    roots = [
+        SCENARIOS_DIR / "base_scenarios",
+        SCENARIOS_DIR / "corpus_v1",
+    ]
+    route_re = re.compile(r"^Group\d+\.routeFile\s*=\s*(.+)$", re.MULTILINE)
+    map_re = re.compile(r"^MapBasedMovement\.mapFile1\s*=\s*data/([^/]+)/", re.MULTILINE)
+    for root in roots:
+        if not root.is_dir():
+            continue
+        for path in sorted(root.rglob("*.settings")):
+            text = path.read_text(encoding="utf-8", errors="replace")
+            mm = map_re.search(text)
+            map_name = mm.group(1) if mm else ""
+            for rf in route_re.findall(text):
+                rf = rf.strip()
+                data_dir = DATA_DIR / map_name if map_name else None
+                exists = bool(data_dir and (data_dir / Path(rf).name).is_file())
+                rows.append(
+                    {
+                        "settings_file": str(path.relative_to(SCENARIOS_DIR.parent)),
+                        "map_name": map_name,
+                        "route_file": rf,
+                        "route_file_exists": "true" if exists else "false",
+                    }
+                )
+    return rows
+
+
 def ensure_route_usage() -> None:
     if USAGE_CSV.is_file():
         return
-    subprocess.run(
-        [sys.executable, str(_SETUP / "audit_route_usage.py")],
-        cwd=SCENARIOS_DIR.parent,
-        check=False,
-    )
+    rows = _scan_route_usage_from_settings()
+    if not rows:
+        return
+    USAGE_CSV.parent.mkdir(parents=True, exist_ok=True)
+    with USAGE_CSV.open("w", newline="", encoding="utf-8") as f:
+        w = csv.DictWriter(
+            f,
+            fieldnames=["settings_file", "map_name", "route_file", "route_file_exists"],
+        )
+        w.writeheader()
+        w.writerows(rows)
 
 def load_settings_refs() -> dict[tuple[str, str], int]:
     """Count routeFile references per (map, filename)."""

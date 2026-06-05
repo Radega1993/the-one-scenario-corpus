@@ -21,13 +21,11 @@ This directory holds **45 structural base scenarios** (families 01–06) used to
 | `corpus_v1/` | Paper benchmark: bases × Traffic Profiles (540 scenarios, 6 families) |
 | `_archive/legacy_corpus_v1_pre_rename/` | Pre-rename historical mobility corpus |
 
-## Regeneration
+## Maintenance (from repo root)
+
+Bases are version-controlled; a fresh clone does not need regeneration. After map or `worldSize` changes:
 
 ```bash
-# From repo root — copy legacy 6 families and apply map migration
-python3 scenarios/setup/migrate_base_scenarios_maps.py \
-  --source scenarios/_archive/legacy_corpus_v1_pre_rename
-
 python3 scenarios/setup/calibrate_world_size_per_map.py --apply
 python3 scenarios/setup/migrate_corpus_maps.py --world-size-only
 python3 scenarios/setup/build_base_scenarios_manifest.py

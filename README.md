@@ -36,7 +36,7 @@ Feature–feature (core): `mm_WDM ↔ mm_Bus = 0.9354`. Full tables: [RESULTADOS
 
 See [CHANGELOG.md](CHANGELOG.md) for the 2026-05-27 nomenclature reorganization (`corpus_v2` → `corpus_v1` + `base_scenarios/`).
 
-**2026-05-31:** Map-aware mobility repair for S1, S6, D1, R2 (renamed bases; 48 TP variants regenerated). Details: [analysis/reports/project/corpus_v1_mobility_repair_changelog.md](analysis/reports/project/corpus_v1_mobility_repair_changelog.md).
+**2026-05-31:** Map-aware mobility repair for S1, S6, D1, R2 (renamed bases; 48 TP variants regenerated). Details: [CHANGELOG.md](CHANGELOG.md). Portable setup: [`.wiki-clone/03-Installation.md`](.wiki-clone/03-Installation.md).
 
 ---
 

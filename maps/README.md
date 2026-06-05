@@ -14,8 +14,7 @@ maps/
 │   ├── ManhattanMidtownGrid/    → 03_vehicles
 │   ├── NuuksioSparseTrails/     → 04_rural
 │   ├── HelsinkiDisrupted/       → 05_disaster
-│   ├── KallioCommunityCompact/  → 06_social
-│   └── /      → 07_ (sintético)
+│   └── KallioCommunityCompact/  → 06_social
 └── validation/    # JSONs de validación por mapa
 ```
 
@@ -83,76 +82,33 @@ python3 scenarios/setup/build_map_assets_inventory.py --include-data
 python3 scenarios/setup/validate_maps.py
 python3 scenarios/setup/validate_bus_routes.py
 python3 scenarios/setup/validate_map_pois.py
-python3 scenarios/setup/audit_route_usage.py
 scenarios/analysis/.venv/bin/python scenarios/setup/render_wiki_map_previews.py --validation
-python3 scenarios/setup/generate_map_final_report.py
 ```
 
 Política de nombres: `analysis/reports/maps/route_semantic_policy.md`.
 
-Salidas: `analysis/data/map_route_semantic_inventory.csv`, `family_route_generation_summary.csv`, `bus_route_validation.csv`, `map_poi_validation.csv`, informes en `analysis/reports/maps/`.
+Salidas: `analysis/data/map_route_semantic_inventory.csv`, `family_route_generation_summary.csv`, `bus_route_validation.csv`, `map_poi_validation.csv`. Validación consolidada: `analysis/reports/maps/map_assets_final_validation.md`.
 
 **Nota:** Los ficheros de ruta son paradas de `routeFile`, no calles. The ONE calcula el movimiento entre paradas sobre `roads.wkt`. Las figuras muestran path resuelto (sólido) y orden de paradas (punteado).
 
-## HelsinkiDowntown (01_urban) — paper-ready
+## Regenerar rutas por mapa (solo si cambian POIs o política de rutas)
 
-Mapa cerrado para el paper. Pipeline dedicado:
-
-```bash
-scenarios/analysis/.venv/bin/python scenarios/setup/finalize_helsinki_downtown.py --dry-run
-scenarios/analysis/.venv/bin/python scenarios/setup/finalize_helsinki_downtown.py --apply --install
-```
-
-Salidas: `analysis/data/maps/HelsinkiDowntown_*.csv`, informes `analysis/reports/maps/HelsinkiDowntown_*.md`, figuras `analysis/figures/paper/maps/HelsinkiDowntown_paper_ready.png`.
-
-Decisión final: `analysis/reports/maps/HelsinkiDowntown_final_decision.md`. Wiki: `.wiki-clone/09-Urban-Family.md`.
-
-## KumpulaCampus (02_campus) — paper-ready
+Los mapas en git ya están listos para simular con `bootstrap_maps.sh --install`. Si modificas rutas de bus/vehículo/comunidad bajo `wkt/`:
 
 ```bash
-scenarios/analysis/.venv/bin/python scenarios/setup/finalize_kumpula_campus.py --apply --install
+python3 scenarios/setup/regenerate_family_routes.py --map HelsinkiDowntown --dry-run
+python3 scenarios/setup/regenerate_family_routes.py --map HelsinkiDowntown --apply --install
 ```
 
-Salidas: `analysis/data/maps/KumpulaCampus_*.csv`, `analysis/reports/maps/KumpulaCampus_final_decision.md`, figura paper en `analysis/figures/paper/maps/KumpulaCampus_paper_ready.png`.
+Repite con `--map` `KumpulaCampus`, `ManhattanMidtownGrid`, `NuuksioSparseTrails`, `HelsinkiDisrupted`, o `KallioCommunityCompact`. Wiki por familia: `.wiki-clone/09-Urban-Family.md` … `14-Social-Family.md`.
 
-Wiki: `.wiki-clone/10-Campus-Family.md`. C4 renombrado a `CampusEvent_IngressEgress`.
+## Rutas auxiliares por escenario (R2 / S1 / S6)
 
-## ManhattanMidtownGrid (03_vehicles) — paper-ready
+22 ficheros `routeFile` específicos de escenario (no rutas de familia). Generación acotada — no toca `roads.wkt` ni `A_*` semánticos:
 
 ```bash
-scenarios/analysis/.venv/bin/python scenarios/setup/finalize_manhattan_midtown.py --apply --install
+scenarios/analysis/.venv/bin/python scenarios/setup/generate_scenario_aux_routes.py --dry-run
+scenarios/analysis/.venv/bin/python scenarios/setup/generate_scenario_aux_routes.py --apply --install
 ```
 
-Salidas: `analysis/data/maps/ManhattanMidtownGrid_*.csv`, `analysis/reports/maps/ManhattanMidtownGrid_final_decision.md`, figura paper en `analysis/figures/paper/maps/ManhattanMidtownGrid_paper_ready.png`.
-
-Wiki: `.wiki-clone/11-Vehicles-Family.md`. Rutas `A_vehicle_route` / `B_vehicle_route`; sin `A_bus.wkt` en settings.
-
-## NuuksioSparseTrails (04_rural) — paper-ready
-
-```bash
-scenarios/analysis/.venv/bin/python scenarios/setup/finalize_nuuksio_sparse_trails.py --apply --install
-```
-
-Salidas: `analysis/data/maps/NuuksioSparseTrails_*.csv`, `analysis/reports/maps/NuuksioSparseTrails_final_decision.md`, figura paper en `analysis/figures/paper/maps/NuuksioSparseTrails_paper_ready.png`.
-
-Wiki: `.wiki-clone/12-Rural-Family.md`. Patrulla `A_ranger_patrol`; R1 renombrado a `R1_Rural_SparseSPMM`.
-
-## HelsinkiDisrupted (05_disaster) — paper-ready
-
-```bash
-scenarios/analysis/.venv/bin/python scenarios/setup/finalize_helsinki_disrupted.py --apply --install
-```
-
-Salidas: `analysis/data/maps/HelsinkiDisrupted_*.csv`, `analysis/reports/maps/HelsinkiDisrupted_final_decision.md`, figura paper en `analysis/figures/paper/maps/HelsinkiDisrupted_paper_ready.png`.
-
-Wiki: `.wiki-clone/13-Disaster-Family.md`. Rutas `A_emergency_route` / `B_mule_route`; D5 Group1 → SPMM.
-
-## KallioCommunityCompact (06_social) — paper-ready
-
-```bash
-scenarios/analysis/.venv/bin/python scenarios/setup/finalize_kallio_community_compact.py --apply --install
-```
-
-Salidas: `analysis/data/maps/KallioCommunityCompact_*.csv`, `analysis/reports/maps/KallioCommunityCompact_final_decision.md`, figura paper en `analysis/figures/paper/maps/KallioCommunityCompact_paper_ready.png`.
-
-Wiki: `.wiki-clone/14-Social-Family.md`. Rutas `A_community_route` / `B_community_route` (assets opcionales); S1/S6 map-aware routes.
+Ficheros: `NuuksioSparseTrails/R2_village_{1,2,3}.wkt`, `R2_inter_village.wkt`; `KallioCommunityCompact/S1_community_{1..4}.wkt`, `S1_bridge_route.wkt`; `S6_family_{1..12}.wkt`, `S6_shared_civic.wkt`.

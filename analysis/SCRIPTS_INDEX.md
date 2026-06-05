@@ -53,10 +53,10 @@
 | [scripts/paper/build_paper_figures_tables_index.py](scripts/paper/build_paper_figures_tables_index.py) | FIGURES_TABLES | figuras + data | índice paper, readiness | sí | 4h |
 | [scripts/paper/build_paper_freeze_checklist.py](scripts/paper/build_paper_freeze_checklist.py) | ANALYSIS | manifest + reports | freeze checklist | sí | 4i |
 | [scripts/paper/build_inventory_update_report.py](scripts/paper/build_inventory_update_report.py) | ANALYSIS | filesystem | `inventory_update_report.md` | no | 4n |
-| [scripts/wiki/build_wiki_research_reports.py](scripts/wiki/build_wiki_research_reports.py) | WIKI_DOCS | CSVs, wiki | `reports/wiki_meta/` | parcial | 4m |
+| [scripts/wiki/build_wiki_research_reports.py](scripts/wiki/build_wiki_research_reports.py) | WIKI_DOCS | CSVs, wiki | `reports/validation/` | parcial | 4m |
 | [scripts/wiki/populate_wiki_paper.py](scripts/wiki/populate_wiki_paper.py) | WIKI_DOCS | plantillas | `.wiki-clone/` | sí | 4l |
 
-### Eliminados (2026-05-24; ver `reports/project/scripts_organization_report.md`)
+### Eliminados (2026-05-24; ver `CHANGELOG.md`)
 
 | Script | Motivo |
 |--------|--------|
@@ -162,7 +162,7 @@ Exploración interactiva; no forma parte de la reproducibilidad batch del paper.
 
 **Menciones históricas en documentación:**
 
-- Scripts de revisión v2 (`build_corpus_v1_revision_plan.py`, `apply_corpus_v1_revision.py`) — eliminados; ver `reports/project/corpus_v1_revision_changelog.md`
+- Scripts de revisión v2 (`build_corpus_v1_revision_plan.py`, `apply_corpus_v1_revision.py`) — eliminados; ver `CHANGELOG.md`
 - `build_wiki_research_reports.py` — comentario: `map_realism_review.md` archivado en `_archive/reports/`
 
 Ningún script activo importa ni invoca `recommend_corpus_v3.py`.

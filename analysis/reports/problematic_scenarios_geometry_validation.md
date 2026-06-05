@@ -1,6 +1,6 @@
 # Geometry validation — repaired mobility scenarios
 
-Generated: 2026-05-31 15:38 UTC
+Generated: 2026-06-05 05:08 UTC
 
 | Scenario | Status | Issues |
 |----------|--------|--------|

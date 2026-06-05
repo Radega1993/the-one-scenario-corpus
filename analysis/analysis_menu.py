@@ -140,11 +140,11 @@ SCRIPT_CATALOG: dict[str, dict[str, object]] = {
         "args": [],
     },
     "4m": {
-        "title": "Informes wiki_meta / validación",
+        "title": "Informes validación aux (wiki)",
         "script": ANALYSIS_DIR / "scripts/wiki/build_wiki_research_reports.py",
         "desc": [
-            "Genera auditorías e informes auxiliares para la wiki (fases 1 y 4–8).",
-            "Salida: reports/wiki_meta/, reports/validation/ (varios MD).",
+            "Genera auditorías auxiliares (fases 1 y 4–8) para revisión metodológica.",
+            "Salida: reports/validation/ (varios MD). Opcional.",
         ],
         "args": [],
     },
@@ -152,8 +152,8 @@ SCRIPT_CATALOG: dict[str, dict[str, object]] = {
         "title": "Conteos para INVENTARIO",
         "script": ANALYSIS_DIR / "scripts/paper/build_inventory_update_report.py",
         "desc": [
-            "Cuenta ficheros actuales (corpus, data, reports, figuras) y escribe inventory_update_report.md.",
-            "Salida: reports/project/inventory_update_report.md (actualizar INVENTARIO.md a mano).",
+            "Cuenta ficheros actuales (corpus, data, reports, figuras).",
+            "Salida: informe bajo reports/ (opcional; actualizar INVENTARIO.md a mano).",
         ],
         "args": [],
     },

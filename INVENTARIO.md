@@ -62,7 +62,7 @@ El directorio `scenarios/` es un **subproyecto autónomo** (repo Git anidado) pa
 - Resultados congelados: [analysis/reports/RESULTADOS_ACTUALES.md](analysis/reports/RESULTADOS_ACTUALES.md)
 - Catálogo de figuras: [analysis/figures/README.md](analysis/figures/README.md)
 - Metodología features: [analysis/docs/features_core_vs_extended.md](analysis/docs/features_core_vs_extended.md)
-- Wiki paper rebuild: [analysis/reports/wiki_meta/wiki_paper_rebuild_report.md](analysis/reports/wiki_meta/wiki_paper_rebuild_report.md)
+- Wiki: [scenarios/.wiki-clone/Home.md](.wiki-clone/Home.md), [analysis/reports/README.md](analysis/reports/README.md)
 
 ---
 
@@ -429,7 +429,7 @@ Definiciones TP canónicas: [lib/traffic_profile_generator.py](analysis/lib/traf
 
 #### Archivados en `_archive/reports/` — **HISTÓRICO**
 
-Pilotos (`piloto_corpus_v1_*`), `go_no_go_*`, `corpus_v1_720_resultados.md`, `corpus_v3_design.md`, `corpus_v3_recommendation.md`, `data_inventory.md`, realism reviews (`mobility_realism_review.md`, `map_realism_review.md`, …). Ver [project_reorganization_report.md](analysis/reports/project/project_reorganization_report.md).
+Pilotos (`piloto_corpus_v1_*`), `go_no_go_*`, `corpus_v1_720_resultados.md`, `corpus_v3_design.md`, `corpus_v3_recommendation.md`, `data_inventory.md`, realism reviews (`mobility_realism_review.md`, `map_realism_review.md`, …). Histórico en `_archive/`; ver [CHANGELOG.md](CHANGELOG.md).
 
 ---
 
@@ -520,7 +520,7 @@ Productor: [scripts/validation/analyze_spatial_occupancy.py](analysis/scripts/va
 | Benchmark y repro | `12-Benchmark-Protocol-Comparison`, `13-Dashboard-and-Reproducibility`, `14-Paper-Freeze-Checklist` |
 | Referencia | `Glossary.md`, `References.md`, `CHANGELOG.md` |
 
-Corpus de referencia: **corpus_v1 (720 escenarios)**. Rebuild documentado en [wiki_paper_rebuild_report.md](analysis/reports/wiki_meta/wiki_paper_rebuild_report.md).
+Corpus de referencia: **corpus_v1 (540 escenarios)**. Ver [CHANGELOG.md](CHANGELOG.md) y [analysis/reports/README.md](analysis/reports/README.md).
 
 **Legacy embebido:** `_legacy_pre_paper_rebuild/` — **HISTÓRICO** — wiki v1 bilingüe (`01-home` … `05-corpus`, páginas por escenario EN+ES).
 
@@ -677,8 +677,8 @@ streamlit run scenarios/analysis/dashboard.py
 
 ## 5. Estado y obsolescencia
 
-**Reorganización aplicada (2026-05-24):** ver [analysis/reports/project/project_reorganization_report.md](analysis/reports/project/project_reorganization_report.md).  
-**Wiki round2 (2026-05-24):** ver [analysis/reports/wiki_meta/wiki_paper_rebuild_report.md](analysis/reports/wiki_meta/wiki_paper_rebuild_report.md).
+**Reorganización aplicada (2026-05-24):** ver [CHANGELOG.md](CHANGELOG.md).  
+**Wiki:** [scenarios/.wiki-clone/](.wiki-clone/), portabilidad en [03-Installation.md](.wiki-clone/03-Installation.md).
 
 ### 5.1 Propuestas históricas no implementadas
 
@@ -726,7 +726,7 @@ El corpus activo para simulaciones y análisis es **`corpus_v1/` (540) + `` (30)
 
 ## 6. Reorganización y mantenimiento
 
-Estructura `_archive/` creada. Detalle de movimientos: [analysis/reports/project/project_reorganization_report.md](analysis/reports/project/project_reorganization_report.md).
+Estructura `_archive/` creada. Detalle histórico: [CHANGELOG.md](CHANGELOG.md).
 
 ### Pendiente (paper / mantenimiento)
 
@@ -784,4 +784,4 @@ internal/
 
 ---
 
-*Fin del inventario. Actualización de conteos: [analysis/reports/project/inventory_update_report.md](analysis/reports/project/inventory_update_report.md).*
+*Fin del inventario. Índice de informes vivos: [analysis/reports/README.md](analysis/reports/README.md).*

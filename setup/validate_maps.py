@@ -220,7 +220,10 @@ def main() -> int:
         print(f"ERROR: {WKT_DIR} does not exist. Run prepare_maps.py first.")
         return 1
 
-    map_dirs = sorted(d for d in WKT_DIR.iterdir() if d.is_dir())
+    map_dirs = sorted(
+        d for d in WKT_DIR.iterdir()
+        if d.is_dir() and not d.name.startswith("_backup")
+    )
     if not map_dirs:
         print(f"No map directories found in {WKT_DIR}")
         return 1

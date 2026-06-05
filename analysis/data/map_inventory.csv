@@ -5,31 +5,3 @@ KallioCommunityCompact,06_social,osm,EPSG:3067,7204,5522,1,1103.2,1128.1,1124,11
 KumpulaCampus,02_campus,osm,EPSG:3067,4059,3632,1,1127.3,1016.0,1148,1036,109380.5,91.97,30,20,15,,PASS,Missing A_bus.wkt
 ManhattanMidtownGrid,03_vehicles,osm,EPSG:32618,568,2116,1,2099.4,1966.0,2120,1986,71426.9,16.96,60,50,30,,PASS,Missing A_bus.wkt
 NuuksioSparseTrails,04_rural,osm,EPSG:3067,326,965,1,2449.9,2544.1,2470,2565,44853.4,7.08,10,5,8,,PASS,Missing A_bus.wkt
-_backup_bus_routes_20260528_171524,,,,,,,,,,,,,,,,,MISSING,roads.wkt not found
-_backup_bus_routes_20260528_171557,,,,,,,,,,,,,,,,,MISSING,roads.wkt not found
-_backup_bus_routes_20260528_171650,,,,,,,,,,,,,,,,,MISSING,roads.wkt not found
-_backup_bus_routes_20260528_171704,,,,,,,,,,,,,,,,,MISSING,roads.wkt not found
-_backup_bus_routes_20260528_171731,,,,,,,,,,,,,,,,,MISSING,roads.wkt not found
-_backup_bus_routes_20260528_173628,,,,,,,,,,,,,,,,,MISSING,roads.wkt not found
-_backup_helsinki_bus_20260528_174903,,,,,,,,,,,,,,,,,MISSING,roads.wkt not found
-_backup_helsinki_disaster_routes_20260528_182117,,,,,,,,,,,,,,,,,MISSING,roads.wkt not found
-_backup_helsinki_poi_20260528_174902,,,,,,,,,,,,,,,,,MISSING,roads.wkt not found
-_backup_helsinki_poi_20260528_182116,,,,,,,,,,,,,,,,,MISSING,roads.wkt not found
-_backup_kallio_community_routes_20260528_182520,,,,,,,,,,,,,,,,,MISSING,roads.wkt not found
-_backup_kallio_poi_20260528_182519,,,,,,,,,,,,,,,,,MISSING,roads.wkt not found
-_backup_kumpula_poi_20260528_175659,,,,,,,,,,,,,,,,,MISSING,roads.wkt not found
-_backup_kumpula_poi_20260528_175757,,,,,,,,,,,,,,,,,MISSING,roads.wkt not found
-_backup_kumpula_poi_20260528_175911,,,,,,,,,,,,,,,,,MISSING,roads.wkt not found
-_backup_kumpula_shuttle_20260528_175700,,,,,,,,,,,,,,,,,MISSING,roads.wkt not found
-_backup_kumpula_shuttle_20260528_175758,,,,,,,,,,,,,,,,,MISSING,roads.wkt not found
-_backup_kumpula_shuttle_20260528_175911,,,,,,,,,,,,,,,,,MISSING,roads.wkt not found
-_backup_manhattan_poi_20260528_180610,,,,,,,,,,,,,,,,,MISSING,roads.wkt not found
-_backup_manhattan_vehicle_20260528_180611,,,,,,,,,,,,,,,,,MISSING,roads.wkt not found
-_backup_nuuksio_poi_20260528_181307,,,,,,,,,,,,,,,,,MISSING,roads.wkt not found
-_backup_nuuksio_poi_20260528_181532,,,,,,,,,,,,,,,,,MISSING,roads.wkt not found
-_backup_nuuksio_ranger_20260528_181307,,,,,,,,,,,,,,,,,MISSING,roads.wkt not found
-_backup_nuuksio_ranger_20260528_181532,,,,,,,,,,,,,,,,,MISSING,roads.wkt not found
-_backup_route_rename_20260528_173425,,,,,,,,,,,,,,,,,MISSING,roads.wkt not found
-_backup_semantic_regen_20260528_173424,,,,,,,,,,,,,,,,,MISSING,roads.wkt not found
-_backup_semantic_regen_20260528_173534,,,,,,,,,,,,,,,,,MISSING,roads.wkt not found
-_backup_semantic_regen_20260528_173608,,,,,,,,,,,,,,,,,MISSING,roads.wkt not found
