@@ -1,6 +1,6 @@
 # Paper phase 1 action plan
 
-Generated: 2026-05-24 10:28 UTC
+Generated: 2026-06-05 12:40 UTC
 
 ## Closed decisions
 

@@ -1,6 +1,6 @@
 # Paper freeze checklist (corpus_v1)
 
-Generated: 2026-05-28 07:46 UTC
+Generated: 2026-06-05 12:40 UTC
 
 **Scope:** paper with **multi-protocol routing comparison** on corpus_v1.
 **Active corpus:** `corpus_v1` (not corpus_v3).
@@ -10,9 +10,9 @@ Generated: 2026-05-28 07:46 UTC
 - Simulations in manifest: **540** (expected 540)
 - Settings files: **540**
 - Output metrics null delivery: **0**
-- Benchmark `error_probable`: **168**
-- Benchmark `configuracion_sospechosa`: **106**
-- Main figures lista/revisar: **8/8** lista, **0** revisar
+- Benchmark `error_probable`: **0**
+- Benchmark `configuracion_sospechosa`: **64**
+- Main figures lista/revisar: **1/8** lista, **7** revisar
 
 ## Status legend
 
@@ -36,7 +36,7 @@ Generated: 2026-05-28 07:46 UTC
 
 | ID | Item | Status | Evidence | Action |
 |----|------|--------|----------|--------|
-| FEAT-01 | features.csv and features_core.csv 720 scenarios | **PARTIAL** | features=540, features_core=540 | — |
+| FEAT-01 | features.csv and features_core.csv 720 scenarios | **DONE** | features=540, features_core=540 | — |
 | FEAT-02 | Diversity metrics frozen n=720 | **DONE** | RESULTADOS_ACTUALES.md | — |
 | FEAT-03 | Feature-feature redundancy acceptable | **PARTIAL** | Persistent high pair mm_WDM <-> mm_Bus = 0.9393; max |r|=1.0 between scenarios | Disclose in Methods; justify core-23 retention |
 | FEAT-04 | Ablation 17/23/46 documented | **DONE** | table_ablation_metrics_en/es lista; ablation reports | — |
@@ -46,8 +46,8 @@ Generated: 2026-05-28 07:46 UTC
 | ID | Item | Status | Evidence | Action |
 |----|------|--------|----------|--------|
 | FIG-01 | FIGURES_AND_TABLES_INDEX.md complete | **DONE** | 22 indexed items | — |
-| FIG-02 | Main paper figures ready (lista) | **DONE** | lista=8/8, revisar=0 | Regenerate 7 main figures marked revisar |
-| FIG-03 | Supplementary figures ready (lista) | **PARTIAL** | lista=4/5, revisar=1 | Regenerate supplementary figures marked revisar |
+| FIG-02 | Main paper figures ready (lista) | **PARTIAL** | lista=1/8, revisar=7 | Regenerate 7 main figures marked revisar |
+| FIG-03 | Supplementary figures ready (lista) | **PARTIAL** | lista=1/5, revisar=4 | Regenerate supplementary figures marked revisar |
 | FIG-04 | Protocol comparison figure (real data) | **MISSING** | Only protocol_comparison_placeholder.png | Run multi-protocol simulations and plot comparison |
 
 ## Kpis
@@ -63,7 +63,7 @@ Generated: 2026-05-28 07:46 UTC
 
 | ID | Item | Status | Evidence | Action |
 |----|------|--------|----------|--------|
-| LIM-01 | Limitations documented (maps WDM synthetic stress tiers) | **PARTIAL** | Dispersed in benchmark validation (106 sospechosa, 312 valido_extremo) | Consolidate into Methods/Limitations section |
+| LIM-01 | Limitations documented (maps WDM synthetic mobility) | **PARTIAL** | Dispersed in benchmark validation (64 sospechosa, 312 valido_extremo) | Consolidate into Methods/Limitations section |
 | LIM-02 | Threats-to-validity section frozen | **MISSING** | No single limitations.md report | Write limitations/threats section or report |
 | LIM-03 | Extreme scenarios excluded from main protocol ranking | **PARTIAL** | manifest_revision splits exist; not enforced in analysis outputs | Apply benchmark_split filter in protocol comparison tables |
 
@@ -73,14 +73,14 @@ Generated: 2026-05-28 07:46 UTC
 |----|------|--------|----------|--------|
 | MSG-01 | Canonical message window policy document | **DONE** | message_analysis_window_policy.md (full window primary; optional 10% censor) | — |
 | MSG-02 | Policy implemented in output_metrics extraction pipeline | **PARTIAL** | Canonical policy documented; output_metrics uses full MessageStatsReport aggregates | Optional: implement explicit window filter in extraction code for appendix |
-| MSG-03 | Per-scenario policy CSV 720 rows | **PARTIAL** | message_analysis_window_policy.csv rows=540 | — |
+| MSG-03 | Per-scenario policy CSV 720 rows | **DONE** | message_analysis_window_policy.csv rows=540 | — |
 
 ## Outputs
 
 | ID | Item | Status | Evidence | Action |
 |----|------|--------|----------|--------|
-| OUT-01 | output_metrics.csv complete 720 rows | **PARTIAL** | rows=540; null delivery=0 | — |
-| OUT-02 | ONE reports (MessageStats Connectivity spatial grid) | **PARTIAL** | Repo reports/ not versioned; 168 scenarios incomplete | Re-simulate incomplete scenarios; archive report paths in manifest |
+| OUT-01 | output_metrics.csv complete 720 rows | **PARTIAL** | rows=600; null delivery=0 | — |
+| OUT-02 | ONE reports (MessageStats Connectivity spatial grid) | **PARTIAL** | Repo reports/ not versioned; 0 scenarios incomplete | Re-simulate incomplete scenarios; archive report paths in manifest |
 | OUT-03 | Auxiliary outputs (indirect useful time) | **DONE** | useful_simulation_time_metrics=True; indirect_features=True | — |
 
 ## Reproducibility
@@ -89,7 +89,7 @@ Generated: 2026-05-28 07:46 UTC
 |----|------|--------|----------|--------|
 | REP-01 | Official pipeline documented (SCRIPTS_INDEX) | **DONE** | analysis/SCRIPTS_INDEX.md 12-step pipeline | — |
 | REP-02 | Dashboard for paper exploration | **DONE** | dashboard_readiness_report.md | — |
-| REP-03 | One-command regeneration figures and tables | **PARTIAL** | Commands in index; 1 figures still revisar | Run build_paper_figures_tables_index.py after regen |
+| REP-03 | One-command regeneration figures and tables | **PARTIAL** | Commands in index; 11 figures still revisar | Run build_paper_figures_tables_index.py after regen |
 | REP-04 | Simulation outputs (reports/) reproducible from manifest | **PARTIAL** | reports/ at repo root not fully versioned; re-sim cost high | Document exact one.sh invocations per scenario batch |
 
 ## Settings
@@ -97,14 +97,14 @@ Generated: 2026-05-28 07:46 UTC
 | ID | Item | Status | Evidence | Action |
 |----|------|--------|----------|--------|
 | SET-01 | Settings audit for all 720 scenarios | **DONE** | settings_audit.csv present | — |
-| SET-02 | Traffic Profile settings validation (TP01-TP12) | **PARTIAL** | tp_validation_settings.csv; KPI summary: validated=0, partial=0, blocked=12 | Resolve TP03/TP11 blocked (S1 missing outputs) |
-| SET-03 | P0/P1 map worldSize WDM issues resolved or excluded | **PARTIAL** | bench validation: pendiente_revision=1, configuracion_sospechosa=106 | Formalize exclusion in benchmark_split main tier |
+| SET-02 | Traffic Profile settings validation (TP01-TP12) | **PARTIAL** | tp_validation_settings.csv; KPI summary: validated=2, partial=0, blocked=10 | Resolve TP03/TP11 blocked (S1 missing outputs) |
+| SET-03 | P0/P1 map worldSize WDM issues resolved or excluded | **PARTIAL** | bench validation: pendiente_revision=54, configuracion_sospechosa=64 | Formalize exclusion in benchmark_split main tier |
 
 ## Simulations
 
 | ID | Item | Status | Evidence | Action |
 |----|------|--------|----------|--------|
-| SIM-01 | ONE batch Epidemic complete 720/720 | **PARTIAL** | output_metrics rows=540; null delivery_ratio=0; error_probable=168 | Re-simulate S1_StrongCommunities TP03 and TP11 |
+| SIM-01 | ONE batch Epidemic complete 720/720 | **DONE** | output_metrics rows=600; null delivery_ratio=0; error_probable=0 | — |
 | SIM-02 | Multi-protocol simulations (PRoPHET MaxProp etc.) | **MISSING** | Wiki 12-Benchmark-Protocol-Comparison: no runs; protocol_comparison_placeholder only | Run batch with analysis/protocol_overlays/ on main split |
 | SIM-03 | Batch reproducibility documented (commands seeds) | **PARTIAL** | SCRIPTS_INDEX covers Epidemic; no executed multi-protocol runbook | Document and run multi-protocol batch before writing Results |
 
@@ -112,8 +112,8 @@ Generated: 2026-05-28 07:46 UTC
 
 | ID | Item | Status | Evidence | Action |
 |----|------|--------|----------|--------|
-| SPAT-01 | spatial_occupancy_metrics.csv 720 rows | **PARTIAL** | rows=720 | — |
-| SPAT-02 | Spatial heatmaps 720 scenarios | **PARTIAL** | PNG count=720 | — |
+| SPAT-01 | spatial_occupancy_metrics.csv 720 rows | **DONE** | rows=540 | — |
+| SPAT-02 | Spatial heatmaps 720 scenarios | **PARTIAL** | PNG count=600 | — |
 | SPAT-03 | Spatial vs performance analysis report | **DONE** | spatial_vs_performance_analysis.md present | Write spatial_vs_performance_analysis.md linking coverage to delivery |
 | SPAT-04 | Paper figure spatial_coverage_by_family_paper | **PARTIAL** | Indexed status revisar; summary stale=False | Regenerate figure; refresh spatial_occupancy_analysis_summary.md |
 
@@ -129,7 +129,7 @@ Generated: 2026-05-28 07:46 UTC
 
 | ID | Item | Status | Evidence | Action |
 |----|------|--------|----------|--------|
-| TP-01 | 12 Traffic Profiles defined and experimentally validated | **PARTIAL** | validated=0, partial=0, blocked=12 | Unblock TP03/TP11 after re-simulation |
+| TP-01 | 12 Traffic Profiles defined and experimentally validated | **PARTIAL** | validated=2, partial=0, blocked=10 | Unblock TP03/TP11 after re-simulation |
 | TP-02 | Traffic Profile KPI analysis report | **DONE** | traffic_profile_kpi_analysis.md | — |
 | TP-03 | Stress/directional/control tiers in protocol comparison pipeline | **PARTIAL** | Splits in manifest_revision.csv; not wired to multi-protocol runs | Integrate tiers when running protocol comparison |
 
@@ -152,16 +152,16 @@ Generated: 2026-05-28 07:46 UTC
 | Block | DONE | PARTIAL | MISSING | BLOCKER |
 |-------|-----:|--------:|--------:|--------:|
 | corpus | 3 | 1 | 0 | 0 |
-| features | 2 | 2 | 0 | 0 |
-| figures | 2 | 1 | 1 | 0 |
+| features | 3 | 1 | 0 | 0 |
+| figures | 1 | 2 | 1 | 0 |
 | kpis | 3 | 1 | 0 | 0 |
 | limitations | 0 | 2 | 1 | 0 |
-| message_windows | 1 | 2 | 0 | 0 |
+| message_windows | 2 | 1 | 0 | 0 |
 | outputs | 1 | 2 | 0 | 0 |
 | reproducibility | 2 | 2 | 0 | 0 |
 | settings | 1 | 2 | 0 | 0 |
-| simulations | 0 | 2 | 1 | 0 |
-| spatial_occupancy | 1 | 3 | 0 | 0 |
+| simulations | 1 | 1 | 1 | 0 |
+| spatial_occupancy | 2 | 2 | 0 | 0 |
 | tables | 2 | 0 | 1 | 0 |
 | traffic_profiles | 1 | 2 | 0 | 0 |
 | wiki | 2 | 1 | 0 | 0 |
@@ -179,6 +179,7 @@ Generated: 2026-05-28 07:46 UTC
 
 Core corpus documentation and Epidemic baseline are in place.
 Address remaining PARTIAL items and complete multi-protocol runs before Results claims.
+
 
 ## Regeneration
 

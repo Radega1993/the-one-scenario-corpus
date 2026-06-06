@@ -2,7 +2,7 @@
 
 **Corpus activo:** `corpus_v1` — **540** escenarios (540 ambientales + 30 stress/control). Incluye `` cuando se usa `--corpus corpus_v1`.  
 **Capa estructural:** `base_scenarios/` — 45 escenarios sin TP (familias 01–06).  
-**No existe `corpus_v3/`** — referencias a corpus_v3 son históricas; scripts v3 están en [`../_archive/scripts/`](../_archive/scripts/). El alias CLI `corpus_v2` está obsoleto.
+
 
 **Documentación relacionada:** [INVENTARIO.md](../INVENTARIO.md) · [RESULTADOS_ACTUALES.md](reports/RESULTADOS_ACTUALES.md) · [README.md](README.md)
 
@@ -18,8 +18,6 @@
 | **FIGURES_TABLES** | Figuras o tablas para publicación / exploración agregada |
 | **WIKI_DOCS** | Generación de wiki o informes metodológicos de documentación |
 | **DASHBOARD** | Exploración visual interactiva (Streamlit) |
-| **LEGACY** | Histórico; propuesta corpus_v3 o sustituido por revisión v2 in-place |
-| **EXPERIMENTAL** | Útil en desarrollo pero no parte del freeze del paper |
 
 **Estado:** `activo` (mantenimiento corriente) · `histórico` (one-off o archivado) · `experimental` (opcional / auxiliar)
 
@@ -264,7 +262,7 @@ Salida: `data/message_creation_time_summary.csv`, figuras en `figures/`
 python3 scenarios/analysis/scripts/paper/build_message_analysis_window_policy.py
 ```
 
-Salida: `data/message_analysis_window_policy.csv`, `data/message_analysis_window_by_tp.csv`, `reports/message_analysis_window_policy.md`
+Salida: `data/message_analysis_window_policy.csv`, `data/message_analysis_window_by_tp.csv`, `reports/canonical/message_analysis_window_policy.md`
 
 ### 9. Validación de perfiles de tráfico
 

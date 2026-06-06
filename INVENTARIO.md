@@ -115,7 +115,7 @@ Estructura por familia:
 Ejemplo: `U1_CBD_Commuting_HelsinkiDowntown.settings`
 
 **Otros ficheros:**
-- `05_disaster/D8_backbone_events.txt` — **FUENTE** — eventos para escenario D8
+- `05_disaster/D8_emergency_backbone_events.txt` — **FUENTE** — eventos intermitentes bb0 para D8_EmergencyBackbone_IntermittentBridges
 
 **Con** `manifest.csv` (índice estructural) y `README.md`.
 

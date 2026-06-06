@@ -8,13 +8,14 @@
 
 ### Validación empírica
 
+
 ---
 
 ## Respuestas explícitas
 
 ### ¿Los mensajes se lanzan todos al inicio?
 
-**No.** En las 720 simulaciones, el porcentaje máximo de mensajes con `creation_time ≤ 0` es **0.00%**; solo **0** escenarios tienen >0.1% en t≈0. El generador espacia el primer mensaje al menos `interval_min` segundos después del inicio de la ventana (o después de `Events*.time` inferior en TP07 y similares).
+**No.** En las 540 simulaciones, el porcentaje máximo de mensajes con `creation_time ≤ 0` es **0.00%**; solo **0** escenarios tienen >0.1% en t≈0. El generador espacia el primer mensaje al menos `interval_min` segundos después del inicio de la ventana (o después de `Events*.time` inferior en TP07 y similares).
 
 ### ¿Los perfiles TP generan tráfico temporalmente distinto?
 
@@ -22,16 +23,16 @@
 
 | TP | Mediana media (s) | Mediana media / endTime | % en último 10% sim (media) |
 |----|------------------:|------------------------:|----------------------------:|
-| TP01 | 20386.8 | 0.500 | 10.02 |
-| TP02 | 20146.8 | 0.494 | 9.99 |
-| TP03 | 20312.7 | 0.499 | 9.99 |
-| TP04 | 20516.1 | 0.504 | 9.77 |
-| TP05 | 20386.8 | 0.500 | 10.02 |
+| TP01 | 20382.2 | 0.500 | 10.03 |
+| TP02 | 20149.6 | 0.495 | 9.99 |
+| TP03 | 20319.8 | 0.499 | 9.99 |
+| TP04 | 20504.3 | 0.503 | 9.78 |
+| TP05 | 20382.2 | 0.500 | 10.03 |
 | TP06 | 20294.0 | 0.499 | 10.20 |
-| TP07 | 9790.8 | 0.240 | 0.00 |
+| TP07 | 9791.1 | 0.240 | 0.00 |
 | TP08 | 20295.9 | 0.499 | 10.20 |
-| TP09 | 20393.7 | 0.501 | 10.00 |
-| TP10 | 20360.1 | 0.500 | 9.93 |
+| TP09 | 20391.4 | 0.501 | 10.00 |
+| TP10 | 20362.0 | 0.500 | 9.93 |
 | TP11 | 20294.0 | 0.499 | 10.20 |
 | TP12 | 20488.5 | 0.503 | 9.60 |
 
@@ -52,8 +53,8 @@ Escenarios con mayor `%` en último 10%:
 | `C6_EmergencyDrill_Evacuation__TP02_LowLoad` | TP02 | 11.8 | 7166 | 7200 |
 | `R4_ParkRangers_NuuksioSparseTrails__TP02_LowLoad` | TP02 | 11.5 | 43190 | 43200 |
 | `R6_SparseLongRange__TP02_LowLoad` | TP02 | 11.5 | 43172 | 43200 |
-| `U2_SparseSuburb_HelsinkiDowntown__TP02_LowLoad` | TP02 | 11.3 | 43011 | 43200 |
-| `R2_VillagesTrails_ThreeClusters__TP02_LowLoad` | TP02 | 11.3 | 43011 | 43200 |
+| `U2_SparseUrban_HelsinkiDowntown__TP02_LowLoad` | TP02 | 11.3 | 43011 | 43200 |
+| `R2_VillagesTrails_InterVillage__TP02_LowLoad` | TP02 | 11.3 | 43011 | 43200 |
 | `R7_SparseTinyBuffer__TP02_LowLoad` | TP02 | 11.3 | 43049 | 43200 |
 
 ### ¿Qué implicación tiene esto para el benchmark?

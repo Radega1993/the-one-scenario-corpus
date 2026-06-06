@@ -700,8 +700,7 @@ def write_report(
 
     lines.extend(
         [
-            "- **S1_StrongCommunities_SeparateClusters** TP03/TP11: missing output (re-simulate).",
-            "- **R1_Rural_RandomWaypoint**, **R11_SpeedExtremeLow:** zero delivery across all TPs (disconnected bases).",
+            "- **R1_Rural_SparseSPMM**, **R11_SpeedExtremeLow:** zero delivery across many TPs (sparse/disconnected bases).",
             "- **TP12** urban WDM scenarios: extreme overhead in some bases (document or fix worldSize).",
             "",
             "## Recommended KPIs for routing benchmark",

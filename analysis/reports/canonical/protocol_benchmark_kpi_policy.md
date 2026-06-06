@@ -1,10 +1,10 @@
 # Protocol benchmark KPI policy (corpus_v1)
 
-Generated: 2026-06-04 10:26 UTC
+Generated: 2026-06-05 12:42 UTC
 
 ## Executive summary
 
-- **Corpus:** corpus_v1 — 720 simulations (Epidemic reference router).
+- **Corpus:** corpus_v1 — 540 simulations (Epidemic reference router).
 - **Comparison scope:** same mobility, map, Traffic Profile; only `Group.router` changes via overlays.
 - **Primary metrics window:** full simulation (`valid_start=0`, `valid_end=endTime`) per [message_analysis_window_policy.md](message_analysis_window_policy.md).
 - **Optional sensitivity:** exclude messages with `creation_time >= 0.9 * endTime` (appendix only).
@@ -38,13 +38,13 @@ Generated: 2026-06-04 10:26 UTC
 - `validation_status == configuracion_sospechosa` unless explicitly included in sensitivity appendix.
 - Zero-contact disconnected bases (document as `valido_extremo`, exclude from latency rankings).
 
-- Traffic profiles blocked in KPI summary: **12** (re-check after re-simulation).
+- Traffic profiles blocked in KPI summary: **10** (re-check after re-simulation).
 
 ## Protocols and overlays
 
 | Protocol | Status | Overlay / notes |
 |----------|--------|-----------------|
-| Epidemic | measured | Current corpus_v1 router in all 720 .settings |
+| Epidemic | measured | Current corpus_v1 router in all 540 .settings |
 | PRoPHET | pending | Overlay: protocol_overlays/router_prophet.txt |
 | MaxProp | pending | Overlay: protocol_overlays/router_maxprop.txt |
 | SprayAndWait | pending | Overlay: protocol_overlays/router_sprayandwait.txt |
@@ -56,7 +56,7 @@ Use [`traffic_profile_kpi_summary.csv`](../data/traffic_profile_kpi_summary.csv)
 ## Aggregation
 
 - Report **median** per TP and per family; show IQR or bootstrap CI if seeds available.
-- Paired comparison: same `scenario_base` + TP across protocols (720-row join on scenario key).
+- Paired comparison: same `scenario_base` + TP across protocols (540-row join on scenario key).
 
 ## Artifacts
 

@@ -1,30 +1,30 @@
 # Traffic Profile KPI Analysis (corpus_v1)
 
-Generated: 2026-06-04 10:26 UTC
+Generated: 2026-06-05 12:42 UTC
 
 ## Executive summary
 
 - **Corpus:** corpus_v1 — 540 simulations (60 base scenarios × 12 Traffic Profiles).
-- **Missing output metrics:** 10 scenario(s) (R2_VillagesTrails_InterVillage__TP01_Baseline, R2_VillagesTrails_InterVillage__TP02_LowLoad, R2_VillagesTrails_InterVillage__TP03_ManySmall, R2_VillagesTrails_InterVillage__TP04_FewLarge, R2_VillagesTrails_InterVillage__TP06_OneToMany, R2_VillagesTrails_InterVillage__TP07_BurstWindow, R2_VillagesTrails_InterVillage__TP09_Bimodal, R2_VillagesTrails_InterVillage__TP10_Storm, R2_VillagesTrails_InterVillage__TP11_ManyToOne, R2_VillagesTrails_InterVillage__TP12_GroupToGroup).
+- **Missing output metrics:** 0 scenario(s) (none).
 - **Protocol:** Epidemic (current corpus); KPIs defined for future multi-protocol comparison.
-- **Baseline:** TP01_Baseline — delivery median 0.856, overhead median 58.7.
+- **Baseline:** TP01_Baseline — delivery median 0.856, overhead median 57.4.
 
 ## Per-TP distributional stats
 
 | TP | delivery (med) | overhead (med) | drop (med) | latency (med) | n_created (med) | zero del | drop>50% |
 |----|----------------|----------------|------------|---------------|-----------------|----------|----------|
-| TP01 Baseline | 0.856 | 58.7 | 0.0 | 3185 | 482 | 1 | 5 |
-| TP02 LowLoad | 0.875 | 52.2 | 0.0 | 3202 | 96 | 1 | 2 |
-| TP03 ManySmall | 0.849 | 51.9 | 0.0 | 3139 | 2214 | 1 | 2 |
-| TP04 FewLarge | 0.503 | 394.8 | 168.2 | 3964 | 180 | 2 | 33 |
-| TP05 CriticalTTL | 0.027 | 43.1 | 2.0 | 126 | 482 | 1 | 0 |
-| TP06 OneToMany | 0.847 | 74.0 | 12.1 | 2836 | 970 | 1 | 11 |
-| TP07 BurstWindow | 1.000 | 55.0 | 0.0 | 3323 | 362 | 1 | 4 |
-| TP08 HubTarget | 0.684 | 215.3 | 105.1 | 3102 | 970 | 0 | 27 |
-| TP09 Bimodal | 0.618 | 305.9 | 143.3 | 3859 | 579 | 1 | 30 |
-| TP10 Storm | 0.404 | 53.9 | 22.4 | 1670 | 6160 | 1 | 9 |
-| TP11 ManyToOne | 0.795 | 56.2 | 1.6 | 2928 | 970 | 1 | 8 |
-| TP12 GroupToGroup | 0.849 | 58.7 | 0.0 | 3179 | 489 | 3 | 6 |
+| TP01 Baseline | 0.856 | 57.4 | 0.0 | 2766 | 482 | 0 | 5 |
+| TP02 LowLoad | 0.875 | 51.5 | 0.0 | 2645 | 96 | 0 | 2 |
+| TP03 ManySmall | 0.850 | 51.7 | 0.0 | 2987 | 2216 | 0 | 2 |
+| TP04 FewLarge | 0.514 | 412.5 | 194.5 | 3591 | 180 | 1 | 35 |
+| TP05 CriticalTTL | 0.027 | 43.1 | 2.0 | 127 | 482 | 1 | 0 |
+| TP06 OneToMany | 0.861 | 71.3 | 9.6 | 2802 | 970 | 0 | 13 |
+| TP07 BurstWindow | 1.000 | 52.0 | 0.0 | 3010 | 364 | 0 | 4 |
+| TP08 HubTarget | 0.717 | 221.5 | 127.6 | 3093 | 970 | 0 | 30 |
+| TP09 Bimodal | 0.619 | 307.2 | 156.5 | 3711 | 579 | 0 | 32 |
+| TP10 Storm | 0.424 | 54.9 | 23.1 | 1673 | 6157 | 0 | 11 |
+| TP11 ManyToOne | 0.820 | 57.0 | 2.6 | 2883 | 970 | 0 | 8 |
+| TP12 GroupToGroup | 0.877 | 53.2 | 0.0 | 2939 | 489 | 2 | 6 |
 
 Full statistics: [`traffic_profile_stats.csv`](../data/traffic_profile_stats.csv).
 
@@ -33,32 +33,32 @@ Full statistics: [`traffic_profile_stats.csv`](../data/traffic_profile_stats.csv
 ### Delivery ratio (higher is better)
 
 1. **TP07** 1.000
-2. **TP02** 0.875
-3. **TP01** 0.856
-4. **TP12** 0.849
-5. **TP03** 0.849
-6. **TP06** 0.847
-7. **TP11** 0.795
-8. **TP08** 0.684
-9. **TP09** 0.618
-10. **TP04** 0.503
-11. **TP10** 0.404
+2. **TP12** 0.877
+3. **TP02** 0.875
+4. **TP06** 0.861
+5. **TP01** 0.856
+6. **TP03** 0.850
+7. **TP11** 0.820
+8. **TP08** 0.717
+9. **TP09** 0.619
+10. **TP04** 0.514
+11. **TP10** 0.424
 12. **TP05** 0.027
 
 ### Overhead ratio (lower is better)
 
 1. **TP05** 43.1
-2. **TP03** 51.9
-3. **TP02** 52.2
-4. **TP10** 53.9
-5. **TP07** 55.0
-6. **TP11** 56.2
-7. **TP12** 58.7
-8. **TP01** 58.7
-9. **TP06** 74.0
-10. **TP08** 215.3
-11. **TP09** 305.9
-12. **TP04** 394.8
+2. **TP02** 51.5
+3. **TP03** 51.7
+4. **TP07** 52.0
+5. **TP12** 53.2
+6. **TP10** 54.9
+7. **TP11** 57.0
+8. **TP01** 57.4
+9. **TP06** 71.3
+10. **TP08** 221.5
+11. **TP09** 307.2
+12. **TP04** 412.5
 
 ### Drop ratio (lower is better)
 
@@ -67,44 +67,44 @@ Full statistics: [`traffic_profile_stats.csv`](../data/traffic_profile_stats.csv
 3. **TP03** 0.0
 4. **TP07** 0.0
 5. **TP12** 0.0
-6. **TP11** 1.6
-7. **TP05** 2.0
-8. **TP06** 12.1
-9. **TP10** 22.4
-10. **TP08** 105.1
-11. **TP09** 143.3
-12. **TP04** 168.2
+6. **TP05** 2.0
+7. **TP11** 2.6
+8. **TP06** 9.6
+9. **TP10** 23.1
+10. **TP08** 127.6
+11. **TP09** 156.5
+12. **TP04** 194.5
 
 ### Latency mean (lower is better, delivered only)
 
-1. **TP05** 126 s
-2. **TP10** 1670 s
-3. **TP06** 2836 s
-4. **TP11** 2928 s
-5. **TP08** 3102 s
-6. **TP03** 3139 s
-7. **TP12** 3179 s
-8. **TP01** 3185 s
-9. **TP02** 3202 s
-10. **TP07** 3323 s
-11. **TP09** 3859 s
-12. **TP04** 3964 s
+1. **TP05** 127 s
+2. **TP10** 1673 s
+3. **TP02** 2645 s
+4. **TP01** 2766 s
+5. **TP06** 2802 s
+6. **TP11** 2883 s
+7. **TP12** 2939 s
+8. **TP03** 2987 s
+9. **TP07** 3010 s
+10. **TP08** 3093 s
+11. **TP04** 3591 s
+12. **TP09** 3711 s
 
 ## Comparison vs TP01 (paired median relative delta)
 
 | TP | Δ delivery | Δ overhead | Δ drop | Δ n_created | Δ t_median_frac |
 |----|------------|------------|--------|-------------|-----------------|
-| TP02 | +1.0% | +0.2% | -100.0% | -80.2% | -0.8% |
-| TP03 | -0.4% | -0.5% | -100.0% | +358.5% | -0.0% |
-| TP04 | -29.8% | +444.6% | -50.5% | -62.8% | +0.9% |
-| TP05 | -95.3% | -12.9% | -98.9% | +0.0% | +0.0% |
-| TP06 | +1.2% | +11.6% | -15.4% | +101.0% | -0.5% |
-| TP07 | +11.0% | +0.1% | +40.4% | -25.2% | -51.9% |
-| TP08 | -11.4% | +243.6% | -28.3% | +101.0% | -0.5% |
-| TP09 | -21.5% | +315.8% | +37.2% | +19.8% | +0.0% |
-| TP10 | -52.1% | +3.3% | -92.0% | +1174.7% | -0.1% |
-| TP11 | -0.5% | +0.0% | -25.8% | +101.0% | -0.5% |
-| TP12 | +0.8% | +0.3% | -0.5% | +0.9% | +0.6% |
+| TP02 | +0.3% | +0.3% | -100.0% | -80.2% | -1.2% |
+| TP03 | -0.2% | -0.5% | -100.0% | +358.7% | -0.1% |
+| TP04 | -29.8% | +531.2% | -50.5% | -62.9% | +0.6% |
+| TP05 | -95.3% | -13.8% | -98.9% | +0.0% | +0.0% |
+| TP06 | +1.7% | +11.5% | -15.4% | +101.2% | -0.4% |
+| TP07 | +9.2% | +0.3% | +40.4% | -25.1% | -51.9% |
+| TP08 | -10.3% | +255.0% | -28.3% | +101.2% | -0.4% |
+| TP09 | -21.6% | +428.0% | +37.2% | +19.8% | +0.0% |
+| TP10 | -52.0% | +4.4% | -92.0% | +1174.2% | -0.1% |
+| TP11 | -0.0% | +0.1% | -25.8% | +101.2% | -0.4% |
+| TP12 | +1.0% | -0.1% | -0.5% | +0.8% | +0.7% |
 
 ## Profile classification
 
@@ -126,18 +126,8 @@ Full statistics: [`traffic_profile_stats.csv`](../data/traffic_profile_stats.csv
 
 ### Problematic / review before freeze
 
-- **TP01 Baseline** — status: `blocked`
-- **TP02 LowLoad** — status: `blocked`
-- **TP03 ManySmall** — status: `blocked`
-- **TP04 FewLarge** — status: `blocked`
-- **TP06 OneToMany** — status: `blocked`
-- **TP07 BurstWindow** — status: `blocked`
-- **TP09 Bimodal** — status: `blocked`
-- **TP10 Storm** — status: `blocked`
-- **TP11 ManyToOne** — status: `blocked`
-- **TP12 GroupToGroup** — status: `blocked`
-- **S1_StrongCommunities_SeparateClusters** TP03/TP11: missing output (re-simulate).
-- **R1_Rural_RandomWaypoint**, **R11_SpeedExtremeLow:** zero delivery across all TPs (disconnected bases).
+- None flagged as blocked/needs_adjustment by intent rules.
+- **R1_Rural_SparseSPMM**, **R11_SpeedExtremeLow:** zero delivery across many TPs (sparse/disconnected bases).
 - **TP12** urban WDM scenarios: extreme overhead in some bases (document or fix worldSize).
 
 ## Recommended KPIs for routing benchmark
@@ -168,16 +158,7 @@ Full statistics: [`traffic_profile_stats.csv`](../data/traffic_profile_stats.csv
 
 ## Profiles requiring adjustment before freeze
 
-- **TP01** (`blocked`): 1 zero-delivery, 1 missing output.
-- **TP02** (`blocked`): 1 zero-delivery, 1 missing output.
-- **TP03** (`blocked`): 1 zero-delivery, 1 missing output.
-- **TP04** (`blocked`): 2 zero-delivery, 1 missing output.
-- **TP06** (`blocked`): 1 zero-delivery, 1 missing output.
-- **TP07** (`blocked`): 1 zero-delivery, 1 missing output.
-- **TP09** (`blocked`): 1 zero-delivery, 1 missing output.
-- **TP10** (`blocked`): 1 zero-delivery, 1 missing output.
-- **TP11** (`blocked`): 1 zero-delivery, 1 missing output.
-- **TP12** (`blocked`): 3 zero-delivery, 1 missing output.
+- **TP10** (`partial`): 0 zero-delivery, 0 missing output.
 
 ## Per-TP KPI summary
 
@@ -185,18 +166,18 @@ See [`traffic_profile_kpi_summary.csv`](../data/traffic_profile_kpi_summary.csv)
 
 | TP | primary | secondary | cost | stress | validation |
 |----|---------|-----------|------|--------|------------|
-| TP01 | delivery_ratio | latency_mean | overhead_ratio | drop_ratio | blocked |
-| TP02 | n_created | delivery_ratio | overhead_ratio | drop_ratio | blocked |
-| TP03 | overhead_ratio | delivery_ratio | total_encounters | drop_ratio | blocked |
-| TP04 | drop_ratio | delivery_ratio | overhead_ratio | latency_mean | blocked |
+| TP01 | delivery_ratio | latency_mean | overhead_ratio | drop_ratio | validated |
+| TP02 | n_created | delivery_ratio | overhead_ratio | drop_ratio | validated |
+| TP03 | overhead_ratio | delivery_ratio | total_encounters | drop_ratio | validated |
+| TP04 | drop_ratio | delivery_ratio | overhead_ratio | latency_mean | validated |
 | TP05 | delivery_ratio | latency_mean | overhead_ratio | drop_ratio | validated |
-| TP06 | delivery_ratio | latency_mean | overhead_ratio | popularity_top10_ratio | blocked |
-| TP07 | delivery_ratio | t_median_frac | overhead_ratio | latency_mean | blocked |
+| TP06 | delivery_ratio | latency_mean | overhead_ratio | popularity_top10_ratio | validated |
+| TP07 | delivery_ratio | t_median_frac | overhead_ratio | latency_mean | validated |
 | TP08 | popularity_top10_ratio | delivery_ratio | overhead_ratio | drop_ratio | validated |
-| TP09 | drop_ratio | delivery_ratio | overhead_ratio | latency_mean | blocked |
-| TP10 | delivery_ratio | n_created | overhead_ratio | drop_ratio | blocked |
-| TP11 | delivery_ratio | overhead_ratio | latency_mean | drop_ratio | blocked |
-| TP12 | delivery_ratio | overhead_ratio | latency_mean | drop_ratio | blocked |
+| TP09 | drop_ratio | delivery_ratio | overhead_ratio | latency_mean | validated |
+| TP10 | delivery_ratio | n_created | overhead_ratio | drop_ratio | partial |
+| TP11 | delivery_ratio | overhead_ratio | latency_mean | drop_ratio | validated |
+| TP12 | delivery_ratio | overhead_ratio | latency_mean | drop_ratio | validated |
 
 ## Cross-references
 

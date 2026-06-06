@@ -1,6 +1,6 @@
 # Evaluation metrics review (routing benchmark)
 
-Generated: 2026-05-24 10:28 UTC
+Generated: 2026-06-05 12:40 UTC
 
 Source: `MessageStatsReport` (The ONE) → `output_metrics.csv`; indirect mobility from `ConnectivityONEReport`.
 

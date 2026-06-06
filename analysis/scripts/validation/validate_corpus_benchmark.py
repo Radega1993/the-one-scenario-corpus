@@ -409,8 +409,9 @@ def write_report(
         f"**Yes for configuration/diversity benchmarking** — all {completeness['settings_count']} `.settings`, "
         "manifest rows, feature matrices, output metrics, spatial metrics, and auxiliary CSVs align with corpus scope.",
         "",
-        "**Almost ready for routing protocol comparison** — two scenarios lack output metrics "
-        f"(`error_probable`, see CSV); message analysis window (policy B) is not yet enforced in the pipeline.",
+        f"**{'Ready' if int(status_counts.get('error_probable', 0)) == 0 else 'Almost ready'} for routing protocol comparison** — "
+        f"**{int(status_counts.get('error_probable', 0))}** scenarios with `error_probable` (missing outputs, see CSV); "
+        "message analysis window (policy B) is not yet enforced in the pipeline.",
         "",
         "### 2. Which scenarios should be kept as valid extremes?",
         "",
@@ -452,10 +453,18 @@ def write_report(
         "",
         "## Next steps",
         "",
-        "1. Re-simulate `S1_StrongCommunities_SeparateClusters__TP03_ManySmall` and `__TP11_ManyToOne`",
-        "2. Implement TTL-aware message window in `output_metrics` pipeline",
-        "3. Filter validation CSV when exporting paper tables (`validation_status == ok` for main tier)",
-        "4. Re-run after settings revision: `validate_corpus_benchmark.py`",
+    ])
+    n_err = int(status_counts.get("error_probable", 0))
+    if n_err:
+        lines.append(f"1. Re-simulate **{n_err}** `error_probable` scenario(s) listed above")
+        step = 2
+    else:
+        lines.append("1. No missing-output scenarios — corpus output metrics complete")
+        step = 2
+    lines.extend([
+        f"{step}. Implement TTL-aware message window in `output_metrics` pipeline",
+        f"{step + 1}. Filter validation CSV when exporting paper tables (`validation_status == ok` for main tier)",
+        f"{step + 2}. Re-run after settings revision: `validate_corpus_benchmark.py`",
         "",
         "## Artifacts",
         "",

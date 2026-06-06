@@ -36,9 +36,15 @@ After `worldSize` changes, **re-simulate** affected scenarios before using spati
 - Pipeline: [`map_preparation_pipeline.md`](map_preparation_pipeline.md)
 - Route naming: [`maps/route_semantic_policy.md`](maps/route_semantic_policy.md)
 
-## Known gaps
+## Auxiliary scenario routes (R2 / S1 / S6)
 
-**504/540** corpus scenarios run with maps in git. **36** scenarios (R2, S1, S6 bases × 12 TPs) need auxiliary route WKT not yet in the tree — see Installation wiki.
+All **540** corpus scenarios are simulable after `bootstrap_maps.sh --install` and:
+
+```bash
+scenarios/analysis/.venv/bin/python scenarios/setup/generate_scenario_aux_routes.py --apply --install
+```
+
+See [Installation wiki](../../.wiki-clone/03-Installation.md#scenario-auxiliary-routes-r2--s1--s6).
 
 ## Historical note
 

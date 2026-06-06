@@ -1,13 +1,15 @@
-# Corpus v2 traffic profile (TP07 BurstWindow) — generated from corpus_v1. Mobility unchanged; Events* and Group*.msgTtl overridden.
+# Corpus v1 traffic profile (TP06 OneToMany) — generated from base.
+# Mobility and backbone events unchanged; Events1* and Group.msgTtl overridden.
 # =========================================================
-# D8 - Infrastructure returns (backbone links appear mid-simulation)
-# The ONE doesn't support time-varying transmitRange from settings alone.
-# We approximate "infrastructure comes back" using forced connection events
-# that bring up persistent links between partitions after t = 6h.
-# Levers: ExternalEventsQueue + CONN up events at mid-sim.
+# D8 - Emergency backbone with intermittent bridges
+# Two civilian/refugee partitions remain disconnected during
+# the first half of the simulation. After t = 6 h, temporary
+# backbone opportunities appear via externally scheduled CONN
+# events on logical interface bb0 (up/down windows).
+# Levers: ExternalEventsQueue + intermittent CONN on bb0.
 # =========================================================
 
-Scenario.name = D8_InfrastructureReturns_BackboneLinks__TP07_BurstWindow
+Scenario.name = D8_EmergencyBackbone_IntermittentBridges__TP06_OneToMany
 Scenario.simulateConnections = true
 Scenario.updateInterval = 0.1
 Scenario.endTime = 43200
@@ -19,12 +21,18 @@ MovementModel.worldSize = 1711, 1874
 
 Group.router = EpidemicRouter
 Group.bufferSize = 50M
-Group.nrofInterfaces = 1
+Group.nrofInterfaces = 2
 Group.interface1 = bt0
+Group.interface2 = bb0
 
 bt0.type = SimpleBroadcastInterface
 bt0.transmitSpeed = 2M
 bt0.transmitRange = 10
+
+# Logical backbone: range 0 disables proximity scan; links only via CONN events
+bb0.type = SimpleBroadcastInterface
+bb0.transmitSpeed = 2M
+bb0.transmitRange = 0
 
 Scenario.nrofHostGroups = 2
 
@@ -48,16 +56,19 @@ Group2.waitTime = 30, 240
 
 Group.msgTtl = 7200
 
-Events.nrof = 1
+Events.nrof = 2
 Events1.class = MessageEventGenerator
-Events1.interval = 5, 15
-Events1.size = 50k, 150k
-Events1.hosts = 0, 80
-Events1.time = 8640, 12096
+Events1.interval = 30, 60
+Events1.size = 10k, 100k
+Events1.hosts = 0, 1
+Events1.tohosts = 1, 80
 Events1.prefix = M
 
+# Emergency backbone: intermittent gateway links after 6 hours
+Events2.class = ExternalEventsQueue
+Events2.nrofPreload = 100
+Events2.filePath = scenarios/corpus_v1/05_disaster/D8_emergency_backbone_events.txt
 Report.nrofReports = 2
 Report.reportDir = reports/
 Report.report1 = MessageStatsReport
 Report.report2 = ContactTimesReport
-

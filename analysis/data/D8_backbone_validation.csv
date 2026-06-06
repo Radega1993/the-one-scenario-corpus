@@ -1,0 +1,14 @@
+scenario_name,traffic_profile,total_contacts,contacts_before_backbone,contacts_after_backbone,inter_partition_contacts_before,inter_partition_contacts_after,max_inter_partition_uptime_s,relayed_messages,delivered_messages,delivery_ratio,latency_avg,overhead_ratio,validation_status,notes
+D8_EmergencyBackbone_IntermittentBridges,base,24425,12190,12235,0,12,600.0,28043,354,0.9267,2481.1669,78.2175,PASS,ok
+D8_EmergencyBackbone_IntermittentBridges__TP01_Baseline,TP01,24382,12091,12291,0,12,600.0,37462,477,0.9815,3430.4939,77.5367,PASS,ok
+D8_EmergencyBackbone_IntermittentBridges__TP02_LowLoad,TP02,24361,12002,12359,0,12,600.0,7423,93,0.9688,3689.5333,78.8172,PASS,ok
+D8_EmergencyBackbone_IntermittentBridges__TP03_ManySmall,TP03,24556,12177,12379,0,12,600.0,169617,2145,0.9737,3450.812,78.0755,PASS,ok
+D8_EmergencyBackbone_IntermittentBridges__TP04_FewLarge,TP04,24426,12278,12148,0,12,600.0,278601,112,0.6257,5914.5036,2486.5089,PASS,ok
+D8_EmergencyBackbone_IntermittentBridges__TP05_CriticalTTL,TP05,24382,12091,12291,0,12,600.0,6138,92,0.1893,160.6717,65.7174,PASS,ok
+D8_EmergencyBackbone_IntermittentBridges__TP06_OneToMany,TP06,24550,12173,12377,0,12,600.0,307061,932,0.9608,3390.6638,328.4646,PASS,ok
+D8_EmergencyBackbone_IntermittentBridges__TP07_BurstWindow,TP07,24439,12190,12249,0,12,600.0,28756,364,1.0,6136.6887,78.0,PASS,ok
+D8_EmergencyBackbone_IntermittentBridges__TP08_HubTarget,TP08,24550,12173,12377,0,12,600.0,1873652,784,0.8082,4664.9691,2388.8622,PASS,ok
+D8_EmergencyBackbone_IntermittentBridges__TP09_Bimodal,TP09,24319,12126,12193,0,12,600.0,902733,420,0.7216,5829.8064,2148.3643,PASS,ok
+D8_EmergencyBackbone_IntermittentBridges__TP10_Storm,TP10,24513,12409,12104,0,12,600.0,1696206,3392,0.5512,958.1632,499.0607,PASS,ok
+D8_EmergencyBackbone_IntermittentBridges__TP11_ManyToOne,TP11,24550,12173,12377,0,12,600.0,249697,932,0.9608,3163.8262,266.9152,PASS,ok
+D8_EmergencyBackbone_IntermittentBridges__TP12_GroupToGroup,TP12,24378,12194,12184,0,12,600.0,37757,471,0.9632,6254.0841,79.1635,PASS,ok

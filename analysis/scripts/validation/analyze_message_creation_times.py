@@ -398,7 +398,7 @@ def write_audit_md(rows: list[dict], validation_notes: list[str], path: Path) ->
     lines.extend([
         "### ¿Los mensajes se lanzan todos al inicio?",
         "",
-        f"**No.** En las 720 simulaciones, el porcentaje máximo de mensajes con `creation_time ≤ 0` es **{pct_t0_max:.2f}%**; "
+        f"**No.** En las {len(rows)} simulaciones, el porcentaje máximo de mensajes con `creation_time ≤ 0` es **{pct_t0_max:.2f}%**; "
         f"solo **{pct_t0_any}** escenarios tienen >0.1% en t≈0. "
         "El generador espacia el primer mensaje al menos `interval_min` segundos después del inicio de la ventana "
         "(o después de `Events*.time` inferior en TP07 y similares).",
@@ -498,8 +498,8 @@ def main() -> int:
     args = ap.parse_args()
 
     settings_files = sorted(args.corpus_dir.rglob("*.settings"))
-    if len(settings_files) != 720:
-        print(f"Warning: expected 720 settings, found {len(settings_files)}", file=sys.stderr)
+    if len(settings_files) != 540:
+        print(f"Warning: expected 540 settings, found {len(settings_files)}", file=sys.stderr)
 
     rows: list[dict] = []
     all_times: dict[str, list[float]] = {}

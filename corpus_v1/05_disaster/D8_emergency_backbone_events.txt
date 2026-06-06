@@ -1,0 +1,29 @@
+# D8 emergency backbone — intermittent bb0 links (StandardEventsReader)
+# Format: time CONN host1 host2 up|down bb0
+# Partition A: hosts 0-39; partition B: hosts 40-79
+# Windows: 600s up, 1200s gap, rotating gateway pairs from t=21600
+
+21600 CONN 0 40 up bb0
+22200 CONN 0 40 down bb0
+23400 CONN 5 45 up bb0
+24000 CONN 5 45 down bb0
+25200 CONN 10 50 up bb0
+25800 CONN 10 50 down bb0
+27000 CONN 15 55 up bb0
+27600 CONN 15 55 down bb0
+28800 CONN 0 50 up bb0
+29400 CONN 0 50 down bb0
+30600 CONN 10 40 up bb0
+31200 CONN 10 40 down bb0
+32400 CONN 0 40 up bb0
+33000 CONN 0 40 down bb0
+34200 CONN 5 45 up bb0
+34800 CONN 5 45 down bb0
+36000 CONN 10 50 up bb0
+36600 CONN 10 50 down bb0
+37800 CONN 15 55 up bb0
+38400 CONN 15 55 down bb0
+39600 CONN 0 50 up bb0
+40200 CONN 0 50 down bb0
+41400 CONN 10 40 up bb0
+42000 CONN 10 40 down bb0

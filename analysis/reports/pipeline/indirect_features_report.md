@@ -1,9 +1,9 @@
 # Indirectas tipo Diego (estado actual de datos)
 
 - Escenarios procesados: **540**
-- Calculados con `ConnectivityONEReport`: **566**
-- Calculados con fallback agregado: **4**
-- Con encounters > 0: **566**
+- Calculados con `ConnectivityONEReport`: **540**
+- Calculados con fallback agregado: **0**
+- Con encounters > 0: **540**
 - Con `Scenario.endTime` disponible: **540**
 
 ## Calculadas con datos actuales (cuando hay datos)

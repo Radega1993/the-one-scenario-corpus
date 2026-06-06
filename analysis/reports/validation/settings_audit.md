@@ -1,61 +1,66 @@
 # Settings audit (corpus_v1)
 
-Generated: 2026-05-31 15:40 UTC
+Generated: 2026-06-05 12:40 UTC
 
-- Scenarios audited: **48**
-- Unique scenario bases: **4**
+- Scenarios audited: **540**
+- Unique scenario bases: **45**
 - Traffic profiles (TP): **12** distinct
 
 ## Families
 
 | family | count |
 |--------|------:|
-| `04_rural` | 12 |
-| `05_disaster` | 12 |
-| `06_social` | 24 |
+| `01_urban` | 84 |
+| `02_campus` | 72 |
+| `03_vehicles` | 60 |
+| `04_rural` | 144 |
+| `05_disaster` | 108 |
+| `06_social` | 72 |
 
 ## Map datasets
 
 | map_dataset | count |
 |-------------|------:|
-| `unknown` | 48 |
+| `unknown` | 396 |
+| `HelsinkiMedium` | 84 |
+| `Manhattan` | 60 |
 
 ## Movement models (per group entries)
 
 | movement_model | count |
 |----------------|------:|
+| `G1:ShortestPathMapBasedMovement` | 324 |
+| `G1:BusMovement` | 120 |
+| `G2:WorkingDayMovement` | 108 |
+| `G1:MapRouteMovement` | 72 |
+| `G2:MapRouteMovement` | 48 |
 | `G4:MapRouteMovement` | 48 |
-| `G5:MapRouteMovement` | 36 |
-| `G1:MapRouteMovement` | 36 |
-| `G2:MapRouteMovement` | 36 |
 | `G3:MapRouteMovement` | 36 |
-| `G1:ShortestPathMapBasedMovement` | 12 |
-| `G2:ShortestPathMapBasedMovement` | 12 |
-| `G3:ShortestPathMapBasedMovement` | 12 |
+| `G2:ShortestPathMapBasedMovement` | 36 |
+| `G5:MapRouteMovement` | 36 |
+| `G3:ShortestPathMapBasedMovement` | 24 |
+| `G1:ClusterMovement` | 24 |
+| `G2:ClusterMovement` | 24 |
+| `G2:BusMovement` | 12 |
 | `G6:MapRouteMovement` | 12 |
 | `G7:MapRouteMovement` | 12 |
-| `G8:MapRouteMovement` | 12 |
-| `G9:MapRouteMovement` | 12 |
-| `G10:MapRouteMovement` | 12 |
-| `G11:MapRouteMovement` | 12 |
-| `G12:MapRouteMovement` | 12 |
 
 ## Traffic profiles
 
 | TP | count |
 |----|------:|
-| `TP01` | 4 |
-| `TP02` | 4 |
-| `TP03` | 4 |
-| `TP04` | 4 |
-| `TP05` | 4 |
-| `TP06` | 4 |
-| `TP07` | 4 |
-| `TP08` | 4 |
-| `TP09` | 4 |
-| `TP10` | 4 |
-| `TP11` | 4 |
-| `TP12` | 4 |
+| `TP01` | 45 |
+| `TP02` | 45 |
+| `TP03` | 45 |
+| `TP04` | 45 |
+| `TP05` | 45 |
+| `TP06` | 45 |
+| `TP07` | 45 |
+| `TP08` | 45 |
+| `TP09` | 45 |
+| `TP10` | 45 |
+| `TP11` | 45 |
+| `TP12` | 45 |
 
 ## Notes
 

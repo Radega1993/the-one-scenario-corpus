@@ -67,7 +67,102 @@ def hub_exclusive_upper(n: int) -> int | None:
         return None
     return h
 
-def replace_events_block(content: str, new_block: str) -> str:
+def extract_suffix_event_blocks(content: str) -> str:
+    """Return Events2+ block (including Events.nrof line) or empty if only Events1."""
+    kv = parse_simple_settings(content)
+    try:
+        nrof = int(kv.get("Events.nrof", "1"))
+    except ValueError:
+        return ""
+    if nrof < 2:
+        return ""
+    lines = content.splitlines(keepends=True)
+    start = None
+    for i, ln in enumerate(lines):
+        if ln.strip().startswith("Events2."):
+            start = i
+            break
+    if start is None:
+        return ""
+    end = len(lines)
+    for j in range(start, len(lines)):
+        s = lines[j].strip()
+        if s.startswith("Report."):
+            end = j
+            break
+    suffix_lines = [f"Events.nrof = {nrof}\n"] + lines[start:end]
+    return "".join(suffix_lines).rstrip() + "\n"
+
+
+def extract_external_events_queue_block(content: str) -> str | None:
+    """Return ExternalEventsQueue settings block (EventsN lines + comment) or None."""
+    lines = content.splitlines(keepends=True)
+    start = None
+    for i, ln in enumerate(lines):
+        if re.search(r"^Events\d+\.class\s*=\s*ExternalEventsQueue\s*$", ln):
+            start = i
+            break
+    if start is None:
+        return None
+    # Include preceding comment lines
+    while start > 0 and lines[start - 1].strip().startswith("#"):
+        start -= 1
+    end = len(lines)
+    for j in range(start, len(lines)):
+        if lines[j].strip().startswith("Report."):
+            end = j
+            break
+    return "".join(lines[start:end]).rstrip() + "\n"
+
+
+def append_external_events_queue(
+    content: str,
+    traffic_events_block: str,
+    file_path: str,
+    *,
+    nrof_preload: int = 100,
+) -> str:
+    """Replace Events block with traffic TP block + ExternalEventsQueue as last EventsN."""
+    lines = content.splitlines(keepends=True)
+    start = None
+    for i, ln in enumerate(lines):
+        if ln.strip().startswith("Events.nrof"):
+            start = i
+            break
+    if start is None:
+        raise ValueError("No Events.nrof block found")
+    end = len(lines)
+    for j in range(start + 1, len(lines)):
+        s = lines[j].strip()
+        if not s or s.startswith("#"):
+            continue
+        if s.startswith("Report."):
+            end = j
+            break
+
+    kv = parse_simple_settings(traffic_events_block)
+    tp_nrof = int(kv.get("Events.nrof", "1"))
+    ext_idx = tp_nrof + 1
+    total_nrof = tp_nrof + 1
+
+    ext_block = (
+        f"\n# Emergency backbone: intermittent gateway links after 6 hours\n"
+        f"Events{ext_idx}.class = ExternalEventsQueue\n"
+        f"Events{ext_idx}.nrofPreload = {nrof_preload}\n"
+        f"Events{ext_idx}.filePath = {file_path}\n"
+    )
+    tp_lines = traffic_events_block.splitlines()
+    if tp_lines and tp_lines[0].strip().startswith("Events.nrof"):
+        tp_body = "\n".join(tp_lines[1:]).rstrip() + "\n"
+    else:
+        tp_body = traffic_events_block.rstrip() + "\n"
+    combined = f"Events.nrof = {total_nrof}\n{tp_body}{ext_block}"
+    new_lines = lines[:start] + [combined] + lines[end:]
+    return "".join(new_lines)
+
+
+def replace_events_block(content: str, new_block: str, *, preserve_suffix: bool = False) -> str:
+    suffix = extract_suffix_event_blocks(content) if preserve_suffix else ""
     lines = content.splitlines(keepends=True)
     start = None
     for i, ln in enumerate(lines):
@@ -86,7 +181,12 @@ def replace_events_block(content: str, new_block: str) -> str:
         if s.startswith("Report."):
             end = j
             break
-    new_lines = lines[:start] + [new_block.rstrip() + "\n\n"] + lines[end:]
+    combined = new_block.rstrip() + "\n"
+    if suffix:
+        # new_block sets Events.nrof=1; suffix starts with Events.nrof=2
+        combined = combined.rstrip() + "\n\n" + suffix.lstrip()
+    combined += "\n"
+    new_lines = lines[:start] + [combined] + lines[end:]
     return "".join(new_lines)
 
 def replace_msg_ttl_lines(content: str, ttl_minutes: int) -> str:

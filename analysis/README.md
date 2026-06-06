@@ -178,7 +178,7 @@ python3 scenarios/analysis/run_all_scenarios.py --corpus corpus_v1 \
 
 Methodology and setting keys (`SpatialOccupancyReport.*`, `NodePositionReport.*`): [reports/spatial/spatial_occupancy_report.md](reports/spatial/spatial_occupancy_report.md).
 
-**Mobility repair (2026-05):** S1, S6, D1, R2 use map-aware routes (no `ClusterMovement`); see [CHANGELOG.md](../CHANGELOG.md). **36** R2/S1/S6 TP scenarios still lack auxiliary route WKT — see [Installation wiki](../.wiki-clone/03-Installation.md#known-scenario-gaps).
+**Mobility repair (2026-05):** S1, S6, D1, R2 use map-aware routes (no `ClusterMovement`); see [CHANGELOG.md](../CHANGELOG.md). Auxiliary route WKT for R2/S1/S6: `generate_scenario_aux_routes.py --apply --install` — see [Installation wiki](../.wiki-clone/03-Installation.md#scenario-auxiliary-routes-r2--s1--s6).
 
 Post-processing (heatmaps, merged metrics, family-level coverage curves):
 

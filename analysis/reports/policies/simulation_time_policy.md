@@ -1,8 +1,8 @@
 # Simulation time and warmup policy
 
-Generated: 2026-05-24 10:28 UTC
+Generated: 2026-06-05 12:40 UTC
 
-- Rows: **720**
+- Rows: **540**
 - CSV: `data/simulation_time_policy.csv`
 
 ## Global policy
