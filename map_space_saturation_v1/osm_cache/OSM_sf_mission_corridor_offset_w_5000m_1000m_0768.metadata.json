@@ -1,0 +1,11 @@
+{
+  "map_id": "OSM_sf_mission_corridor_offset_w_5000m_1000m_0768",
+  "network_type": "drive",
+  "bbox": {
+    "north": 37.78045777937478,
+    "south": 37.73554222062523,
+    "east": -122.39795615209393,
+    "west": -122.45476784790607
+  },
+  "downloaded_at": "2026-06-17T16:50:36.672703+00:00"
+}

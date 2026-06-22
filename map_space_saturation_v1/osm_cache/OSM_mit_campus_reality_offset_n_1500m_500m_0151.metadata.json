@@ -1,0 +1,11 @@
+{
+  "map_id": "OSM_mit_campus_reality_offset_n_1500m_500m_0151",
+  "network_type": "all",
+  "bbox": {
+    "north": 42.37122933381243,
+    "south": 42.35775466618757,
+    "east": -71.08088160883496,
+    "west": -71.09911839116505
+  },
+  "downloaded_at": "2026-06-17T15:37:12.221668+00:00"
+}

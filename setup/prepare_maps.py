@@ -1,6 +1,9 @@
 #!/usr/bin/env python3
 """
-prepare_maps.py — Convert downloaded OSM GraphML to The ONE WKT format.
+prepare_maps.py — LEGACY: Convert downloaded OSM GraphML to The ONE WKT format.
+
+**Status:** Legacy pipeline for 6 manual maps. For map_space_v1 use:
+  generate_map_space_v1.py → validate_map_space_v1.py → install_selected_maps_v1.py
 
 For each map defined in map_config.py:
   1. Load GraphML (osmnx) or generate synthetic grid

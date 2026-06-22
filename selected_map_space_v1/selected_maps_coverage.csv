@@ -1,0 +1,16 @@
+archetype,pool_count,selected_count
+dense_urban_irregular,169,5
+bus_route_urban_suburban,38,4
+island_or_partitioned,86,6
+industrial_disrupted,128,4
+compact_residential,41,7
+campus_compact,98,4
+rural_roads,52,5
+urban_grid,78,4
+sparse_trails,85,6
+corridor_linear,70,8
+suburban_low_density,33,4
+clustered_communities,45,4
+conference_event_compact,45,7
+hub_and_spoke,45,4
+radial_city,42,3

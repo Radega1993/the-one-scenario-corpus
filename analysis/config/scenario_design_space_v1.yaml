@@ -1,0 +1,391 @@
+# ===========================================================================
+# scenario_design_space_v1.yaml
+# ===========================================================================
+# Explicit, parameterized design space for scenario generation.
+# This YAML defines discrete candidate values for all scenario dimensions
+# before Traffic Profiles are applied.
+#
+# Version: 1.0
+# Purpose: Serve as authoritative source for scenario_space_v1 generation
+# Scope: Structural scenarios (network, mobility, map, groups) without Traffic
+# Status: All values grounded in real_trace_scenarios_inventory audit OR 
+#         base_scenarios empirical ranges
+# ===========================================================================
+
+design_space_v1:
+  version: 1.0
+  description: |
+    Systematic design space for scenario generation before Traffic Profiles.
+    Dimensions are orthogonal and discrete to enable reproducible sampling.
+    Validity rules constrain invalid combinations.
+    All values are discretized to keep candidate pool ≤ 5000 scenarios.
+
+  # =========================================================================
+  # DIMENSION A: MAPS
+  # =========================================================================
+  maps:
+    - id: HelsinkiDowntown
+      wkt_path: data/HelsinkiDowntown/roads.wkt
+      world_size_x: 1713
+      world_size_y: 1459
+      area_m2: 2500000
+      map_type: urban_street_grid
+      supporting_files:
+        - main_roads.wkt
+        - pedestrian_paths.wkt
+        - tram3.wkt
+        - tram10.wkt
+      allowed_movement_models:
+        - WorkingDayMovement
+        - ShortestPathMapBasedMovement
+        - BusMovement
+      notes: Urban street grid, Finland. Supports WorkingDayMovement with activity files.
+
+    - id: KumpulaCampus
+      wkt_path: data/KumpulaCampus/roads.wkt
+      world_size_x: 1148
+      world_size_y: 1036
+      area_m2: 1190000
+      map_type: campus_paths
+      supporting_files: []
+      allowed_movement_models:
+        - ShortestPathMapBasedMovement
+      notes: University campus. Compact. Pedestrian-only scenarios.
+
+    - id: ManhattanMidtownGrid
+      wkt_path: data/ManhattanMidtownGrid/roads.wkt
+      world_size_x: 2120
+      world_size_y: 1986
+      area_m2: 4210000
+      map_type: urban_grid_manhattan
+      supporting_files: []
+      allowed_movement_models:
+        - ShortestPathMapBasedMovement
+        - MapRouteMovement
+        - BusMovement
+      notes: Manhattan-like grid. Large urban area.
+
+    - id: NuuksioSparseTrails
+      wkt_path: data/NuuksioSparseTrails/roads.wkt
+      world_size_x: 2470
+      world_size_y: 2565
+      area_m2: 6330000
+      map_type: sparse_trail_network
+      supporting_files: []
+      allowed_movement_models:
+        - ShortestPathMapBasedMovement
+        - MapRouteMovement
+      notes: Sparse rural trail network. Largest map.
+
+    - id: HelsinkiDisrupted
+      wkt_path: data/HelsinkiDisrupted/roads.wkt
+      world_size_x: 1711
+      world_size_y: 1874
+      area_m2: 3210000
+      map_type: urban_disrupted
+      supporting_files: []
+      allowed_movement_models:
+        - ShortestPathMapBasedMovement
+        - MapRouteMovement
+        - ClusterMovement
+      notes: Urban with disruption overlays. Disaster scenarios.
+
+    - id: KallioCommunityCompact
+      wkt_path: data/KallioCommunityCompact/roads.wkt
+      world_size_x: 1124
+      world_size_y: 1149
+      area_m2: 1290000
+      map_type: neighborhood_paths
+      supporting_files: []
+      allowed_movement_models:
+        - ShortestPathMapBasedMovement
+        - MapRouteMovement
+      notes: Compact neighborhood. Social/community scenarios.
+
+  # =========================================================================
+  # DIMENSION B: MOVEMENT MODELS
+  # =========================================================================
+  movement_models:
+    - model_name: ShortestPathMapBasedMovement
+      model_class: ShortestPathMapBasedMovement
+      description: Pedestrian-like movement using shortest paths on road network
+      required_parameters:
+        - speed
+        - waitTime
+      optional_parameters: []
+      parameter_ranges:
+        speed_m_s:
+          discretized_values: [0.3, 0.5, 1.0, 1.5, 2.0, 4.0]
+        waitTime_s:
+          discretized_value_pairs:
+            - [0, 0]
+            - [0, 60]
+            - [0, 300]
+            - [30, 300]
+            - [120, 600]
+      supported_maps:
+        - HelsinkiDowntown
+        - KumpulaCampus
+        - ManhattanMidtownGrid
+        - NuuksioSparseTrails
+        - HelsinkiDisrupted
+        - KallioCommunityCompact
+      use_frequency: high
+
+    - model_name: WorkingDayMovement
+      model_class: WorkingDayMovement
+      description: Activity-based movement with home, office, evening cycles.
+      required_parameters:
+        - speed
+        - waitTime
+        - routeFile
+        - homeLocationsFile
+        - officeLocationsFile
+        - meetingSpotsFile
+      optional_parameters:
+        - workDayLength
+        - nrOfOffices
+        - officeSize
+        - timeDiffSTD
+        - nrOfMeetingSpots
+        - minGroupSize
+        - maxGroupSize
+      parameter_ranges:
+        speed_m_s:
+          discretized_values: [0.5, 1.0, 1.5]
+        waitTime_s:
+          discretized_value_pairs:
+            - [0, 60]
+            - [0, 120]
+            - [30, 300]
+        nrOfOffices:
+          discretized_values: [6, 12, 20]
+        officeSize:
+          discretized_values: [20, 40, 60, 100]
+        timeDiffSTD_s:
+          discretized_values: [600, 1200, 1800]
+        nrOfMeetingSpots:
+          discretized_values: [5, 10, 15]
+      supported_maps:
+        - HelsinkiDowntown
+      use_frequency: medium
+
+    - model_name: MapRouteMovement
+      model_class: MapRouteMovement
+      description: Vehicles following pre-defined routes (taxis, buses, delivery).
+      required_parameters:
+        - speed
+        - waitTime
+        - routeFile
+        - routeType
+      optional_parameters: []
+      parameter_ranges:
+        speed_m_s:
+          discretized_values: [5.0, 8.0, 10.0, 14.0]
+        waitTime_s:
+          discretized_value_pairs:
+            - [5, 15]
+            - [8, 25]
+            - [10, 30]
+            - [20, 60]
+        routeType:
+          discretized_values: [1]
+      supported_maps:
+        - ManhattanMidtownGrid
+        - NuuksioSparseTrails
+        - HelsinkiDowntown
+        - HelsinkiDisrupted
+        - KallioCommunityCompact
+      use_frequency: low
+
+    - model_name: BusMovement
+      model_class: BusMovement
+      description: Public transit buses following stops on defined route.
+      required_parameters:
+        - speed
+        - waitTime
+        - routeFile
+        - busControlSystemNr
+      optional_parameters: []
+      parameter_ranges:
+        speed_m_s:
+          discretized_values: [7.0, 9.0, 10.0]
+        waitTime_s:
+          discretized_value_pairs:
+            - [10, 20]
+            - [10, 30]
+            - [15, 45]
+        busControlSystemNr:
+          discretized_values: [-1, 0, 1]
+      supported_maps:
+        - HelsinkiDowntown
+        - ManhattanMidtownGrid
+        - HelsinkiDisrupted
+      use_frequency: medium
+
+    - model_name: ClusterMovement
+      model_class: ClusterMovement
+      description: Bounded movement within geographic clusters.
+      required_parameters:
+        - speed
+        - waitTime
+        - clusterCenter
+        - clusterRange
+      optional_parameters: []
+      parameter_ranges:
+        speed_m_s:
+          discretized_values: [0.4, 0.8, 1.2, 2.0]
+        waitTime_s:
+          discretized_value_pairs:
+            - [30, 120]
+            - [30, 240]
+            - [60, 300]
+        clusterRange_m:
+          discretized_values: [100, 200, 300, 500]
+      supported_maps:
+        - HelsinkiDisrupted
+        - ManhattanMidtownGrid
+        - HelsinkiDowntown
+      use_frequency: low
+
+  # =========================================================================
+  # DIMENSION C: NODE POPULATION
+  # =========================================================================
+  node_population:
+    description: Number of hosts (nodes) per scenario
+    discrete_values: [30, 40, 50, 60, 70, 80, 100, 120, 150, 200, 250, 300]
+
+  # =========================================================================
+  # DIMENSION D: SIMULATION DURATION
+  # =========================================================================
+  simulation_duration:
+    description: Scenario.endTime (simulation end time in seconds)
+    discrete_values:
+      - {value: 7200, hours: 2.0, use_case: rapid_convergence}
+      - {value: 10800, hours: 3.0, use_case: campus_event}
+      - {value: 14400, hours: 4.0, use_case: disaster_response}
+      - {value: 43200, hours: 12.0, use_case: workday_default}
+      - {value: 86400, hours: 24.0, use_case: daily_rhythm}
+
+  # =========================================================================
+  # DIMENSION E: GROUP STRUCTURE
+  # =========================================================================
+  group_structure:
+    description: Node partitioning into logical groups
+    types:
+      - structure_id: single_homogeneous
+        description: One group, all nodes identical
+        n_groups: 1
+
+      - structure_id: pedestrian_transit
+        description: Pedestrians + public transit (bus)
+        n_groups: 2
+
+      - structure_id: pedestrian_vehicle
+        description: Pedestrians + vehicles
+        n_groups: 2
+
+      - structure_id: pedestrian_shortestpath_heterogeneous
+        description: Two pedestrian groups with different speeds
+        n_groups: 2
+
+      - structure_id: cluster_nomadic
+        description: Clustered (shelters) + roaming
+        n_groups: 2
+
+  # =========================================================================
+  # DIMENSION F: NETWORK PARAMETERS
+  # =========================================================================
+  network_parameters:
+    transmit_range:
+      description: Radio transmission range (meters)
+      discrete_values: [5, 10, 20, 50, 100, 200]
+
+    buffer_size:
+      description: Node message buffer size
+      discrete_values: [5M, 20M, 50M, 100M]
+
+    transmit_speed:
+      description: Data transmission rate
+      discrete_values: [1M, 2.4M, 5M]
+
+    message_ttl:
+      description: Message time-to-live (minutes)
+      discrete_values: [60, 120, 240, 360]
+
+    router:
+      description: Routing protocol
+      discrete_values: [EpidemicRouter]
+
+  # =========================================================================
+  # BASELINE EVENTS (Placeholder)
+  # =========================================================================
+  baseline_events:
+    description: Placeholder event generation for executable scenario
+    events_nrof: 1
+    event_generator_class: MessageEventGenerator
+    baseline_parameters:
+      interval_s: [60, 120]
+      message_size_bytes: [50000, 150000]
+      hosts_range: [0, 100]
+      ttl_minutes: 120
+
+  # =========================================================================
+  # VALIDITY CONSTRAINTS
+  # =========================================================================
+  validity_rules:
+    - rule_id: map_worldsize_match
+      severity: CRITICAL
+      description: MovementModel.worldSize must exactly match map dimensions
+
+    - rule_id: movement_model_map_compatibility
+      severity: CRITICAL
+      description: Movement model must be in map's allowed_movement_models
+
+    - rule_id: required_poi_files
+      severity: CRITICAL
+      description: WorkingDayMovement requires POI files on map
+
+    - rule_id: required_route_file
+      severity: CRITICAL
+      description: MapRouteMovement/BusMovement require routeFile
+
+    - rule_id: cluster_center_in_bounds
+      severity: CRITICAL
+      description: ClusterMovement clusterCenter within map bounds
+
+    - rule_id: cluster_not_sole_group
+      severity: WARNING
+      description: ClusterMovement should not be sole group
+
+    - rule_id: group_not_empty
+      severity: CRITICAL
+      description: Each group must have at least 1 node
+
+    - rule_id: host_count_positive
+      severity: CRITICAL
+      description: Total nodes must be positive
+
+    - rule_id: unique_scenario_name
+      severity: CRITICAL
+      description: Scenario names must be unique
+
+    - rule_id: endtime_positive
+      severity: CRITICAL
+      description: Simulation duration must be positive
+
+  # =========================================================================
+  # SAMPLING CONFIGURATION
+  # =========================================================================
+  sampling:
+    default_strategy: stratified
+    target_candidates: 3000
+    max_candidates_hard_limit: 10000
+    force_flag_required_if_exceeds: true
+
+  # =========================================================================
+  # GENERATION OUTPUT
+  # =========================================================================
+  generation:
+    output_directory: scenarios/scenario_space_v1
+    timestamp: runtime

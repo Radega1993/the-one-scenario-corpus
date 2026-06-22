@@ -1,0 +1,11 @@
+{
+  "map_id": "OSM_london_industrial_corridor_offset_w_2500m_500m_0039",
+  "network_type": "drive",
+  "bbox": {
+    "north": 51.52622888968739,
+    "south": 51.50377111031261,
+    "east": -0.004174107763305811,
+    "west": -0.04026189223669419
+  },
+  "downloaded_at": "2026-06-16T19:20:20.402057+00:00"
+}

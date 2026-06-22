@@ -1,0 +1,11 @@
+{
+  "map_id": "OSM_kallio_community_offset_n_1000m_200m_0580",
+  "network_type": "all",
+  "bbox": {
+    "north": 60.19028855587496,
+    "south": 60.181305444125044,
+    "east": 24.956533899331628,
+    "west": 24.938466100668375
+  },
+  "downloaded_at": "2026-06-17T16:29:07.393108+00:00"
+}

@@ -1,0 +1,15 @@
+{
+  "name": "SYN_bus_route_corridor_none_0577",
+  "map_id": "SYN_bus_route_corridor_none_0577",
+  "source_type": "synthetic",
+  "status": "failed",
+  "generation_status": "FAIL_BUILD_SYNTHETIC_DEGENERATE",
+  "error_notes": "too_few_edges (5 < 20)",
+  "synthetic_validation": {
+    "n_nodes": 10,
+    "n_edges": 5,
+    "total_length_m": 3000.0,
+    "regeneration_attempts": 5,
+    "last_failure": "too_few_edges (5 < 20)"
+  }
+}

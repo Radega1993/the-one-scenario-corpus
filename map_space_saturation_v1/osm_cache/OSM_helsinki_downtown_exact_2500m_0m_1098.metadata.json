@@ -1,0 +1,11 @@
+{
+  "map_id": "OSM_helsinki_downtown_exact_2500m_0m_1098",
+  "network_type": "drive",
+  "bbox": {
+    "north": 60.18272888968739,
+    "south": 60.160271110312614,
+    "east": 24.962574918713166,
+    "west": 24.917425081286837
+  },
+  "downloaded_at": "2026-06-20T10:18:49.328053+00:00"
+}

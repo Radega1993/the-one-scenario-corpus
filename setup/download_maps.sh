@@ -1,5 +1,9 @@
 #!/usr/bin/env bash
-# download_maps.sh — Download OSM road networks and POI data for benchmark maps.
+# download_maps.sh — LEGACY: Download OSM road networks for 6-map benchmark.
+#
+# Status:
+# - Legacy-only for reproducing `scenarios/maps/wkt/` and `corpus_v1`.
+# - Do NOT use as active input for the redesigned map-generation methodology.
 #
 # Usage:
 #   bash scenarios/setup/download_maps.sh [--force]

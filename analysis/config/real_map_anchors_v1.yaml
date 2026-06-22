@@ -1,0 +1,326 @@
+# ===========================================================================
+# real_map_anchors_v1.yaml
+# ===========================================================================
+# Literature- and dataset-grounded anchors for map_space_v1 generation.
+# Not all anchors are downloadable OSM maps — see anchor_type.
+# ===========================================================================
+
+real_map_anchors_v1:
+  version: 1.0
+  description: |
+    Real-world and literature anchors for The ONE map-topology design space.
+    OSM anchors use documented bboxes; trace-only anchors parameterize synthetics.
+
+  anchors:
+    # ── Helsinki tradition (The ONE / DTN literature) ─────────────────────
+    - anchor_id: helsinki_downtown
+      label: Helsinki Downtown
+      source_context: The ONE / Helsinki urban tradition
+      dataset_basis: Helsinki map-based scenarios; legacy HelsinkiDowntown
+      anchor_type: osm_bbox
+      archetype: dense_urban_irregular
+      country: Finland
+      bbox:
+        south: 60.165
+        north: 60.178
+        west: 24.925
+        east: 24.955
+      crs: EPSG:3067
+      network_type: drive
+      expected_use: [urban, wdm, pedestrian_bus]
+      legacy_map_id: HelsinkiDowntown
+
+    - anchor_id: kumpula_campus
+      label: Kumpula Campus
+      source_context: University of Helsinki Kumpula
+      dataset_basis: The ONE campus scenarios; legacy KumpulaCampus
+      anchor_type: osm_bbox
+      archetype: campus_compact
+      country: Finland
+      bbox:
+        south: 60.2025
+        north: 60.2115
+        west: 24.958
+        east: 24.978
+      crs: EPSG:3067
+      network_type: all
+      expected_use: [campus, pedestrian, compact]
+      legacy_map_id: KumpulaCampus
+
+    - anchor_id: kallio_community
+      label: Kallio Community Compact
+      source_context: Helsinki Kallio residential / social DTN
+      dataset_basis: legacy KallioCommunityCompact
+      anchor_type: osm_bbox
+      archetype: compact_residential
+      country: Finland
+      bbox:
+        south: 60.179
+        north: 60.189
+        west: 24.938
+        east: 24.957
+      crs: EPSG:3067
+      network_type: all
+      expected_use: [social, cluster, compact_pedestrian]
+      legacy_map_id: KallioCommunityCompact
+
+    - anchor_id: helsinki_disrupted
+      label: Helsinki Kalasatama / Disrupted
+      source_context: Industrial harbour / disaster modelling
+      dataset_basis: legacy HelsinkiDisrupted
+      anchor_type: osm_bbox
+      archetype: industrial_disrupted
+      country: Finland
+      bbox:
+        south: 60.180
+        north: 60.196
+        west: 24.965
+        east: 24.995
+      crs: EPSG:3067
+      network_type: all
+      expected_use: [disaster, partitioned, vehicle]
+      legacy_map_id: HelsinkiDisrupted
+
+    - anchor_id: nuuksio_sparse_trails
+      label: Nuuksio Sparse Trails
+      source_context: Finnish national park trail networks
+      dataset_basis: legacy NuuksioSparseTrails
+      anchor_type: osm_bbox
+      archetype: sparse_trails
+      country: Finland
+      bbox:
+        south: 60.310
+        north: 60.335
+        west: 24.490
+        east: 24.535
+      crs: EPSG:3067
+      network_type: all
+      expected_use: [rural, trails, sparse]
+      legacy_map_id: NuuksioSparseTrails
+
+    # ── NYC / taxi literature ─────────────────────────────────────────────
+    - anchor_id: manhattan_midtown
+      label: Manhattan Midtown
+      source_context: NYC taxi / grid urban vehicular
+      dataset_basis: Manhattan / NYC Taxi reference; legacy ManhattanMidtownGrid
+      anchor_type: osm_bbox
+      archetype: urban_grid
+      country: USA
+      bbox:
+        south: 40.748
+        north: 40.766
+        west: -73.993
+        east: -73.968
+      crs: EPSG:32618
+      network_type: drive
+      expected_use: [vehicle, grid, route_movement]
+      legacy_map_id: ManhattanMidtownGrid
+
+    # ── San Francisco / Cabspotting ───────────────────────────────────────
+    - anchor_id: sf_cabspotting_downtown
+      label: San Francisco Downtown (Cabspotting)
+      source_context: SF Taxi / Cabspotting vehicular traces
+      dataset_basis: Cabspotting taxi GPS (UC Berkeley)
+      anchor_type: osm_bbox
+      archetype: dense_urban_irregular
+      country: USA
+      bbox:
+        south: 37.775
+        north: 37.795
+        west: -122.425
+        east: -122.395
+      crs: EPSG:32610
+      network_type: drive
+      expected_use: [vehicle, urban, taxi]
+
+    - anchor_id: sf_mission_corridor
+      label: San Francisco Mission Corridor
+      source_context: SF urban corridor / vehicular mobility
+      dataset_basis: Cabspotting / SF urban mobility studies
+      anchor_type: osm_bbox
+      archetype: corridor_linear
+      country: USA
+      bbox:
+        south: 37.748
+        north: 37.768
+        west: -122.430
+        east: -122.400
+      crs: EPSG:32610
+      network_type: drive
+      expected_use: [vehicle, corridor]
+
+    # ── DieselNet / PVTA / Amherst ────────────────────────────────────────
+    - anchor_id: dieselnet_amherst
+      label: DieselNet / PVTA Amherst
+      source_context: UMass DieselNet bus traces
+      dataset_basis: DieselNet / PVTA bus contact traces
+      anchor_type: osm_region_or_reference
+      archetype: bus_route_urban_suburban
+      country: USA
+      bbox_or_place: Amherst, Massachusetts, USA
+      bbox:
+        south: 42.365
+        north: 42.395
+        west: -72.545
+        east: -72.505
+      crs: EPSG:32618
+      network_type: drive
+      expected_use: [vehicular, bus_routes, sparse_urban_suburban]
+
+    # ── Cambridge / Haggle ────────────────────────────────────────────────
+    - anchor_id: cambridge_haggle
+      label: Cambridge UK (Haggle)
+      source_context: Cambridge / Haggle contact traces
+      dataset_basis: Haggle iMote traces (Cambridge pedestrian/social)
+      anchor_type: osm_bbox
+      archetype: dense_urban_irregular
+      country: UK
+      bbox:
+        south: 52.198
+        north: 52.212
+        west: 0.108
+        east: 0.132
+      crs: EPSG:27700
+      network_type: all
+      expected_use: [pedestrian, social, urban]
+
+    # ── MIT / Reality Mining ──────────────────────────────────────────────
+    - anchor_id: mit_campus_reality
+      label: MIT Campus (Reality Mining)
+      source_context: MIT Reality Mining project
+      dataset_basis: Reality Mining Bluetooth traces; campus coordinates approximate
+      anchor_type: osm_bbox
+      archetype: campus_compact
+      country: USA
+      bbox:
+        south: 42.355
+        north: 42.365
+        west: -71.095
+        east: -71.085
+      crs: EPSG:32619
+      network_type: all
+      expected_use: [campus, social, pedestrian]
+
+    # ── Contact traces — NOT direct OSM maps ──────────────────────────────
+    - anchor_id: infocom_event_compact
+      label: INFOCOM-style conference event
+      source_context: INFOCOM 2005 / iMote contact trace (Infocom5)
+      dataset_basis: contact_trace_only
+      anchor_type: trace_reference_not_map
+      archetype: conference_event_compact
+      country: unknown_or_dataset_dependent
+      bbox: null
+      crs: local
+      network_type: synthetic
+      expected_use: [event, social_dense, compact_pedestrian]
+      notes: |
+        INFOCOM/Info5 is a contact trace reference, not a directly downloadable map.
+        Use to parameterize compact event synthetic maps (conference_event_compact).
+
+    - anchor_id: infocom_2006_trace
+      label: INFOCOM 2006 contact trace
+      source_context: INFOCOM 2006 conference traces
+      dataset_basis: contact_trace_only
+      anchor_type: trace_reference_not_map
+      archetype: conference_event_compact
+      country: unknown_or_dataset_dependent
+      bbox: null
+      crs: local
+      network_type: synthetic
+      expected_use: [event, social_dense]
+      notes: Trace reference only; synthetic conference_event_compact maps.
+
+    - anchor_id: rollernet_trace
+      label: RollerNet contact trace
+      source_context: RollerNet DTN traces
+      dataset_basis: contact_trace_only
+      anchor_type: trace_reference_not_map
+      archetype: corridor
+      country: unknown
+      bbox: null
+      crs: local
+      network_type: synthetic
+      expected_use: [sparse, mobile, corridor_like]
+      notes: Contact trace; parametrizes corridor / sparse synthetic topology.
+
+    - anchor_id: haggle_contacts_only
+      label: Haggle (contacts only)
+      source_context: Haggle iMote traces without reliable venue map
+      dataset_basis: contact_trace_only
+      anchor_type: trace_reference_not_map
+      archetype: clustered_communities
+      country: UK
+      bbox: null
+      crs: local
+      network_type: synthetic
+      expected_use: [social, cluster]
+      notes: |
+        Cambridge OSM anchor (cambridge_haggle) provides geographic map;
+        this anchor parametrizes social-cluster synthetics from contact density.
+
+    # ── Rural / sparse OSM ────────────────────────────────────────────────
+    - anchor_id: lapland_rural_sparse
+      label: Lapland rural roads
+      source_context: Nordic rural sparse road networks
+      dataset_basis: OSM rural Finland
+      anchor_type: osm_bbox
+      archetype: rural_roads
+      country: Finland
+      bbox:
+        south: 66.480
+        north: 66.520
+        west: 25.680
+        east: 25.780
+      crs: EPSG:3067
+      network_type: drive
+      expected_use: [rural, sparse, vehicular]
+
+    - anchor_id: tampere_suburban
+      label: Tampere suburban low density
+      source_context: Nordic suburban cul-de-sac networks
+      dataset_basis: OSM Tampere suburbs
+      anchor_type: osm_bbox
+      archetype: suburban_low_density
+      country: Finland
+      bbox:
+        south: 61.460
+        north: 61.490
+        west: 23.720
+        east: 23.780
+      crs: EPSG:3067
+      network_type: drive
+      expected_use: [suburban, vehicular]
+
+    # ── Disaster / industrial / partitioned ───────────────────────────────
+    - anchor_id: helsinki_archipelago
+      label: Helsinki archipelago partitioned
+      source_context: Natural island partitioning in harbour zones
+      dataset_basis: OSM Helsinki archipelago
+      anchor_type: osm_bbox
+      archetype: island_or_partitioned
+      country: Finland
+      bbox:
+        south: 60.145
+        north: 60.175
+        west: 24.880
+        east: 24.960
+      crs: EPSG:3067
+      network_type: all
+      expected_use: [partitioned, ferry, sparse]
+      topology_flags: [partitioned]
+
+    - anchor_id: london_industrial_corridor
+      label: London industrial corridor
+      source_context: Industrial / disrupted urban corridors
+      dataset_basis: OSM East London industrial zones
+      anchor_type: osm_bbox
+      archetype: industrial_disrupted
+      country: UK
+      bbox:
+        south: 51.505
+        north: 51.525
+        west: -0.040
+        east: 0.010
+      crs: EPSG:27700
+      network_type: drive
+      expected_use: [industrial, corridor, disrupted]

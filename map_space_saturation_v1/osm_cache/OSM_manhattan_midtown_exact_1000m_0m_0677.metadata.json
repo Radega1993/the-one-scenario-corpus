@@ -1,0 +1,11 @@
+{
+  "map_id": "OSM_manhattan_midtown_exact_1000m_0m_0677",
+  "network_type": "drive",
+  "bbox": {
+    "north": 40.761491555874954,
+    "south": 40.75250844412504,
+    "east": -73.97457043767653,
+    "west": -73.98642956232348
+  },
+  "downloaded_at": "2026-06-17T16:39:51.032537+00:00"
+}

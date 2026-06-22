@@ -1,0 +1,11 @@
+{
+  "map_id": "OSM_helsinki_archipelago_offset_s_1000m_1000m_0742",
+  "network_type": "all",
+  "bbox": {
+    "north": 60.15550855587496,
+    "south": 60.14652544412505,
+    "east": 24.929024341353866,
+    "west": 24.910975658646137
+  },
+  "downloaded_at": "2026-06-17T16:48:05.028586+00:00"
+}

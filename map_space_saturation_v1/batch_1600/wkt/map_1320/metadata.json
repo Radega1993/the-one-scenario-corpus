@@ -1,0 +1,24 @@
+{
+  "name": "OSM_nuuksio_sparse_trails_offset_e_5000m_200m_1320",
+  "map_id": "OSM_nuuksio_sparse_trails_offset_e_5000m_200m_1320",
+  "source": "osm",
+  "source_type": "osm",
+  "anchor_id": "nuuksio_sparse_trails",
+  "anchor_label": "Nuuksio Sparse Trails",
+  "archetype": "sparse_trails",
+  "generator_type": null,
+  "map_generator_type": "sparse_trails",
+  "map_archetype": "sparse_trails",
+  "crs": "EPSG:3067",
+  "network_type": "all",
+  "world_size": [
+    0,
+    0
+  ],
+  "occupancy_margin_m": 50.0,
+  "seed": 3446727699,
+  "created_at": "2026-06-22T09:08:07.645740+00:00",
+  "status": "failed",
+  "generation_status": "FAIL_DOWNLOAD_TRANSIENT",
+  "error_notes": "No module named 'osmnx'"
+}

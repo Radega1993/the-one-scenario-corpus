@@ -11,8 +11,12 @@ import random
 import re
 from dataclasses import dataclass, field
 from pathlib import Path
+from typing import Any
 
-import networkx as nx
+try:
+    import networkx as nx  # type: ignore
+except ModuleNotFoundError:  # pragma: no cover
+    nx = None  # type: ignore
 
 SCENARIOS_DIR = Path(__file__).resolve().parent.parent
 REPO_ROOT = SCENARIOS_DIR.parent
@@ -22,6 +26,12 @@ ANALYSIS_DATA = SCENARIOS_DIR / "analysis" / "data"
 
 LINESTRING_RE = re.compile(r"LINESTRING\s*\(([^)]+)\)", re.IGNORECASE)
 POINT_RE = re.compile(r"POINT\s*\(([^)]+)\)", re.IGNORECASE)
+
+
+def _new_road_graph_backend() -> Any:
+    if nx is not None:
+        return nx.Graph()
+    return {}
 
 ACTIVE_MAPS = [
     "HelsinkiDowntown",
@@ -158,7 +168,10 @@ class RoadGraph:
     node_list: list[tuple[float, float]] = field(default_factory=list)
     raw_node_list: list[tuple[float, float]] = field(default_factory=list)
     node_index: dict[tuple[float, float], int] = field(default_factory=dict)
-    graph: nx.Graph = field(default_factory=nx.Graph)
+    # `networkx` puede no estar instalado en algunos entornos.
+    # Para esta fase de generación solo necesitamos WKT -> worldSize,
+    # así que mantenemos el graph como estructura genérica si nx falta.
+    graph: Any = field(default_factory=_new_road_graph_backend)
     bbox: tuple[float, float, float, float] = (0.0, 0.0, 0.0, 0.0)
     raw_segments: list[tuple[tuple[float, float], tuple[float, float]]] = field(default_factory=list)
 
@@ -203,6 +216,8 @@ class RoadGraph:
         return self.node_index[_round_key(p[0], p[1])]
 
     def shortest_path_length(self, a: tuple[float, float], b: tuple[float, float]) -> float | None:
+        if nx is None:
+            return None
         if self.graph.number_of_nodes() < 2:
             return None
         try:
@@ -213,6 +228,8 @@ class RoadGraph:
             return None
 
     def path_coords(self, a: tuple[float, float], b: tuple[float, float]) -> list[tuple[float, float]]:
+        if nx is None:
+            return [a, b]
         ia = self.snap_index(a[0], a[1])
         ib = self.snap_index(b[0], b[1])
         try:
@@ -229,9 +246,13 @@ def load_map_metadata(map_dir: Path) -> dict:
 
 def sim_road_max(roads_path: Path) -> tuple[float, float]:
     """Max (x, y) of roads in sim-aligned coords (min pinned to origin)."""
-    rg = RoadGraph.from_roads_wkt(roads_path)
-    _min_x, _min_y, max_x, max_y = rg.bbox
-    return max(0.0, max_x), max(0.0, max_y)
+    raw = parse_linestrings(roads_path)
+    sim = wkt_to_sim_coords(raw)
+    if not sim:
+        return 0.0, 0.0
+    max_x = max(pt[0] for line in sim for pt in line)
+    max_y = max(pt[1] for line in sim for pt in line)
+    return max(0.0, float(max_x)), max(0.0, float(max_y))
 
 
 def sim_road_span(roads_path: Path) -> tuple[float, float]:

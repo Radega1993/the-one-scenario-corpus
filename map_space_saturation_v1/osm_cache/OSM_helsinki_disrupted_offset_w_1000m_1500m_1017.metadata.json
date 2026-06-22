@@ -1,0 +1,11 @@
+{
+  "map_id": "OSM_helsinki_disrupted_offset_w_1000m_1500m_1017",
+  "network_type": "all",
+  "bbox": {
+    "north": 60.19249155587496,
+    "south": 60.183508444125046,
+    "east": 24.961930505537527,
+    "west": 24.94386149446247
+  },
+  "downloaded_at": "2026-06-20T10:07:42.535177+00:00"
+}

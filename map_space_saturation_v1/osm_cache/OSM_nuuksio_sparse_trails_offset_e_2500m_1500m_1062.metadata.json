@@ -1,0 +1,11 @@
+{
+  "map_id": "OSM_nuuksio_sparse_trails_offset_e_2500m_1500m_1062",
+  "network_type": "all",
+  "bbox": {
+    "north": 60.333728889687386,
+    "south": 60.31127111031261,
+    "east": 24.562394241284142,
+    "west": 24.51703575871586
+  },
+  "downloaded_at": "2026-06-20T10:13:41.936575+00:00"
+}

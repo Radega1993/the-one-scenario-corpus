@@ -1,0 +1,199 @@
+================================================================================
+  DTN/OppNet REAL TRACE SCENARIOS AUDIT — EXECUTIVE SUMMARY
+================================================================================
+
+Audit Date: 2026-06-13
+Status: COMPLETE ✓
+Scope: Empirical grounding for The ONE corpus parametrization
+
+================================================================================
+1. FINDINGS
+================================================================================
+
+TOTAL DATASETS FOUND: 17
+  ├─ Tier 1 (Ready): 1 dataset (DieselNet)
+  ├─ Tier 2 (Convertible): 4 datasets (Cabspotting, NYC Taxi, UCSD WiFi, NUS)
+  ├─ Tier 3 (Reference): 5 datasets (INFOCOM, MIT Reality, RollerNet, Haggle, KAIST)
+  └─ Tier 4 (Theoretical): 3+ (RWP, Brownian, CRAWDAD)
+
+CURRENT CORPUS STATUS:
+  • corpus_v1: 540 scenarios (entirely synthetic)
+  • base_scenarios: 45 scenarios (entirely synthetic)
+  • Validation: NONE against real traces
+  • The ONE support: ✓ Infrastructure exists (converters, ExternalEvent/Movement)
+
+================================================================================
+2. KEY DISCOVERY
+================================================================================
+
+The ONE HAS the tools but corpus DOESN'T USE them.
+
+  • DieselNet converter already exists: toolkit/dieselnetConverter.pl ✓
+  • ExternalEvent class for contact traces ✓
+  • ExternalMovement class for coordinates ✓
+  → Corpus unvalidated despite infrastructure support
+
+================================================================================
+3. IMMEDIATE ACTIONABLE ITEMS
+================================================================================
+
+PHASE 1 (0–2 weeks): Quick Wins
+┌─────────────────────────────────────────────────────────────────────────┐
+│ Task 1.1: Test DieselNet Converter                                      │
+│ ├─ Download: UMass Traces (free, public)                                │
+│ ├─ Test: toolkit/dieselnetConverter.pl                                  │
+│ ├─ Validate: Contact statistics (real vs. synthetic)                    │
+│ └─ Output: validation_dieselnet_report.md                               │
+│ Effort: 3–5 days | Impact: HIGH (first real-trace validation)           │
+│                                                                           │
+│ Task 1.2: Extract Empirical Parameters                                  │
+│ ├─ Compute: Contact duration, intercontact time, density                │
+│ ├─ Compare: With current corpus parameters                              │
+│ └─ Output: empirical_contact_statistics.csv                             │
+│ Effort: 2–3 days | Impact: MEDIUM (TP credibility)                      │
+└─────────────────────────────────────────────────────────────────────────┘
+
+PHASE 2 (2–6 weeks): Extend Validation
+  ├─ Implement GPS-to-trajectory converter (Python, ~2 weeks)
+  └─ Validate against SF Taxi Cabspotting (~3 weeks)
+
+PHASE 3 (6–12 weeks): Capture Reference Datasets
+  ├─ Contact Cambridge for Haggle dataset (if possible)
+  ├─ Investigate KAIST mobile traces (backup)
+  └─ Create "reference scenarios" tied to real traces
+
+================================================================================
+4. EMPIRICAL PARAMETER RANGES
+================================================================================
+
+Based on real datasets (DieselNet, INFOCOM, Cabspotting, etc.):
+
+  Number of Nodes:
+    Event/conference: 50–150 nodes
+    Campus: 100–500 nodes
+    Urban vehicular: 30–100 nodes (matched to DieselNet ~40 buses)
+    
+  Duration:
+    Short-term: 1–3 days (events)
+    Medium-term: 7–30 days (urban taxi operations)
+    Long-term: 90–365+ days (seasonal/annual)
+    
+  Contact Duration:
+    Stationary/conference: 10–60 minutes
+    Pedestrian: 2–20 minutes
+    Vehicular (buses): 1–5 minutes
+    
+  Contact Density:
+    High (conference, RollerNet): 0.3–0.8
+    Medium (campus, MIT Reality): 0.1–0.3
+    Low (vehicular buses): 0.02–0.1
+    Very sparse (rural): <0.02
+
+  ✓ ASSESSMENT: Current corpus ranges are REASONABLE but UNVALIDATED
+
+================================================================================
+5. CRITICAL INSIGHT
+================================================================================
+
+The ONE corpus can improve reproducibility with MINIMAL effort:
+
+  1. Test existing DieselNet converter (1 day effort)
+  2. Compare synthetic vs. real contact statistics
+  3. If aligned: Document as "validated against real traces" ✓
+  4. If misaligned: Adjust parameters based on real data ✓
+
+  Result: Reproducibility claim becomes evidence-based, not assumed.
+
+================================================================================
+6. RECOMMENDATION PRIORITY
+================================================================================
+
+                 Availability  Effort  Impact  Timeline    Priority
+  ───────────────────────────────────────────────────────────────────
+  DieselNet      ✓ Easy        1 d     HIGH    Month 1     P1 ✓ DO NOW
+  Cabspotting    ✓ Easy        2 wk    HIGH    Month 2–3   P1 ✓ DO SOON
+  Cambridge Haggle ⚠ Medium    2–4 wk  MEDIUM  Month 3–6   P2 MAYBE
+  UCSD WiFi      ✓ Easy        1 wk    MEDIUM  Month 3–4   P2 MAYBE
+  INFOCOM params ✗ Hard        1 wk    MEDIUM  Month 1     P1 ✓ REF ONLY
+  NYC Taxi       ✓ Easy        3+ wk   LOW     Month 6+    P3 OPTIONAL
+
+================================================================================
+7. WHAT NOT TO DO
+================================================================================
+
+  ✗ Do NOT attempt RollerNet (too dense, inaccessible, too niche)
+  ✗ Do NOT prioritize NYC Taxi (too large, computationally expensive)
+  ✗ Do NOT wait for perfect data (DieselNet good enough to start)
+  ✗ Do NOT modify corpus_v1 without validation (freeze is good)
+
+================================================================================
+8. DELIVERABLES (COMPLETED)
+================================================================================
+
+  ✓ real_trace_scenarios_inventory.csv
+    → 17 datasets, 20 columns, structured registry
+    
+  ✓ real_trace_scenarios_inventory.md
+    → Executive summary + tier classification + findings
+    
+  ✓ real_trace_parameter_ranges.md
+    → Empirical ranges for nodes, duration, contacts, mobility
+    
+  ✓ real_trace_conversion_guide.md
+    → Technical how-to for each trace type (contact, GPS, WiFi)
+    
+  ✓ real_trace_scenarios_synthesis.md
+    → Complete roadmap + decision matrix + risk analysis
+
+================================================================================
+9. NEXT STEPS (IMMEDIATE)
+================================================================================
+
+  Week 1:
+    [ ] Review this summary with team
+    [ ] Approve Phase 1 budget (~1 week FTE)
+    [ ] Assign developer to DieselNet task
+    
+  Week 2–3:
+    [ ] Run DieselNet converter
+    [ ] Compute contact statistics
+    [ ] Publish findings
+    
+  Decision Point:
+    → Proceed to Phase 2 (Cabspotting converter)?
+    → Or iterate Phase 1 (tuning)?
+
+================================================================================
+10. SUCCESS CRITERIA
+================================================================================
+
+  Phase 1 Success (end of month 1):
+    ✓ DieselNet converter tested
+    ✓ Validation metrics computed
+    ✓ Report published: "03_vehicles realistic? DieselNet validation."
+    ✓ Decision: Proceed to Phase 2?
+
+  Overall Success (end of year 1):
+    ✓ ≥1 scenario family validated against real traces
+    ✓ GPS converter operational
+    ✓ Reproducibility improved (traced to empirical data)
+
+================================================================================
+CONCLUSION
+================================================================================
+
+The audit is COMPLETE. Evidence-based parametrization is ACHIEVABLE with
+MODEST effort (1–2 week Phase 1). DieselNet provides immediate quick win.
+
+RECOMMENDATION: Approve Phase 1. Proceed with confidence.
+
+================================================================================
+Questions? See detailed reports:
+  • Synthesis + Roadmap: real_trace_scenarios_synthesis.md
+  • Technical Guide: real_trace_conversion_guide.md
+  • Data Registry: real_trace_scenarios_inventory.csv
+  • Full README: README_real_trace_audit.md
+
+Generated: 2026-06-13
+Status: Ready for team review and Phase 1 execution
+================================================================================

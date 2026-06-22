@@ -1,0 +1,11 @@
+{
+  "map_id": "OSM_sf_cabspotting_downtown_offset_s_1000m_200m_0153",
+  "network_type": "drive",
+  "bbox": {
+    "north": 37.78769455587496,
+    "south": 37.778711444125044,
+    "east": -122.4043168937136,
+    "west": -122.4156831062864
+  },
+  "downloaded_at": "2026-06-17T15:37:24.834511+00:00"
+}

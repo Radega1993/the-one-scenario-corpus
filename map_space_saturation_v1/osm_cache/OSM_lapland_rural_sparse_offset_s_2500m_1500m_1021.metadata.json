@@ -1,0 +1,11 @@
+{
+  "map_id": "OSM_lapland_rural_sparse_offset_s_2500m_1500m_1021",
+  "network_type": "drive",
+  "bbox": {
+    "north": 66.49775388968739,
+    "south": 66.47529611031261,
+    "east": 25.7581450682327,
+    "west": 25.7018549317673
+  },
+  "downloaded_at": "2026-06-20T10:08:26.960613+00:00"
+}

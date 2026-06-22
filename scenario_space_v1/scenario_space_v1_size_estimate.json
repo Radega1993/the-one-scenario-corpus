@@ -1,0 +1,61 @@
+{
+  "n_maps": 6,
+  "n_models": 5,
+  "n_node_populations": 12,
+  "n_end_times": 5,
+  "n_group_structures": 5,
+  "n_transmit_ranges": 6,
+  "n_buffer_sizes": 4,
+  "n_routers": 1,
+  "total_brute_force": 216000,
+  "valid_map_model_pairs": 14,
+  "total_valid_combinations": 100800,
+  "breakdown_by_map": {
+    "HelsinkiDowntown": {
+      "valid_models": 3,
+      "total_combinations": 21600
+    },
+    "KumpulaCampus": {
+      "valid_models": 1,
+      "total_combinations": 7200
+    },
+    "ManhattanMidtownGrid": {
+      "valid_models": 3,
+      "total_combinations": 21600
+    },
+    "NuuksioSparseTrails": {
+      "valid_models": 2,
+      "total_combinations": 14400
+    },
+    "HelsinkiDisrupted": {
+      "valid_models": 3,
+      "total_combinations": 21600
+    },
+    "KallioCommunityCompact": {
+      "valid_models": 2,
+      "total_combinations": 14400
+    }
+  },
+  "breakdown_by_model": {
+    "ShortestPathMapBasedMovement": {
+      "valid_maps": 6,
+      "total_combinations": 43200
+    },
+    "WorkingDayMovement": {
+      "valid_maps": 1,
+      "total_combinations": 7200
+    },
+    "MapRouteMovement": {
+      "valid_maps": 4,
+      "total_combinations": 28800
+    },
+    "BusMovement": {
+      "valid_maps": 2,
+      "total_combinations": 14400
+    },
+    "ClusterMovement": {
+      "valid_maps": 1,
+      "total_combinations": 7200
+    }
+  }
+}

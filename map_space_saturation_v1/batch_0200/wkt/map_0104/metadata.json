@@ -1,0 +1,53 @@
+{
+  "name": "OSM_nuuksio_sparse_trails_offset_e_5000m_500m_0104",
+  "map_id": "OSM_nuuksio_sparse_trails_offset_e_5000m_500m_0104",
+  "source": "osm",
+  "source_type": "osm",
+  "anchor_id": "nuuksio_sparse_trails",
+  "anchor_label": "Nuuksio Sparse Trails",
+  "archetype": "sparse_trails",
+  "generator_type": null,
+  "map_generator_type": "sparse_trails",
+  "map_archetype": "sparse_trails",
+  "crs": "EPSG:3067",
+  "network_type": "all",
+  "world_size": [
+    5137,
+    5065
+  ],
+  "occupancy_margin_m": 50.0,
+  "world_size_policy": "sim_road_max_plus_50m_margin_per_axis",
+  "n_road_segments": 1442,
+  "n_edges": 1442,
+  "n_nodes": 569,
+  "bbox_latlon": [
+    60.30004222062522,
+    24.47621351743172,
+    60.344957779374774,
+    24.566930482568278
+  ],
+  "bbox_m": [
+    360576.47311824886,
+    6687313.350185765,
+    365662.5154298539,
+    6692296.697854869
+  ],
+  "variant_type": "offset_e",
+  "anchor_distance_m": 500.0,
+  "window_size_m": 5000.0,
+  "generator_params": {
+    "center_lat": 60.3225,
+    "center_lon": 24.521572,
+    "width_m": 5000,
+    "height_m": 5000,
+    "variant_type": "offset_e",
+    "anchor_distance_m": 500.0,
+    "window_size_m": 5000.0,
+    "osm_network_type": "all"
+  },
+  "topology_flags": null,
+  "n_components": 1,
+  "seed": 865843057,
+  "created_at": "2026-06-17T15:35:50.348452+00:00",
+  "status": "generated"
+}

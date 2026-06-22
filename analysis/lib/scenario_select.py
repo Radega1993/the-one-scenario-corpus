@@ -28,20 +28,6 @@ def scenario_base_from_path(path: Path) -> str | None:
     return stem
 
 def list_families(corpus_dir: Path) -> list[str]:
-    from lib.paths import SCENARIOS_DIR, collect_settings_paths
-
-    try:
-        rel = corpus_dir.relative_to(SCENARIOS_DIR)
-        corpus_name = str(rel)
-    except ValueError:
-        corpus_name = corpus_dir.name
-    if corpus_name in ("corpus_v1", "corpus_v2"):
-        fams = set()
-        for p in collect_settings_paths("corpus_v1"):
-            f = family_from_path(p)
-            if f:
-                fams.add(f)
-        return sorted(fams)
     if not corpus_dir.is_dir():
         return []
     return sorted(
@@ -50,16 +36,10 @@ def list_families(corpus_dir: Path) -> list[str]:
         if d.is_dir() and not d.name.startswith(".") and not d.name.startswith("_")
     )
 
-def collect_corpus_settings(corpus_dir: Path) -> list[Path]:
-    from lib.paths import SCENARIOS_DIR, collect_settings_paths
 
-    try:
-        rel = corpus_dir.relative_to(SCENARIOS_DIR)
-        corpus_name = str(rel)
-    except ValueError:
-        corpus_name = corpus_dir.name
-    if corpus_name in ("corpus_v1", "corpus_v2"):
-        return collect_settings_paths("corpus_v1")
+def collect_corpus_settings(corpus_dir: Path) -> list[Path]:
+    if not corpus_dir.is_dir():
+        return []
     return sorted(
         p for p in corpus_dir.rglob("*.settings") if "_backup" not in p.parts
     )

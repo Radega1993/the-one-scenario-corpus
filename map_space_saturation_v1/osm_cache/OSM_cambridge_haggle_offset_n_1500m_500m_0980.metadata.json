@@ -1,0 +1,11 @@
+{
+  "map_id": "OSM_cambridge_haggle_offset_n_1500m_500m_0980",
+  "network_type": "all",
+  "bbox": {
+    "north": 52.21622933381243,
+    "south": 52.202754666187566,
+    "east": 0.1309947717293171,
+    "west": 0.1090052282706829
+  },
+  "downloaded_at": "2026-06-20T10:03:28.519427+00:00"
+}

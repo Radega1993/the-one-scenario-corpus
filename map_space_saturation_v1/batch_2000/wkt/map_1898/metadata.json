@@ -1,0 +1,24 @@
+{
+  "name": "OSM_sf_cabspotting_downtown_offset_s_1500m_200m_1898",
+  "map_id": "OSM_sf_cabspotting_downtown_offset_s_1500m_200m_1898",
+  "source": "osm",
+  "source_type": "osm",
+  "anchor_id": "sf_cabspotting_downtown",
+  "anchor_label": "San Francisco Downtown (Cabspotting)",
+  "archetype": "dense_urban_irregular",
+  "generator_type": null,
+  "map_generator_type": "dense_urban_irregular",
+  "map_archetype": "dense_urban_irregular",
+  "crs": "EPSG:32610",
+  "network_type": "drive",
+  "world_size": [
+    0,
+    0
+  ],
+  "occupancy_margin_m": 50.0,
+  "seed": 2959244923,
+  "created_at": "2026-06-22T09:08:33.297746+00:00",
+  "status": "failed",
+  "generation_status": "FAIL_DOWNLOAD_TRANSIENT",
+  "error_notes": "No module named 'osmnx'"
+}

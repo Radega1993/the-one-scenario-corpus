@@ -1,0 +1,11 @@
+{
+  "map_id": "OSM_tampere_suburban_exact_5000m_0m_0079",
+  "network_type": "drive",
+  "bbox": {
+    "north": 61.49745777937478,
+    "south": 61.452542220625226,
+    "east": 23.797027845355924,
+    "west": 23.702972154644076
+  },
+  "downloaded_at": "2026-06-16T19:35:33.156897+00:00"
+}

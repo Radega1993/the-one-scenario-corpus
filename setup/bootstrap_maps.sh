@@ -1,5 +1,11 @@
 #!/usr/bin/env bash
-# bootstrap_maps.sh — One-command pipeline: download → prepare → validate → install.
+# bootstrap_maps.sh — LEGACY pipeline: download → prepare → validate → install.
+#
+# For map_space_v1 (anchor-based corpus), use instead:
+#   python3 scenarios/setup/generate_map_space_v1.py --generate --max-maps 600 --seed 42 --force
+#   python3 scenarios/setup/validate_map_space_v1.py --update-manifest --extract-features
+#   python3 scenarios/setup/prune_map_space_v1.py --method epsilon-cover --target-n 60
+#   python3 scenarios/setup/install_selected_maps_v1.py
 #
 # Usage:
 #   bash scenarios/setup/bootstrap_maps.sh [--install] [--force-download]

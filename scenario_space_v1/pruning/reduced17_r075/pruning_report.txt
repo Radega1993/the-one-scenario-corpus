@@ -1,0 +1,29 @@
+=== scenario_space_v1 — pairwise Pearson correlation pruning ===
+Manifest scenarios: 100800
+Feature set: reduced17 (d=17)
+Policy: strict
+Threshold: |r| < 0.75 (greedy vs selected set)
+Exact duplicate feature vectors removed: 83520
+Unique before pruning: 17280
+Selected (pairwise correlation-pruned subset): 110
+Rejected by correlation: 17170
+Retention (selected/manifest): 0.11%
+Retention (selected/unique): 0.64%
+
+Validation on pruned set (all pairs among selected):
+  pairs: 5995
+  max |r|: 0.749672
+  pairs with |r| >= 0.75: 0
+
+Shuffle seed (greedy order): 42
+Elapsed: 4.1s
+
+Outputs:
+  /home/raul/Documents/the-one/scenarios/scenario_space_v1/pruning/reduced17_r075/features.csv
+  /home/raul/Documents/the-one/scenarios/scenario_space_v1/pruning/reduced17_r075/features_normalized.csv
+  /home/raul/Documents/the-one/scenarios/scenario_space_v1/pruning/reduced17_r075/duplicate_groups.csv
+  /home/raul/Documents/the-one/scenarios/scenario_space_v1/pruning/reduced17_r075/pruned_manifest.csv
+  /home/raul/Documents/the-one/scenarios/scenario_space_v1/pruning/reduced17_r075/coverage_audit.csv
+  /home/raul/Documents/the-one/scenarios/scenario_space_v1/pruning/reduced17_r075/coverage_audit.md
+  /home/raul/Documents/the-one/scenarios/scenario_space_v1/pruning/reduced17_r075/selected_scenarios.txt
+  /home/raul/Documents/the-one/scenarios/scenario_space_v1/pruning/reduced17_r075/rejected_max_r_summary.csv

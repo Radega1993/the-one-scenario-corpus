@@ -1,0 +1,11 @@
+{
+  "map_id": "OSM_dieselnet_amherst_offset_e_500m_1000m_0279",
+  "network_type": "drive",
+  "bbox": {
+    "north": 42.38224577793748,
+    "south": 42.37775422206253,
+    "east": -72.50979878570745,
+    "west": -72.51587921429255
+  },
+  "downloaded_at": "2026-06-17T15:50:49.965166+00:00"
+}

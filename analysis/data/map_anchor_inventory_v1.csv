@@ -1,0 +1,20 @@
+anchor_id,label,anchor_type,archetype,source_context,dataset_basis,is_osm_downloadable,is_trace_only,has_bbox,has_place,expected_use,n_valid_maps,has_valid_map
+helsinki_downtown,Helsinki Downtown,osm_bbox,dense_urban_irregular,The ONE / Helsinki urban DTN tradition,Helsinki map-based scenarios; legacy HelsinkiDowntown,True,False,True,False,urban;wdm;pedestrian_bus,41,True
+kumpula_campus,Kumpula Campus,osm_bbox,campus_compact,University of Helsinki Kumpula,The ONE campus scenarios; legacy KumpulaCampus,True,False,True,False,campus;pedestrian;compact,41,True
+kallio_community,Kallio Community Compact,osm_bbox,compact_residential,Helsinki Kallio residential / social DTN,legacy KallioCommunityCompact,True,False,True,False,social;cluster;compact_pedestrian,41,True
+manhattan_midtown,Manhattan Midtown,osm_bbox,urban_grid,NYC taxi / grid urban vehicular,Manhattan / NYC Taxi reference; legacy ManhattanMidtownGrid,True,False,True,False,vehicle;grid;route_movement,33,True
+sf_cabspotting_downtown,San Francisco Downtown (Cabspotting),osm_bbox,dense_urban_irregular,SF Taxi / Cabspotting vehicular traces,Cabspotting taxi GPS (UC Berkeley),True,False,True,False,vehicle;urban;taxi,41,True
+sf_mission_corridor,San Francisco Mission Corridor,osm_bbox,corridor_linear,SF urban corridor / vehicular mobility,Cabspotting / SF urban mobility studies,True,False,True,False,vehicle;corridor,41,True
+dieselnet_amherst,DieselNet / PVTA Amherst,osm_place,bus_route_urban_suburban,UMass DieselNet bus traces,DieselNet / PVTA bus contact traces,True,False,True,True,vehicular;bus_routes;sparse_urban_suburban,38,True
+cambridge_haggle,Cambridge UK (Haggle),osm_bbox,dense_urban_irregular,Cambridge / Haggle contact traces,Haggle iMote traces (Cambridge pedestrian/social),True,False,True,False,pedestrian;social;urban,42,True
+mit_campus_reality,MIT Campus (Reality Mining),osm_bbox,campus_compact,MIT Reality Mining project,Reality Mining Bluetooth traces; campus coordinates approximate,True,False,True,False,campus;social;pedestrian,41,True
+infocom_event_compact,INFOCOM-style conference event (Info5),trace_reference_not_map,conference_event_compact,INFOCOM 2005 / iMote contact trace,contact_trace_only,False,True,False,False,event;social_dense;compact_pedestrian,37,True
+infocom_2006_trace,INFOCOM 2006 contact trace,trace_reference_not_map,conference_event_compact,INFOCOM 2006 conference traces,contact_trace_only,False,True,False,False,event;social_dense,38,True
+rollernet_trace,RollerNet contact trace,trace_reference_not_map,corridor,RollerNet DTN traces,contact_trace_only,False,True,False,False,sparse;mobile;corridor_like,59,True
+haggle_contacts_only,Haggle (contacts only),trace_reference_not_map,clustered_communities,Haggle iMote traces without reliable venue map,contact_trace_only,False,True,False,False,social;cluster,75,True
+nuuksio_sparse_trails,Nuuksio Sparse Trails,osm_bbox,sparse_trails,Finnish national park trail networks,legacy NuuksioSparseTrails,True,False,True,False,rural;trails;sparse,41,True
+lapland_rural_sparse,Lapland rural roads,osm_bbox,rural_roads,Nordic rural sparse road networks,OSM rural Finland,True,False,True,False,rural;sparse;vehicular,41,True
+helsinki_disrupted,Helsinki Kalasatama / Disrupted,osm_bbox,industrial_disrupted,Industrial harbour / disaster modelling,legacy HelsinkiDisrupted,True,False,True,False,disaster;partitioned;vehicle,42,True
+helsinki_archipelago,Helsinki archipelago partitioned,osm_bbox,island_or_partitioned,Natural island partitioning in harbour zones,OSM Helsinki archipelago,True,False,True,False,partitioned;ferry;sparse,42,True
+london_industrial_corridor,London industrial corridor,osm_bbox,industrial_disrupted,Industrial / disrupted urban corridors,OSM East London industrial zones,True,False,True,False,industrial;corridor;disrupted,41,True
+tampere_suburban,Tampere suburban low density,osm_bbox,suburban_low_density,Nordic suburban cul-de-sac networks,OSM Tampere suburbs,True,False,True,False,suburban;vehicular,33,True

@@ -1,0 +1,29 @@
+=== scenario_space_v1 — pairwise Pearson correlation pruning ===
+Manifest scenarios: 500
+Feature set: core23 (d=23)
+Policy: strict
+Threshold: |r| < 0.7 (greedy vs selected set)
+Exact duplicate feature vectors removed: 404
+Unique before pruning: 96
+Selected (pairwise correlation-pruned subset): 10
+Rejected by correlation: 86
+Retention (selected/manifest): 2.00%
+Retention (selected/unique): 10.42%
+
+Validation on pruned set (all pairs among selected):
+  pairs: 45
+  max |r|: 0.680909
+  pairs with |r| >= 0.7: 0
+
+Shuffle seed (greedy order): 42
+Elapsed: 0.4s
+
+Outputs:
+  scenarios/scenario_space_v1/pruning/_smoke/features.csv
+  scenarios/scenario_space_v1/pruning/_smoke/features_normalized.csv
+  scenarios/scenario_space_v1/pruning/_smoke/duplicate_groups.csv
+  scenarios/scenario_space_v1/pruning/_smoke/pruned_manifest.csv
+  scenarios/scenario_space_v1/pruning/_smoke/coverage_audit.csv
+  scenarios/scenario_space_v1/pruning/_smoke/coverage_audit.md
+  scenarios/scenario_space_v1/pruning/_smoke/selected_scenarios.txt
+  scenarios/scenario_space_v1/pruning/_smoke/rejected_max_r_summary.csv

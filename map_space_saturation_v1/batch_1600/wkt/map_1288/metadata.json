@@ -1,0 +1,24 @@
+{
+  "name": "OSM_kallio_community_offset_n_2500m_1000m_1288",
+  "map_id": "OSM_kallio_community_offset_n_2500m_1000m_1288",
+  "source": "osm",
+  "source_type": "osm",
+  "anchor_id": "kallio_community",
+  "anchor_label": "Kallio Community Compact",
+  "archetype": "compact_residential",
+  "generator_type": null,
+  "map_generator_type": "compact_residential",
+  "map_archetype": "compact_residential",
+  "crs": "EPSG:3067",
+  "network_type": "all",
+  "world_size": [
+    0,
+    0
+  ],
+  "occupancy_margin_m": 50.0,
+  "seed": 1210754867,
+  "created_at": "2026-06-22T09:08:06.325739+00:00",
+  "status": "failed",
+  "generation_status": "FAIL_DOWNLOAD_TRANSIENT",
+  "error_notes": "No module named 'osmnx'"
+}

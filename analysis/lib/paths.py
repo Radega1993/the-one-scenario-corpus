@@ -12,6 +12,7 @@ SCENARIOS_DIR = ANALYSIS_DIR.parent
 
 # Active paper benchmark layout
 CORPUS_V1_DIR = SCENARIOS_DIR / "corpus_v1"
+CORPUS_V2_DIR = SCENARIOS_DIR / "corpus_v2"  # systematic design-space corpus (scenario_space_v1)
 BASE_SCENARIOS_DIR = SCENARIOS_DIR / "base_scenarios"
 LEGACY_CORPUS_V1_DIR = SCENARIOS_DIR / "_archive" / "legacy_corpus_v1_pre_rename"
 
@@ -22,7 +23,7 @@ REPORTS_DIR = REPO_ROOT / "reports"
 DATA_DIR = ANALYSIS_DIR / "data"
 REPORTS_ANALYSIS_DIR = ANALYSIS_DIR / "reports"
 
-# Legacy alias (old name for active paper benchmark)
+# Legacy alias (historical: corpus_v2 CLI name pointed at paper benchmark corpus_v1)
 CORPUS_V2 = CORPUS_V1_DIR
 DEFAULT_MANIFEST_V2 = COMBINED_MANIFEST_CSV
 
@@ -34,13 +35,15 @@ SPATIAL_OVERLAY = _OVERLAYS / "spatial_occupancy_reports_overrides.txt"
 CREATED_MESSAGES_OVERLAY = _OVERLAYS / "created_messages_report_overrides.txt"
 SELECTION_EXAMPLE = ANALYSIS_DIR / "examples" / "selection_example.txt"
 
-PAPER_BENCHMARK_CORPORA = ("corpus_v1", "corpus_v2")  # corpus_v2 kept as CLI alias
+PAPER_BENCHMARK_CORPORA = ("corpus_v1",)
 
 def resolve_corpus_dirs(corpus: str) -> list[Path]:
-    """Return physical directories for a logical corpus name (environmental benchmark only)."""
+    """Return physical directories for a logical corpus name."""
     c = corpus.strip()
-    if c in PAPER_BENCHMARK_CORPORA:
+    if c == "corpus_v1":
         return [CORPUS_V1_DIR]
+    if c == "corpus_v2":
+        return [CORPUS_V2_DIR]
     if c == "base_scenarios":
         return [BASE_SCENARIOS_DIR]
     p = SCENARIOS_DIR / c
