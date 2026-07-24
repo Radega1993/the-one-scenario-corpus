@@ -1,0 +1,56 @@
+{
+  "name": "v2_osm_manhattan_midtown_offset_s_2500m_1500m_0723",
+  "map_id": "v2_osm_manhattan_midtown_offset_s_2500m_1500m_0723",
+  "source": "osm",
+  "source_type": "osm",
+  "anchor_id": "manhattan_midtown",
+  "anchor_label": "Manhattan Midtown",
+  "archetype": "urban_grid",
+  "generator_type": null,
+  "map_generator_type": "urban_grid",
+  "map_archetype": "urban_grid",
+  "crs": "EPSG:32618",
+  "network_type": "drive",
+  "world_size": [
+    2543,
+    2557
+  ],
+  "occupancy_margin_m": 50.0,
+  "world_size_policy": "sim_road_max_plus_50m_margin_per_axis",
+  "n_road_segments": 844,
+  "n_edges": 844,
+  "n_nodes": 439,
+  "bbox_latlon": [
+    40.73229611031261,
+    -73.99532090206904,
+    40.754753889687386,
+    -73.96567909793097
+  ],
+  "bbox_m": [
+    584816.6632533376,
+    4509541.860996536,
+    587309.372369347,
+    4512034.973606279
+  ],
+  "variant_type": "offset_s",
+  "anchor_distance_m": 1500.0,
+  "window_size_m": 2500.0,
+  "generator_params": {
+    "center_lat": 40.743525,
+    "center_lon": -73.9805,
+    "width_m": 2500,
+    "height_m": 2500,
+    "variant_type": "offset_s",
+    "anchor_distance_m": 1500.0,
+    "window_size_m": 2500.0,
+    "osm_network_type": "drive",
+    "crs": "EPSG:32618",
+    "anchor_label": "Manhattan Midtown",
+    "_allow_partitioned": false
+  },
+  "topology_flags": null,
+  "n_components": 1,
+  "seed": 4105545464,
+  "created_at": "2026-07-23T17:04:05.838751+00:00",
+  "status": "generated"
+}

@@ -1,0 +1,41 @@
+{
+  "name": "v2_syn_disrupted_grid_0031",
+  "map_id": "v2_syn_disrupted_grid_0031",
+  "source": "synthetic",
+  "source_type": "synthetic",
+  "anchor_id": null,
+  "anchor_label": null,
+  "archetype": "industrial_disrupted",
+  "generator_type": "disrupted_grid",
+  "map_generator_type": "disrupted_grid",
+  "map_archetype": "industrial_disrupted",
+  "crs": "local",
+  "network_type": "synthetic",
+  "world_size": [
+    1490,
+    1490
+  ],
+  "occupancy_margin_m": 50.0,
+  "world_size_policy": "sim_road_max_plus_50m_margin_per_axis",
+  "n_road_segments": 616,
+  "n_edges": 616,
+  "n_nodes": 361,
+  "generator_params": {
+    "grid_rows": 18,
+    "grid_cols": 18,
+    "block_size_m": 80,
+    "removal_rate": 0.1,
+    "removal_mode": "articulation_bias"
+  },
+  "topology_flags": null,
+  "n_components": 1,
+  "seed": 4154725544,
+  "created_at": "2026-07-23T15:22:36.812083+00:00",
+  "status": "generated",
+  "synthetic_validation": {
+    "n_nodes": 361,
+    "n_edges": 616,
+    "total_length_m": 49280.0,
+    "regeneration_attempts": 1
+  }
+}

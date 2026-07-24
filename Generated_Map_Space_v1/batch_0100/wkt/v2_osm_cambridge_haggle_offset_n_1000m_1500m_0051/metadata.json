@@ -1,0 +1,56 @@
+{
+  "name": "v2_osm_cambridge_haggle_offset_n_1000m_1500m_0051",
+  "map_id": "v2_osm_cambridge_haggle_offset_n_1000m_1500m_0051",
+  "source": "osm",
+  "source_type": "osm",
+  "anchor_id": "cambridge_haggle",
+  "anchor_label": "Cambridge UK (Haggle)",
+  "archetype": "dense_urban_irregular",
+  "generator_type": null,
+  "map_generator_type": "dense_urban_irregular",
+  "map_archetype": "dense_urban_irregular",
+  "crs": "EPSG:27700",
+  "network_type": "all",
+  "world_size": [
+    1060,
+    1028
+  ],
+  "occupancy_margin_m": 50.0,
+  "world_size_policy": "sim_road_max_plus_50m_margin_per_axis",
+  "n_road_segments": 1211,
+  "n_edges": 1211,
+  "n_nodes": 466,
+  "bbox_latlon": [
+    52.21398344412504,
+    0.11266866975044972,
+    52.222966555874955,
+    0.1273313302495503
+  ],
+  "bbox_m": [
+    544431.1371493024,
+    259427.3846534578,
+    545429.9509998395,
+    260404.94420324528
+  ],
+  "variant_type": "offset_n",
+  "anchor_distance_m": 1500.0,
+  "window_size_m": 1000.0,
+  "generator_params": {
+    "center_lat": 52.218475,
+    "center_lon": 0.12,
+    "width_m": 1000,
+    "height_m": 1000,
+    "variant_type": "offset_n",
+    "anchor_distance_m": 1500.0,
+    "window_size_m": 1000.0,
+    "osm_network_type": "all",
+    "crs": "EPSG:27700",
+    "anchor_label": "Cambridge UK (Haggle)",
+    "_allow_partitioned": false
+  },
+  "topology_flags": null,
+  "n_components": 1,
+  "seed": 2486526245,
+  "created_at": "2026-07-23T08:36:25.734006+00:00",
+  "status": "generated"
+}

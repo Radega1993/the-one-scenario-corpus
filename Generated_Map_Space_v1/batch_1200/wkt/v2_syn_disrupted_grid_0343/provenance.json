@@ -1,0 +1,17 @@
+{
+  "archetype": "industrial_disrupted",
+  "builder": "synthetic",
+  "config_hash": "31b0b6ed3e012085",
+  "generator_parameters": {
+    "block_size_m": 80,
+    "grid_cols": 18,
+    "grid_rows": 18,
+    "removal_mode": "articulation_bias",
+    "removal_rate": 0.2
+  },
+  "generator_type": "disrupted_grid",
+  "map_id": "v2_syn_disrupted_grid_0343",
+  "seed": 3931883793,
+  "source_type": "synthetic",
+  "trace_id": ""
+}

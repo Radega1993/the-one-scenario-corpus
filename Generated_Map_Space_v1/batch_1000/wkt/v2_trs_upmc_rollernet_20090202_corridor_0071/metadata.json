@@ -1,0 +1,56 @@
+{
+  "name": "v2_trs_upmc_rollernet_20090202_corridor_0071",
+  "map_id": "v2_trs_upmc_rollernet_20090202_corridor_0071",
+  "source": "trace_reference_synthetic",
+  "source_type": "trace_reference_synthetic",
+  "anchor_id": null,
+  "anchor_label": "upmc_rollernet_20090202",
+  "archetype": "corridor_linear",
+  "generator_type": "corridor",
+  "map_generator_type": "corridor",
+  "map_archetype": "corridor_linear",
+  "crs": "local",
+  "network_type": "synthetic",
+  "world_size": [
+    3050,
+    450
+  ],
+  "occupancy_margin_m": 50.0,
+  "world_size_policy": "sim_road_max_plus_50m_margin_per_axis",
+  "n_road_segments": 28,
+  "n_edges": 28,
+  "n_nodes": 29,
+  "generator_params": {
+    "length_m": 3000,
+    "width_m": 600,
+    "branch_prob": 0.1,
+    "branch_length_m": 200
+  },
+  "topology_flags": null,
+  "n_components": 1,
+  "seed": 3221706594,
+  "created_at": "2026-07-23T15:21:56.815667+00:00",
+  "status": "generated",
+  "synthetic_validation": {
+    "n_nodes": 29,
+    "n_edges": 28,
+    "total_length_m": 3800.0,
+    "regeneration_attempts": 1
+  },
+  "trace_id": "upmc_rollernet_20090202",
+  "parameter_extractor": "rollernet_contacts_v1",
+  "extracted_parameters": {
+    "extractor": "rollernet_contacts_v1",
+    "trace_id": "upmc_rollernet_20090202",
+    "n_nodes": 1112,
+    "contacts": 132511,
+    "duration_seconds": 10140,
+    "contact_duration_mean_s": 232.2521752911079,
+    "length_m": 3140,
+    "width_m": 600,
+    "branch_prob": 0.1,
+    "branch_length_m": 200,
+    "geometry_rule": "parameterize corridor generator only"
+  },
+  "config_hash": "b38c7774d13a0b2f"
+}

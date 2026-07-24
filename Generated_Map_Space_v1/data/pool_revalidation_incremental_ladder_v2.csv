@@ -1,0 +1,11 @@
+N,ladder_label,n_maps,n_archetypes,n_source_types,n_archetype_source_cells,status,notes
+100,100,100,14,3,27,defined_not_executed,Prefix of OK maps ordered by batch_target then map_id. Saturation analysis not run in this revalidation script. Further expansion to 2000 is conditional on saturation STOP rules.
+200,200,200,14,3,27,defined_not_executed,Prefix of OK maps ordered by batch_target then map_id. Saturation analysis not run in this revalidation script. Further expansion to 2000 is conditional on saturation STOP rules.
+300,300,300,14,3,27,defined_not_executed,Prefix of OK maps ordered by batch_target then map_id. Saturation analysis not run in this revalidation script. Further expansion to 2000 is conditional on saturation STOP rules.
+400,400,400,14,3,27,defined_not_executed,Prefix of OK maps ordered by batch_target then map_id. Saturation analysis not run in this revalidation script. Further expansion to 2000 is conditional on saturation STOP rules.
+600,600,600,14,3,27,defined_not_executed,Prefix of OK maps ordered by batch_target then map_id. Saturation analysis not run in this revalidation script. Further expansion to 2000 is conditional on saturation STOP rules.
+800,800,800,14,3,27,defined_not_executed,Prefix of OK maps ordered by batch_target then map_id. Saturation analysis not run in this revalidation script. Further expansion to 2000 is conditional on saturation STOP rules.
+1000,1000,1000,14,3,27,defined_not_executed,Prefix of OK maps ordered by batch_target then map_id. Saturation analysis not run in this revalidation script. Further expansion to 2000 is conditional on saturation STOP rules.
+1200,1200,1200,14,3,29,defined_not_executed,Prefix of OK maps ordered by batch_target then map_id. Saturation analysis not run in this revalidation script. Further expansion to 2000 is conditional on saturation STOP rules.
+1600,1600,1600,15,3,31,defined_not_executed,Prefix of OK maps ordered by batch_target then map_id. Saturation analysis not run in this revalidation script. Further expansion to 2000 is conditional on saturation STOP rules.
+1865,1865 (full_OK_pool),1865,15,3,31,defined_not_executed,Prefix of OK maps ordered by batch_target then map_id. Saturation analysis not run in this revalidation script. Further expansion to 2000 is conditional on saturation STOP rules.

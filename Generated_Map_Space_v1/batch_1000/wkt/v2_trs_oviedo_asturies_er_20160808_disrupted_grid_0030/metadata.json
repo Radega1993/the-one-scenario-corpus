@@ -1,0 +1,60 @@
+{
+  "name": "v2_trs_oviedo_asturies_er_20160808_disrupted_grid_0030",
+  "map_id": "v2_trs_oviedo_asturies_er_20160808_disrupted_grid_0030",
+  "source": "trace_reference_synthetic",
+  "source_type": "trace_reference_synthetic",
+  "anchor_id": null,
+  "anchor_label": "oviedo_asturies_er_20160808",
+  "archetype": "industrial_disrupted",
+  "generator_type": "disrupted_grid",
+  "map_generator_type": "disrupted_grid",
+  "map_archetype": "industrial_disrupted",
+  "crs": "local",
+  "network_type": "synthetic",
+  "world_size": [
+    1250,
+    1250
+  ],
+  "occupancy_margin_m": 50.0,
+  "world_size_policy": "sim_road_max_plus_50m_margin_per_axis",
+  "n_road_segments": 408,
+  "n_edges": 408,
+  "n_nodes": 256,
+  "generator_params": {
+    "grid_rows": 15,
+    "grid_cols": 15,
+    "block_size_m": 80,
+    "removal_rate": 0.15,
+    "removal_mode": "articulation_bias"
+  },
+  "topology_flags": null,
+  "n_components": 1,
+  "seed": 1787676984,
+  "created_at": "2026-07-23T16:55:26.434778+00:00",
+  "status": "generated",
+  "synthetic_validation": {
+    "n_nodes": 256,
+    "n_edges": 408,
+    "total_length_m": 32640.0,
+    "regeneration_attempts": 1
+  },
+  "trace_id": "oviedo_asturies_er_20160808",
+  "parameter_extractor": "standard_events_contact_summary_v1",
+  "extracted_parameters": {
+    "extractor": "standard_events_contact_summary_v1",
+    "trace_id": "oviedo_asturies_er_20160808",
+    "n_nodes": 228,
+    "events": 5245747,
+    "contacts": 2622625,
+    "ups": 2623122,
+    "downs": 2622625,
+    "up_down_balanced": false,
+    "duration_seconds": 31622339,
+    "contact_duration_count": 2622625,
+    "contact_duration_mean_s": 3201.682047566846,
+    "mean_degree_events": 23009.842105263157,
+    "density_proxy": 101.34573769224824,
+    "geometry_rule": "none_automatic; map via configured target_generators only"
+  },
+  "config_hash": "b38c7774d13a0b2f"
+}

@@ -1,0 +1,17 @@
+{
+  "archetype": "dense_urban_irregular",
+  "builder": "synthetic",
+  "config_hash": "31b0b6ed3e012085",
+  "generator_parameters": {
+    "block_size_m": 80,
+    "diagonal_links": false,
+    "grid_cols": 15,
+    "grid_rows": 15,
+    "jitter_m": 5
+  },
+  "generator_type": "jittered_grid",
+  "map_id": "v2_syn_jittered_grid_0346",
+  "seed": 2319660779,
+  "source_type": "synthetic",
+  "trace_id": ""
+}

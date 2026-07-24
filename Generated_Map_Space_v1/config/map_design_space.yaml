@@ -1,0 +1,1043 @@
+map_design_space_revised_v2:
+  schema_version: '2.0'
+  design_space_version: revised_v2
+  status: generation_enabled
+  baseline_reference:
+    config: scenarios/_archive/map_space_phase1_baseline/config/map_design_space_saturation_v1.yaml
+    output_pool: scenarios/_archive/map_space_phase1_baseline/map_space_saturation_v1/
+    note: Baseline Phase-1 archived (frozen). Do not overwrite. Not used for GMS-v1.
+  methodology:
+    completeness_claim: declared_topology_space_only
+    stop_criterion: feature_space_saturation_deferred
+    citation_ready: 'The map-generation pipeline explicitly combines three evidence and construction sources:
+      OSM-derived geometries, real-trace-supported references, and controlled synthetic generators. Real
+      traces are not treated as maps by default; each trace is assigned an explicit generation role.'
+  base_archetypes:
+  - urban_grid
+  - dense_urban_irregular
+  - campus_compact
+  - compact_residential
+  - corridor_linear
+  - bus_route_urban_suburban
+  - radial_city
+  - hub_and_spoke
+  - sparse_trails
+  - rural_roads
+  - industrial_disrupted
+  - island_or_partitioned
+  - conference_event_compact
+  - clustered_communities
+  - suburban_low_density
+  source_types:
+    allowed:
+    - osm
+    - synthetic
+    - trace_reference_synthetic
+    rejected_for_now:
+      trace_derived_geometry: Would require defendable trajectory→road geometry rule; none enabled.
+      trace_anchored_osm: Redundant with source_type=osm + provenance.trace_support from role osm_anchor_support.
+    definitions:
+      osm: Geometry downloaded/converted from OpenStreetMap for a configured geographic anchor.
+      synthetic: Geometry from a controlled procedural generator with no trace_id.
+      trace_reference_synthetic: Geometry from a procedural generator parameterized by (or linked to)
+        a real trace; provenance includes trace_id and extracted_parameters.
+  paths:
+    output_root: scenarios/Generated_Map_Space_v1
+    plan_csv: scenarios/Generated_Map_Space_v1/data/map_generation_plan_v2.csv
+    plan_md: scenarios/Generated_Map_Space_v1/docs/map_generation_v2_dry_run.md
+    trace_inventory: scenarios/Generated_Map_Space_v1/downloaded_external_traces/registry/real_trace_inventory_v1.csv
+    trace_policy: scenarios/Generated_Map_Space_v1/config/trace_to_map_generation_policy.yaml
+    trace_matrix: scenarios/Generated_Map_Space_v1/data/trace_to_archetype_generation_matrix_v1.csv
+    archetype_definitions: scenarios/Generated_Map_Space_v1/data/map_archetype_definitions_v1.csv
+    archetype_source_allocation: scenarios/Generated_Map_Space_v1/config/archetype_source_allocation.yaml
+  seed_policy:
+    global_seed_default: 42
+    function: sha256
+    candidate_seed_formula: sha256(global_seed::map_id::archetype::source_type::trace_id::generator_type)[:8] as int
+    synthetic_attempt_formula: sha256(global_seed::planned_map_id::param_hash::attempt)[:8] as int
+    note: >
+      Seed 42 is not scientifically optimized; it makes stochastic generation
+      deterministic and auditable. Candidate seeds bind map_id plus archetype,
+      source_type, trace_id, and generator_type so inserting another candidate
+      does not change seeds of existing maps with the same identity fields.
+  dry_run_policy:
+    allow_network: false
+    allow_wkt_write: false
+    allow_raw_trace_copy: false
+    write_plan: true
+    fail_on_critical: true
+  validation_policy:
+    require_all_archetypes_covered: true
+    require_all_source_types_present: true
+    require_enabled_traces_have_extractor_or_static: true
+    require_archetype_source_matrix: true
+    min_nodes_synthetic: 20
+    min_edges_synthetic: 20
+  planning:
+    target_total_default: 2000
+    target_total_role: balanced_expansion_after_saturation
+    target_total_note: >
+      Expanded from 1600 after stratified re-saturation decision BALANCED_2000.
+      Soft fractions 0.45/0.40/0.15; +400 ≈ 180 OSM + 160 synthetic + 60 TRS.
+      Final stop still via saturation evidence, not assumed at 2000.
+    saturation_batch_ladder:
+    - 100
+    - 200
+    - 400
+    - 600
+    - 800
+    - 1000
+    - 1200
+    - 1600
+    - 2000
+    osm_fraction: 0.45
+    synthetic_fraction: 0.4
+    trace_reference_fraction: 0.15
+    fraction_role: soft_engineering_targets
+    fraction_note: >
+      Soft targets derived from / checked against archetype_source_allocation_v2;
+      not a methodological stopping rule. Planner must respect matrix roles (none forbidden).
+    ensure_minimum_coverage: true
+    variants_per_osm_anchor: 2
+    variants_per_generator: 2
+    batch_targets:
+    - 100
+    - 200
+    - 400
+    - 600
+    - 800
+    - 1000
+    - 1200
+    - 1600
+    - 2000
+  osm_generation_policy:
+    anchor_types_allowed:
+    - osm_bbox
+    - osm_place
+    forbidden: random_bbox_without_anchor
+    variant_types:
+    - exact
+    - offset_n
+    - offset_e
+    - offset_s
+    - offset_w
+    window_sizes_m:
+    - 500
+    - 1000
+    - 1500
+    - 2500
+    - 5000
+    offset_distances_m:
+    - 0
+    - 200
+    - 500
+    - 1000
+    - 1500
+    max_offset_from_anchor_m: 2000
+    cache_subdir: osm_cache
+    required_metadata_fields:
+    - anchor_id
+    - window_size_m
+    - variant_type
+    - center_lat
+    - center_lon
+    - crs
+    - network_type
+    - seed
+    - config_hash
+    - builder
+    - source_type
+    - archetype
+  osm_anchors:
+  - anchor_id: helsinki_downtown
+    label: Helsinki Downtown
+    source_context: The ONE / Helsinki urban DTN tradition
+    dataset_basis: Helsinki map-based scenarios; legacy HelsinkiDowntown
+    anchor_type: osm_bbox
+    archetype: dense_urban_irregular
+    bbox:
+      south: 60.165
+      north: 60.178
+      west: 24.925
+      east: 24.955
+    place_name: null
+    crs: EPSG:3067
+    network_type: drive
+    expected_topology:
+      gridness_score_max: 0.55
+      avg_degree_range:
+      - 2.5
+      - 4.5
+      orientation_entropy_min: 0.6
+    expected_use:
+    - urban
+    - wdm
+    - pedestrian_bus
+    notes: Primary Helsinki urban anchor; legacy corpus map.
+  - anchor_id: kumpula_campus
+    label: Kumpula Campus
+    source_context: University of Helsinki Kumpula
+    dataset_basis: The ONE campus scenarios; legacy KumpulaCampus
+    anchor_type: osm_bbox
+    archetype: campus_compact
+    bbox:
+      south: 60.2025
+      north: 60.2115
+      west: 24.958
+      east: 24.978
+    place_name: null
+    crs: EPSG:3067
+    network_type: all
+    expected_topology:
+      useful_area_ratio_min: 0.4
+      avg_degree_range:
+      - 2.0
+      - 3.5
+    expected_use:
+    - campus
+    - pedestrian
+    - compact
+    notes: Compact institutional campus topology.
+  - anchor_id: kallio_community
+    label: Kallio Community Compact
+    source_context: Helsinki Kallio residential / social DTN
+    dataset_basis: legacy KallioCommunityCompact
+    anchor_type: osm_bbox
+    archetype: compact_residential
+    bbox:
+      south: 60.179
+      north: 60.189
+      west: 24.938
+      east: 24.957
+    place_name: null
+    crs: EPSG:3067
+    network_type: all
+    expected_topology:
+      gridness_score_range:
+      - 0.35
+      - 0.65
+      community_score_min: 0.5
+    expected_use:
+    - social
+    - cluster
+    - compact_pedestrian
+    notes: Dense residential community for cluster/social scenarios.
+  - anchor_id: manhattan_midtown
+    label: Manhattan Midtown
+    source_context: NYC taxi / grid urban vehicular
+    dataset_basis: Manhattan / NYC Taxi reference; legacy ManhattanMidtownGrid
+    anchor_type: osm_bbox
+    archetype: urban_grid
+    bbox:
+      south: 40.748
+      north: 40.766
+      west: -73.993
+      east: -73.968
+    place_name: null
+    crs: EPSG:32618
+    network_type: drive
+    expected_topology:
+      gridness_score_min: 0.65
+      avg_degree_range:
+      - 3.0
+      - 4.5
+    expected_use:
+    - vehicle
+    - grid
+    - route_movement
+    notes: Canonical vehicular grid anchor.
+  - anchor_id: sf_cabspotting_downtown
+    label: San Francisco Downtown (Cabspotting)
+    source_context: SF Taxi / Cabspotting vehicular traces
+    dataset_basis: Cabspotting taxi GPS (UC Berkeley)
+    anchor_type: osm_bbox
+    archetype: dense_urban_irregular
+    bbox:
+      south: 37.775
+      north: 37.795
+      west: -122.425
+      east: -122.395
+    place_name: null
+    crs: EPSG:32610
+    network_type: drive
+    expected_topology:
+      gridness_score_max: 0.6
+      corridor_score_min: 0.3
+    expected_use:
+    - vehicle
+    - urban
+    - taxi
+    notes: SF downtown irregular urban vehicular anchor.
+  - anchor_id: sf_mission_corridor
+    label: San Francisco Mission Corridor
+    source_context: SF urban corridor / vehicular mobility
+    dataset_basis: Cabspotting / SF urban mobility studies
+    anchor_type: osm_bbox
+    archetype: corridor_linear
+    bbox:
+      south: 37.748
+      north: 37.768
+      west: -122.43
+      east: -122.4
+    place_name: null
+    crs: EPSG:32610
+    network_type: drive
+    expected_topology:
+      corridor_score_min: 0.7
+      aspect_ratio_min: 2.0
+    expected_use:
+    - vehicle
+    - corridor
+    notes: Linear corridor anchor from SF mobility literature.
+  - anchor_id: dieselnet_amherst
+    label: DieselNet / PVTA Amherst
+    source_context: UMass DieselNet bus traces
+    dataset_basis: DieselNet / PVTA bus contact traces
+    anchor_type: osm_place
+    archetype: bus_route_urban_suburban
+    bbox:
+      south: 42.365
+      north: 42.395
+      west: -72.545
+      east: -72.505
+    place_name: Amherst, Massachusetts, USA
+    crs: EPSG:32618
+    network_type: drive
+    expected_topology:
+      corridor_score_min: 0.4
+      dead_end_ratio_min: 0.15
+    expected_use:
+    - vehicular
+    - bus_routes
+    - sparse_urban_suburban
+    notes: Bus-route suburban anchor; bbox derived from place geocode.
+  - anchor_id: cambridge_haggle
+    label: Cambridge UK (Haggle)
+    source_context: Cambridge / Haggle contact traces
+    dataset_basis: Haggle iMote traces (Cambridge pedestrian/social)
+    anchor_type: osm_bbox
+    archetype: dense_urban_irregular
+    bbox:
+      south: 52.198
+      north: 52.212
+      west: 0.108
+      east: 0.132
+    place_name: null
+    crs: EPSG:27700
+    network_type: all
+    expected_topology:
+      avg_degree_range:
+      - 2.5
+      - 4.0
+      community_score_min: 0.4
+    expected_use:
+    - pedestrian
+    - social
+    - urban
+    notes: Geographic anchor for Haggle-inspired pedestrian/social maps.
+  - anchor_id: mit_campus_reality
+    label: MIT Campus (Reality Mining)
+    source_context: MIT Reality Mining project
+    dataset_basis: Reality Mining Bluetooth traces; campus coordinates approximate
+    anchor_type: osm_bbox
+    archetype: campus_compact
+    bbox:
+      south: 42.355
+      north: 42.365
+      west: -71.095
+      east: -71.085
+    place_name: null
+    crs: EPSG:32619
+    network_type: all
+    expected_topology:
+      useful_area_ratio_min: 0.35
+      avg_degree_range:
+      - 2.0
+      - 3.5
+    expected_use:
+    - campus
+    - social
+    - pedestrian
+    notes: US campus anchor from Reality Mining literature.
+  - anchor_id: nuuksio_sparse_trails
+    label: Nuuksio Sparse Trails
+    source_context: Finnish national park trail networks
+    dataset_basis: legacy NuuksioSparseTrails
+    anchor_type: osm_bbox
+    archetype: sparse_trails
+    bbox:
+      south: 60.31
+      north: 60.335
+      west: 24.49
+      east: 24.535
+    place_name: null
+    crs: EPSG:3067
+    network_type: all
+    expected_topology:
+      dead_end_ratio_min: 0.25
+      avg_degree_max: 2.5
+      road_density_max: 0.0004
+    expected_use:
+    - rural
+    - trails
+    - sparse
+    notes: Rural/trail OSM anchor.
+  - anchor_id: lapland_rural_sparse
+    label: Lapland rural roads
+    source_context: Nordic rural sparse road networks
+    dataset_basis: OSM rural Finland
+    anchor_type: osm_bbox
+    archetype: rural_roads
+    bbox:
+      south: 66.48
+      north: 66.52
+      west: 25.68
+      east: 25.78
+    place_name: null
+    crs: EPSG:3067
+    network_type: drive
+    expected_topology:
+      road_density_max: 0.0002
+      diameter_approx_min_m: 1500
+    expected_use:
+    - rural
+    - sparse
+    - vehicular
+    notes: Sparse rural vehicular anchor.
+  - anchor_id: helsinki_disrupted
+    label: Helsinki Kalasatama / Disrupted
+    source_context: Industrial harbour / disaster modelling
+    dataset_basis: legacy HelsinkiDisrupted
+    anchor_type: osm_bbox
+    archetype: industrial_disrupted
+    bbox:
+      south: 60.18
+      north: 60.196
+      west: 24.965
+      east: 24.995
+    place_name: null
+    crs: EPSG:3067
+    network_type: all
+    expected_topology:
+      articulation_points_min: 10
+      partition_score_min: 0.1
+    expected_use:
+    - disaster
+    - partitioned
+    - vehicle
+    notes: Industrial/disrupted urban anchor.
+  - anchor_id: helsinki_archipelago
+    label: Helsinki archipelago partitioned
+    source_context: Natural island partitioning in harbour zones
+    dataset_basis: OSM Helsinki archipelago
+    anchor_type: osm_bbox
+    archetype: island_or_partitioned
+    bbox:
+      south: 60.145
+      north: 60.175
+      west: 24.88
+      east: 24.96
+    place_name: null
+    crs: EPSG:3067
+    network_type: all
+    expected_topology:
+      n_components_min: 2
+      partition_score_min: 0.15
+    expected_use:
+    - partitioned
+    - ferry
+    - sparse
+    notes: Land-partitioned topology; not maritime navigation.
+  - anchor_id: london_industrial_corridor
+    label: London industrial corridor
+    source_context: Industrial / disrupted urban corridors
+    dataset_basis: OSM East London industrial zones
+    anchor_type: osm_bbox
+    archetype: industrial_disrupted
+    bbox:
+      south: 51.505
+      north: 51.525
+      west: -0.04
+      east: 0.01
+    place_name: null
+    crs: EPSG:27700
+    network_type: drive
+    expected_topology:
+      corridor_score_min: 0.5
+      articulation_points_min: 5
+    expected_use:
+    - industrial
+    - corridor
+    - disrupted
+    notes: Industrial/disrupted corridor anchor.
+  - anchor_id: tampere_suburban
+    label: Tampere suburban low density
+    source_context: Nordic suburban cul-de-sac networks
+    dataset_basis: OSM Tampere suburbs
+    anchor_type: osm_bbox
+    archetype: suburban_low_density
+    bbox:
+      south: 61.46
+      north: 61.49
+      west: 23.72
+      east: 23.78
+    place_name: null
+    crs: EPSG:3067
+    network_type: drive
+    expected_topology:
+      dead_end_ratio_min: 0.25
+      road_density_max: 0.0004
+    expected_use:
+    - suburban
+    - vehicular
+    notes: Low-density suburban anchor.
+  - anchor_id: roma_centro
+    label: Rome historic centre (taxi GPS)
+    source_context: Roma taxi CRAWDAD / IEEE DataPort
+    dataset_basis: roma/taxi February GPS trajectories
+    anchor_type: osm_bbox
+    archetype: dense_urban_irregular
+    bbox:
+      south: 41.88
+      north: 41.91
+      west: 12.47
+      east: 12.51
+    place_name: Rome, Italy
+    crs: EPSG:32633
+    network_type: drive
+    expected_topology:
+      gridness_score_max: 0.55
+      corridor_score_min: 0.25
+    expected_use:
+    - vehicle
+    - urban
+    - taxi
+    notes: Added in revised_v2 for roma_taxi osm_anchor_support.
+  - anchor_id: rio_centro_buses
+    label: Rio de Janeiro central bus corridor
+    source_context: coppe-ufrj/RioBuses CRAWDAD
+    dataset_basis: RioBuses GPS mobility
+    anchor_type: osm_bbox
+    archetype: bus_route_urban_suburban
+    bbox:
+      south: -22.92
+      north: -22.88
+      west: -43.26
+      east: -43.2
+    place_name: Rio de Janeiro, Brazil
+    crs: EPSG:32723
+    network_type: drive
+    expected_topology:
+      corridor_score_min: 0.4
+      dead_end_ratio_min: 0.1
+    expected_use:
+    - vehicular
+    - bus_routes
+    notes: Added in revised_v2 for RioBuses osm_anchor_support.
+  synthetic_generation_policy:
+    generators:
+    - generator_id: grid
+      archetype: urban_grid
+      parameters:
+        grid_rows:
+        - 8
+        - 10
+        - 12
+        - 15
+        - 18
+        - 20
+        grid_cols:
+        - 8
+        - 10
+        - 12
+        - 15
+        - 18
+        - 20
+        block_size_m:
+        - 40
+        - 60
+        - 80
+        - 100
+        - 120
+        diagonal_links:
+        - false
+        - true
+      variants_per_batch: 8
+      expected_topology:
+        gridness_score_min: 0.8
+        n_components: 1
+      why_needed: Regular orthogonal baseline for vehicle/grid routing behaviour.
+      inspiration: Manhattan-style planned grids; synthetic control for gridness.
+    - generator_id: jittered_grid
+      archetype: dense_urban_irregular
+      parameters:
+        grid_rows:
+        - 8
+        - 12
+        - 15
+        - 18
+        grid_cols:
+        - 8
+        - 12
+        - 15
+        - 18
+        block_size_m:
+        - 40
+        - 60
+        - 80
+        - 100
+        jitter_m:
+        - 0
+        - 5
+        - 10
+        - 20
+        - 30
+        diagonal_links:
+        - false
+        - true
+      variants_per_batch: 8
+      expected_topology:
+        gridness_score_range:
+        - 0.45
+        - 0.75
+        orientation_entropy_min: 0.5
+      why_needed: Urban irregularity between perfect grid and organic OSM.
+      inspiration: HelsinkiDowntown-like irregular street cores.
+    - generator_id: radial_city
+      archetype: radial_city
+      parameters:
+        n_rings:
+        - 3
+        - 4
+        - 5
+        - 6
+        - 7
+        - 8
+        n_spokes:
+        - 6
+        - 8
+        - 10
+        - 12
+        - 14
+        - 16
+        ring_spacing_m:
+        - 80
+        - 100
+        - 120
+        - 150
+        - 200
+        radial_noise_m:
+        - 0
+        - 5
+        - 10
+        - 20
+      variants_per_batch: 6
+      expected_topology:
+        radial_score_min: 0.6
+        avg_degree_range:
+        - 2.5
+        - 4.0
+      why_needed: Hub-ring urban structure not captured by grids alone.
+      inspiration: European radial city plans.
+    - generator_id: hub_and_spoke
+      archetype: hub_and_spoke
+      parameters:
+        n_hubs:
+        - 1
+        - 2
+        - 3
+        spokes_per_hub:
+        - 4
+        - 6
+        - 8
+        - 10
+        - 12
+        hub_spacing_m:
+        - 200
+        - 400
+        - 600
+        - 800
+        spoke_length_m:
+        - 150
+        - 300
+        - 500
+        - 700
+      variants_per_batch: 6
+      expected_topology:
+        radial_score_min: 0.4
+        dead_end_ratio_min: 0.15
+      why_needed: Sparse hub connectivity patterns for DTN hotspot behaviour.
+      inspiration: Transit hubs, airport periphery road patterns.
+    - generator_id: corridor
+      archetype: corridor_linear
+      parameters:
+        length_m:
+        - 2000
+        - 3000
+        - 4000
+        - 5000
+        - 6000
+        - 8000
+        width_m:
+        - 400
+        - 600
+        - 800
+        - 1000
+        - 1200
+        branch_prob:
+        - 0.0
+        - 0.1
+        - 0.2
+        - 0.3
+        branch_length_m:
+        - 100
+        - 200
+        - 400
+        - 600
+      variants_per_batch: 6
+      expected_topology:
+        corridor_score_min: 0.7
+        aspect_ratio_min: 2.5
+      why_needed: Linear mobility corridors (highways, arterials, bus routes).
+      inspiration: SF Mission corridor; RollerNet sparse mobility.
+    - generator_id: tree_trails
+      archetype: sparse_trails
+      parameters:
+        branch_factor:
+        - 2
+        - 3
+        depth:
+        - 3
+        - 4
+        - 5
+        - 6
+        edge_length_m:
+        - 80
+        - 120
+        - 200
+        - 300
+        trail_jitter_m:
+        - 0
+        - 10
+        - 20
+        - 40
+      variants_per_batch: 6
+      expected_topology:
+        dead_end_ratio_min: 0.3
+        avg_degree_max: 2.5
+      why_needed: Tree-structured trail networks with high dead-end ratio.
+      inspiration: Nuuksio-style forest trails.
+    - generator_id: sparse_rural
+      archetype: rural_roads
+      parameters:
+        n_nodes:
+        - 20
+        - 30
+        - 40
+        - 50
+        - 60
+        - 70
+        - 80
+        connection_radius_m:
+        - 200
+        - 400
+        - 600
+        - 800
+        long_edge_prob:
+        - 0.1
+        - 0.2
+        - 0.3
+        - 0.4
+        pos_noise_m:
+        - 0
+        - 20
+        - 50
+      variants_per_batch: 6
+      expected_topology:
+        road_density_max: 0.0003
+        diameter_approx_min_m: 1500
+      why_needed: Sparse rural connectivity with long edges.
+      inspiration: Lapland rural OSM; opportunistic sparse contacts.
+    - generator_id: clustered_communities
+      archetype: clustered_communities
+      parameters:
+        n_clusters:
+        - 3
+        - 4
+        - 5
+        - 6
+        - 7
+        - 8
+        nodes_per_cluster:
+        - 8
+        - 12
+        - 16
+        - 20
+        - 25
+        intra_density:
+        - 0.5
+        - 0.7
+        - 0.9
+        inter_gap_m:
+        - 100
+        - 200
+        - 300
+        - 500
+        inter_bridge_count:
+        - 0
+        - 1
+        - 2
+        - 3
+      variants_per_batch: 6
+      expected_topology:
+        community_score_min: 0.55
+        partition_score_min: 0.1
+      why_needed: Social/community cluster topology with sparse inter-links.
+      inspiration: Haggle contact density; Kallio community structure.
+    - generator_id: partitioned_bridge
+      archetype: island_or_partitioned
+      parameters:
+        n_partitions:
+        - 2
+        - 3
+        - 4
+        nodes_per_partition:
+        - 15
+        - 25
+        - 40
+        - 60
+        intra_density:
+        - 0.4
+        - 0.6
+        - 0.8
+        bridges_per_pair:
+        - 1
+        - 2
+        - 3
+      variants_per_batch: 5
+      expected_topology:
+        n_components_min: 2
+        partition_score_min: 0.15
+        n_components_note: Generator connects partitions with bridges; typically 1 component. partition_score
+          is the intended signal.
+      why_needed: Explicit multi-component topology with bridge edges.
+      inspiration: Helsinki archipelago; island_or_partitioned OSM.
+    - generator_id: disrupted_grid
+      archetype: industrial_disrupted
+      parameters:
+        grid_rows:
+        - 10
+        - 12
+        - 15
+        - 18
+        grid_cols:
+        - 10
+        - 12
+        - 15
+        - 18
+        block_size_m:
+        - 60
+        - 80
+        - 100
+        removal_rate:
+        - 0.05
+        - 0.1
+        - 0.15
+        - 0.2
+        - 0.25
+        removal_mode:
+        - random
+        - articulation_bias
+      variants_per_batch: 5
+      expected_topology:
+        articulation_points_min: 5
+        largest_component_ratio_min: 0.7
+      why_needed: Infrastructure disruption on otherwise regular topology.
+      inspiration: HelsinkiDisrupted; disaster scenarios.
+    - generator_id: conference_event_compact
+      archetype: conference_event_compact
+      parameters:
+        hall_count:
+        - 2
+        - 3
+        - 4
+        - 5
+        rooms_per_hall:
+        - 4
+        - 6
+        - 8
+        - 10
+        corridor_width_m:
+        - 8
+        - 12
+        - 16
+        room_spacing_m:
+        - 15
+        - 20
+        - 25
+        - 30
+        inter_hall_gap_m:
+        - 30
+        - 50
+        - 80
+      variants_per_batch: 5
+      expected_topology:
+        diameter_approx_max_m: 600
+        community_score_min: 0.6
+      why_needed: Compact event venue topology from contact-trace literature.
+      inspiration: INFOCOM/Info5; conference_event_compact trace reference.
+    - generator_id: campus_compact
+      archetype: campus_compact
+      parameters:
+        n_buildings:
+        - 6
+        - 8
+        - 10
+        - 12
+        - 15
+        building_spacing_m:
+        - 40
+        - 60
+        - 80
+        - 100
+        ring_roads:
+        - 1
+        - 2
+        path_density:
+        - 0.4
+        - 0.6
+        - 0.8
+        quad_size_m:
+        - 200
+        - 300
+        - 400
+        - 500
+      variants_per_batch: 5
+      expected_topology:
+        useful_area_ratio_min: 0.35
+        avg_degree_range:
+        - 2.0
+        - 3.5
+      why_needed: Institutional campus layout distinct from urban grid.
+      inspiration: Kumpula; MIT Reality Mining campus.
+    - generator_id: bus_route_corridor
+      archetype: bus_route_urban_suburban
+      parameters:
+        corridor_length_m:
+        - 2000
+        - 3000
+        - 4000
+        - 5000
+        corridor_width_m:
+        - 200
+        - 400
+        - 600
+        n_stops:
+        - 4
+        - 6
+        - 8
+        - 10
+        - 12
+        feeder_branch_prob:
+        - 0.0
+        - 0.2
+        - 0.4
+        n_parallel_lanes:
+        - 1
+        - 2
+      variants_per_batch: 5
+      expected_topology:
+        corridor_score_min: 0.55
+        dead_end_ratio_max: 0.2
+      why_needed: Bus arterial topology for vehicular DTN scenarios.
+      inspiration: DieselNet/PVTA Amherst bus routes.
+    implemented_but_not_configured:
+    - multi_component_with_bridges
+  legacy_trace_reference_anchors:
+    description: Baseline narrative anchors retained for provenance mapping; generation uses real_trace_inventory
+      + policy instead of these alone.
+    anchors:
+    - anchor_id: infocom_event_compact
+      label: INFOCOM-style conference event (Info5)
+      source_context: INFOCOM 2005 / iMote contact trace
+      dataset_basis: contact_trace_only
+      anchor_type: trace_reference_not_map
+      archetype: conference_event_compact
+      bbox: null
+      place_name: null
+      crs: local
+      network_type: synthetic
+      expected_topology:
+        diameter_approx_max_m: 600
+        dead_end_ratio_max: 0.2
+        community_score_min: 0.6
+      expected_use:
+      - event
+      - social_dense
+      - compact_pedestrian
+      notes: 'INFOCOM/Info5 is a contact trace reference, NOT a directly downloadable map. Parameterizes
+        conference_event_compact synthetics.
+
+        '
+    - anchor_id: infocom_2006_trace
+      label: INFOCOM 2006 contact trace
+      source_context: INFOCOM 2006 conference traces
+      dataset_basis: contact_trace_only
+      anchor_type: trace_reference_not_map
+      archetype: conference_event_compact
+      bbox: null
+      place_name: null
+      crs: local
+      network_type: synthetic
+      expected_topology:
+        diameter_approx_max_m: 600
+        community_score_min: 0.55
+      expected_use:
+      - event
+      - social_dense
+      notes: Second conference-event trace reference; synthetic only.
+    - anchor_id: rollernet_trace
+      label: RollerNet contact trace
+      source_context: RollerNet DTN traces
+      dataset_basis: contact_trace_only
+      anchor_type: trace_reference_not_map
+      archetype: corridor_linear
+      bbox: null
+      place_name: null
+      crs: local
+      network_type: synthetic
+      expected_topology:
+        corridor_score_min: 0.5
+        dead_end_ratio_min: 0.2
+      expected_use:
+      - sparse
+      - mobile
+      - corridor_like
+      notes: 'Contact trace; parametrizes corridor/sparse synthetics. [revised_v2: archetype corrected
+        from corridor → corridor_linear]'
+    - anchor_id: haggle_contacts_only
+      label: Haggle (contacts only)
+      source_context: Haggle iMote traces without reliable venue map
+      dataset_basis: contact_trace_only
+      anchor_type: trace_reference_not_map
+      archetype: clustered_communities
+      bbox: null
+      place_name: null
+      crs: local
+      network_type: synthetic
+      expected_topology:
+        community_score_min: 0.65
+        partition_score_min: 0.15
+      expected_use:
+      - social
+      - cluster
+      notes: 'Geographic map provided separately by cambridge_haggle OSM anchor; this trace reference
+        parametrizes clustered_communities synthetics.
+
+        '
+    baseline_mapping_was_label_only: true
+  generation_policy:
+    allow_network_for_osm: true
+    output_root: scenarios/Generated_Map_Space_v1
+    write_previews: true
+    max_osm_downloads_default: 50

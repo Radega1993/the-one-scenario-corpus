@@ -1,0 +1,40 @@
+{
+  "name": "v2_syn_sparse_rural_0102",
+  "map_id": "v2_syn_sparse_rural_0102",
+  "source": "synthetic",
+  "source_type": "synthetic",
+  "anchor_id": null,
+  "anchor_label": null,
+  "archetype": "rural_roads",
+  "generator_type": "sparse_rural",
+  "map_generator_type": "sparse_rural",
+  "map_archetype": "rural_roads",
+  "crs": "local",
+  "network_type": "synthetic",
+  "world_size": [
+    6875,
+    7091
+  ],
+  "occupancy_margin_m": 50.0,
+  "world_size_policy": "sim_road_max_plus_50m_margin_per_axis",
+  "n_road_segments": 99,
+  "n_edges": 99,
+  "n_nodes": 60,
+  "generator_params": {
+    "n_nodes": 60,
+    "connection_radius_m": 600,
+    "long_edge_prob": 0.3,
+    "pos_noise_m": 0
+  },
+  "topology_flags": null,
+  "n_components": 1,
+  "seed": 157521338,
+  "created_at": "2026-07-23T06:53:42.230089+00:00",
+  "status": "generated",
+  "synthetic_validation": {
+    "n_nodes": 60,
+    "n_edges": 99,
+    "total_length_m": 99202.14,
+    "regeneration_attempts": 1
+  }
+}

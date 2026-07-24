@@ -1,0 +1,40 @@
+{
+  "name": "v2_syn_radial_city_0205",
+  "map_id": "v2_syn_radial_city_0205",
+  "source": "synthetic",
+  "source_type": "synthetic",
+  "anchor_id": null,
+  "anchor_label": null,
+  "archetype": "radial_city",
+  "generator_type": "radial_city",
+  "map_generator_type": "radial_city",
+  "map_archetype": "radial_city",
+  "crs": "local",
+  "network_type": "synthetic",
+  "world_size": [
+    689,
+    690
+  ],
+  "occupancy_margin_m": 50.0,
+  "world_size_policy": "sim_road_max_plus_50m_margin_per_axis",
+  "n_road_segments": 57,
+  "n_edges": 57,
+  "n_nodes": 33,
+  "generator_params": {
+    "n_rings": 4,
+    "n_spokes": 8,
+    "ring_spacing_m": 80,
+    "radial_noise_m": 5
+  },
+  "topology_flags": null,
+  "n_components": 1,
+  "seed": 2359666531,
+  "created_at": "2026-07-23T06:53:57.688580+00:00",
+  "status": "generated",
+  "synthetic_validation": {
+    "n_nodes": 33,
+    "n_edges": 57,
+    "total_length_m": 6894.64,
+    "regeneration_attempts": 1
+  }
+}

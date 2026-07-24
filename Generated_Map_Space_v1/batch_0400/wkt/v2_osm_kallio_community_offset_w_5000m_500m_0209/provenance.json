@@ -1,0 +1,19 @@
+{
+  "anchor_id": "kallio_community",
+  "archetype": "compact_residential",
+  "builder": "osm",
+  "config_hash": "b38c7774d13a0b2f",
+  "input_reference": "osm_anchor:kallio_community",
+  "map_id": "v2_osm_kallio_community_offset_w_5000m_500m_0209",
+  "osm_query": {
+    "bbox": null,
+    "network_type": "all",
+    "offset_m": 500,
+    "place": null,
+    "variant_type": "offset_w",
+    "window_size_m": 5000
+  },
+  "seed": 123958925,
+  "source_type": "osm",
+  "trace_support": []
+}

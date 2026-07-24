@@ -1,0 +1,40 @@
+{
+  "name": "v2_syn_hub_and_spoke_0319",
+  "map_id": "v2_syn_hub_and_spoke_0319",
+  "source": "synthetic",
+  "source_type": "synthetic",
+  "anchor_id": null,
+  "anchor_label": null,
+  "archetype": "hub_and_spoke",
+  "generator_type": "hub_and_spoke",
+  "map_generator_type": "hub_and_spoke",
+  "map_archetype": "hub_and_spoke",
+  "crs": "local",
+  "network_type": "synthetic",
+  "world_size": [
+    2250,
+    1448
+  ],
+  "occupancy_margin_m": 50.0,
+  "world_size_policy": "sim_road_max_plus_50m_margin_per_axis",
+  "n_road_segments": 97,
+  "n_edges": 97,
+  "n_nodes": 50,
+  "generator_params": {
+    "n_hubs": 2,
+    "spokes_per_hub": 12,
+    "hub_spacing_m": 800,
+    "spoke_length_m": 700
+  },
+  "topology_flags": null,
+  "n_components": 1,
+  "seed": 1704593675,
+  "created_at": "2026-07-23T06:54:12.232110+00:00",
+  "status": "generated",
+  "synthetic_validation": {
+    "n_nodes": 50,
+    "n_edges": 97,
+    "total_length_m": 43091.31,
+    "regeneration_attempts": 1
+  }
+}

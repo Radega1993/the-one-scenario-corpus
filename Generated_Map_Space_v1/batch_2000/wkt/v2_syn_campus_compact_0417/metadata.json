@@ -1,0 +1,41 @@
+{
+  "name": "v2_syn_campus_compact_0417",
+  "map_id": "v2_syn_campus_compact_0417",
+  "source": "synthetic",
+  "source_type": "synthetic",
+  "anchor_id": null,
+  "anchor_label": null,
+  "archetype": "campus_compact",
+  "generator_type": "campus_compact",
+  "map_generator_type": "campus_compact",
+  "map_archetype": "campus_compact",
+  "crs": "local",
+  "network_type": "synthetic",
+  "world_size": [
+    386,
+    386
+  ],
+  "occupancy_margin_m": 50.0,
+  "world_size_policy": "sim_road_max_plus_50m_margin_per_axis",
+  "n_road_segments": 51,
+  "n_edges": 51,
+  "n_nodes": 11,
+  "generator_params": {
+    "n_buildings": 10,
+    "building_spacing_m": 60,
+    "ring_roads": 2,
+    "path_density": 0.4,
+    "quad_size_m": 300
+  },
+  "topology_flags": null,
+  "n_components": 1,
+  "seed": 1930892626,
+  "created_at": "2026-07-23T16:56:47.536783+00:00",
+  "status": "generated",
+  "synthetic_validation": {
+    "n_nodes": 11,
+    "n_edges": 51,
+    "total_length_m": 7158.57,
+    "regeneration_attempts": 1
+  }
+}

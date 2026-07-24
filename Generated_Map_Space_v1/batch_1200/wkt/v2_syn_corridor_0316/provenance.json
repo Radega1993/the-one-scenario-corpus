@@ -1,0 +1,16 @@
+{
+  "archetype": "corridor_linear",
+  "builder": "synthetic",
+  "config_hash": "31b0b6ed3e012085",
+  "generator_parameters": {
+    "branch_length_m": 100,
+    "branch_prob": 0.0,
+    "length_m": 6000,
+    "width_m": 600
+  },
+  "generator_type": "corridor",
+  "map_id": "v2_syn_corridor_0316",
+  "seed": 51255845,
+  "source_type": "synthetic",
+  "trace_id": ""
+}

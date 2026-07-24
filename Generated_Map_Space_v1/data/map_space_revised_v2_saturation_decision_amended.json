@@ -1,0 +1,25 @@
+{
+  "decision": "STOP_AMENDED_CEILING_2000",
+  "rationale": "Amended STOP met for 2 consecutive ladder steps ending at N=1860 (D95 floor / tail \u0394C / short-step raw \u0394C). No hot critical strata. See scenarios/Generated_Map_Space_v1/docs/stop_diagnostics_ceiling_2000.md.",
+  "stop_at_N": 1860,
+  "expansion": null,
+  "gms_status": "freeze_candidate",
+  "sms_status": "unblocked_after_gms_freeze",
+  "gms_closure_language": "The configured map-generation design space reached empirical saturation under the declared generator families, parameter ranges, source allocation policy, feature representation, and operational stopping criteria.\n",
+  "note": "GMS-v1 is closed only on explicit STOP. Absolute saturation of all possible maps is not claimed.",
+  "protocol_amendment": {
+    "status": "post_hoc_documented",
+    "path": "scenarios/Generated_Map_Space_v1/docs/stop_diagnostics_ceiling_2000.md",
+    "label": "STOP_AMENDED_CEILING_2000"
+  },
+  "epsilon": 0.3566224504801794,
+  "R": 100,
+  "n_maps": 1860,
+  "protocol": "scenarios/Generated_Map_Space_v1/config/saturation_protocol.yaml",
+  "protocol_amendment_path": "scenarios/Generated_Map_Space_v1/config/saturation_protocol_amendment_ceiling_2000.yaml",
+  "features": "scenarios/Generated_Map_Space_v1/data/map_space_revised_v2_saturation_features.csv",
+  "transform_freeze": "scenarios/Generated_Map_Space_v1/data/map_space_revised_v2_feature_transform_freeze_n1117.json",
+  "pool_planned": 2000,
+  "prior_decision": "CEILING_2000_NO_STOP",
+  "diagnostics": "scenarios/Generated_Map_Space_v1/docs/stop_diagnostics_ceiling_2000.md"
+}

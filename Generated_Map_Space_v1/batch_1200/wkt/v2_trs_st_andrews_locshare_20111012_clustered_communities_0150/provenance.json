@@ -1,0 +1,37 @@
+{
+  "anchor_id": "",
+  "archetype": "clustered_communities",
+  "builder": "trace_reference_synthetic",
+  "config_hash": "b38c7774d13a0b2f",
+  "extracted_parameters": {
+    "building_spacing_m": 60,
+    "contacts": 2395,
+    "duration_seconds": 79,
+    "extractor": "locshare_encounters_v1",
+    "geometry_rule": "parameterize campus_compact / clustered_communities only",
+    "inter_bridge_count": 2,
+    "inter_gap_m": 200,
+    "intra_density": 0.6,
+    "n_buildings": 15,
+    "n_clusters": 8,
+    "n_nodes": 3573,
+    "nodes_per_cluster": 10,
+    "path_density": 0.6,
+    "quad_size_m": 300,
+    "ring_roads": 1,
+    "trace_id": "st_andrews_locshare_20111012"
+  },
+  "generator_parameters": {
+    "inter_bridge_count": 2,
+    "inter_gap_m": 200,
+    "intra_density": 0.5,
+    "n_clusters": 8,
+    "nodes_per_cluster": 8
+  },
+  "generator_type": "clustered_communities",
+  "map_id": "v2_trs_st_andrews_locshare_20111012_clustered_communities_0150",
+  "parameter_extractor": "locshare_encounters_v1",
+  "seed": 1891641191,
+  "source_type": "trace_reference_synthetic",
+  "trace_id": "st_andrews_locshare_20111012"
+}

@@ -1,0 +1,56 @@
+{
+  "name": "v2_osm_helsinki_disrupted_offset_n_1000m_1500m_0411",
+  "map_id": "v2_osm_helsinki_disrupted_offset_n_1000m_1500m_0411",
+  "source": "osm",
+  "source_type": "osm",
+  "anchor_id": "helsinki_disrupted",
+  "anchor_label": "Helsinki Kalasatama / Disrupted",
+  "archetype": "industrial_disrupted",
+  "generator_type": null,
+  "map_generator_type": "industrial_disrupted",
+  "map_archetype": "industrial_disrupted",
+  "crs": "EPSG:3067",
+  "network_type": "all",
+  "world_size": [
+    749,
+    1042
+  ],
+  "occupancy_margin_m": 50.0,
+  "world_size_policy": "sim_road_max_plus_50m_margin_per_axis",
+  "n_road_segments": 1053,
+  "n_edges": 1053,
+  "n_nodes": 373,
+  "bbox_latlon": [
+    60.196983444125046,
+    24.970961784445244,
+    60.20596655587496,
+    24.989038215554757
+  ],
+  "bbox_m": [
+    387516.47153202223,
+    6675077.299965402,
+    388213.38216634095,
+    6676069.128636455
+  ],
+  "variant_type": "offset_n",
+  "anchor_distance_m": 1500.0,
+  "window_size_m": 1000.0,
+  "generator_params": {
+    "center_lat": 60.201475,
+    "center_lon": 24.98,
+    "width_m": 1000,
+    "height_m": 1000,
+    "variant_type": "offset_n",
+    "anchor_distance_m": 1500.0,
+    "window_size_m": 1000.0,
+    "osm_network_type": "all",
+    "crs": "EPSG:3067",
+    "anchor_label": "Helsinki Kalasatama / Disrupted",
+    "_allow_partitioned": false
+  },
+  "topology_flags": null,
+  "n_components": 1,
+  "seed": 3940044871,
+  "created_at": "2026-07-23T13:04:49.640135+00:00",
+  "status": "generated"
+}

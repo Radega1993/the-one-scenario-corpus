@@ -1,0 +1,62 @@
+{
+  "name": "v2_trs_haggle_one_cambridge_city_complete_clustered_communities_0171",
+  "map_id": "v2_trs_haggle_one_cambridge_city_complete_clustered_communities_0171",
+  "source": "trace_reference_synthetic",
+  "source_type": "trace_reference_synthetic",
+  "anchor_id": "cambridge_haggle",
+  "anchor_label": "haggle_one_cambridge_city_complete",
+  "archetype": "clustered_communities",
+  "generator_type": "clustered_communities",
+  "map_generator_type": "clustered_communities",
+  "map_archetype": "clustered_communities",
+  "crs": "local",
+  "network_type": "synthetic",
+  "world_size": [
+    406,
+    419
+  ],
+  "occupancy_margin_m": 50.0,
+  "world_size_policy": "sim_road_max_plus_50m_margin_per_axis",
+  "n_road_segments": 300,
+  "n_edges": 300,
+  "n_nodes": 52,
+  "generator_params": {
+    "n_clusters": 4,
+    "nodes_per_cluster": 12,
+    "intra_density": 0.9,
+    "inter_gap_m": 300,
+    "inter_bridge_count": 2
+  },
+  "topology_flags": [
+    "clustered"
+  ],
+  "n_components": 1,
+  "seed": 805323712,
+  "created_at": "2026-07-23T15:22:19.160665+00:00",
+  "status": "generated",
+  "synthetic_validation": {
+    "n_nodes": 52,
+    "n_edges": 300,
+    "total_length_m": 12941.6,
+    "regeneration_attempts": 1
+  },
+  "trace_id": "haggle_one_cambridge_city_complete",
+  "parameter_extractor": "standard_events_contact_summary_v1",
+  "extracted_parameters": {
+    "extractor": "standard_events_contact_summary_v1",
+    "trace_id": "haggle_one_cambridge_city_complete",
+    "n_nodes": 52,
+    "events": 21746,
+    "contacts": 10873,
+    "ups": 10873,
+    "downs": 10873,
+    "up_down_balanced": true,
+    "duration_seconds": 987529,
+    "contact_duration_count": 9010,
+    "contact_duration_mean_s": 609.9981132075471,
+    "mean_degree_events": 418.1923076923077,
+    "density_proxy": 8.199849170437405,
+    "geometry_rule": "none_automatic; map via configured target_generators only"
+  },
+  "config_hash": "c0c7e010c39c414b"
+}

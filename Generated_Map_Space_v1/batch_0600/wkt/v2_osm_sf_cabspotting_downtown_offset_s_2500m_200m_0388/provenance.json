@@ -1,0 +1,21 @@
+{
+  "anchor_id": "sf_cabspotting_downtown",
+  "archetype": "dense_urban_irregular",
+  "builder": "osm",
+  "config_hash": "b38c7774d13a0b2f",
+  "input_reference": "osm_anchor:sf_cabspotting_downtown",
+  "map_id": "v2_osm_sf_cabspotting_downtown_offset_s_2500m_200m_0388",
+  "osm_query": {
+    "bbox": null,
+    "network_type": "drive",
+    "offset_m": 200,
+    "place": null,
+    "variant_type": "offset_s",
+    "window_size_m": 2500
+  },
+  "seed": 4250097972,
+  "source_type": "osm",
+  "trace_support": [
+    "epfl_mobility_20090224"
+  ]
+}

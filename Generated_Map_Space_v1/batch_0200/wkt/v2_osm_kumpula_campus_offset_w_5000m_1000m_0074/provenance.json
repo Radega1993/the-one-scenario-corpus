@@ -1,0 +1,19 @@
+{
+  "anchor_id": "kumpula_campus",
+  "archetype": "campus_compact",
+  "builder": "osm",
+  "config_hash": "b38c7774d13a0b2f",
+  "input_reference": "osm_anchor:kumpula_campus",
+  "map_id": "v2_osm_kumpula_campus_offset_w_5000m_1000m_0074",
+  "osm_query": {
+    "bbox": null,
+    "network_type": "all",
+    "offset_m": 1000,
+    "place": null,
+    "variant_type": "offset_w",
+    "window_size_m": 5000
+  },
+  "seed": 669116311,
+  "source_type": "osm",
+  "trace_support": []
+}

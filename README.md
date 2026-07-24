@@ -23,6 +23,7 @@
 | **Protocol KPI policy** | [analysis/reports/canonical/protocol_benchmark_kpi_policy.md](analysis/reports/canonical/protocol_benchmark_kpi_policy.md) |
 | **Legacy mobility archive** | [`_archive/legacy_corpus_v1_pre_rename/`](_archive/legacy_corpus_v1_pre_rename/) |
 | **Historical v1 dropped** | [`_archive/corpus_dropped_v1/`](_archive/corpus_dropped_v1/) |
+| **GMS-v1 (map space)** | [`Generated_Map_Space_v1/`](Generated_Map_Space_v1/) — pack canónico; status `freeze_candidate` / `STOP_AMENDED_CEILING_2000` |
 
 **Diversity validation freeze (540 scenarios, `corpus_v1` — canonical):**
 

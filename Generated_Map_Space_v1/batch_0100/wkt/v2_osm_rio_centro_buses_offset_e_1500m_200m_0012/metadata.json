@@ -1,0 +1,56 @@
+{
+  "name": "v2_osm_rio_centro_buses_offset_e_1500m_200m_0012",
+  "map_id": "v2_osm_rio_centro_buses_offset_e_1500m_200m_0012",
+  "source": "osm",
+  "source_type": "osm",
+  "anchor_id": "rio_centro_buses",
+  "anchor_label": "Rio de Janeiro central bus corridor",
+  "archetype": "bus_route_urban_suburban",
+  "generator_type": null,
+  "map_generator_type": "bus_route_urban_suburban",
+  "map_archetype": "bus_route_urban_suburban",
+  "crs": "EPSG:32723",
+  "network_type": "drive",
+  "world_size": [
+    1538,
+    1252
+  ],
+  "occupancy_margin_m": 50.0,
+  "world_size_policy": "sim_road_max_plus_50m_margin_per_axis",
+  "n_road_segments": 329,
+  "n_edges": 329,
+  "n_nodes": 161,
+  "bbox_latlon": [
+    -22.90673733381243,
+    -43.23536376525478,
+    -22.893262666187567,
+    -43.220736234745225
+  ],
+  "bbox_m": [
+    681013.3129441239,
+    7465950.396682786,
+    682500.8696321792,
+    7467151.621432106
+  ],
+  "variant_type": "offset_e",
+  "anchor_distance_m": 200.0,
+  "window_size_m": 1500.0,
+  "generator_params": {
+    "center_lat": -22.9,
+    "center_lon": -43.22805,
+    "width_m": 1500,
+    "height_m": 1500,
+    "variant_type": "offset_e",
+    "anchor_distance_m": 200.0,
+    "window_size_m": 1500.0,
+    "osm_network_type": "drive",
+    "crs": "EPSG:32723",
+    "anchor_label": "Rio de Janeiro central bus corridor",
+    "_allow_partitioned": false
+  },
+  "topology_flags": null,
+  "n_components": 1,
+  "seed": 1404557674,
+  "created_at": "2026-07-23T08:01:35.775931+00:00",
+  "status": "generated"
+}

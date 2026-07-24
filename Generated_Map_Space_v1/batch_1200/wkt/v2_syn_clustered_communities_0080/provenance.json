@@ -1,0 +1,17 @@
+{
+  "archetype": "clustered_communities",
+  "builder": "synthetic",
+  "config_hash": "c0c7e010c39c414b",
+  "generator_parameters": {
+    "inter_bridge_count": 0,
+    "inter_gap_m": 100,
+    "intra_density": 0.9,
+    "n_clusters": 5,
+    "nodes_per_cluster": 8
+  },
+  "generator_type": "clustered_communities",
+  "map_id": "v2_syn_clustered_communities_0080",
+  "seed": 2873635477,
+  "source_type": "synthetic",
+  "trace_id": ""
+}

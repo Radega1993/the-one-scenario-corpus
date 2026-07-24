@@ -1,0 +1,40 @@
+{
+  "name": "v2_syn_corridor_0459",
+  "map_id": "v2_syn_corridor_0459",
+  "source": "synthetic",
+  "source_type": "synthetic",
+  "anchor_id": null,
+  "anchor_label": null,
+  "archetype": "corridor_linear",
+  "generator_type": "corridor",
+  "map_generator_type": "corridor",
+  "map_archetype": "corridor_linear",
+  "crs": "local",
+  "network_type": "synthetic",
+  "world_size": [
+    5050,
+    1250
+  ],
+  "occupancy_margin_m": 50.0,
+  "world_size_policy": "sim_road_max_plus_50m_margin_per_axis",
+  "n_road_segments": 44,
+  "n_edges": 44,
+  "n_nodes": 45,
+  "generator_params": {
+    "length_m": 5000,
+    "width_m": 1200,
+    "branch_prob": 0.3,
+    "branch_length_m": 600
+  },
+  "topology_flags": null,
+  "n_components": 1,
+  "seed": 3170529734,
+  "created_at": "2026-07-23T15:23:38.310982+00:00",
+  "status": "generated",
+  "synthetic_validation": {
+    "n_nodes": 45,
+    "n_edges": 44,
+    "total_length_m": 7400.0,
+    "regeneration_attempts": 1
+  }
+}

@@ -1,0 +1,56 @@
+{
+  "name": "v2_osm_london_industrial_corridor_offset_s_2500m_1500m_0603",
+  "map_id": "v2_osm_london_industrial_corridor_offset_s_2500m_1500m_0603",
+  "source": "osm",
+  "source_type": "osm",
+  "anchor_id": "london_industrial_corridor",
+  "anchor_label": "London industrial corridor",
+  "archetype": "industrial_disrupted",
+  "generator_type": null,
+  "map_generator_type": "industrial_disrupted",
+  "map_archetype": "industrial_disrupted",
+  "crs": "EPSG:27700",
+  "network_type": "drive",
+  "world_size": [
+    2550,
+    2574
+  ],
+  "occupancy_margin_m": 50.0,
+  "world_size_policy": "sim_road_max_plus_50m_margin_per_axis",
+  "n_road_segments": 1284,
+  "n_edges": 1284,
+  "n_nodes": 644,
+  "bbox_latlon": [
+    51.49029611031261,
+    -0.033038556486236395,
+    51.51275388968739,
+    0.0030385564862363927
+  ],
+  "bbox_m": [
+    536631.2708409866,
+    178688.11029453122,
+    539130.5688761002,
+    181208.49534963386
+  ],
+  "variant_type": "offset_s",
+  "anchor_distance_m": 1500.0,
+  "window_size_m": 2500.0,
+  "generator_params": {
+    "center_lat": 51.501525,
+    "center_lon": -0.015,
+    "width_m": 2500,
+    "height_m": 2500,
+    "variant_type": "offset_s",
+    "anchor_distance_m": 1500.0,
+    "window_size_m": 2500.0,
+    "osm_network_type": "drive",
+    "crs": "EPSG:27700",
+    "anchor_label": "London industrial corridor",
+    "_allow_partitioned": false
+  },
+  "topology_flags": null,
+  "n_components": 1,
+  "seed": 1697476220,
+  "created_at": "2026-07-23T15:49:24.382598+00:00",
+  "status": "generated"
+}

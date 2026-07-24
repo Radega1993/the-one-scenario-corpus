@@ -1,0 +1,42 @@
+{
+  "name": "v2_syn_partitioned_bridge_0321",
+  "map_id": "v2_syn_partitioned_bridge_0321",
+  "source": "synthetic",
+  "source_type": "synthetic",
+  "anchor_id": null,
+  "anchor_label": null,
+  "archetype": "island_or_partitioned",
+  "generator_type": "partitioned_bridge",
+  "map_generator_type": "partitioned_bridge",
+  "map_archetype": "island_or_partitioned",
+  "crs": "local",
+  "network_type": "synthetic",
+  "world_size": [
+    475,
+    122
+  ],
+  "occupancy_margin_m": 50.0,
+  "world_size_policy": "sim_road_max_plus_50m_margin_per_axis",
+  "n_road_segments": 255,
+  "n_edges": 255,
+  "n_nodes": 50,
+  "generator_params": {
+    "n_partitions": 2,
+    "nodes_per_partition": 25,
+    "intra_density": 0.4,
+    "bridges_per_pair": 1
+  },
+  "topology_flags": [
+    "partitioned"
+  ],
+  "n_components": 1,
+  "seed": 453890334,
+  "created_at": "2026-07-23T15:23:18.807144+00:00",
+  "status": "generated",
+  "synthetic_validation": {
+    "n_nodes": 50,
+    "n_edges": 255,
+    "total_length_m": 10839.59,
+    "regeneration_attempts": 1
+  }
+}

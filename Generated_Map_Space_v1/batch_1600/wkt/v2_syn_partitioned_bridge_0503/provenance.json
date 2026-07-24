@@ -1,0 +1,16 @@
+{
+  "archetype": "island_or_partitioned",
+  "builder": "synthetic",
+  "config_hash": "c0c7e010c39c414b",
+  "generator_parameters": {
+    "bridges_per_pair": 3,
+    "intra_density": 0.8,
+    "n_partitions": 4,
+    "nodes_per_partition": 60
+  },
+  "generator_type": "partitioned_bridge",
+  "map_id": "v2_syn_partitioned_bridge_0503",
+  "seed": 465558678,
+  "source_type": "synthetic",
+  "trace_id": ""
+}

@@ -1,0 +1,16 @@
+{
+  "archetype": "hub_and_spoke",
+  "builder": "synthetic",
+  "config_hash": "c0c7e010c39c414b",
+  "generator_parameters": {
+    "hub_spacing_m": 600,
+    "n_hubs": 2,
+    "spoke_length_m": 500,
+    "spokes_per_hub": 8
+  },
+  "generator_type": "hub_and_spoke",
+  "map_id": "v2_syn_hub_and_spoke_0202",
+  "seed": 1738868755,
+  "source_type": "synthetic",
+  "trace_id": ""
+}

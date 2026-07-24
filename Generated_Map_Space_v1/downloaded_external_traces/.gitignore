@@ -1,0 +1,18 @@
+# Raw CRAWDAD / IEEE DataPort downloads — never commit
+raw/
+
+# Heavy processed event tables — keep metadata only
+processed/**/*.tsv
+processed/**/*.csv
+processed/**/*.tar.gz
+processed/**/*.zip
+processed/**/*.gz
+
+# Keep tracked metadata and project glue
+!processed/**/metadata.yaml
+!processed/**/checksums.sha256
+!registry/
+!reports/
+!scripts/
+!README.md
+!.gitignore

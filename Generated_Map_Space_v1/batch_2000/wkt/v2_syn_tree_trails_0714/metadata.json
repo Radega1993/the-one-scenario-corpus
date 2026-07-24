@@ -1,0 +1,40 @@
+{
+  "name": "v2_syn_tree_trails_0714",
+  "map_id": "v2_syn_tree_trails_0714",
+  "source": "synthetic",
+  "source_type": "synthetic",
+  "anchor_id": null,
+  "anchor_label": null,
+  "archetype": "sparse_trails",
+  "generator_type": "tree_trails",
+  "map_generator_type": "tree_trails",
+  "map_archetype": "sparse_trails",
+  "crs": "local",
+  "network_type": "synthetic",
+  "world_size": [
+    1612,
+    1547
+  ],
+  "occupancy_margin_m": 50.0,
+  "world_size_policy": "sim_road_max_plus_50m_margin_per_axis",
+  "n_road_segments": 62,
+  "n_edges": 62,
+  "n_nodes": 63,
+  "generator_params": {
+    "branch_factor": 2,
+    "depth": 5,
+    "edge_length_m": 200,
+    "trail_jitter_m": 20
+  },
+  "topology_flags": null,
+  "n_components": 1,
+  "seed": 1691793296,
+  "created_at": "2026-07-23T16:57:24.878354+00:00",
+  "status": "generated",
+  "synthetic_validation": {
+    "n_nodes": 63,
+    "n_edges": 62,
+    "total_length_m": 12434.75,
+    "regeneration_attempts": 1
+  }
+}

@@ -1,0 +1,15 @@
+generator_type,planned,ok,degenerate,degenerate_rate,main_cause
+(none),539,44,0,0.0,
+bus_route_corridor,37,12,25,0.6757,too_few_edges (5 < 20)
+campus_compact,57,45,12,0.2105,too_few_nodes (14 < 20)
+clustered_communities,98,98,0,0.0,
+conference_event_compact,58,58,0,0.0,
+corridor,57,50,7,0.1228,too_few_edges (17 < 20)
+disrupted_grid,57,57,0,0.0,
+grid,37,37,0,0.0,
+hub_and_spoke,37,37,0,0.0,
+jittered_grid,37,37,0,0.0,
+partitioned_bridge,57,57,0,0.0,
+radial_city,36,29,7,0.1944,too_few_nodes (19 < 20)
+sparse_rural,57,57,0,0.0,
+tree_trails,36,36,0,0.0,

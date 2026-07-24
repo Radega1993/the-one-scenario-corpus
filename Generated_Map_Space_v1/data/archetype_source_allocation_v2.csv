@@ -1,0 +1,16 @@
+archetype,osm_role,osm_min,synthetic_role,synthetic_min,trace_reference_synthetic_role,trace_reference_synthetic_min,rationale
+urban_grid,primary,8,supporting,4,none,0,Canonical vehicular grid; OSM Manhattan Midtown is the geographic gold standard; grid generator is the controlled counterpart.
+dense_urban_irregular,primary,12,supporting,4,none,0,"Irregular urban cores (Helsinki, SF, Cambridge, Roma) are OSM-first; jittered_grid is supporting control."
+campus_compact,primary,6,supporting,4,supporting,2,"Campus OSM (Kumpula, MIT) primary; LocShare/campus_compact TRS and synthetic campus generator supporting."
+compact_residential,primary,4,none,0,none,0,Kallio-style residential has no dedicated synthetic generator; OSM-only by design.
+corridor_linear,supporting,4,primary,6,supporting,2,RollerNet TRS + corridor generator are the contact-informed linear signal; SF Mission OSM supports geography.
+bus_route_urban_suburban,primary,8,supporting,4,none,0,DieselNet Amherst and Rio centro OSM are primary; bus_route_corridor synthetic supporting (high degenerate risk documented).
+radial_city,none,0,primary,8,none,0,Pure synthetic control archetype; no OSM/TRS claim of radial urban form.
+hub_and_spoke,none,0,primary,8,none,0,Pure synthetic hub topology; no geographic anchor assigned.
+sparse_trails,primary,4,supporting,4,none,0,Nuuksio OSM primary; tree_trails synthetic supporting.
+rural_roads,primary,4,supporting,4,supporting,2,Lapland OSM primary; Oviedo TRS→sparse_rural and sparse_rural generator supporting.
+industrial_disrupted,primary,6,supporting,4,supporting,2,Helsinki/London industrial OSM primary; Oviedo→disrupted_grid TRS and disrupted_grid synthetic supporting.
+island_or_partitioned,primary,4,supporting,4,supporting,2,Archipelago OSM primary; partitioned_bridge + Oviedo TRS supporting.
+conference_event_compact,optional,0,supporting,4,primary,6,Haggle/INFOCOM contact tradition; TRS primary; synthetic venue supporting; OSM optional (no venue floorplan).
+clustered_communities,optional,0,supporting,4,primary,6,Social-cluster signal from Haggle/Sassy/LocShare TRS; synthetic clusters supporting; OSM optional.
+suburban_low_density,primary,4,none,0,none,0,Tampere suburban OSM-only; no suburban synthetic generator in the 13-generator set.

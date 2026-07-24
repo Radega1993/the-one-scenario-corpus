@@ -1,0 +1,56 @@
+{
+  "name": "v2_osm_kallio_community_offset_w_5000m_1500m_0039",
+  "map_id": "v2_osm_kallio_community_offset_w_5000m_1500m_0039",
+  "source": "osm",
+  "source_type": "osm",
+  "anchor_id": "kallio_community",
+  "anchor_label": "Kallio Community Compact",
+  "archetype": "compact_residential",
+  "generator_type": null,
+  "map_generator_type": "compact_residential",
+  "map_archetype": "compact_residential",
+  "crs": "EPSG:3067",
+  "network_type": "all",
+  "world_size": [
+    5191,
+    5247
+  ],
+  "occupancy_margin_m": 50.0,
+  "world_size_policy": "sim_road_max_plus_50m_margin_per_axis",
+  "n_road_segments": 101718,
+  "n_edges": 101718,
+  "n_nodes": 38384,
+  "bbox_latlon": [
+    60.16154222062522,
+    24.875232975419742,
+    60.20645777937477,
+    24.96556702458026
+  ],
+  "bbox_m": [
+    382095.5677342647,
+    6671166.697587823,
+    387236.3908955605,
+    6676293.2824873645
+  ],
+  "variant_type": "offset_w",
+  "anchor_distance_m": 1500.0,
+  "window_size_m": 5000.0,
+  "generator_params": {
+    "center_lat": 60.184,
+    "center_lon": 24.9204,
+    "width_m": 5000,
+    "height_m": 5000,
+    "variant_type": "offset_w",
+    "anchor_distance_m": 1500.0,
+    "window_size_m": 5000.0,
+    "osm_network_type": "all",
+    "crs": "EPSG:3067",
+    "anchor_label": "Kallio Community Compact",
+    "_allow_partitioned": false
+  },
+  "topology_flags": null,
+  "n_components": 1,
+  "seed": 2268212904,
+  "created_at": "2026-07-23T08:26:14.328785+00:00",
+  "status": "generated"
+}

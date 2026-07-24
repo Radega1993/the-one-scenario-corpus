@@ -1,0 +1,142 @@
+# Frozen saturation protocol for map_space_revised_v2 (pre-registered before curves).
+# Do NOT edit stop thresholds after inspecting saturation results.
+
+map_saturation_protocol_revised_v2:
+  schema_version: "1.0"
+  frozen_at_note: >
+    Operational stopping criteria declared before saturation curves are inspected.
+    Thresholds are transparent and reproducible, not claimed universal optima.
+
+  pool:
+    pool_name: map_space_revised_v2
+    manifest_rows: 1200
+    ok_rows: 1117
+    global_seed: 42
+    config_hash: "8c795cb01a7150c6"
+    # filled in pool_freeze.json at freeze time
+    feature_schema_version: map_saturation_features_v1
+
+  features:
+    geometry_dims_only: true
+    labels_use: stratification_and_categorical_coverage_only
+    numeric_feature_columns:
+      - world_size_x
+      - world_size_y
+      - world_area
+      - bbox_width
+      - bbox_height
+      - useful_area
+      - useful_area_ratio
+      - n_nodes
+      - n_edges
+      - total_road_length_m
+      - road_density
+      - avg_edge_length_m
+      - median_edge_length_m
+      - avg_degree
+      - max_degree
+      - dead_end_ratio
+      - intersection_ratio
+      - n_components
+      - largest_component_ratio
+      - bridge_edges_count
+      - bridge_edges_ratio
+      - articulation_points_count
+      - articulation_points_ratio
+      - graph_diameter_approx
+      - avg_shortest_path_approx
+      - circuity_approx
+      - orientation_entropy
+      - gridness_score
+      - corridor_score
+      - radial_score
+      - partition_score
+      - community_score
+      - tree_like_score
+    # Positive heavy-tailed features → log1p before robust scaling
+    log1p_features:
+      - world_area
+      - useful_area
+      - bbox_width
+      - bbox_height
+      - world_size_x
+      - world_size_y
+      - n_nodes
+      - n_edges
+      - total_road_length_m
+      - road_density
+      - avg_edge_length_m
+      - median_edge_length_m
+      - bridge_edges_count
+      - articulation_points_count
+      - graph_diameter_approx
+      - avg_shortest_path_approx
+    scaling: robust_median_iqr
+    distance: l2
+    # Exclude source_type one-hot from distance geometry
+    include_source_type_one_hot: false
+
+  ladder:
+    - 100
+    - 200
+    - 300
+    - 400
+    - 500
+    - 600
+    - 700
+    - 800
+    - 900
+    - 1000
+    - 1100
+    - 1200
+    - 1300
+    - 1400
+    - 1500
+    - 1600
+    - 1700
+    - 1800
+    - 1860
+    # last step aligned to OK∩valid after N=2000 if close; analyzer clamps to n_features
+
+  permutations:
+    R: 100
+    seed_base: 42
+    primary_order: stratified_nested_round_robin
+    audit_order: batch_target_then_map_id
+    early_cell_representation: round_robin_min_one_per_cell_when_N_allows
+
+  epsilon:
+    rule: percentile_20_of_5th_nearest_neighbor_distances_on_full_pool
+    knn_k: 5
+    percentile: 20
+    # epsilon value recorded in transform/decision artifacts after fit (not chosen from coverage curves)
+
+  stop:
+    consecutive_steps_required: 3
+    delta_C_per_100_max: 0.005
+    d95_relative_improvement_max: 0.02
+    coverage_C_eps_min: 0.98
+    require_no_new_persistent_clusters_in_critical_strata: true
+    critical_strata:
+      - {archetype: bus_route_urban_suburban, source_type: synthetic}
+      - {archetype: campus_compact, source_type: synthetic}
+      - {archetype: sparse_trails, source_type: osm}
+      - {archetype: suburban_low_density, source_type: osm}
+      - {archetype: urban_grid, source_type: osm}
+
+  clustering_secondary:
+    algorithm: average_linkage_cosine
+    k_rule: clamp_sqrt_n_2_50
+    role: secondary_evidence_only
+
+  expansion:
+    case1_stop: freeze_GMS_v1_then_SMS
+    case2_targeted: expand_unsaturated_archetype_source_cells
+    case3_balanced_1600: if_general_marginal_gain_persists
+    case4_2000: only_if_gain_persists_at_1600
+    never_default_2000: true
+
+  gms_closure_language: >
+    The configured map-generation design space reached empirical saturation under the
+    declared generator families, parameter ranges, source allocation policy, feature
+    representation, and operational stopping criteria.

@@ -1,0 +1,19 @@
+{
+  "anchor_id": "london_industrial_corridor",
+  "archetype": "industrial_disrupted",
+  "builder": "osm",
+  "config_hash": "b38c7774d13a0b2f",
+  "input_reference": "osm_anchor:london_industrial_corridor",
+  "map_id": "v2_osm_london_industrial_corridor_offset_s_2500m_1000m_0858",
+  "osm_query": {
+    "bbox": null,
+    "network_type": "drive",
+    "offset_m": 1000,
+    "place": null,
+    "variant_type": "offset_s",
+    "window_size_m": 2500
+  },
+  "seed": 2887536064,
+  "source_type": "osm",
+  "trace_support": []
+}

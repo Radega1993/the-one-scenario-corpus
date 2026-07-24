@@ -1,0 +1,35 @@
+{
+  "anchor_id": "cambridge_haggle",
+  "archetype": "clustered_communities",
+  "builder": "trace_reference_synthetic",
+  "config_hash": "b38c7774d13a0b2f",
+  "extracted_parameters": {
+    "contact_duration_count": 9010,
+    "contact_duration_mean_s": 609.9981132075471,
+    "contacts": 10873,
+    "density_proxy": 8.199849170437405,
+    "downs": 10873,
+    "duration_seconds": 987529,
+    "events": 21746,
+    "extractor": "standard_events_contact_summary_v1",
+    "geometry_rule": "none_automatic; map via configured target_generators only",
+    "mean_degree_events": 418.1923076923077,
+    "n_nodes": 52,
+    "trace_id": "haggle_one_cambridge_city_complete",
+    "up_down_balanced": true,
+    "ups": 10873
+  },
+  "generator_parameters": {
+    "inter_bridge_count": 2,
+    "inter_gap_m": 300,
+    "intra_density": 0.9,
+    "n_clusters": 4,
+    "nodes_per_cluster": 12
+  },
+  "generator_type": "clustered_communities",
+  "map_id": "v2_trs_haggle_one_cambridge_city_complete_clustered_communities_0171",
+  "parameter_extractor": "standard_events_contact_summary_v1",
+  "seed": 805323712,
+  "source_type": "trace_reference_synthetic",
+  "trace_id": "haggle_one_cambridge_city_complete"
+}

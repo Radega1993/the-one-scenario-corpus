@@ -1,0 +1,21 @@
+{
+  "anchor_id": "roma_centro",
+  "archetype": "dense_urban_irregular",
+  "builder": "osm",
+  "config_hash": "b38c7774d13a0b2f",
+  "input_reference": "osm_anchor:roma_centro",
+  "map_id": "v2_osm_roma_centro_exact_500m_0m_0880",
+  "osm_query": {
+    "bbox": null,
+    "network_type": "drive",
+    "offset_m": 0,
+    "place": null,
+    "variant_type": "exact",
+    "window_size_m": 500
+  },
+  "seed": 3969802556,
+  "source_type": "osm",
+  "trace_support": [
+    "roma_taxi_20140717"
+  ]
+}

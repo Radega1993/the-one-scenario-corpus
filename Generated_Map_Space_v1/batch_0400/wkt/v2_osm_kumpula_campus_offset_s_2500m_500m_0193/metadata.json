@@ -1,0 +1,56 @@
+{
+  "name": "v2_osm_kumpula_campus_offset_s_2500m_500m_0193",
+  "map_id": "v2_osm_kumpula_campus_offset_s_2500m_500m_0193",
+  "source": "osm",
+  "source_type": "osm",
+  "anchor_id": "kumpula_campus",
+  "anchor_label": "Kumpula Campus",
+  "archetype": "campus_compact",
+  "generator_type": null,
+  "map_generator_type": "campus_compact",
+  "map_archetype": "campus_compact",
+  "crs": "EPSG:3067",
+  "network_type": "all",
+  "world_size": [
+    2254,
+    2671
+  ],
+  "occupancy_margin_m": 50.0,
+  "world_size_policy": "sim_road_max_plus_50m_margin_per_axis",
+  "n_road_segments": 19827,
+  "n_edges": 19827,
+  "n_nodes": 6940,
+  "bbox_latlon": [
+    60.191279110312614,
+    24.945403749717872,
+    60.21373688968739,
+    24.990596250282127
+  ],
+  "bbox_m": [
+    386087.7322658772,
+    6674432.911845004,
+    388290.8034814892,
+    6676980.769424674
+  ],
+  "variant_type": "offset_s",
+  "anchor_distance_m": 500.0,
+  "window_size_m": 2500.0,
+  "generator_params": {
+    "center_lat": 60.202508,
+    "center_lon": 24.968,
+    "width_m": 2500,
+    "height_m": 2500,
+    "variant_type": "offset_s",
+    "anchor_distance_m": 500.0,
+    "window_size_m": 2500.0,
+    "osm_network_type": "all",
+    "crs": "EPSG:3067",
+    "anchor_label": "Kumpula Campus",
+    "_allow_partitioned": false
+  },
+  "topology_flags": null,
+  "n_components": 1,
+  "seed": 4239590243,
+  "created_at": "2026-07-23T11:07:14.760343+00:00",
+  "status": "generated"
+}

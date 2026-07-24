@@ -1,0 +1,56 @@
+{
+  "name": "v2_osm_helsinki_archipelago_offset_n_1000m_500m_0801",
+  "map_id": "v2_osm_helsinki_archipelago_offset_n_1000m_500m_0801",
+  "source": "osm",
+  "source_type": "osm",
+  "anchor_id": "helsinki_archipelago",
+  "anchor_label": "Helsinki archipelago partitioned",
+  "archetype": "island_or_partitioned",
+  "generator_type": null,
+  "map_generator_type": "island_or_partitioned",
+  "map_archetype": "island_or_partitioned",
+  "crs": "EPSG:3067",
+  "network_type": "all",
+  "world_size": [
+    1078,
+    1052
+  ],
+  "occupancy_margin_m": 50.0,
+  "world_size_policy": "sim_road_max_plus_50m_margin_per_axis",
+  "n_road_segments": 7194,
+  "n_edges": 7194,
+  "n_nodes": 2805,
+  "bbox_latlon": [
+    60.160000444125046,
+    24.910971958343772,
+    60.16898355587496,
+    24.92902804165623
+  ],
+  "bbox_m": [
+    384063.1668424487,
+    6671050.3537161825,
+    385085.49044524,
+    6672050.516149236
+  ],
+  "variant_type": "offset_n",
+  "anchor_distance_m": 500.0,
+  "window_size_m": 1000.0,
+  "generator_params": {
+    "center_lat": 60.164492,
+    "center_lon": 24.92,
+    "width_m": 1000,
+    "height_m": 1000,
+    "variant_type": "offset_n",
+    "anchor_distance_m": 500.0,
+    "window_size_m": 1000.0,
+    "osm_network_type": "all",
+    "crs": "EPSG:3067",
+    "anchor_label": "Helsinki archipelago partitioned",
+    "_allow_partitioned": true
+  },
+  "topology_flags": null,
+  "n_components": 1,
+  "seed": 71459329,
+  "created_at": "2026-07-23T17:24:14.430639+00:00",
+  "status": "generated"
+}

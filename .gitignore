@@ -45,3 +45,25 @@ analysis/reports/validation/project_scope_no_stress.md
 analysis/scripts/validation/stress_vs_corpus_validation.py
 analysis/reports/maps/stress_control_grid_review.md
 maps/wkt/_backup*/
+
+# Accidental local CRAWDAD copies under cleaned map_space_v1 (do not commit)
+map_space_v1/external_traces/
+
+# --- Bulky / regenerable (do not push to GitHub) ---
+# GMS pack caches, previews, raw traces, ops logs
+Generated_Map_Space_v1/osm_cache/
+Generated_Map_Space_v1/previews/
+Generated_Map_Space_v1/downloaded_external_traces/raw/
+Generated_Map_Space_v1/downloaded_external_traces/processed/
+Generated_Map_Space_v1/ops/logs/
+Generated_Map_Space_v1/*.log
+
+# Legacy saturation pool paths (if present)
+map_space_saturation_v1/osm_cache/
+map_space_saturation_v1/previews/
+map_space_saturation_v1/**/raw_osm/
+map_space_revised_v2/osm_cache/
+map_space_revised_v2/previews/
+
+# Structural scenario explosion (millions of .settings)
+structural_scenario_space_v1/settings/

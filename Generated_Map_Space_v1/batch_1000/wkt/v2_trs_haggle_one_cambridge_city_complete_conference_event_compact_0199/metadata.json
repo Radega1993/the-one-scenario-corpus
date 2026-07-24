@@ -1,0 +1,62 @@
+{
+  "name": "v2_trs_haggle_one_cambridge_city_complete_conference_event_compact_0199",
+  "map_id": "v2_trs_haggle_one_cambridge_city_complete_conference_event_compact_0199",
+  "source": "trace_reference_synthetic",
+  "source_type": "trace_reference_synthetic",
+  "anchor_id": "cambridge_haggle",
+  "anchor_label": "haggle_one_cambridge_city_complete",
+  "archetype": "conference_event_compact",
+  "generator_type": "conference_event_compact",
+  "map_generator_type": "conference_event_compact",
+  "map_archetype": "conference_event_compact",
+  "crs": "local",
+  "network_type": "synthetic",
+  "world_size": [
+    600,
+    79
+  ],
+  "occupancy_margin_m": 50.0,
+  "world_size_policy": "sim_road_max_plus_50m_margin_per_axis",
+  "n_road_segments": 56,
+  "n_edges": 56,
+  "n_nodes": 42,
+  "generator_params": {
+    "hall_count": 3,
+    "rooms_per_hall": 6,
+    "corridor_width_m": 12,
+    "room_spacing_m": 25,
+    "inter_hall_gap_m": 50
+  },
+  "topology_flags": [
+    "compact_event"
+  ],
+  "n_components": 1,
+  "seed": 2399485737,
+  "created_at": "2026-07-23T15:22:25.429370+00:00",
+  "status": "generated",
+  "synthetic_validation": {
+    "n_nodes": 42,
+    "n_edges": 56,
+    "total_length_m": 1441.0,
+    "regeneration_attempts": 1
+  },
+  "trace_id": "haggle_one_cambridge_city_complete",
+  "parameter_extractor": "standard_events_contact_summary_v1",
+  "extracted_parameters": {
+    "extractor": "standard_events_contact_summary_v1",
+    "trace_id": "haggle_one_cambridge_city_complete",
+    "n_nodes": 52,
+    "events": 21746,
+    "contacts": 10873,
+    "ups": 10873,
+    "downs": 10873,
+    "up_down_balanced": true,
+    "duration_seconds": 987529,
+    "contact_duration_count": 9010,
+    "contact_duration_mean_s": 609.9981132075471,
+    "mean_degree_events": 418.1923076923077,
+    "density_proxy": 8.199849170437405,
+    "geometry_rule": "none_automatic; map via configured target_generators only"
+  },
+  "config_hash": "c0c7e010c39c414b"
+}

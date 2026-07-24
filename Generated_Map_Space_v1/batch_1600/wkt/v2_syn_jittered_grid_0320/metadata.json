@@ -1,0 +1,41 @@
+{
+  "name": "v2_syn_jittered_grid_0320",
+  "map_id": "v2_syn_jittered_grid_0320",
+  "source": "synthetic",
+  "source_type": "synthetic",
+  "anchor_id": null,
+  "anchor_label": null,
+  "archetype": "dense_urban_irregular",
+  "generator_type": "jittered_grid",
+  "map_generator_type": "jittered_grid",
+  "map_archetype": "dense_urban_irregular",
+  "crs": "local",
+  "network_type": "synthetic",
+  "world_size": [
+    370,
+    370
+  ],
+  "occupancy_margin_m": 50.0,
+  "world_size_policy": "sim_road_max_plus_50m_margin_per_axis",
+  "n_road_segments": 144,
+  "n_edges": 144,
+  "n_nodes": 81,
+  "generator_params": {
+    "grid_rows": 8,
+    "grid_cols": 8,
+    "block_size_m": 40,
+    "jitter_m": 0,
+    "diagonal_links": false
+  },
+  "topology_flags": null,
+  "n_components": 1,
+  "seed": 1880531432,
+  "created_at": "2026-07-23T15:23:18.756595+00:00",
+  "status": "generated",
+  "synthetic_validation": {
+    "n_nodes": 81,
+    "n_edges": 144,
+    "total_length_m": 5760.0,
+    "regeneration_attempts": 1
+  }
+}

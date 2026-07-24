@@ -1,0 +1,36 @@
+# Post-hoc STOP amendment for map_space_revised_v2 at planned ceiling N=2000.
+# Does NOT silently replace the original pre-registered protocol.
+# Apply only for re-decision after diagnostics (see docs/stop_diagnostics_ceiling_2000.md).
+
+map_saturation_protocol_amendment_ceiling_2000:
+  schema_version: "2.0-amendment"
+  status: post_hoc_documented
+  applies_to_protocol: map_saturation_protocol_revised_v2
+  parent_protocol_path: scenarios/Generated_Map_Space_v1/config/saturation_protocol.yaml
+  diagnostics_report: scenarios/Generated_Map_Space_v1/docs/stop_diagnostics_ceiling_2000.md
+  rationale: >
+    Original joint STOP fails at the coverage tail for two mechanical reasons:
+    (1) D95 relative-improvement ≈1 when D95 collapses to ~0;
+    (2) ΔC^(100) inflates raw gains on short final ladder steps (ΔN<100).
+    Critical strata show no persistent novelty at the end — TARGETED_EXPAND not indicated.
+    This amendment restores a defendable plateau STOP without further balanced expansion.
+
+  stop:
+    # Base (unchanged spirit)
+    coverage_C_eps_min: 0.98
+    delta_C_per_100_max: 0.005
+    d95_relative_improvement_max: 0.02
+    # Amendments
+    consecutive_steps_required: 2
+    d95_pass_if_leq_epsilon: true
+    delta_C_per_100_max_when_C_ge:
+      C_eps_min: 0.98
+      max: 0.02
+    min_step_size_for_delta_C_per_100: 100
+    use_raw_delta_C_when_step_below_min: true
+    raw_delta_C_max: 0.005
+
+  decision_if_stop:
+    gms_status: freeze_candidate
+    sms_status: unblocked_after_gms_freeze
+    label: STOP_AMENDED_CEILING_2000

@@ -1,0 +1,56 @@
+{
+  "name": "v2_osm_sf_mission_corridor_offset_n_1000m_1000m_0066",
+  "map_id": "v2_osm_sf_mission_corridor_offset_n_1000m_1000m_0066",
+  "source": "osm",
+  "source_type": "osm",
+  "anchor_id": "sf_mission_corridor",
+  "anchor_label": "San Francisco Mission Corridor",
+  "archetype": "corridor_linear",
+  "generator_type": null,
+  "map_generator_type": "corridor_linear",
+  "map_archetype": "corridor_linear",
+  "crs": "EPSG:32610",
+  "network_type": "drive",
+  "world_size": [
+    1039,
+    1026
+  ],
+  "occupancy_margin_m": 50.0,
+  "world_size_policy": "sim_road_max_plus_50m_margin_per_axis",
+  "n_road_segments": 286,
+  "n_edges": 286,
+  "n_nodes": 122,
+  "bbox_latlon": [
+    37.76249144412505,
+    -122.42068185959546,
+    37.77147455587496,
+    -122.40931814040455
+  ],
+  "bbox_m": [
+    551026.0410445031,
+    4179641.0850097477,
+    552014.8181304147,
+    4180616.1603869405
+  ],
+  "variant_type": "offset_n",
+  "anchor_distance_m": 1000.0,
+  "window_size_m": 1000.0,
+  "generator_params": {
+    "center_lat": 37.766983,
+    "center_lon": -122.415,
+    "width_m": 1000,
+    "height_m": 1000,
+    "variant_type": "offset_n",
+    "anchor_distance_m": 1000.0,
+    "window_size_m": 1000.0,
+    "osm_network_type": "drive",
+    "crs": "EPSG:32610",
+    "anchor_label": "San Francisco Mission Corridor",
+    "_allow_partitioned": false
+  },
+  "topology_flags": null,
+  "n_components": 1,
+  "seed": 845862172,
+  "created_at": "2026-07-23T08:47:22.088662+00:00",
+  "status": "generated"
+}

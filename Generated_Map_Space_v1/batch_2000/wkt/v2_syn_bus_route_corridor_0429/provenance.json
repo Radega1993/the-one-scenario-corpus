@@ -1,0 +1,17 @@
+{
+  "archetype": "bus_route_urban_suburban",
+  "builder": "synthetic",
+  "config_hash": "b38c7774d13a0b2f",
+  "generator_parameters": {
+    "corridor_length_m": 3000,
+    "corridor_width_m": 200,
+    "feeder_branch_prob": 0.0,
+    "n_parallel_lanes": 2,
+    "n_stops": 12
+  },
+  "generator_type": "bus_route_corridor",
+  "map_id": "v2_syn_bus_route_corridor_0429",
+  "seed": 585670902,
+  "source_type": "synthetic",
+  "trace_id": ""
+}

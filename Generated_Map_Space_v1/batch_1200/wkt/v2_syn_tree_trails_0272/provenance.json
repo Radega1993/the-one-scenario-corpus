@@ -1,0 +1,16 @@
+{
+  "archetype": "sparse_trails",
+  "builder": "synthetic",
+  "config_hash": "31b0b6ed3e012085",
+  "generator_parameters": {
+    "branch_factor": 2,
+    "depth": 3,
+    "edge_length_m": 80,
+    "trail_jitter_m": 0
+  },
+  "generator_type": "tree_trails",
+  "map_id": "v2_syn_tree_trails_0272",
+  "seed": 1181518498,
+  "source_type": "synthetic",
+  "trace_id": ""
+}

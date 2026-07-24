@@ -1,0 +1,35 @@
+{
+  "anchor_id": "cambridge_haggle",
+  "archetype": "conference_event_compact",
+  "builder": "trace_reference_synthetic",
+  "config_hash": "31b0b6ed3e012085",
+  "extracted_parameters": {
+    "contact_duration_count": 9010,
+    "contact_duration_mean_s": 609.9981132075471,
+    "contacts": 10873,
+    "density_proxy": 8.199849170437405,
+    "downs": 10873,
+    "duration_seconds": 987529,
+    "events": 21746,
+    "extractor": "standard_events_contact_summary_v1",
+    "geometry_rule": "none_automatic; map via configured target_generators only",
+    "mean_degree_events": 418.1923076923077,
+    "n_nodes": 52,
+    "trace_id": "haggle_one_cambridge_city_complete",
+    "up_down_balanced": true,
+    "ups": 10873
+  },
+  "generator_parameters": {
+    "corridor_width_m": 12,
+    "hall_count": 4,
+    "inter_hall_gap_m": 50,
+    "room_spacing_m": 25,
+    "rooms_per_hall": 8
+  },
+  "generator_type": "conference_event_compact",
+  "map_id": "v2_trs_haggle_one_cambridge_city_complete_conference_event_compact_0091",
+  "parameter_extractor": "standard_events_contact_summary_v1",
+  "seed": 2331399159,
+  "source_type": "trace_reference_synthetic",
+  "trace_id": "haggle_one_cambridge_city_complete"
+}

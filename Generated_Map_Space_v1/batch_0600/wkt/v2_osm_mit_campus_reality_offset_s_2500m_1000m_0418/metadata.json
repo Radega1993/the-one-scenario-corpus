@@ -1,0 +1,56 @@
+{
+  "name": "v2_osm_mit_campus_reality_offset_s_2500m_1000m_0418",
+  "map_id": "v2_osm_mit_campus_reality_offset_s_2500m_1000m_0418",
+  "source": "osm",
+  "source_type": "osm",
+  "anchor_id": "mit_campus_reality",
+  "anchor_label": "MIT Campus (Reality Mining)",
+  "archetype": "campus_compact",
+  "generator_type": null,
+  "map_generator_type": "campus_compact",
+  "map_archetype": "campus_compact",
+  "crs": "EPSG:32619",
+  "network_type": "all",
+  "world_size": [
+    2591,
+    2591
+  ],
+  "occupancy_margin_m": 50.0,
+  "world_size_policy": "sim_road_max_plus_50m_margin_per_axis",
+  "n_road_segments": 16406,
+  "n_edges": 16406,
+  "n_nodes": 5768,
+  "bbox_latlon": [
+    42.33978811031261,
+    -71.10519406013717,
+    42.36224588968739,
+    -71.07480593986284
+  ],
+  "bbox_m": [
+    326586.68818092975,
+    4689596.555984105,
+    329121.6206935427,
+    4692137.044374079
+  ],
+  "variant_type": "offset_s",
+  "anchor_distance_m": 1000.0,
+  "window_size_m": 2500.0,
+  "generator_params": {
+    "center_lat": 42.351017,
+    "center_lon": -71.09,
+    "width_m": 2500,
+    "height_m": 2500,
+    "variant_type": "offset_s",
+    "anchor_distance_m": 1000.0,
+    "window_size_m": 2500.0,
+    "osm_network_type": "all",
+    "crs": "EPSG:32619",
+    "anchor_label": "MIT Campus (Reality Mining)",
+    "_allow_partitioned": false
+  },
+  "topology_flags": null,
+  "n_components": 1,
+  "seed": 2650811165,
+  "created_at": "2026-07-23T13:07:46.246577+00:00",
+  "status": "generated"
+}

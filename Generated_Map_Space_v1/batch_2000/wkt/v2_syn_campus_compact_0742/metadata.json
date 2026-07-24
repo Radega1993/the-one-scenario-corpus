@@ -1,0 +1,15 @@
+{
+  "name": "v2_syn_campus_compact_0742",
+  "map_id": "v2_syn_campus_compact_0742",
+  "source_type": "synthetic",
+  "status": "failed",
+  "generation_status": "FAIL_BUILD_SYNTHETIC_DEGENERATE",
+  "error_notes": "too_few_nodes (18 < 20)",
+  "synthetic_validation": {
+    "n_nodes": 11,
+    "n_edges": 43,
+    "total_length_m": 7348.9,
+    "regeneration_attempts": 5,
+    "last_failure": "too_few_nodes (18 < 20)"
+  }
+}

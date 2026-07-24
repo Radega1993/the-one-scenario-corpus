@@ -1,0 +1,104 @@
+# Archetype × allowed source-type allocation (v2)
+
+# Roles per source: primary | supporting | optional | none
+# Global OSM/synthetic/TRS fractions in map_design_space_revised_v2.yaml are soft
+# engineering targets derived from / checked against this matrix — not a stopping rule.
+
+version: archetype_source_allocation_v2
+schema_version: "1.0"
+notes: |
+  Planner must not emit candidates for source_type=none on an archetype.
+  Primary sources should dominate fill order for that archetype; supporting/optional
+  may be used to meet soft global fractions and coverage floors.
+  min_candidates is a soft engineering floor when the source is allowed (primary/supporting/optional).
+
+archetypes:
+  urban_grid:
+    osm: {role: primary, min_candidates: 8}
+    synthetic: {role: supporting, min_candidates: 4}
+    trace_reference_synthetic: {role: none, min_candidates: 0}
+    rationale: Canonical vehicular grid; OSM Manhattan Midtown is the geographic gold standard; grid generator is the controlled counterpart.
+
+  dense_urban_irregular:
+    osm: {role: primary, min_candidates: 12}
+    synthetic: {role: supporting, min_candidates: 4}
+    trace_reference_synthetic: {role: none, min_candidates: 0}
+    rationale: Irregular urban cores (Helsinki, SF, Cambridge, Roma) are OSM-first; jittered_grid is supporting control.
+
+  campus_compact:
+    osm: {role: primary, min_candidates: 6}
+    synthetic: {role: supporting, min_candidates: 4}
+    trace_reference_synthetic: {role: supporting, min_candidates: 2}
+    rationale: Campus OSM (Kumpula, MIT) primary; LocShare/campus_compact TRS and synthetic campus generator supporting.
+
+  compact_residential:
+    osm: {role: primary, min_candidates: 4}
+    synthetic: {role: none, min_candidates: 0}
+    trace_reference_synthetic: {role: none, min_candidates: 0}
+    rationale: Kallio-style residential has no dedicated synthetic generator; OSM-only by design.
+
+  corridor_linear:
+    osm: {role: supporting, min_candidates: 4}
+    synthetic: {role: primary, min_candidates: 6}
+    trace_reference_synthetic: {role: supporting, min_candidates: 2}
+    rationale: RollerNet TRS + corridor generator are the contact-informed linear signal; SF Mission OSM supports geography.
+
+  bus_route_urban_suburban:
+    osm: {role: primary, min_candidates: 8}
+    synthetic: {role: supporting, min_candidates: 4}
+    trace_reference_synthetic: {role: none, min_candidates: 0}
+    rationale: DieselNet Amherst and Rio centro OSM are primary; bus_route_corridor synthetic supporting (high degenerate risk documented).
+
+  radial_city:
+    osm: {role: none, min_candidates: 0}
+    synthetic: {role: primary, min_candidates: 8}
+    trace_reference_synthetic: {role: none, min_candidates: 0}
+    rationale: Pure synthetic control archetype; no OSM/TRS claim of radial urban form.
+
+  hub_and_spoke:
+    osm: {role: none, min_candidates: 0}
+    synthetic: {role: primary, min_candidates: 8}
+    trace_reference_synthetic: {role: none, min_candidates: 0}
+    rationale: Pure synthetic hub topology; no geographic anchor assigned.
+
+  sparse_trails:
+    osm: {role: primary, min_candidates: 4}
+    synthetic: {role: supporting, min_candidates: 4}
+    trace_reference_synthetic: {role: none, min_candidates: 0}
+    rationale: Nuuksio OSM primary; tree_trails synthetic supporting.
+
+  rural_roads:
+    osm: {role: primary, min_candidates: 4}
+    synthetic: {role: supporting, min_candidates: 4}
+    trace_reference_synthetic: {role: supporting, min_candidates: 2}
+    rationale: Lapland OSM primary; Oviedo TRS→sparse_rural and sparse_rural generator supporting.
+
+  industrial_disrupted:
+    osm: {role: primary, min_candidates: 6}
+    synthetic: {role: supporting, min_candidates: 4}
+    trace_reference_synthetic: {role: supporting, min_candidates: 2}
+    rationale: Helsinki/London industrial OSM primary; Oviedo→disrupted_grid TRS and disrupted_grid synthetic supporting.
+
+  island_or_partitioned:
+    osm: {role: primary, min_candidates: 4}
+    synthetic: {role: supporting, min_candidates: 4}
+    trace_reference_synthetic: {role: supporting, min_candidates: 2}
+    rationale: Archipelago OSM primary; partitioned_bridge + Oviedo TRS supporting.
+
+  conference_event_compact:
+    osm: {role: optional, min_candidates: 0}
+    synthetic: {role: supporting, min_candidates: 4}
+    trace_reference_synthetic: {role: primary, min_candidates: 6}
+    rationale: Haggle/INFOCOM contact tradition; TRS primary; synthetic venue supporting; OSM optional (no venue floorplan).
+
+  clustered_communities:
+    osm: {role: optional, min_candidates: 0}
+    synthetic: {role: supporting, min_candidates: 4}
+    trace_reference_synthetic: {role: primary, min_candidates: 6}
+    rationale: Social-cluster signal from Haggle/Sassy/LocShare TRS; synthetic clusters supporting; OSM optional.
+
+  suburban_low_density:
+    osm: {role: primary, min_candidates: 4}
+    synthetic: {role: none, min_candidates: 0}
+    trace_reference_synthetic: {role: none, min_candidates: 0}
+    rationale: Tampere suburban OSM-only; no suburban synthetic generator in the 13-generator set.

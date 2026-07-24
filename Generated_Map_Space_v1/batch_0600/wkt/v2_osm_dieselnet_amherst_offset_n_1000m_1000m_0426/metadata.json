@@ -1,0 +1,56 @@
+{
+  "name": "v2_osm_dieselnet_amherst_offset_n_1000m_1000m_0426",
+  "map_id": "v2_osm_dieselnet_amherst_offset_n_1000m_1000m_0426",
+  "source": "osm",
+  "source_type": "osm",
+  "anchor_id": "dieselnet_amherst",
+  "anchor_label": "DieselNet / PVTA Amherst",
+  "archetype": "bus_route_urban_suburban",
+  "generator_type": null,
+  "map_generator_type": "bus_route_urban_suburban",
+  "map_archetype": "bus_route_urban_suburban",
+  "crs": "EPSG:32618",
+  "network_type": "drive",
+  "world_size": [
+    967,
+    832
+  ],
+  "occupancy_margin_m": 50.0,
+  "world_size_policy": "sim_road_max_plus_50m_margin_per_axis",
+  "n_road_segments": 46,
+  "n_edges": 46,
+  "n_nodes": 27,
+  "bbox_latlon": [
+    42.38449144412505,
+    -72.53108129866357,
+    42.39347455587496,
+    -72.51891870133645
+  ],
+  "bbox_m": [
+    703241.6980103438,
+    4695431.744450753,
+    704158.1417601603,
+    4696185.322859671
+  ],
+  "variant_type": "offset_n",
+  "anchor_distance_m": 1000.0,
+  "window_size_m": 1000.0,
+  "generator_params": {
+    "center_lat": 42.388983,
+    "center_lon": -72.525,
+    "width_m": 1000,
+    "height_m": 1000,
+    "variant_type": "offset_n",
+    "anchor_distance_m": 1000.0,
+    "window_size_m": 1000.0,
+    "osm_network_type": "drive",
+    "crs": "EPSG:32618",
+    "anchor_label": "DieselNet / PVTA Amherst",
+    "_allow_partitioned": false
+  },
+  "topology_flags": null,
+  "n_components": 1,
+  "seed": 3171663137,
+  "created_at": "2026-07-23T13:08:57.349761+00:00",
+  "status": "generated"
+}

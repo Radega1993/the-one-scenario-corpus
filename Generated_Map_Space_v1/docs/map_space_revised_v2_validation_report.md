@@ -1,0 +1,327 @@
+# map_space_saturation_validation_report
+
+- total_maps_validated: 2000
+
+## Resumen por batch
+
+- batch_0100: PASS=84 WARNING=0 STRESS=3 FAIL=13 -> usable_with_caution
+- batch_0200: PASS=96 WARNING=0 STRESS=0 FAIL=4 -> usable_for_features
+- batch_0400: PASS=188 WARNING=0 STRESS=0 FAIL=12 -> usable_for_features
+- batch_0600: PASS=188 WARNING=0 STRESS=0 FAIL=12 -> usable_for_features
+- batch_0800: PASS=190 WARNING=0 STRESS=0 FAIL=10 -> usable_for_features
+- batch_1000: PASS=182 WARNING=0 STRESS=12 FAIL=6 -> usable_for_features
+- batch_1200: PASS=178 WARNING=0 STRESS=22 FAIL=0 -> usable_for_features
+- batch_1600: PASS=319 WARNING=0 STRESS=40 FAIL=41 -> usable_with_caution
+- batch_2000: PASS=316 WARNING=0 STRESS=42 FAIL=42 -> usable_with_caution
+
+## Resumen por source_type
+
+- osm: PASS=847 WARNING=0 STRESS=0 FAIL=52
+- synthetic: PASS=629 WARNING=0 STRESS=81 FAIL=88
+- trace_reference_synthetic: PASS=265 WARNING=0 STRESS=38 FAIL=0
+
+## Resumen por archetype
+
+- bus_route_urban_suburban: PASS=127 WARNING=0 STRESS=0 FAIL=41
+- campus_compact: PASS=183 WARNING=0 STRESS=0 FAIL=19
+- clustered_communities: PASS=162 WARNING=0 STRESS=0 FAIL=0
+- compact_residential: PASS=53 WARNING=0 STRESS=0 FAIL=0
+- conference_event_compact: PASS=0 WARNING=0 STRESS=96 FAIL=0
+- corridor_linear: PASS=136 WARNING=0 STRESS=0 FAIL=11
+- dense_urban_irregular: PASS=273 WARNING=0 STRESS=0 FAIL=0
+- hub_and_spoke: PASS=61 WARNING=0 STRESS=0 FAIL=0
+- industrial_disrupted: PASS=201 WARNING=0 STRESS=0 FAIL=0
+- island_or_partitioned: PASS=148 WARNING=0 STRESS=0 FAIL=0
+- radial_city: PASS=50 WARNING=0 STRESS=0 FAIL=11
+- rural_roads: PASS=117 WARNING=0 STRESS=23 FAIL=8
+- sparse_trails: PASS=95 WARNING=0 STRESS=0 FAIL=19
+- suburban_low_density: PASS=32 WARNING=0 STRESS=0 FAIL=20
+- urban_grid: PASS=103 WARNING=0 STRESS=0 FAIL=11
+
+## Mapas FAIL y motivo
+
+- v2_osm_lapland_rural_sparse_offset_n_1000m_1500m_0211: generation_failed (FAIL_BUILD_OSM)
+- v2_osm_lapland_rural_sparse_offset_n_1000m_1500m_0551: generation_failed (FAIL_BUILD_OSM)
+- v2_osm_manhattan_midtown_exact_500m_0m_0060: generation_failed (FAIL_BUILD_OSM)
+- v2_osm_manhattan_midtown_exact_500m_0m_0145: generation_failed (FAIL_BUILD_OSM)
+- v2_osm_manhattan_midtown_exact_500m_0m_0230: generation_failed (FAIL_BUILD_OSM)
+- v2_osm_manhattan_midtown_exact_500m_0m_0315: generation_failed (FAIL_BUILD_OSM)
+- v2_osm_manhattan_midtown_exact_500m_0m_0400: generation_failed (FAIL_BUILD_OSM)
+- v2_osm_manhattan_midtown_exact_500m_0m_0485: generation_failed (FAIL_BUILD_OSM)
+- v2_osm_manhattan_midtown_exact_500m_0m_0570: generation_failed (FAIL_BUILD_OSM)
+- v2_osm_manhattan_midtown_exact_500m_0m_0655: generation_failed (FAIL_BUILD_OSM)
+- v2_osm_manhattan_midtown_exact_500m_0m_0740: generation_failed (FAIL_BUILD_OSM)
+- v2_osm_manhattan_midtown_exact_500m_0m_0825: generation_failed (FAIL_BUILD_OSM)
+- v2_osm_manhattan_midtown_exact_500m_0m_seed: generation_failed (FAIL_BUILD_OSM)
+- v2_osm_nuuksio_sparse_trails_exact_500m_0m_0045: generation_failed (FAIL_BUILD_OSM)
+- v2_osm_nuuksio_sparse_trails_exact_500m_0m_0130: generation_failed (FAIL_BUILD_OSM)
+- v2_osm_nuuksio_sparse_trails_exact_500m_0m_0215: generation_failed (FAIL_BUILD_OSM)
+- v2_osm_nuuksio_sparse_trails_exact_500m_0m_0300: generation_failed (FAIL_BUILD_OSM)
+- v2_osm_nuuksio_sparse_trails_exact_500m_0m_0385: generation_failed (FAIL_BUILD_OSM)
+- v2_osm_nuuksio_sparse_trails_exact_500m_0m_0470: generation_failed (FAIL_BUILD_OSM)
+- v2_osm_nuuksio_sparse_trails_exact_500m_0m_0555: generation_failed (FAIL_BUILD_OSM)
+- v2_osm_nuuksio_sparse_trails_exact_500m_0m_0640: generation_failed (FAIL_BUILD_OSM)
+- v2_osm_nuuksio_sparse_trails_exact_500m_0m_0725: generation_failed (FAIL_BUILD_OSM)
+- v2_osm_nuuksio_sparse_trails_exact_500m_0m_0810: generation_failed (FAIL_BUILD_OSM)
+- v2_osm_nuuksio_sparse_trails_exact_500m_0m_seed: generation_failed (FAIL_BUILD_OSM)
+- v2_osm_nuuksio_sparse_trails_offset_n_1000m_1000m_0266: generation_failed (FAIL_BUILD_OSM)
+- v2_osm_nuuksio_sparse_trails_offset_n_1000m_1000m_0606: generation_failed (FAIL_BUILD_OSM)
+- v2_osm_nuuksio_sparse_trails_offset_n_1000m_1500m_0011: generation_failed (FAIL_BUILD_OSM)
+- v2_osm_nuuksio_sparse_trails_offset_n_1000m_1500m_0351: generation_failed (FAIL_BUILD_OSM)
+- v2_osm_nuuksio_sparse_trails_offset_n_1000m_1500m_0691: generation_failed (FAIL_BUILD_OSM)
+- v2_osm_nuuksio_sparse_trails_offset_n_1000m_500m_0181: generation_failed (FAIL_BUILD_OSM)
+- v2_osm_nuuksio_sparse_trails_offset_n_1000m_500m_0521: generation_failed (FAIL_BUILD_OSM)
+- v2_osm_nuuksio_sparse_trails_offset_n_1000m_500m_0861: generation_failed (FAIL_BUILD_OSM)
+- v2_osm_tampere_suburban_exact_500m_0m_0050: generation_failed (FAIL_BUILD_OSM)
+- v2_osm_tampere_suburban_exact_500m_0m_0135: generation_failed (FAIL_BUILD_OSM)
+- v2_osm_tampere_suburban_exact_500m_0m_0220: generation_failed (FAIL_BUILD_OSM)
+- v2_osm_tampere_suburban_exact_500m_0m_0305: generation_failed (FAIL_BUILD_OSM)
+- v2_osm_tampere_suburban_exact_500m_0m_0390: generation_failed (FAIL_BUILD_OSM)
+- v2_osm_tampere_suburban_exact_500m_0m_0475: generation_failed (FAIL_BUILD_OSM)
+- v2_osm_tampere_suburban_exact_500m_0m_0560: generation_failed (FAIL_BUILD_OSM)
+- v2_osm_tampere_suburban_exact_500m_0m_0645: generation_failed (FAIL_BUILD_OSM)
+- v2_osm_tampere_suburban_exact_500m_0m_0730: generation_failed (FAIL_BUILD_OSM)
+- v2_osm_tampere_suburban_exact_500m_0m_0815: generation_failed (FAIL_BUILD_OSM)
+- v2_osm_tampere_suburban_exact_500m_0m_seed: generation_failed (FAIL_BUILD_OSM)
+- v2_osm_tampere_suburban_offset_n_1000m_1000m_0186: generation_failed (FAIL_BUILD_OSM)
+- v2_osm_tampere_suburban_offset_n_1000m_1000m_0526: generation_failed (FAIL_BUILD_OSM)
+- v2_osm_tampere_suburban_offset_n_1000m_1000m_0866: generation_failed (FAIL_BUILD_OSM)
+- v2_osm_tampere_suburban_offset_n_1000m_200m_0016: generation_failed (FAIL_BUILD_OSM)
+- v2_osm_tampere_suburban_offset_n_1000m_200m_0356: generation_failed (FAIL_BUILD_OSM)
+- v2_osm_tampere_suburban_offset_n_1000m_200m_0696: generation_failed (FAIL_BUILD_OSM)
+- v2_osm_tampere_suburban_offset_n_1000m_500m_0101: generation_failed (FAIL_BUILD_OSM)
+- v2_osm_tampere_suburban_offset_n_1000m_500m_0441: generation_failed (FAIL_BUILD_OSM)
+- v2_osm_tampere_suburban_offset_n_1000m_500m_0781: generation_failed (FAIL_BUILD_OSM)
+- v2_syn_bus_route_corridor_0000: generation_failed (FAIL_BUILD_SYNTHETIC_DEGENERATE)
+- v2_syn_bus_route_corridor_0026: generation_failed (FAIL_BUILD_SYNTHETIC_DEGENERATE)
+- v2_syn_bus_route_corridor_0052: generation_failed (FAIL_BUILD_SYNTHETIC_DEGENERATE)
+- v2_syn_bus_route_corridor_0065: generation_failed (FAIL_BUILD_SYNTHETIC_DEGENERATE)
+- v2_syn_bus_route_corridor_0078: generation_failed (FAIL_BUILD_SYNTHETIC_DEGENERATE)
+- v2_syn_bus_route_corridor_0091: generation_failed (FAIL_BUILD_SYNTHETIC_DEGENERATE)
+- v2_syn_bus_route_corridor_0130: generation_failed (FAIL_BUILD_SYNTHETIC_DEGENERATE)
+- v2_syn_bus_route_corridor_0156: generation_failed (FAIL_BUILD_SYNTHETIC_DEGENERATE)
+- v2_syn_bus_route_corridor_0182: generation_failed (FAIL_BUILD_SYNTHETIC_DEGENERATE)
+- v2_syn_bus_route_corridor_0195: generation_failed (FAIL_BUILD_SYNTHETIC_DEGENERATE)
+- v2_syn_bus_route_corridor_0208: generation_failed (FAIL_BUILD_SYNTHETIC_DEGENERATE)
+- v2_syn_bus_route_corridor_0234: generation_failed (FAIL_BUILD_SYNTHETIC_DEGENERATE)
+- v2_syn_bus_route_corridor_0260: generation_failed (FAIL_BUILD_SYNTHETIC_DEGENERATE)
+- v2_syn_bus_route_corridor_0286: generation_failed (FAIL_BUILD_SYNTHETIC_DEGENERATE)
+- v2_syn_bus_route_corridor_0312: generation_failed (FAIL_BUILD_SYNTHETIC_DEGENERATE)
+- v2_syn_bus_route_corridor_0325: generation_failed (FAIL_BUILD_SYNTHETIC_DEGENERATE)
+- v2_syn_bus_route_corridor_0338: generation_failed (FAIL_BUILD_SYNTHETIC_DEGENERATE)
+- v2_syn_bus_route_corridor_0351: generation_failed (FAIL_BUILD_SYNTHETIC_DEGENERATE)
+- v2_syn_bus_route_corridor_0364: generation_failed (FAIL_BUILD_SYNTHETIC_DEGENERATE)
+- v2_syn_bus_route_corridor_0390: generation_failed (FAIL_BUILD_SYNTHETIC_DEGENERATE)
+- v2_syn_bus_route_corridor_0416: generation_failed (FAIL_BUILD_SYNTHETIC_DEGENERATE)
+- v2_syn_bus_route_corridor_0442: generation_failed (FAIL_BUILD_SYNTHETIC_DEGENERATE)
+- v2_syn_bus_route_corridor_0455: generation_failed (FAIL_BUILD_SYNTHETIC_DEGENERATE)
+- v2_syn_bus_route_corridor_0468: generation_failed (FAIL_BUILD_SYNTHETIC_DEGENERATE)
+- v2_syn_bus_route_corridor_0481: generation_failed (FAIL_BUILD_SYNTHETIC_DEGENERATE)
+- v2_syn_bus_route_corridor_0494: generation_failed (FAIL_BUILD_SYNTHETIC_DEGENERATE)
+- v2_syn_bus_route_corridor_0520: generation_failed (FAIL_BUILD_SYNTHETIC_DEGENERATE)
+- v2_syn_bus_route_corridor_0546: generation_failed (FAIL_BUILD_SYNTHETIC_DEGENERATE)
+- v2_syn_bus_route_corridor_0572: generation_failed (FAIL_BUILD_SYNTHETIC_DEGENERATE)
+- v2_syn_bus_route_corridor_0585: generation_failed (FAIL_BUILD_SYNTHETIC_DEGENERATE)
+- v2_syn_bus_route_corridor_0598: generation_failed (FAIL_BUILD_SYNTHETIC_DEGENERATE)
+- v2_syn_bus_route_corridor_0624: generation_failed (FAIL_BUILD_SYNTHETIC_DEGENERATE)
+- v2_syn_bus_route_corridor_0650: generation_failed (FAIL_BUILD_SYNTHETIC_DEGENERATE)
+- v2_syn_bus_route_corridor_0676: generation_failed (FAIL_BUILD_SYNTHETIC_DEGENERATE)
+- v2_syn_bus_route_corridor_0702: generation_failed (FAIL_BUILD_SYNTHETIC_DEGENERATE)
+- v2_syn_bus_route_corridor_0715: generation_failed (FAIL_BUILD_SYNTHETIC_DEGENERATE)
+- v2_syn_bus_route_corridor_0728: generation_failed (FAIL_BUILD_SYNTHETIC_DEGENERATE)
+- v2_syn_bus_route_corridor_0741: generation_failed (FAIL_BUILD_SYNTHETIC_DEGENERATE)
+- v2_syn_bus_route_corridor_0754: generation_failed (FAIL_BUILD_SYNTHETIC_DEGENERATE)
+- v2_syn_bus_route_corridor_0780: generation_failed (FAIL_BUILD_SYNTHETIC_DEGENERATE)
+- v2_syn_bus_route_corridor_seed: generation_failed (FAIL_BUILD_SYNTHETIC_DEGENERATE)
+- v2_syn_campus_compact_0040: generation_failed (FAIL_BUILD_SYNTHETIC_DEGENERATE)
+- v2_syn_campus_compact_0066: generation_failed (FAIL_BUILD_SYNTHETIC_DEGENERATE)
+- v2_syn_campus_compact_0092: generation_failed (FAIL_BUILD_SYNTHETIC_DEGENERATE)
+- v2_syn_campus_compact_0170: generation_failed (FAIL_BUILD_SYNTHETIC_DEGENERATE)
+- v2_syn_campus_compact_0196: generation_failed (FAIL_BUILD_SYNTHETIC_DEGENERATE)
+- v2_syn_campus_compact_0222: generation_failed (FAIL_BUILD_SYNTHETIC_DEGENERATE)
+- v2_syn_campus_compact_0300: generation_failed (FAIL_BUILD_SYNTHETIC_DEGENERATE)
+- v2_syn_campus_compact_0326: generation_failed (FAIL_BUILD_SYNTHETIC_DEGENERATE)
+- v2_syn_campus_compact_0352: generation_failed (FAIL_BUILD_SYNTHETIC_DEGENERATE)
+- v2_syn_campus_compact_0430: generation_failed (FAIL_BUILD_SYNTHETIC_DEGENERATE)
+- v2_syn_campus_compact_0456: generation_failed (FAIL_BUILD_SYNTHETIC_DEGENERATE)
+- v2_syn_campus_compact_0482: generation_failed (FAIL_BUILD_SYNTHETIC_DEGENERATE)
+- v2_syn_campus_compact_0560: generation_failed (FAIL_BUILD_SYNTHETIC_DEGENERATE)
+- v2_syn_campus_compact_0586: generation_failed (FAIL_BUILD_SYNTHETIC_DEGENERATE)
+- v2_syn_campus_compact_0612: generation_failed (FAIL_BUILD_SYNTHETIC_DEGENERATE)
+- v2_syn_campus_compact_0690: generation_failed (FAIL_BUILD_SYNTHETIC_DEGENERATE)
+- v2_syn_campus_compact_0716: generation_failed (FAIL_BUILD_SYNTHETIC_DEGENERATE)
+- v2_syn_campus_compact_0742: generation_failed (FAIL_BUILD_SYNTHETIC_DEGENERATE)
+- v2_syn_campus_compact_seed: generation_failed (FAIL_BUILD_SYNTHETIC_DEGENERATE)
+- v2_syn_corridor_0030: generation_failed (FAIL_BUILD_SYNTHETIC_DEGENERATE)
+- v2_syn_corridor_0108: generation_failed (FAIL_BUILD_SYNTHETIC_DEGENERATE)
+- v2_syn_corridor_0186: generation_failed (FAIL_BUILD_SYNTHETIC_DEGENERATE)
+- v2_syn_corridor_0264: generation_failed (FAIL_BUILD_SYNTHETIC_DEGENERATE)
+- v2_syn_corridor_0342: generation_failed (FAIL_BUILD_SYNTHETIC_DEGENERATE)
+- v2_syn_corridor_0420: generation_failed (FAIL_BUILD_SYNTHETIC_DEGENERATE)
+- v2_syn_corridor_0498: generation_failed (FAIL_BUILD_SYNTHETIC_DEGENERATE)
+- v2_syn_corridor_0576: generation_failed (FAIL_BUILD_SYNTHETIC_DEGENERATE)
+- v2_syn_corridor_0654: generation_failed (FAIL_BUILD_SYNTHETIC_DEGENERATE)
+- v2_syn_corridor_0732: generation_failed (FAIL_BUILD_SYNTHETIC_DEGENERATE)
+- v2_syn_corridor_seed: generation_failed (FAIL_BUILD_SYNTHETIC_DEGENERATE)
+- v2_syn_radial_city_0036: generation_failed (FAIL_BUILD_SYNTHETIC_DEGENERATE)
+- v2_syn_radial_city_0114: generation_failed (FAIL_BUILD_SYNTHETIC_DEGENERATE)
+- v2_syn_radial_city_0192: generation_failed (FAIL_BUILD_SYNTHETIC_DEGENERATE)
+- v2_syn_radial_city_0270: generation_failed (FAIL_BUILD_SYNTHETIC_DEGENERATE)
+- v2_syn_radial_city_0348: generation_failed (FAIL_BUILD_SYNTHETIC_DEGENERATE)
+- v2_syn_radial_city_0426: generation_failed (FAIL_BUILD_SYNTHETIC_DEGENERATE)
+- v2_syn_radial_city_0504: generation_failed (FAIL_BUILD_SYNTHETIC_DEGENERATE)
+- v2_syn_radial_city_0582: generation_failed (FAIL_BUILD_SYNTHETIC_DEGENERATE)
+- v2_syn_radial_city_0660: generation_failed (FAIL_BUILD_SYNTHETIC_DEGENERATE)
+- v2_syn_radial_city_0738: generation_failed (FAIL_BUILD_SYNTHETIC_DEGENERATE)
+- v2_syn_radial_city_seed: generation_failed (FAIL_BUILD_SYNTHETIC_DEGENERATE)
+- v2_syn_sparse_rural_0154: other (n_nodes=19 < 20)
+- v2_syn_sparse_rural_0245: other;disconnected_unmarked (n_nodes=17 < 20 | multi_component_unmarked n_components=2)
+- v2_syn_sparse_rural_0336: generation_failed (FAIL_BUILD_SYNTHETIC_DEGENERATE)
+- v2_syn_sparse_rural_0609: other (n_nodes=18 < 20)
+- v2_syn_sparse_rural_0700: other (n_nodes=17 < 20)
+- v2_syn_sparse_rural_seed: other;disconnected_unmarked (n_nodes=16 < 20 | multi_component_unmarked n_components=2)
+
+## Mapas WARNING/STRESS
+
+- v2_syn_conference_event_compact_0003 [STRESS]: disconnected_unmarked (multi_component_unmarked n_components=6)
+- v2_syn_conference_event_compact_0016 [STRESS]: disconnected_unmarked (multi_component_unmarked n_components=3)
+- v2_syn_conference_event_compact_0029 [STRESS]: disconnected_unmarked (multi_component_unmarked n_components=4)
+- v2_syn_conference_event_compact_0042 [STRESS]: disconnected_unmarked (multi_component_unmarked n_components=5)
+- v2_syn_conference_event_compact_0055 [STRESS]: disconnected_unmarked (multi_component_unmarked n_components=6)
+- v2_syn_conference_event_compact_0068 [STRESS]: disconnected_unmarked (multi_component_unmarked n_components=3)
+- v2_syn_conference_event_compact_0081 [STRESS]: disconnected_unmarked (multi_component_unmarked n_components=4)
+- v2_syn_conference_event_compact_0094 [STRESS]: disconnected_unmarked (multi_component_unmarked n_components=5)
+- v2_syn_conference_event_compact_0107 [STRESS]: disconnected_unmarked (multi_component_unmarked n_components=6)
+- v2_syn_conference_event_compact_0120 [STRESS]: disconnected_unmarked (multi_component_unmarked n_components=3)
+- v2_syn_conference_event_compact_0133 [STRESS]: disconnected_unmarked (multi_component_unmarked n_components=4)
+- v2_syn_conference_event_compact_0146 [STRESS]: disconnected_unmarked (multi_component_unmarked n_components=5)
+- v2_syn_conference_event_compact_0159 [STRESS]: disconnected_unmarked (multi_component_unmarked n_components=6)
+- v2_syn_conference_event_compact_0172 [STRESS]: disconnected_unmarked (multi_component_unmarked n_components=3)
+- v2_syn_conference_event_compact_0185 [STRESS]: disconnected_unmarked (multi_component_unmarked n_components=4)
+- v2_syn_conference_event_compact_0198 [STRESS]: disconnected_unmarked (multi_component_unmarked n_components=5)
+- v2_syn_conference_event_compact_0211 [STRESS]: disconnected_unmarked (multi_component_unmarked n_components=6)
+- v2_syn_conference_event_compact_0224 [STRESS]: disconnected_unmarked (multi_component_unmarked n_components=3)
+- v2_syn_conference_event_compact_0237 [STRESS]: disconnected_unmarked (multi_component_unmarked n_components=4)
+- v2_syn_conference_event_compact_0250 [STRESS]: disconnected_unmarked (multi_component_unmarked n_components=5)
+- v2_syn_conference_event_compact_0263 [STRESS]: disconnected_unmarked (multi_component_unmarked n_components=6)
+- v2_syn_conference_event_compact_0276 [STRESS]: disconnected_unmarked (multi_component_unmarked n_components=3)
+- v2_syn_conference_event_compact_0289 [STRESS]: disconnected_unmarked (multi_component_unmarked n_components=4)
+- v2_syn_conference_event_compact_0302 [STRESS]: disconnected_unmarked (multi_component_unmarked n_components=5)
+- v2_syn_conference_event_compact_0315 [STRESS]: disconnected_unmarked (multi_component_unmarked n_components=6)
+- v2_syn_conference_event_compact_0328 [STRESS]: disconnected_unmarked (multi_component_unmarked n_components=3)
+- v2_syn_conference_event_compact_0341 [STRESS]: disconnected_unmarked (multi_component_unmarked n_components=4)
+- v2_syn_conference_event_compact_0354 [STRESS]: disconnected_unmarked (multi_component_unmarked n_components=5)
+- v2_syn_conference_event_compact_0367 [STRESS]: disconnected_unmarked (multi_component_unmarked n_components=6)
+- v2_syn_conference_event_compact_0380 [STRESS]: disconnected_unmarked (multi_component_unmarked n_components=3)
+- v2_syn_conference_event_compact_0393 [STRESS]: disconnected_unmarked (multi_component_unmarked n_components=4)
+- v2_syn_conference_event_compact_0406 [STRESS]: disconnected_unmarked (multi_component_unmarked n_components=5)
+- v2_syn_conference_event_compact_0419 [STRESS]: disconnected_unmarked (multi_component_unmarked n_components=6)
+- v2_syn_conference_event_compact_0432 [STRESS]: disconnected_unmarked (multi_component_unmarked n_components=3)
+- v2_syn_conference_event_compact_0445 [STRESS]: disconnected_unmarked (multi_component_unmarked n_components=4)
+- v2_syn_conference_event_compact_0458 [STRESS]: disconnected_unmarked (multi_component_unmarked n_components=5)
+- v2_syn_conference_event_compact_0471 [STRESS]: disconnected_unmarked (multi_component_unmarked n_components=6)
+- v2_syn_conference_event_compact_0484 [STRESS]: disconnected_unmarked (multi_component_unmarked n_components=3)
+- v2_syn_conference_event_compact_0497 [STRESS]: disconnected_unmarked (multi_component_unmarked n_components=4)
+- v2_syn_conference_event_compact_0510 [STRESS]: disconnected_unmarked (multi_component_unmarked n_components=5)
+- v2_syn_conference_event_compact_0523 [STRESS]: disconnected_unmarked (multi_component_unmarked n_components=6)
+- v2_syn_conference_event_compact_0536 [STRESS]: disconnected_unmarked (multi_component_unmarked n_components=3)
+- v2_syn_conference_event_compact_0549 [STRESS]: disconnected_unmarked (multi_component_unmarked n_components=4)
+- v2_syn_conference_event_compact_0562 [STRESS]: disconnected_unmarked (multi_component_unmarked n_components=5)
+- v2_syn_conference_event_compact_0575 [STRESS]: disconnected_unmarked (multi_component_unmarked n_components=6)
+- v2_syn_conference_event_compact_0588 [STRESS]: disconnected_unmarked (multi_component_unmarked n_components=3)
+- v2_syn_conference_event_compact_0601 [STRESS]: disconnected_unmarked (multi_component_unmarked n_components=4)
+- v2_syn_conference_event_compact_0614 [STRESS]: disconnected_unmarked (multi_component_unmarked n_components=5)
+- v2_syn_conference_event_compact_0627 [STRESS]: disconnected_unmarked (multi_component_unmarked n_components=6)
+- v2_syn_conference_event_compact_0640 [STRESS]: disconnected_unmarked (multi_component_unmarked n_components=3)
+- v2_syn_conference_event_compact_0653 [STRESS]: disconnected_unmarked (multi_component_unmarked n_components=4)
+- v2_syn_conference_event_compact_0666 [STRESS]: disconnected_unmarked (multi_component_unmarked n_components=5)
+- v2_syn_conference_event_compact_0679 [STRESS]: disconnected_unmarked (multi_component_unmarked n_components=6)
+- v2_syn_conference_event_compact_0692 [STRESS]: disconnected_unmarked (multi_component_unmarked n_components=3)
+- v2_syn_conference_event_compact_0705 [STRESS]: disconnected_unmarked (multi_component_unmarked n_components=4)
+- v2_syn_conference_event_compact_0718 [STRESS]: disconnected_unmarked (multi_component_unmarked n_components=5)
+- v2_syn_conference_event_compact_0731 [STRESS]: disconnected_unmarked (multi_component_unmarked n_components=6)
+- v2_syn_conference_event_compact_0744 [STRESS]: disconnected_unmarked (multi_component_unmarked n_components=3)
+- v2_syn_conference_event_compact_0757 [STRESS]: disconnected_unmarked (multi_component_unmarked n_components=4)
+- v2_syn_conference_event_compact_0770 [STRESS]: disconnected_unmarked (multi_component_unmarked n_components=5)
+- v2_syn_conference_event_compact_0783 [STRESS]: disconnected_unmarked (multi_component_unmarked n_components=6)
+- v2_syn_conference_event_compact_seed [STRESS]: disconnected_unmarked (multi_component_unmarked n_components=3)
+- v2_syn_sparse_rural_0024 [STRESS]: disconnected_unmarked (multi_component_unmarked n_components=6)
+- v2_syn_sparse_rural_0037 [STRESS]: disconnected_unmarked (multi_component_unmarked n_components=6)
+- v2_syn_sparse_rural_0076 [STRESS]: disconnected_unmarked (multi_component_unmarked n_components=12)
+- v2_syn_sparse_rural_0089 [STRESS]: disconnected_unmarked (multi_component_unmarked n_components=5)
+- v2_syn_sparse_rural_0128 [STRESS]: disconnected_unmarked (multi_component_unmarked n_components=6)
+- v2_syn_sparse_rural_0180 [STRESS]: disconnected_unmarked (multi_component_unmarked n_components=11)
+- v2_syn_sparse_rural_0193 [STRESS]: disconnected_unmarked (multi_component_unmarked n_components=5)
+- v2_syn_sparse_rural_0232 [STRESS]: disconnected_unmarked (multi_component_unmarked n_components=3)
+- v2_syn_sparse_rural_0388 [STRESS]: disconnected_unmarked (multi_component_unmarked n_components=8)
+- v2_syn_sparse_rural_0440 [STRESS]: disconnected_unmarked (multi_component_unmarked n_components=3)
+- v2_syn_sparse_rural_0453 [STRESS]: disconnected_unmarked (multi_component_unmarked n_components=5)
+- v2_syn_sparse_rural_0492 [STRESS]: disconnected_unmarked (multi_component_unmarked n_components=6)
+- v2_syn_sparse_rural_0544 [STRESS]: disconnected_unmarked (multi_component_unmarked n_components=12)
+- v2_syn_sparse_rural_0557 [STRESS]: disconnected_unmarked (multi_component_unmarked n_components=5)
+- v2_syn_sparse_rural_0570 [STRESS]: disconnected_unmarked (multi_component_unmarked n_components=2)
+- v2_syn_sparse_rural_0596 [STRESS]: disconnected_unmarked (multi_component_unmarked n_components=7)
+- v2_syn_sparse_rural_0648 [STRESS]: disconnected_unmarked (multi_component_unmarked n_components=9)
+- v2_syn_sparse_rural_0752 [STRESS]: disconnected_unmarked (multi_component_unmarked n_components=10)
+- v2_syn_sparse_rural_0765 [STRESS]: disconnected_unmarked (multi_component_unmarked n_components=3)
+- v2_trs_haggle_one_cambridge_city_complete_conference_event_compact_0001 [STRESS]: disconnected_unmarked (multi_component_unmarked n_components=4)
+- v2_trs_haggle_one_cambridge_city_complete_conference_event_compact_0010 [STRESS]: disconnected_unmarked (multi_component_unmarked n_components=4)
+- v2_trs_haggle_one_cambridge_city_complete_conference_event_compact_0019 [STRESS]: disconnected_unmarked (multi_component_unmarked n_components=4)
+- v2_trs_haggle_one_cambridge_city_complete_conference_event_compact_0028 [STRESS]: disconnected_unmarked (multi_component_unmarked n_components=4)
+- v2_trs_haggle_one_cambridge_city_complete_conference_event_compact_0037 [STRESS]: disconnected_unmarked (multi_component_unmarked n_components=4)
+- v2_trs_haggle_one_cambridge_city_complete_conference_event_compact_0046 [STRESS]: disconnected_unmarked (multi_component_unmarked n_components=4)
+- v2_trs_haggle_one_cambridge_city_complete_conference_event_compact_0055 [STRESS]: disconnected_unmarked (multi_component_unmarked n_components=4)
+- v2_trs_haggle_one_cambridge_city_complete_conference_event_compact_0064 [STRESS]: disconnected_unmarked (multi_component_unmarked n_components=4)
+- v2_trs_haggle_one_cambridge_city_complete_conference_event_compact_0073 [STRESS]: disconnected_unmarked (multi_component_unmarked n_components=4)
+- v2_trs_haggle_one_cambridge_city_complete_conference_event_compact_0082 [STRESS]: disconnected_unmarked (multi_component_unmarked n_components=4)
+- v2_trs_haggle_one_cambridge_city_complete_conference_event_compact_0091 [STRESS]: disconnected_unmarked (multi_component_unmarked n_components=4)
+- v2_trs_haggle_one_cambridge_city_complete_conference_event_compact_0100 [STRESS]: disconnected_unmarked (multi_component_unmarked n_components=4)
+- v2_trs_haggle_one_cambridge_city_complete_conference_event_compact_0109 [STRESS]: disconnected_unmarked (multi_component_unmarked n_components=4)
+- v2_trs_haggle_one_cambridge_city_complete_conference_event_compact_0118 [STRESS]: disconnected_unmarked (multi_component_unmarked n_components=4)
+- v2_trs_haggle_one_cambridge_city_complete_conference_event_compact_0127 [STRESS]: disconnected_unmarked (multi_component_unmarked n_components=4)
+- v2_trs_haggle_one_cambridge_city_complete_conference_event_compact_0136 [STRESS]: disconnected_unmarked (multi_component_unmarked n_components=4)
+- v2_trs_haggle_one_cambridge_city_complete_conference_event_compact_0145 [STRESS]: disconnected_unmarked (multi_component_unmarked n_components=4)
+- v2_trs_haggle_one_cambridge_city_complete_conference_event_compact_0154 [STRESS]: disconnected_unmarked (multi_component_unmarked n_components=4)
+- v2_trs_haggle_one_cambridge_city_complete_conference_event_compact_0163 [STRESS]: disconnected_unmarked (multi_component_unmarked n_components=4)
+- v2_trs_haggle_one_cambridge_city_complete_conference_event_compact_0172 [STRESS]: disconnected_unmarked (multi_component_unmarked n_components=4)
+- v2_trs_haggle_one_cambridge_city_complete_conference_event_compact_0181 [STRESS]: disconnected_unmarked (multi_component_unmarked n_components=4)
+- v2_trs_haggle_one_cambridge_city_complete_conference_event_compact_0190 [STRESS]: disconnected_unmarked (multi_component_unmarked n_components=4)
+- v2_trs_haggle_one_cambridge_city_complete_conference_event_compact_0199 [STRESS]: disconnected_unmarked (multi_component_unmarked n_components=4)
+- v2_trs_haggle_one_cambridge_city_complete_conference_event_compact_0208 [STRESS]: disconnected_unmarked (multi_component_unmarked n_components=4)
+- v2_trs_haggle_one_cambridge_city_complete_conference_event_compact_0217 [STRESS]: disconnected_unmarked (multi_component_unmarked n_components=4)
+- v2_trs_haggle_one_cambridge_city_complete_conference_event_compact_0226 [STRESS]: disconnected_unmarked (multi_component_unmarked n_components=4)
+- v2_trs_haggle_one_cambridge_city_complete_conference_event_compact_0235 [STRESS]: disconnected_unmarked (multi_component_unmarked n_components=4)
+- v2_trs_haggle_one_cambridge_city_complete_conference_event_compact_0244 [STRESS]: disconnected_unmarked (multi_component_unmarked n_components=4)
+- v2_trs_haggle_one_cambridge_city_complete_conference_event_compact_0253 [STRESS]: disconnected_unmarked (multi_component_unmarked n_components=4)
+- v2_trs_haggle_one_cambridge_city_complete_conference_event_compact_0262 [STRESS]: disconnected_unmarked (multi_component_unmarked n_components=4)
+- v2_trs_haggle_one_cambridge_city_complete_conference_event_compact_0271 [STRESS]: disconnected_unmarked (multi_component_unmarked n_components=4)
+- v2_trs_haggle_one_cambridge_city_complete_conference_event_compact_0280 [STRESS]: disconnected_unmarked (multi_component_unmarked n_components=4)
+- v2_trs_haggle_one_cambridge_city_complete_conference_event_compact_0289 [STRESS]: disconnected_unmarked (multi_component_unmarked n_components=4)
+- v2_trs_haggle_one_cambridge_city_complete_conference_event_compact_seed [STRESS]: disconnected_unmarked (multi_component_unmarked n_components=5)
+- v2_trs_oviedo_asturies_er_20160808_sparse_rural_0020 [STRESS]: disconnected_unmarked (multi_component_unmarked n_components=4)
+- v2_trs_oviedo_asturies_er_20160808_sparse_rural_0065 [STRESS]: disconnected_unmarked (multi_component_unmarked n_components=3)
+- v2_trs_oviedo_asturies_er_20160808_sparse_rural_0074 [STRESS]: disconnected_unmarked (multi_component_unmarked n_components=5)
+- v2_trs_oviedo_asturies_er_20160808_sparse_rural_seed [STRESS]: disconnected_unmarked (multi_component_unmarked n_components=3)
+
+## Criterios de aceptación usados
+
+- min_nodes: 20
+- min_edges: 20
+- min_total_length_m: 200.0
+- world_size_x/world_size_y > 0
+- coords within worldSize (tol 1m)
+- no degenerate segments (<1e-6m)
+- disconnected_unmarked => FAIL
+- partitioned allowed but documented
+
+## Recomendación de usabilidad por batch
+
+- batch_0100: usable_with_caution
+- batch_0200: usable_for_features
+- batch_0400: usable_for_features
+- batch_0600: usable_for_features
+- batch_0800: usable_for_features
+- batch_1000: usable_for_features
+- batch_1200: usable_for_features
+- batch_1600: usable_with_caution
+- batch_2000: usable_with_caution

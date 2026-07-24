@@ -1,0 +1,15 @@
+{
+  "name": "v2_syn_radial_city_0738",
+  "map_id": "v2_syn_radial_city_0738",
+  "source_type": "synthetic",
+  "status": "failed",
+  "generation_status": "FAIL_BUILD_SYNTHETIC_DEGENERATE",
+  "error_notes": "too_few_nodes (19 < 20)",
+  "synthetic_validation": {
+    "n_nodes": 19,
+    "n_edges": 31,
+    "total_length_m": 7299.97,
+    "regeneration_attempts": 5,
+    "last_failure": "too_few_nodes (19 < 20)"
+  }
+}

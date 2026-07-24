@@ -1,0 +1,16 @@
+{
+  "archetype": "urban_grid",
+  "builder": "synthetic",
+  "config_hash": "c0c7e010c39c414b",
+  "generator_parameters": {
+    "block_size_m": 100,
+    "diagonal_links": true,
+    "grid_cols": 15,
+    "grid_rows": 15
+  },
+  "generator_type": "grid",
+  "map_id": "v2_syn_grid_0123",
+  "seed": 3338169016,
+  "source_type": "synthetic",
+  "trace_id": ""
+}

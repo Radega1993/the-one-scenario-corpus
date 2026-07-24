@@ -1,0 +1,43 @@
+{
+  "name": "v2_syn_conference_event_compact_0172",
+  "map_id": "v2_syn_conference_event_compact_0172",
+  "source": "synthetic",
+  "source_type": "synthetic",
+  "anchor_id": null,
+  "anchor_label": null,
+  "archetype": "conference_event_compact",
+  "generator_type": "conference_event_compact",
+  "map_generator_type": "conference_event_compact",
+  "map_archetype": "conference_event_compact",
+  "crs": "local",
+  "network_type": "synthetic",
+  "world_size": [
+    220,
+    72
+  ],
+  "occupancy_margin_m": 50.0,
+  "world_size_policy": "sim_road_max_plus_50m_margin_per_axis",
+  "n_road_segments": 25,
+  "n_edges": 25,
+  "n_nodes": 20,
+  "generator_params": {
+    "hall_count": 2,
+    "rooms_per_hall": 4,
+    "corridor_width_m": 12,
+    "room_spacing_m": 15,
+    "inter_hall_gap_m": 50
+  },
+  "topology_flags": [
+    "compact_event"
+  ],
+  "n_components": 1,
+  "seed": 3927124454,
+  "created_at": "2026-07-23T06:53:51.355842+00:00",
+  "status": "generated",
+  "synthetic_validation": {
+    "n_nodes": 20,
+    "n_edges": 25,
+    "total_length_m": 436.0,
+    "regeneration_attempts": 1
+  }
+}

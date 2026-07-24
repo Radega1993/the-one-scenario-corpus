@@ -1,0 +1,60 @@
+{
+  "name": "v2_trs_st_andrews_sassy_20110603_clustered_communities_0025",
+  "map_id": "v2_trs_st_andrews_sassy_20110603_clustered_communities_0025",
+  "source": "trace_reference_synthetic",
+  "source_type": "trace_reference_synthetic",
+  "anchor_id": null,
+  "anchor_label": "st_andrews_sassy_20110603",
+  "archetype": "clustered_communities",
+  "generator_type": "clustered_communities",
+  "map_generator_type": "clustered_communities",
+  "map_archetype": "clustered_communities",
+  "crs": "local",
+  "network_type": "synthetic",
+  "world_size": [
+    292,
+    286
+  ],
+  "occupancy_margin_m": 50.0,
+  "world_size_policy": "sim_road_max_plus_50m_margin_per_axis",
+  "n_road_segments": 87,
+  "n_edges": 87,
+  "n_nodes": 27,
+  "generator_params": {
+    "n_clusters": 3,
+    "nodes_per_cluster": 8,
+    "intra_density": 0.7,
+    "inter_gap_m": 200,
+    "inter_bridge_count": 2
+  },
+  "topology_flags": [
+    "clustered"
+  ],
+  "n_components": 1,
+  "seed": 2439948858,
+  "created_at": "2026-07-23T16:55:26.239105+00:00",
+  "status": "generated",
+  "synthetic_validation": {
+    "n_nodes": 27,
+    "n_edges": 87,
+    "total_length_m": 3355.51,
+    "regeneration_attempts": 1
+  },
+  "trace_id": "st_andrews_sassy_20110603",
+  "parameter_extractor": "sassy_encounters_v1",
+  "extracted_parameters": {
+    "extractor": "sassy_encounters_v1",
+    "trace_id": "st_andrews_sassy_20110603",
+    "n_nodes": 25,
+    "contacts": 112264,
+    "duration_seconds": 6413284,
+    "contact_duration_mean_s": 3.6431625454286327,
+    "n_clusters": 3,
+    "nodes_per_cluster": 8,
+    "intra_density": 0.7,
+    "inter_gap_m": 200,
+    "inter_bridge_count": 2,
+    "geometry_rule": "parameterize clustered_communities only"
+  },
+  "config_hash": "b38c7774d13a0b2f"
+}

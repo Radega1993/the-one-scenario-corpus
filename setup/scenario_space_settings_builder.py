@@ -10,12 +10,27 @@ Aligned with: scenarios/the_one_settings_reference_node_mobility_messages.md
 from __future__ import annotations
 
 import json
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from pathlib import Path
-from typing import Any
+from typing import Any, Callable
 
 REPO_ROOT = Path(__file__).resolve().parent.parent.parent
 DATA_DIR = REPO_ROOT / "data"
+SCENARIOS_DIR = REPO_ROOT / "scenarios"
+
+SPEED_REGIME_RANGES = {
+    "pedestrian_slow": "0.3, 1.0",
+    "pedestrian_normal": "0.5, 1.5",
+    "pedestrian_fast": "0.8, 2.0",
+    "vehicle_slow": "3.0, 8.0",
+    "vehicle_normal": "7.0, 15.0",
+}
+
+WAIT_REGIME_RANGES = {
+    "low_pause": "0, 60",
+    "normal_pause": "30, 240",
+    "high_pause": "300, 1800",
+}
 
 MAP_ALLOWED_MODELS = {
     "HelsinkiDowntown": ["WorkingDayMovement", "ShortestPathMapBasedMovement", "BusMovement"],
@@ -53,6 +68,11 @@ GROUP_STRUCTURE_NGROUPS = {
     "pedestrian_vehicle": 2,
     "pedestrian_shortestpath_heterogeneous": 2,
     "cluster_nomadic": 2,
+    "single_group": 1,
+    "two_balanced_groups": 2,
+    "four_communities": 2,
+    "hub_and_spokes": 2,
+    "partitioned_groups": 2,
 }
 
 # Reference Part G / C.5 — placeholder traffic (not a Traffic Profile)
@@ -62,6 +82,42 @@ PLACEHOLDER_EVENTS = {
     "size": "50k, 150k",
     "prefix": "M",
 }
+
+
+@dataclass
+class BuilderContext:
+    maps_assets_root: Path | None = None
+    scenario_prefix: str = "SV1_"
+    placeholder_events: dict[str, str] = field(default_factory=lambda: dict(PLACEHOLDER_EVENTS))
+    header_tag: str = "scenario_space_v1"
+
+
+_builder_ctx = BuilderContext()
+
+
+def set_builder_context(ctx: BuilderContext) -> None:
+    global _builder_ctx
+    _builder_ctx = ctx
+
+
+def get_builder_context() -> BuilderContext:
+    return _builder_ctx
+
+
+def _map_dir(map_id: str) -> Path:
+    if _builder_ctx.maps_assets_root is not None:
+        return _builder_ctx.maps_assets_root / map_id
+    return DATA_DIR / map_id
+
+
+def _map_rel_prefix(map_id: str) -> str:
+    if _builder_ctx.maps_assets_root is not None:
+        try:
+            rel = (_builder_ctx.maps_assets_root / map_id).relative_to(REPO_ROOT)
+            return str(rel).replace("\\", "/")
+        except ValueError:
+            return f"scenarios/structural_scenario_space_v1/assets/{map_id}"
+    return f"data/{map_id}"
 
 
 @dataclass
@@ -79,6 +135,10 @@ class ScenarioParam:
     rng_seed: int
     scenario_index: int
     param_id: str
+    movement_model_id: str = ""
+    speed_regime: str = "pedestrian_normal"
+    wait_regime: str = "normal_pause"
+    scenario_prefix: str = ""
 
     @property
     def candidate_id(self) -> str:
@@ -86,7 +146,14 @@ class ScenarioParam:
 
     @property
     def scenario_name(self) -> str:
-        return f"SV1_{self.candidate_id}"
+        prefix = self.scenario_prefix or _builder_ctx.scenario_prefix
+        return f"{prefix}{self.candidate_id}"
+
+    @property
+    def effective_group_structure(self) -> str:
+        from structural_scenario_v1_common import GROUP_STRUCTURE_TO_BUILDER
+
+        return GROUP_STRUCTURE_TO_BUILDER.get(self.group_structure, self.group_structure)
 
 
 def load_maps_index() -> dict[str, dict[str, Any]]:
@@ -178,8 +245,45 @@ def load_maps_from_manifest(manifest_path: Path) -> tuple[dict[str, dict], dict[
     return maps_yaml_style, maps_index
 
 
-def _map_dir(map_id: str) -> Path:
-    return DATA_DIR / map_id
+def load_structural_maps_manifest(
+    manifest_path: Path,
+    spec: dict[str, Any],
+    assets_root: Path,
+    features_by_id: dict[str, dict[str, str]] | None = None,
+) -> tuple[dict[str, dict], dict[str, dict[str, Any]]]:
+    """Load 75-map manifest with structural asset paths and YAML compatibility."""
+    import csv
+
+    from structural_scenario_v1_common import infer_allowed_movement_ids, movement_class
+
+    features_by_id = features_by_id or {}
+    maps_yaml_style: dict[str, dict] = {}
+    maps_index: dict[str, dict[str, Any]] = {}
+    with manifest_path.open(encoding="utf-8") as f:
+        for row in csv.DictReader(f):
+            map_id = row["map_id"]
+            wx = int(float(row.get("world_size_x", 0) or 0))
+            wy = int(float(row.get("world_size_y", 0) or 0))
+            rel = f"scenarios/structural_scenario_space_v1/assets/{map_id}"
+            allowed_ids = infer_allowed_movement_ids(map_id, row, spec, assets_root)
+            allowed_classes = [movement_class(m) for m in allowed_ids]
+            feats = features_by_id.get(map_id, row)
+            maps_index[map_id] = {
+                "world_size_x": wx,
+                "world_size_y": wy,
+                "wkt_path": f"{rel}/roads.wkt",
+                "allowed_movement_models": allowed_classes,
+                "allowed_movement_ids": allowed_ids,
+                "map_archetype": row.get("archetype", ""),
+                "source_type": row.get("source_type", ""),
+                "anchor_id": row.get("anchor_id", ""),
+                "generator_type": row.get("generator_type", ""),
+                "road_density": feats.get("road_density", ""),
+                "gridness_score": feats.get("gridness_score", ""),
+                "partition_score": feats.get("partition_score", ""),
+            }
+            maps_yaml_style[map_id] = dict(maps_index[map_id], id=map_id)
+    return maps_yaml_style, maps_index
 
 
 def resolve_route_rel(map_id: str, movement_model: str) -> str | None:
@@ -189,21 +293,22 @@ def resolve_route_rel(map_id: str, movement_model: str) -> str | None:
         return None
 
     assets = MAP_ASSETS.get(map_id, {})
+    prefix = _map_rel_prefix(map_id)
     if movement_model == "WorkingDayMovement":
         rel = assets.get("wdm_route", "A_bus.wkt")
-        return f"data/{map_id}/{rel}" if (map_dir / rel).is_file() else None
+        return f"{prefix}/{rel}" if (map_dir / rel).is_file() else None
 
     key = "bus_route" if movement_model == "BusMovement" else "vehicle_route"
     rel = assets.get(key)
     if rel and (map_dir / rel).is_file():
-        return f"data/{map_id}/{rel}"
+        return f"{prefix}/{rel}"
 
     for p in sorted(map_dir.glob("*.wkt")):
         name = p.name.lower()
         if name == "roads.wkt":
             continue
         if any(tok in name for tok in ("route", "bus", "patrol", "shuttle", "mule")):
-            return f"data/{map_id}/{p.name}"
+            return f"{prefix}/{p.name}"
     return None
 
 
@@ -223,26 +328,39 @@ def is_candidate_runnable(param: ScenarioParam, maps_index: dict[str, dict]) -> 
     if allowed and param.movement_model not in allowed:
         return False, f"{param.movement_model} not allowed on {param.map_id}"
 
-    map_dir = _map_dir(param.map_id)
-    if not map_dir.is_dir():
-        return False, "map data directory missing"
+    if param.movement_model == "RandomWaypoint":
+        return True, ""
 
-    if param.movement_model == "WorkingDayMovement":
-        for fname in ("A_homes.wkt", "A_offices.wkt", "A_meetingspots.wkt"):
-            if not (map_dir / fname).is_file():
-                return False, f"POI missing: {fname}"
-        if resolve_route_rel(param.map_id, "WorkingDayMovement") is None:
-            return False, "WDM route missing"
+    if param.movement_model == "ClusterMovement":
+        wx = maps_index[param.map_id]["world_size_x"]
+        wy = maps_index[param.map_id]["world_size_y"]
+        if wx <= 0 or wy <= 0:
+            return False, "invalid world_size"
+    else:
+        map_dir = _map_dir(param.map_id)
+        if not map_dir.is_dir():
+            return False, "map data directory missing"
 
-    if param.movement_model in ("MapRouteMovement", "BusMovement"):
-        if resolve_route_rel(param.map_id, param.movement_model) is None:
-            return False, f"route missing for {param.movement_model}"
+        if param.movement_model == "WorkingDayMovement":
+            for fname in ("A_homes.wkt", "A_offices.wkt", "A_meetingspots.wkt"):
+                if not (map_dir / fname).is_file():
+                    return False, f"POI missing: {fname}"
+            if resolve_route_rel(param.map_id, "WorkingDayMovement") is None:
+                return False, "WDM route missing"
 
-    n_groups = GROUP_STRUCTURE_NGROUPS.get(param.group_structure, 1)
+        if param.movement_model in ("MapRouteMovement", "BusMovement", "ShortestPathMapBasedMovement"):
+            if param.movement_model != "ShortestPathMapBasedMovement":
+                if resolve_route_rel(param.map_id, param.movement_model) is None:
+                    return False, f"route missing for {param.movement_model}"
+            elif not (map_dir / "roads.wkt").is_file():
+                return False, "roads.wkt missing"
+
+    struct = param.effective_group_structure
+    n_groups = GROUP_STRUCTURE_NGROUPS.get(struct, 1)
     if n_groups > 1 and param.n_hosts < 2:
         return False, "multi-group structure needs n_hosts >= 2"
 
-    if param.group_structure == "pedestrian_transit" and not has_bus_route(param.map_id):
+    if struct == "pedestrian_transit" and not has_bus_route(param.map_id):
         if param.movement_model in ("BusMovement", "WorkingDayMovement"):
             pass
         elif param.movement_model == "MapRouteMovement":
@@ -261,12 +379,13 @@ def _split_hosts(n: int, n_groups: int) -> list[int]:
 
 def _wdm_group_block(map_id: str, route_rel: str, *, prefix: str = "Group") -> str:
     p = prefix
+    mp = _map_rel_prefix(map_id)
     return f"""
 {p}.movementModel = WorkingDayMovement
 {p}.routeFile = {route_rel}
-{p}.homeLocationsFile = data/{map_id}/A_homes.wkt
-{p}.officeLocationsFile = data/{map_id}/A_offices.wkt
-{p}.meetingSpotsFile = data/{map_id}/A_meetingspots.wkt
+{p}.homeLocationsFile = {mp}/A_homes.wkt
+{p}.officeLocationsFile = {mp}/A_offices.wkt
+{p}.meetingSpotsFile = {mp}/A_meetingspots.wkt
 {p}.speed = 0.5, 1.5
 {p}.waitTime = 0, 120
 {p}.busControlSystemNr = -1
@@ -346,9 +465,26 @@ Group{gi}.interface1 = bt0
 """
 
 
+def _random_waypoint_block(*, prefix: str = "Group", speed: str = "0.5, 1.5", wait: str = "30, 240") -> str:
+    return f"""
+{prefix}.movementModel = RandomWaypoint
+{prefix}.speed = {speed}
+{prefix}.waitTime = {wait}
+"""
+
+
+def _speed_wait(param: ScenarioParam, vehicle: bool = False) -> tuple[str, str]:
+    speed = SPEED_REGIME_RANGES.get(
+        param.speed_regime,
+        SPEED_REGIME_RANGES["vehicle_normal" if vehicle else "pedestrian_normal"],
+    )
+    wait = WAIT_REGIME_RANGES.get(param.wait_regime, WAIT_REGIME_RANGES["normal_pause"])
+    return speed, wait
+
+
 def build_host_groups(param: ScenarioParam, maps_index: dict) -> tuple[str, int]:
     """Return (group block text, total_hosts for Events1.hosts)."""
-    struct = param.group_structure
+    struct = param.effective_group_structure
     n = param.n_hosts
     model = param.movement_model
     map_id = param.map_id
@@ -360,6 +496,15 @@ def build_host_groups(param: ScenarioParam, maps_index: dict) -> tuple[str, int]
     lines: list[str] = []
 
     # WDM on Helsinki: U1-style bus-first layout (reference F.2 / R013)
+    if model == "RandomWaypoint":
+        speed, wait = _speed_wait(param)
+        lines.append(f"Scenario.nrofHostGroups = 1")
+        lines.append(_random_waypoint_block(prefix="Group1", speed=speed, wait=wait).strip())
+        lines.append("Group1.groupID = a")
+        lines.append(f"Group1.nrofHosts = {n}")
+        lines.append(_group_tail(1, param).strip())
+        return "\n".join(lines) + "\n", n
+
     if model == "WorkingDayMovement":
         route_wdm = resolve_route_rel(map_id, "WorkingDayMovement")
         assert route_wdm
@@ -384,7 +529,10 @@ def build_host_groups(param: ScenarioParam, maps_index: dict) -> tuple[str, int]
         gi = 1
         lines.append(f"Group{gi}.groupID = a")
         lines.append(f"Group{gi}.nrofHosts = {hosts[0]}")
-        lines.append(_movement_defaults(model, map_id, wx, wy).replace("Group.", f"Group{gi}."))
+        speed, wait = _speed_wait(param)
+        lines.append(
+            _movement_defaults(model, map_id, wx, wy, speed=speed, wait=wait).replace("Group.", f"Group{gi}.")
+        )
         lines.append(_group_tail(gi, param).strip())
 
     elif struct == "pedestrian_transit" and route_bus:
@@ -450,17 +598,29 @@ def build_host_groups(param: ScenarioParam, maps_index: dict) -> tuple[str, int]
     return "\n".join(lines) + "\n", total
 
 
-def _movement_defaults(model: str, map_id: str, wx: int, wy: int) -> str:
+def _movement_defaults(
+    model: str,
+    map_id: str,
+    wx: int,
+    wy: int,
+    *,
+    speed: str | None = None,
+    wait: str | None = None,
+) -> str:
+    speed = speed or "0.5, 2.0"
+    wait = wait or "0, 600"
     route = resolve_route_rel(map_id, model)
     if model == "ShortestPathMapBasedMovement":
-        return _spmbm_block()
+        return _spmbm_block(speed=speed, wait=wait)
+    if model == "RandomWaypoint":
+        return _random_waypoint_block(speed=speed, wait=wait)
     if model == "MapRouteMovement" and route:
         return _map_route_block(route)
     if model == "BusMovement" and route:
         return _bus_block(route)
     if model == "ClusterMovement":
         return _cluster_block(wx, wy)
-    return _spmbm_block()
+    return _spmbm_block(speed=speed, wait=wait)
 
 
 def build_settings_content(param: ScenarioParam, maps_index: dict[str, dict]) -> str:
@@ -468,10 +628,19 @@ def build_settings_content(param: ScenarioParam, maps_index: dict[str, dict]) ->
     m = maps_index[param.map_id]
     wx, wy = m["world_size_x"], m["world_size_y"]
     map_file = m["wkt_path"]
+    ctx = get_builder_context()
+    pe = ctx.placeholder_events
 
     group_block, total_hosts = build_host_groups(param, maps_index)
 
-    header = f"""# scenario_space_v1 structural candidate
+    map_section = ""
+    if param.movement_model != "RandomWaypoint":
+        map_section = f"""
+MapBasedMovement.nrofMapFiles = 1
+MapBasedMovement.mapFile1 = {map_file}
+"""
+
+    header = f"""# {ctx.header_tag} structural candidate
 # Reference: the_one_settings_reference_node_mobility_messages.md (placeholder traffic)
 # candidate_id: {param.candidate_id} | param_id: {param.param_id}
 # map: {param.map_id} | movement: {param.movement_model} | hosts: {param.n_hosts}
@@ -484,10 +653,7 @@ Scenario.endTime = {param.end_time}
 
 MovementModel.rngSeed = {param.rng_seed}
 MovementModel.worldSize = {wx}, {wy}
-
-MapBasedMovement.nrofMapFiles = 1
-MapBasedMovement.mapFile1 = {map_file}
-
+{map_section}
 Group.bufferSize = {param.buffer_size}
 Group.router = {param.router}
 Group.nrofInterfaces = 1
@@ -499,17 +665,18 @@ Group.msgTtl = {PLACEHOLDER_MSG_TTL}
 """
 
     default_mm = ""
-    if param.movement_model != "WorkingDayMovement":
-        default_mm = _movement_defaults(param.movement_model, param.map_id, wx, wy)
+    if param.movement_model not in ("WorkingDayMovement", "RandomWaypoint"):
+        sp, wt = _speed_wait(param)
+        default_mm = _movement_defaults(param.movement_model, param.map_id, wx, wy, speed=sp, wait=wt)
 
     traffic = f"""
 # Placeholder traffic (NOT a Traffic Profile — Part C.5)
 Events.nrof = 1
 Events1.class = MessageEventGenerator
-Events1.interval = {PLACEHOLDER_EVENTS['interval']}
-Events1.size = {PLACEHOLDER_EVENTS['size']}
+Events1.interval = {pe['interval']}
+Events1.size = {pe['size']}
 Events1.hosts = 0, {total_hosts}
-Events1.prefix = {PLACEHOLDER_EVENTS['prefix']}
+Events1.prefix = {pe['prefix']}
 
 Report.nrofReports = 2
 Report.reportDir = reports/

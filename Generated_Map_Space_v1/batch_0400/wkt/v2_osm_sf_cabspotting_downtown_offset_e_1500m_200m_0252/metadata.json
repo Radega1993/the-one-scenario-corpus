@@ -1,0 +1,56 @@
+{
+  "name": "v2_osm_sf_cabspotting_downtown_offset_e_1500m_200m_0252",
+  "map_id": "v2_osm_sf_cabspotting_downtown_offset_e_1500m_200m_0252",
+  "source": "osm",
+  "source_type": "osm",
+  "anchor_id": "sf_cabspotting_downtown",
+  "anchor_label": "San Francisco Downtown (Cabspotting)",
+  "archetype": "dense_urban_irregular",
+  "generator_type": null,
+  "map_generator_type": "dense_urban_irregular",
+  "map_archetype": "dense_urban_irregular",
+  "crs": "EPSG:32610",
+  "network_type": "drive",
+  "world_size": [
+    1575,
+    1541
+  ],
+  "occupancy_margin_m": 50.0,
+  "world_size_policy": "sim_road_max_plus_50m_margin_per_axis",
+  "n_road_segments": 385,
+  "n_edges": 385,
+  "n_nodes": 191,
+  "bbox_latlon": [
+    37.778262666187565,
+    -122.41625186670188,
+    37.79173733381243,
+    -122.3992021332981
+  ],
+  "bbox_m": [
+    551415.5078346584,
+    4181381.4896455235,
+    552896.2705955136,
+    4182871.5764111076
+  ],
+  "variant_type": "offset_e",
+  "anchor_distance_m": 200.0,
+  "window_size_m": 1500.0,
+  "generator_params": {
+    "center_lat": 37.785,
+    "center_lon": -122.407727,
+    "width_m": 1500,
+    "height_m": 1500,
+    "variant_type": "offset_e",
+    "anchor_distance_m": 200.0,
+    "window_size_m": 1500.0,
+    "osm_network_type": "drive",
+    "crs": "EPSG:32610",
+    "anchor_label": "San Francisco Downtown (Cabspotting)",
+    "_allow_partitioned": false
+  },
+  "topology_flags": null,
+  "n_components": 1,
+  "seed": 2502314588,
+  "created_at": "2026-07-23T11:48:18.322255+00:00",
+  "status": "generated"
+}

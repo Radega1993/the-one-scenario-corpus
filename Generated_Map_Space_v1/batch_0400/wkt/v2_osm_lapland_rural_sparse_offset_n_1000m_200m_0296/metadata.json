@@ -1,0 +1,56 @@
+{
+  "name": "v2_osm_lapland_rural_sparse_offset_n_1000m_200m_0296",
+  "map_id": "v2_osm_lapland_rural_sparse_offset_n_1000m_200m_0296",
+  "source": "osm",
+  "source_type": "osm",
+  "anchor_id": "lapland_rural_sparse",
+  "anchor_label": "Lapland rural roads",
+  "archetype": "rural_roads",
+  "generator_type": null,
+  "map_generator_type": "rural_roads",
+  "map_archetype": "rural_roads",
+  "crs": "EPSG:3067",
+  "network_type": "drive",
+  "world_size": [
+    918,
+    1058
+  ],
+  "occupancy_margin_m": 50.0,
+  "world_size_policy": "sim_road_max_plus_50m_margin_per_axis",
+  "n_road_segments": 206,
+  "n_edges": 206,
+  "n_nodes": 104,
+  "bbox_latlon": [
+    66.49730544412505,
+    25.718735071170826,
+    66.50628855587495,
+    25.741264928829175
+  ],
+  "bbox_m": [
+    443001.0052783394,
+    7375928.381299056,
+    443868.986719164,
+    7376912.900910062
+  ],
+  "variant_type": "offset_n",
+  "anchor_distance_m": 200.0,
+  "window_size_m": 1000.0,
+  "generator_params": {
+    "center_lat": 66.501797,
+    "center_lon": 25.73,
+    "width_m": 1000,
+    "height_m": 1000,
+    "variant_type": "offset_n",
+    "anchor_distance_m": 200.0,
+    "window_size_m": 1000.0,
+    "osm_network_type": "drive",
+    "crs": "EPSG:3067",
+    "anchor_label": "Lapland rural roads",
+    "_allow_partitioned": false
+  },
+  "topology_flags": null,
+  "n_components": 1,
+  "seed": 721094836,
+  "created_at": "2026-07-23T12:16:33.785352+00:00",
+  "status": "generated"
+}

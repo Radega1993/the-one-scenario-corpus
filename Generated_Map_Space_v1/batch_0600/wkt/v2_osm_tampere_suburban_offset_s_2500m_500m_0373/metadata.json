@@ -1,0 +1,56 @@
+{
+  "name": "v2_osm_tampere_suburban_offset_s_2500m_500m_0373",
+  "map_id": "v2_osm_tampere_suburban_offset_s_2500m_500m_0373",
+  "source": "osm",
+  "source_type": "osm",
+  "anchor_id": "tampere_suburban",
+  "anchor_label": "Tampere suburban low density",
+  "archetype": "suburban_low_density",
+  "generator_type": null,
+  "map_generator_type": "suburban_low_density",
+  "map_archetype": "suburban_low_density",
+  "crs": "EPSG:3067",
+  "network_type": "drive",
+  "world_size": [
+    2434,
+    2440
+  ],
+  "occupancy_margin_m": 50.0,
+  "world_size_policy": "sim_road_max_plus_50m_margin_per_axis",
+  "n_road_segments": 436,
+  "n_edges": 436,
+  "n_nodes": 183,
+  "bbox_latlon": [
+    61.459279110312615,
+    23.726489468527802,
+    61.48173688968739,
+    23.773510531472198
+  ],
+  "bbox_m": [
+    325758.5818860227,
+    6818308.985648281,
+    328142.177614167,
+    6820697.287126344
+  ],
+  "variant_type": "offset_s",
+  "anchor_distance_m": 500.0,
+  "window_size_m": 2500.0,
+  "generator_params": {
+    "center_lat": 61.470508,
+    "center_lon": 23.75,
+    "width_m": 2500,
+    "height_m": 2500,
+    "variant_type": "offset_s",
+    "anchor_distance_m": 500.0,
+    "window_size_m": 2500.0,
+    "osm_network_type": "drive",
+    "crs": "EPSG:3067",
+    "anchor_label": "Tampere suburban low density",
+    "_allow_partitioned": false
+  },
+  "topology_flags": null,
+  "n_components": 1,
+  "seed": 949897170,
+  "created_at": "2026-07-23T07:16:27.525279+00:00",
+  "status": "generated"
+}

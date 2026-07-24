@@ -1,0 +1,4 @@
+source_type,N_OK,N_OK_total,p_star,p,delta_p
+osm,847,1865,0.45,0.454155,0.004155
+synthetic,715,1865,0.4,0.383378,-0.016622
+trace_reference_synthetic,303,1865,0.15,0.162466,0.012466

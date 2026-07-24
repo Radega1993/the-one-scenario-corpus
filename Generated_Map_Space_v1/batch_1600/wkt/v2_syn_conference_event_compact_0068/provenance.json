@@ -1,0 +1,17 @@
+{
+  "archetype": "conference_event_compact",
+  "builder": "synthetic",
+  "config_hash": "b38c7774d13a0b2f",
+  "generator_parameters": {
+    "corridor_width_m": 16,
+    "hall_count": 2,
+    "inter_hall_gap_m": 80,
+    "room_spacing_m": 15,
+    "rooms_per_hall": 4
+  },
+  "generator_type": "conference_event_compact",
+  "map_id": "v2_syn_conference_event_compact_0068",
+  "seed": 2903268724,
+  "source_type": "synthetic",
+  "trace_id": ""
+}

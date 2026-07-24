@@ -1,0 +1,22 @@
+extractor,extracted_statistic,generator_id,generator_parameter,mapping_status,expected_topology_effect,not_inferred,notes
+standard_events_contact_summary_v1,n_nodes,clustered_communities,n_clusters,mapped,More contact agents → more community partitions (bounded 3–8),Road layout; geographic positions,n_clusters = clamp(round(n_nodes/12),3,8) when not in discrete overlay path; map_extracted also derives nodes_per_cluster from n_nodes
+standard_events_contact_summary_v1,n_nodes,clustered_communities,nodes_per_cluster,mapped,Larger agent count → denser clusters (nodes_per_cluster = max(4,n_nodes/n_clusters)),Streets from contacts,Previously weak when mid discrete already equals overlay; now explicit
+standard_events_contact_summary_v1,density_proxy,clustered_communities,intra_density,mapped,Higher contact density → higher intra-cluster edge density (snapped to discrete),Physical distances,Maps density_proxy into [0.4,0.9] then nearest discrete
+standard_events_contact_summary_v1,n_nodes,conference_event_compact,hall_count,mapped,More agents → more halls (nearest discrete),Venue floorplan,Minimal documented rule; contacts ≠ rooms
+standard_events_contact_summary_v1,n_nodes,conference_event_compact,rooms_per_hall,mapped,Scales room count with sqrt(n_nodes) into discrete options,Hall geometry,under_specified historically; now explicit nearest-discrete
+standard_events_contact_summary_v1,n_nodes,sparse_rural,n_nodes,mapped,Agent count snaps to sparse_rural n_nodes discrete,Actual rural road network,Oviedo ER contacts parameterize sparsity scale only
+standard_events_contact_summary_v1,n_nodes,disrupted_grid,grid_rows,mapped,Larger n_nodes → larger disrupted grid extent,Which edges fail in reality,grid_cols mirrored; removal_rate unchanged
+standard_events_contact_summary_v1,n_nodes,partitioned_bridge,nodes_per_partition,mapped,Agent count → partition size,Geographic islands,n_partitions left to discrete / static
+standard_events_contact_summary_v1,contacts,ANY,NONE,not_mapped,—,Contact count does not set road edge count,Contacts ≠ streets
+standard_events_contact_summary_v1,duration_seconds,ANY,NONE,not_mapped,—,Temporal span ≠ map extent,Except RollerNet-specific length_m heuristic
+rollernet_contacts_v1,duration_seconds,corridor,length_m,mapped,Longer event → longer corridor (2000–8000 m),Actual roller route polyline,Heuristic hours→length; not GPS geometry
+rollernet_contacts_v1,n_nodes,corridor,width_m,under_specified,Width fixed at 600 m unless discrete overrides,Lateral spread of skaters,Documented fixed width; future rule may scale width with n_nodes
+rollernet_contacts_v1,contacts,corridor,branch_prob,under_specified,branch_prob static 0.1,Side-street topology,Explicit static; not inferred from contacts
+sassy_encounters_v1,n_nodes,clustered_communities,n_clusters,mapped,n_clusters = clamp(round(n/12),3,8),Campus roads,Social encounters only
+sassy_encounters_v1,n_nodes,clustered_communities,nodes_per_cluster,mapped,nodes_per_cluster = max(4,n//n_clusters),Inter-building paths,Measurable overlay vs mid discrete
+sassy_encounters_v1,contact_duration_mean_s,clustered_communities,intra_density,under_specified,Currently fixed intra_density=0.7,Link duration ≠ edge density,Proposed: map mean duration percentiles → discrete intra_density (documented; not yet coded)
+locshare_encounters_v1,n_nodes,campus_compact,n_buildings,mapped,n_buildings = clamp(n_nodes//4,6,15),True building footprints,Encounter users ≠ buildings; scale proxy only
+locshare_encounters_v1,n_nodes,clustered_communities,n_clusters,mapped,Clusters from n_nodes,Campus OSM geometry,Supporting TRS for campus/clustered
+locshare_encounters_v1,n_nodes,clustered_communities,nodes_per_cluster,mapped,Derived from n_nodes / n_clusters,—,Same as Sassy path
+gps_trace_summary_v1,bbox / extent_m,NONE (osm_anchor_support),NONE,not_mapped_to_generator,Justifies OSM anchor choice only,Road graph from GPS,Roma/Rio → roma_centro / rio_centro_buses provenance
+metadata_only_v1,NONE,NONE,NONE,not_mapped,Provenance / osm_anchor_support only,Any geometry params,DieselNet/Cabspotting/wardriving

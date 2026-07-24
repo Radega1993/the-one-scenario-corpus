@@ -1,0 +1,56 @@
+{
+  "name": "v2_osm_roma_centro_offset_n_1000m_500m_0761",
+  "map_id": "v2_osm_roma_centro_offset_n_1000m_500m_0761",
+  "source": "osm",
+  "source_type": "osm",
+  "anchor_id": "roma_centro",
+  "anchor_label": "Rome historic centre (taxi GPS)",
+  "archetype": "dense_urban_irregular",
+  "generator_type": null,
+  "map_generator_type": "dense_urban_irregular",
+  "map_archetype": "dense_urban_irregular",
+  "crs": "EPSG:32633",
+  "network_type": "drive",
+  "world_size": [
+    1021,
+    1043
+  ],
+  "occupancy_margin_m": 50.0,
+  "world_size_policy": "sim_road_max_plus_50m_margin_per_axis",
+  "n_road_segments": 205,
+  "n_edges": 205,
+  "n_nodes": 123,
+  "bbox_latlon": [
+    41.895000444125046,
+    12.483965537459815,
+    41.90398355587496,
+    12.496034462540186
+  ],
+  "bbox_m": [
+    291325.5669790868,
+    4641168.745954618,
+    292295.5823314814,
+    4642161.1601975765
+  ],
+  "variant_type": "offset_n",
+  "anchor_distance_m": 500.0,
+  "window_size_m": 1000.0,
+  "generator_params": {
+    "center_lat": 41.899492,
+    "center_lon": 12.49,
+    "width_m": 1000,
+    "height_m": 1000,
+    "variant_type": "offset_n",
+    "anchor_distance_m": 500.0,
+    "window_size_m": 1000.0,
+    "osm_network_type": "drive",
+    "crs": "EPSG:32633",
+    "anchor_label": "Rome historic centre (taxi GPS)",
+    "_allow_partitioned": false
+  },
+  "topology_flags": null,
+  "n_components": 1,
+  "seed": 824548768,
+  "created_at": "2026-07-23T17:15:27.313258+00:00",
+  "status": "generated"
+}

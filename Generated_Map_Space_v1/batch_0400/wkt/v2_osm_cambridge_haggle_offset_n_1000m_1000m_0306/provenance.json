@@ -1,0 +1,19 @@
+{
+  "anchor_id": "cambridge_haggle",
+  "archetype": "dense_urban_irregular",
+  "builder": "osm",
+  "config_hash": "b38c7774d13a0b2f",
+  "input_reference": "osm_anchor:cambridge_haggle",
+  "map_id": "v2_osm_cambridge_haggle_offset_n_1000m_1000m_0306",
+  "osm_query": {
+    "bbox": null,
+    "network_type": "all",
+    "offset_m": 1000,
+    "place": null,
+    "variant_type": "offset_n",
+    "window_size_m": 1000
+  },
+  "seed": 609055342,
+  "source_type": "osm",
+  "trace_support": []
+}

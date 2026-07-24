@@ -1,0 +1,40 @@
+{
+  "name": "v2_syn_grid_0435",
+  "map_id": "v2_syn_grid_0435",
+  "source": "synthetic",
+  "source_type": "synthetic",
+  "anchor_id": null,
+  "anchor_label": null,
+  "archetype": "urban_grid",
+  "generator_type": "grid",
+  "map_generator_type": "grid",
+  "map_archetype": "urban_grid",
+  "crs": "local",
+  "network_type": "synthetic",
+  "world_size": [
+    650,
+    650
+  ],
+  "occupancy_margin_m": 50.0,
+  "world_size_policy": "sim_road_max_plus_50m_margin_per_axis",
+  "n_road_segments": 538,
+  "n_edges": 538,
+  "n_nodes": 256,
+  "generator_params": {
+    "grid_rows": 15,
+    "grid_cols": 15,
+    "block_size_m": 40,
+    "diagonal_links": true
+  },
+  "topology_flags": null,
+  "n_components": 1,
+  "seed": 2934863662,
+  "created_at": "2026-07-23T16:56:49.134978+00:00",
+  "status": "generated",
+  "synthetic_validation": {
+    "n_nodes": 256,
+    "n_edges": 538,
+    "total_length_m": 22480.98,
+    "regeneration_attempts": 1
+  }
+}

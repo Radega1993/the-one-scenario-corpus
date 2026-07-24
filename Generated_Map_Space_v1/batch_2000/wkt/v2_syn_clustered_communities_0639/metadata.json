@@ -1,0 +1,43 @@
+{
+  "name": "v2_syn_clustered_communities_0639",
+  "map_id": "v2_syn_clustered_communities_0639",
+  "source": "synthetic",
+  "source_type": "synthetic",
+  "anchor_id": null,
+  "anchor_label": null,
+  "archetype": "clustered_communities",
+  "generator_type": "clustered_communities",
+  "map_generator_type": "clustered_communities",
+  "map_archetype": "clustered_communities",
+  "crs": "local",
+  "network_type": "synthetic",
+  "world_size": [
+    1161,
+    664
+  ],
+  "occupancy_margin_m": 50.0,
+  "world_size_policy": "sim_road_max_plus_50m_margin_per_axis",
+  "n_road_segments": 1064,
+  "n_edges": 1064,
+  "n_nodes": 156,
+  "generator_params": {
+    "n_clusters": 6,
+    "nodes_per_cluster": 25,
+    "intra_density": 0.5,
+    "inter_gap_m": 500,
+    "inter_bridge_count": 3
+  },
+  "topology_flags": [
+    "clustered"
+  ],
+  "n_components": 1,
+  "seed": 1292994409,
+  "created_at": "2026-07-23T16:57:13.968261+00:00",
+  "status": "generated",
+  "synthetic_validation": {
+    "n_nodes": 156,
+    "n_edges": 1064,
+    "total_length_m": 75867.69,
+    "regeneration_attempts": 1
+  }
+}

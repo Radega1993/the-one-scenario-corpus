@@ -1,0 +1,10 @@
+fail_axis,key,source_type,archetype,N_failed,N_OK_same_key,N_planned_same_key,fail_rate_same_key,N_OK_archetype_source,N_planned_archetype_source,known_hotspot,coverage_ok_residual
+generator_type,bus_route_corridor,synthetic,bus_route_urban_suburban,41,21,62,0.66129,21,62,True,True
+generator_type,campus_compact,synthetic,campus_compact,19,43,62,0.306452,43,62,True,True
+generator_type,corridor,synthetic,corridor_linear,11,51,62,0.177419,51,62,True,True
+generator_type,radial_city,synthetic,radial_city,11,50,61,0.180328,50,61,True,True
+generator_type,sparse_rural,synthetic,rural_roads,1,60,61,0.016393,60,61,False,True
+anchor_id,tampere_suburban,osm,suburban_low_density,20,32,52,0.384615,32,52,True,True
+anchor_id,nuuksio_sparse_trails,osm,sparse_trails,19,34,53,0.358491,34,53,True,True
+anchor_id,manhattan_midtown,osm,urban_grid,11,42,53,0.207547,42,53,True,True
+anchor_id,lapland_rural_sparse,osm,rural_roads,2,51,53,0.037736,51,53,True,True

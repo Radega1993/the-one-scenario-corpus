@@ -1,0 +1,16 @@
+{
+  "archetype": "rural_roads",
+  "builder": "synthetic",
+  "config_hash": "c0c7e010c39c414b",
+  "generator_parameters": {
+    "connection_radius_m": 600,
+    "long_edge_prob": 0.3,
+    "n_nodes": 60,
+    "pos_noise_m": 0
+  },
+  "generator_type": "sparse_rural",
+  "map_id": "v2_syn_sparse_rural_0102",
+  "seed": 1121319738,
+  "source_type": "synthetic",
+  "trace_id": ""
+}

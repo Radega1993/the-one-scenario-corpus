@@ -1,0 +1,20 @@
+{
+  "decision": "CEILING_2000_NO_STOP",
+  "rationale": "Planned ceiling N=2000 reached without meeting operational STOP (3 consecutive steps with \u0394C^(100)<0.005, D95 rel.<0.02, C\u22650.98). Do not auto-expand further; consider TARGETED_EXPAND only if strata warrant it, or revisit protocol thresholds before claiming GMS freeze.",
+  "stop_at_N": null,
+  "expansion": {
+    "mode": "none_at_ceiling",
+    "planned_ceiling": 2000
+  },
+  "gms_status": "open",
+  "sms_status": "blocked",
+  "gms_closure_language": "The configured map-generation design space reached empirical saturation under the declared generator families, parameter ranges, source allocation policy, feature representation, and operational stopping criteria.\n",
+  "note": "GMS-v1 is closed only on explicit STOP. Absolute saturation of all possible maps is not claimed.",
+  "epsilon": 0.3566224504801794,
+  "R": 100,
+  "n_maps": 1860,
+  "protocol": "scenarios/Generated_Map_Space_v1/config/saturation_protocol.yaml",
+  "features": "scenarios/Generated_Map_Space_v1/data/map_space_revised_v2_saturation_features.csv",
+  "transform_freeze": "scenarios/Generated_Map_Space_v1/data/map_space_revised_v2_feature_transform_freeze_n1117.json",
+  "pool_planned": 2000
+}

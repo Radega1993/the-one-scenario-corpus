@@ -1,0 +1,61 @@
+{
+  "name": "v2_trs_oviedo_asturies_er_20160808_partitioned_bridge_0130",
+  "map_id": "v2_trs_oviedo_asturies_er_20160808_partitioned_bridge_0130",
+  "source": "trace_reference_synthetic",
+  "source_type": "trace_reference_synthetic",
+  "anchor_id": null,
+  "anchor_label": "oviedo_asturies_er_20160808",
+  "archetype": "island_or_partitioned",
+  "generator_type": "partitioned_bridge",
+  "map_generator_type": "partitioned_bridge",
+  "map_archetype": "island_or_partitioned",
+  "crs": "local",
+  "network_type": "synthetic",
+  "world_size": [
+    830,
+    129
+  ],
+  "occupancy_margin_m": 50.0,
+  "world_size_policy": "sim_road_max_plus_50m_margin_per_axis",
+  "n_road_segments": 3247,
+  "n_edges": 3247,
+  "n_nodes": 180,
+  "generator_params": {
+    "n_partitions": 3,
+    "nodes_per_partition": 60,
+    "intra_density": 0.6,
+    "bridges_per_pair": 2
+  },
+  "topology_flags": [
+    "partitioned"
+  ],
+  "n_components": 1,
+  "seed": 2072592835,
+  "created_at": "2026-07-23T16:55:42.915463+00:00",
+  "status": "generated",
+  "synthetic_validation": {
+    "n_nodes": 180,
+    "n_edges": 3247,
+    "total_length_m": 138003.87,
+    "regeneration_attempts": 1
+  },
+  "trace_id": "oviedo_asturies_er_20160808",
+  "parameter_extractor": "standard_events_contact_summary_v1",
+  "extracted_parameters": {
+    "extractor": "standard_events_contact_summary_v1",
+    "trace_id": "oviedo_asturies_er_20160808",
+    "n_nodes": 228,
+    "events": 5245747,
+    "contacts": 2622625,
+    "ups": 2623122,
+    "downs": 2622625,
+    "up_down_balanced": false,
+    "duration_seconds": 31622339,
+    "contact_duration_count": 2622625,
+    "contact_duration_mean_s": 3201.682047566846,
+    "mean_degree_events": 23009.842105263157,
+    "density_proxy": 101.34573769224824,
+    "geometry_rule": "none_automatic; map via configured target_generators only"
+  },
+  "config_hash": "b38c7774d13a0b2f"
+}

@@ -112,3 +112,9 @@ scenarios/analysis/.venv/bin/python scenarios/setup/generate_scenario_aux_routes
 ```
 
 Ficheros: `NuuksioSparseTrails/R2_village_{1,2,3}.wkt`, `R2_inter_village.wkt`; `KallioCommunityCompact/S1_community_{1..4}.wkt`, `S1_bridge_route.wkt`; `S6_family_{1..12}.wkt`, `S6_shared_civic.wkt`.
+---
+
+## Relation to GMS-v1
+
+These six WKT maps feed **`corpus_v1`** only. Geometric Map Space (GMS) maps live under
+`scenarios/Generated_Map_Space_v1/batch_*/wkt/` and are unrelated to this tree.

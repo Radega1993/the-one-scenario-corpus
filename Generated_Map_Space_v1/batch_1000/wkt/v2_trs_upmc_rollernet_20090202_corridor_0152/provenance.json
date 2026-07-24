@@ -1,0 +1,31 @@
+{
+  "anchor_id": "",
+  "archetype": "corridor_linear",
+  "builder": "trace_reference_synthetic",
+  "config_hash": "c0c7e010c39c414b",
+  "extracted_parameters": {
+    "branch_length_m": 200,
+    "branch_prob": 0.1,
+    "contact_duration_mean_s": 232.2521752911079,
+    "contacts": 132511,
+    "duration_seconds": 10140,
+    "extractor": "rollernet_contacts_v1",
+    "geometry_rule": "parameterize corridor generator only",
+    "length_m": 3140,
+    "n_nodes": 1112,
+    "trace_id": "upmc_rollernet_20090202",
+    "width_m": 600
+  },
+  "generator_parameters": {
+    "branch_length_m": 200,
+    "branch_prob": 0.1,
+    "length_m": 3000,
+    "width_m": 600
+  },
+  "generator_type": "corridor",
+  "map_id": "v2_trs_upmc_rollernet_20090202_corridor_0152",
+  "parameter_extractor": "rollernet_contacts_v1",
+  "seed": 548002013,
+  "source_type": "trace_reference_synthetic",
+  "trace_id": "upmc_rollernet_20090202"
+}

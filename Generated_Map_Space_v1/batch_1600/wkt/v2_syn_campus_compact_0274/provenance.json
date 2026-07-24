@@ -1,0 +1,17 @@
+{
+  "archetype": "campus_compact",
+  "builder": "synthetic",
+  "config_hash": "b38c7774d13a0b2f",
+  "generator_parameters": {
+    "building_spacing_m": 80,
+    "n_buildings": 15,
+    "path_density": 0.6,
+    "quad_size_m": 400,
+    "ring_roads": 1
+  },
+  "generator_type": "campus_compact",
+  "map_id": "v2_syn_campus_compact_0274",
+  "seed": 1629612276,
+  "source_type": "synthetic",
+  "trace_id": ""
+}

@@ -1,0 +1,56 @@
+{
+  "name": "v2_osm_helsinki_downtown_offset_s_2500m_1000m_0378",
+  "map_id": "v2_osm_helsinki_downtown_offset_s_2500m_1000m_0378",
+  "source": "osm",
+  "source_type": "osm",
+  "anchor_id": "helsinki_downtown",
+  "anchor_label": "Helsinki Downtown",
+  "archetype": "dense_urban_irregular",
+  "generator_type": null,
+  "map_generator_type": "dense_urban_irregular",
+  "map_archetype": "dense_urban_irregular",
+  "crs": "EPSG:3067",
+  "network_type": "drive",
+  "world_size": [
+    2598,
+    2527
+  ],
+  "occupancy_margin_m": 50.0,
+  "world_size_policy": "sim_road_max_plus_50m_margin_per_axis",
+  "n_road_segments": 1350,
+  "n_edges": 1350,
+  "n_nodes": 614,
+  "bbox_latlon": [
+    60.15128811031261,
+    24.91743125227413,
+    60.17374588968739,
+    24.96256874772587
+  ],
+  "bbox_m": [
+    384390.6994520987,
+    6670096.302351783,
+    386937.89789542503,
+    6672573.151497005
+  ],
+  "variant_type": "offset_s",
+  "anchor_distance_m": 1000.0,
+  "window_size_m": 2500.0,
+  "generator_params": {
+    "center_lat": 60.162517,
+    "center_lon": 24.94,
+    "width_m": 2500,
+    "height_m": 2500,
+    "variant_type": "offset_s",
+    "anchor_distance_m": 1000.0,
+    "window_size_m": 2500.0,
+    "osm_network_type": "drive",
+    "crs": "EPSG:3067",
+    "anchor_label": "Helsinki Downtown",
+    "_allow_partitioned": false
+  },
+  "topology_flags": null,
+  "n_components": 1,
+  "seed": 3094990582,
+  "created_at": "2026-07-23T12:54:28.096308+00:00",
+  "status": "generated"
+}

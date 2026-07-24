@@ -1,0 +1,16 @@
+{
+  "archetype": "radial_city",
+  "builder": "synthetic",
+  "config_hash": "b38c7774d13a0b2f",
+  "generator_parameters": {
+    "n_rings": 4,
+    "n_spokes": 8,
+    "radial_noise_m": 5,
+    "ring_spacing_m": 100
+  },
+  "generator_type": "radial_city",
+  "map_id": "v2_syn_radial_city_0361",
+  "seed": 4094748474,
+  "source_type": "synthetic",
+  "trace_id": ""
+}

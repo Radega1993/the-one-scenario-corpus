@@ -1,0 +1,33 @@
+{
+  "anchor_id": "",
+  "archetype": "clustered_communities",
+  "builder": "trace_reference_synthetic",
+  "config_hash": "b38c7774d13a0b2f",
+  "extracted_parameters": {
+    "contact_duration_mean_s": 3.6431625454286327,
+    "contacts": 112264,
+    "duration_seconds": 6413284,
+    "extractor": "sassy_encounters_v1",
+    "geometry_rule": "parameterize clustered_communities only",
+    "inter_bridge_count": 2,
+    "inter_gap_m": 200,
+    "intra_density": 0.7,
+    "n_clusters": 3,
+    "n_nodes": 25,
+    "nodes_per_cluster": 8,
+    "trace_id": "st_andrews_sassy_20110603"
+  },
+  "generator_parameters": {
+    "inter_bridge_count": 2,
+    "inter_gap_m": 200,
+    "intra_density": 0.7,
+    "n_clusters": 3,
+    "nodes_per_cluster": 8
+  },
+  "generator_type": "clustered_communities",
+  "map_id": "v2_trs_st_andrews_sassy_20110603_clustered_communities_0115",
+  "parameter_extractor": "sassy_encounters_v1",
+  "seed": 3447834462,
+  "source_type": "trace_reference_synthetic",
+  "trace_id": "st_andrews_sassy_20110603"
+}
